@@ -195,3 +195,58 @@ test("audio binary from non-publishers and malformed publisher frames are reject
     publisher.close();
   }
 });
+
+test("subscribers receive identical frames across one receiver unsubscribe and re-subscribe", async () => {
+  const publisher = await connect();
+  const receiverA = await connect();
+  const receiverB = await connect();
+  try {
+    await Promise.all([join(publisher, "Speaker"), join(receiverA, "Receiver A"), join(receiverB, "Receiver B")]);
+
+    const receiverASubscribed = nextJson(receiverA, (message) => message.type === "audio.subscribed");
+    const receiverBSubscribed = nextJson(receiverB, (message) => message.type === "audio.subscribed");
+    receiverA.send(JSON.stringify({ type: "audio.subscribe" }));
+    receiverB.send(JSON.stringify({ type: "audio.subscribe" }));
+    await Promise.all([receiverASubscribed, receiverBSubscribed]);
+
+    const streamA = nextJson(receiverA, (message) => message.type === "audio.stream");
+    const streamB = nextJson(receiverB, (message) => message.type === "audio.stream");
+    const started = await startPublisher(publisher);
+    assert.equal((await streamA).generation, started.generation);
+    assert.equal((await streamB).generation, started.generation);
+
+    const firstA = nextBinary(receiverA);
+    const firstB = nextBinary(receiverB);
+    const firstFrame = makeFrame(started.generation, 0, Buffer.from([0xf8, 0x11, 0x21, 0x31]));
+    publisher.send(firstFrame);
+    assert.deepEqual(await firstA, firstFrame);
+    assert.deepEqual(await firstB, firstFrame);
+
+    const unsubscribed = nextJson(receiverA, (message) => message.type === "audio.unsubscribed");
+    receiverA.send(JSON.stringify({ type: "audio.unsubscribe" }));
+    await unsubscribed;
+
+    const secondB = nextBinary(receiverB);
+    const secondFrame = makeFrame(started.generation, 1, Buffer.from([0xf8, 0x12, 0x22, 0x32]));
+    publisher.send(secondFrame);
+    assert.deepEqual(await secondB, secondFrame);
+    await expectNoBinary(receiverA);
+
+    const reSubscribed = nextJson(receiverA, (message) => message.type === "audio.subscribed");
+    const currentStream = nextJson(receiverA, (message) => message.type === "audio.stream");
+    receiverA.send(JSON.stringify({ type: "audio.subscribe" }));
+    await reSubscribed;
+    assert.equal((await currentStream).generation, started.generation);
+
+    const thirdA = nextBinary(receiverA);
+    const thirdB = nextBinary(receiverB);
+    const thirdFrame = makeFrame(started.generation, 2, Buffer.from([0xf8, 0x13, 0x23, 0x33]));
+    publisher.send(thirdFrame);
+    assert.deepEqual(await thirdA, thirdFrame);
+    assert.deepEqual(await thirdB, thirdFrame);
+  } finally {
+    publisher.close();
+    receiverA.close();
+    receiverB.close();
+  }
+});

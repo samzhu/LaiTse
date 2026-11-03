@@ -1,0 +1,9 @@
+# T04窄範圍檢視
+
+主代理在Luna明確停止writer後接手。先讀回計數語意、下載機制與同一server generation的雙接收流程；下載為實際Blob檔案，不從測試偽造報告。
+
+實際瀏覽器跑前發現並修正兩處smoke變數名稱：receiver A退訂觀測的欄位需明確引用receiverABinaryAtBUnsubscribeAck；最後receiver B斷言改引用已有的退訂ACK時binary計數，移除未定義名稱。node --check只查語法，不會證明這些名稱存在，因此保留實際流程驗測。
+
+數字界線已檢視：頁面累計/收聽期間/世代內缺口各有scope；首個接受packet之前的歷史不算gap；bufferMs只是瞬間queue估計；endToEndLatencyMs為null，真人/實體裝置未收集。不新增codec、server服務或worklet品質承諾。
+
+最終build/typecheck、14核心整合、三Firefox合成雙接收流程與實際下載均通過；兩端觀測數字與buffer公式吻合，端到端延遲null與scope保留。已讀回原始JSON／來源指紋並實際查看截圖。沒有剩餘阻擋本輪桌面核心範圍的問題，真實裝置／品質未測仍需另外補證據。

@@ -76,3 +76,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 契約：已加入socket明確audio.subscribe/unsubscribe、audio.start取得server generation、audio.stop釋出；24-byte LTA1 header（generation/seq/timestamp/duration）加至多4KiB raw Opus，只送顯式訂閱者、不回送publisher、不儲存媒體。單房單publisher不是正式Room/Session授權。接收PCM queue24,000sample（500ms）、送／收WS64KiB界線未做弱網品質驗證。
 - 清理／錯誤：拒絕、裝置缺少、codec與安全內容不符有可見訊息；stop釋放tracks、encoder及播放資源，generation/epoch丟棄舊資料。首輪denied的resume Promise清理錯誤已修正，反例保留，受影響瀏覽器重跑成功。
 - SOL-008：render sample/RMS來自worklet實際輸出，不是實體喇叭／人耳或端到端延遲。來源與模擬allow/deny設定均記錄，不錄真實聲音、不略過TLS／改系統信任；MVP前仍需權限、多房、重連、codec協商／時鐘／品質，整理POC計數與測試profile，不能整包當MVP。
+
+## T04／POC-01-R002：SOL-002、SOL-008（2026-11-03）
+
+- SOL-002：沿用原生Opus，不變更server/worklet或增加依賴。一publisher→兩個真實桌面Firefox接收程序的合成流實際解碼/render可行；B晚加入／退訂／再訂閱，A持續render，publisher stop兩端無新packet。這不是實體手機、真mic、人耳或跨裝置品質；完整POC-01仍未通過。版本及原始證據見[R002](evidence/POC-01-R002/README.md)。
+- SOL-008：AudioController.getObservation()與AudioPanel下載按鈕可供各端保存schema1 JSON，含fixed codec、有限UA/platform、世代、計數、buffer估計與未知。publisher計數是controller lifetime；receiver累計跨listening session內世代；seq缺口屬packetGapGeneration且不算首包前歷史；buffer與RMS是最新本地worklet觀測。所有scope寫進JSON，generation非持久run/session ID。
+- 新回歸：scripts/t04-smoke.mjs（3獨立Firefox、正常CA、全部fake media、真下載檔、訂閱ACK／視窗計數與panel screenshot）；tests/audio.integration.test.mjs新增兩訂閱者相同bytes／隔離退訂／再訂閱目前generation案例。14核心整合及一次瀏覽器示範通過；沒有為湊次數重跑。
+- 不可擴張：receiverBufferMs不是E2E延遲，packetGapCount不是實際擷取/編解碼/喇叭中斷，render RMS不是人耳聽見；endToEndLatencyMs仍null，來源/實體裝置/人耳由一般應用不自判。手機/真人／品質留待補測，原長測/p95僅依DEC-010作日後品質參考。
+- MVP前：此本地JSON是診斷工具，不是產品統計／耐久記錄或跨程序身份；仍需正式Room/Session/授權、多房、重連與品質決策，不能整包視為可採用。實際使用與未驗範圍均保留，測試profile／CA不進產品。

@@ -33,3 +33,4 @@
 | POC-SMOKE／DEC-010 | 輕量測試方法及核心操作示範 | POC-PLAN v1.1；R003證據／execution-log | 已保存讀回，Chrome雙頁核心可行；重整需手動加入 | 依實作進度測後續核心，不做完整QA或部署 |
 | T02-IMPLEMENT／T02-ACCEPT | 手機能力與可信HTTPS的程式／桌面部分 | src/client/capabilities.ts、server觀測、TLS工具／README；R004矩陣與截圖 | 桌面核心可行，11整合／Firefox可信HTTPS／Chrome操作通過；手機依人類選擇待測 | 完整T02／POC-00待實機，不啟動T03或部署 |
 | T03-IMPLEMENT／T03-ACCEPT | 語音最小閉環程式／合成自動驗測 | audio controller/relay/worklets、README；POC-01-R001 | 合成Opus管線、stop、模擬denied、13核心案例通過；真人稍後 | 完整T03/POC-01待真mic／人耳，不啟動T04 |
+| T04-IMPLEMENT／T04-ACCEPT | 桌面雙接收核心與音訊觀測下載 | AudioController/Panel、t04-smoke、README；POC-01-R002 | 14核心／三Firefox合成晚加入/退訂/再加入/stop與真JSON下載通過 | 手機/真人/E2E品質未測，完整T04待補，不啟動T05 |

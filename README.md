@@ -121,6 +121,16 @@ For a scripted synthetic desktop run, keep the trusted HTTPS/WSS server running 
 
 For a real human listening demonstration, run the ordinary browser steps above with a user-controlled microphone and another participant's speakers/headphones. Headphones help avoid feedback when both pages are on the same computer. This has not been performed by the synthetic smoke. Mobile browsers, cross-device quality, weak networks, long runs, end-to-end latency, and deployment remain outside this T03 check.
 
+## T04 desktop dual-receiver observation
+
+Keep the same trusted HTTPS/WSS server running and run `node scripts/t04-smoke.mjs` with Node 26.13.0 and `certutil` on `PATH`. It opens three independent Firefox processes: one synthetic publisher and two desktop receivers. Receiver A starts first; receiver B joins the active stream later, unsubscribes while A continues, then subscribes again. The script checks that both receivers decode and render non-silent samples, waits for the actual unsubscribe and stream-ended server acknowledgements, downloads each receiver's observation JSON, and saves a focused audio-panel screenshot under ignored `.scratch/t04/desktop-smoke/`. Every Firefox profile uses `media.navigator.streams.fake=true`; only the isolated publisher profile simulates microphone permission. No hardware microphone, real recording, certificate-ignore flag, or system trust change is used.
+
+For a manual desktop walkthrough, open three pages on the same trusted local HTTPS URL and join the same room. On both receiver pages click **開始收聽**; on the speaker page click **開始麥克風**. Once both receivers show playback samples and nonzero RMS, click **下載音訊觀測** on each receiver. The existing [LAN certificate and phone setup steps](#t02-browser-capability-check-and-phone-setup) apply when a real device check is scheduled; the T04 smoke itself remains desktop-only.
+
+Each downloaded JSON includes fixed Opus settings, bounded browser user-agent/platform strings, secure-context status, current publisher/receiver generations, and controller counters. Sent packets accumulate for the page lifetime; receive/decode/render counters accumulate for the listening session across stream generations. Packet gaps are counted only between accepted consecutive sequence numbers after the first accepted packet of the observed generation. Gaps are not audible-interruption measurements. `receiverBufferMs` is the instantaneous queued-sample estimate and is not end-to-end latency; the report keeps `endToEndLatencyMs` null and marks human listening and physical-device evidence as not collected. The page cannot determine whether a publisher source was synthetic or a real microphone.
+
+This is a short synthetic desktop core demonstration under DEC-010. Physical phones, real microphones, human listening, cross-device quality and end-to-end latency remain untested. The original 20-minute/two-run/p95 targets were not executed; they remain references for later quality work rather than hard gates for this light demonstration.
+
 ## Data classification and limitations
 
 - **Fixed, versioned setup:** the one-room catalogue and its display name are source constants in `src/server/app.ts`; a build from the same source reconstructs them.
@@ -144,4 +154,6 @@ The focused integration suite exercises the API and real WebSocket connections f
 
 [POC-00-R001](docs/poc/evidence/POC-00-R001/README.md) preserves the original Firefox launch failure. R002 records the final two-browser acceptance with private application-data directories; the authoritative status and remaining stage requirements are in [the execution log](docs/poc/execution-log.md). On macOS an automation sandbox may prevent Firefox from launching; run the test from a normal local terminal. Do not substitute certificate-ignore flags. Runtime dependencies remain stable releases; the diagnostic prerelease browser was rejected and is unused.
 
-[T03 POC-01-R001](docs/poc/evidence/POC-01-R001/README.md) records synthetic Opus encode/relay/decode/render, simulated denial, stop, and the first-run cleanup failure and correction. Real microphone and human listening remain pending. `npm run test:integration` retains the original T01 subset; `node --test tests/*.test.mjs` covers all current T01–T03 core integration cases.
+[T03 POC-01-R001](docs/poc/evidence/POC-01-R001/README.md) records synthetic Opus encode/relay/decode/render, simulated denial, stop, and the first-run cleanup failure and correction. Real microphone and human listening remain pending. `npm run test:integration` retains the original T01 subset; `node --test tests/*.test.mjs` covers all current T01–T04 core integration cases.
+
+[T04 POC-01-R002](docs/poc/evidence/POC-01-R002/README.md) records actual dual-receiver synthetic playback, late join, isolated unsubscribe/re-subscribe, stop, and downloaded observations. Physical phone and human-listening evidence remain pending.

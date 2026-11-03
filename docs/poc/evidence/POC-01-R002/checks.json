@@ -1,0 +1,47 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T08:05:57.864346+00:00",
+    "finishedAt": "2026-11-03T08:05:58.754700+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/server.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/audio.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T08:05:58.754882+00:00",
+    "finishedAt": "2026-11-03T08:05:59.401414+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t04-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T08:05:59.401739+00:00",
+    "finishedAt": "2026-11-03T08:05:59.444153+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "dual-receiver-smoke",
+    "command": [
+      "node",
+      "scripts/t04-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T08:05:59.569130+00:00",
+    "finishedAt": "2026-11-03T08:06:08.133027+00:00",
+    "exitCode": 0
+  }
+]

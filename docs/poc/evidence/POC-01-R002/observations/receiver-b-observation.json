@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-03T08:06:06.527Z",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+    "platform": "MacIntel",
+    "secureContext": true
+  },
+  "audioConfiguration": {
+    "codec": "opus",
+    "sampleRateHz": 48000,
+    "channels": 1,
+    "bitrateBps": 32000,
+    "frameDurationMs": 20
+  },
+  "publisher": {
+    "state": "idle",
+    "streamGeneration": null,
+    "sentPackets": 0,
+    "counterScope": "sentPackets accumulates for this controller page lifetime across publisher generations."
+  },
+  "receiver": {
+    "state": "ready",
+    "streamGeneration": 1,
+    "receivedPackets": 14,
+    "decodedFrames": 14,
+    "renderedSamples": 4352,
+    "queuedSamples": 5248,
+    "sampleRateHz": 48000,
+    "receiverBufferMs": 109.33,
+    "packetGapCount": 0,
+    "packetGapGeneration": 1,
+    "renderRms": 0.05310027042640489,
+    "queueOverflowResets": 0,
+    "counterScope": {
+      "receiveDecodeRender": "receivedPackets, decodedFrames, renderedSamples, and queueOverflowResets accumulate during this listening session across stream generations.",
+      "packetGaps": "packetGapCount is scoped to packetGapGeneration; it counts only missing sequence values between accepted consecutive packets after that generation's first accepted packet.",
+      "queue": "queuedSamples, renderRms, and receiverBufferMs are the latest playback worklet observation; receiverBufferMs is an instantaneous queuedSamples / 48000 Hz estimate."
+    }
+  },
+  "evidence": {
+    "endToEndLatencyMs": null,
+    "humanListening": "not-collected",
+    "physicalDeviceEvidence": "not-collected",
+    "publisherSource": "not-established-by-application",
+    "notes": [
+      "播放計數與 RMS 是此瀏覽器解碼／AudioWorklet 輸出管線的樣本觀測，不代表音訊硬體已輸出或真人已聽見。",
+      "接收緩衝是 queuedSamples ÷ 48000 Hz 的本機佇列估計，不是端到端延遲。",
+      "封包序號缺口只計算第一個已接受封包之後，相鄰已接受封包間缺少的序號；晚加入前的歷史不計入。",
+      "封包序號缺口不代表音訊掉音或真人可聽見的中斷；送出計數是此頁存續期間累計，接收／解碼／渲染計數則跨此 listening session 的 stream generations 累計。",
+      "streamGeneration 只在目前 server process 內有意義；報告沒有持久的 run 或 session ID。",
+      "本頁無法判定發布來源是瀏覽器合成音源或真人麥克風。"
+    ]
+  }
+}

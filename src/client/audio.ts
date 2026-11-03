@@ -115,6 +115,55 @@ export type AudioSnapshot = {
   queueOverflowResets: number;
 };
 
+export type AudioObservation = {
+  schemaVersion: 1;
+  observedAt: string;
+  environment: {
+    userAgent: string;
+    platform: string;
+    secureContext: boolean;
+  };
+  audioConfiguration: {
+    codec: "opus";
+    sampleRateHz: number;
+    channels: number;
+    bitrateBps: number;
+    frameDurationMs: number;
+  };
+  publisher: {
+    state: PublisherState;
+    streamGeneration: number | null;
+    sentPackets: number;
+    counterScope: string;
+  };
+  receiver: {
+    state: ListenerState;
+    streamGeneration: number | null;
+    receivedPackets: number;
+    decodedFrames: number;
+    renderedSamples: number;
+    queuedSamples: number;
+    sampleRateHz: number;
+    receiverBufferMs: number;
+    packetGapCount: number;
+    packetGapGeneration: number | null;
+    renderRms: number;
+    queueOverflowResets: number;
+    counterScope: {
+      receiveDecodeRender: string;
+      packetGaps: string;
+      queue: string;
+    };
+  };
+  evidence: {
+    endToEndLatencyMs: null;
+    humanListening: "not-collected";
+    physicalDeviceEvidence: "not-collected";
+    publisherSource: "not-established-by-application";
+    notes: string[];
+  };
+};
+
 type CaptureAttempt = {
   token: number;
   context: AudioContext;
@@ -212,6 +261,8 @@ export class AudioController {
   private publishSequence = 0;
   private streamGeneration: number | null = null;
   private lastReceivedSequence = -1;
+  private packetGapCount = 0;
+  private packetGapGeneration: number | null = null;
   private decoder: AudioDecoderLike | null = null;
   private decoderEpoch = 0;
   private decoderRequestId = 0;
@@ -228,6 +279,65 @@ export class AudioController {
 
   snapshot(): AudioSnapshot {
     return { ...this.state };
+  }
+
+  getObservation(): AudioObservation {
+    const state = this.snapshot();
+    return {
+      schemaVersion: 1,
+      observedAt: new Date().toISOString(),
+      environment: {
+        userAgent: navigator.userAgent.slice(0, 256),
+        platform: navigator.platform.slice(0, 100),
+        secureContext: window.isSecureContext,
+      },
+      audioConfiguration: {
+        codec: "opus",
+        sampleRateHz: AUDIO_SAMPLE_RATE,
+        channels: AUDIO_CHANNELS,
+        bitrateBps: AUDIO_BITRATE,
+        frameDurationMs: AUDIO_FRAME_DURATION_US / 1_000,
+      },
+      publisher: {
+        state: state.publisherState,
+        streamGeneration: this.publishGeneration,
+        sentPackets: state.sentPackets,
+        counterScope: "sentPackets accumulates for this controller page lifetime across publisher generations.",
+      },
+      receiver: {
+        state: state.listenerState,
+        streamGeneration: this.streamGeneration,
+        receivedPackets: state.receivedPackets,
+        decodedFrames: state.decodedFrames,
+        renderedSamples: state.renderedSamples,
+        queuedSamples: state.queuedSamples,
+        sampleRateHz: AUDIO_SAMPLE_RATE,
+        receiverBufferMs: Number((state.queuedSamples / AUDIO_SAMPLE_RATE * 1_000).toFixed(2)),
+        packetGapCount: this.packetGapCount,
+        packetGapGeneration: this.packetGapGeneration,
+        renderRms: state.renderRms,
+        queueOverflowResets: state.queueOverflowResets,
+        counterScope: {
+          receiveDecodeRender: "receivedPackets, decodedFrames, renderedSamples, and queueOverflowResets accumulate during this listening session across stream generations.",
+          packetGaps: "packetGapCount is scoped to packetGapGeneration; it counts only missing sequence values between accepted consecutive packets after that generation's first accepted packet.",
+          queue: "queuedSamples, renderRms, and receiverBufferMs are the latest playback worklet observation; receiverBufferMs is an instantaneous queuedSamples / 48000 Hz estimate.",
+        },
+      },
+      evidence: {
+        endToEndLatencyMs: null,
+        humanListening: "not-collected",
+        physicalDeviceEvidence: "not-collected",
+        publisherSource: "not-established-by-application",
+        notes: [
+          "播放計數與 RMS 是此瀏覽器解碼／AudioWorklet 輸出管線的樣本觀測，不代表音訊硬體已輸出或真人已聽見。",
+          "接收緩衝是 queuedSamples ÷ 48000 Hz 的本機佇列估計，不是端到端延遲。",
+          "封包序號缺口只計算第一個已接受封包之後，相鄰已接受封包間缺少的序號；晚加入前的歷史不計入。",
+          "封包序號缺口不代表音訊掉音或真人可聽見的中斷；送出計數是此頁存續期間累計，接收／解碼／渲染計數則跨此 listening session 的 stream generations 累計。",
+          "streamGeneration 只在目前 server process 內有意義；報告沒有持久的 run 或 session ID。",
+          "本頁無法判定發布來源是瀏覽器合成音源或真人麥克風。",
+        ],
+      },
+    };
   }
 
   startListening(): void {
@@ -321,6 +431,8 @@ export class AudioController {
       renderRms: 0,
       queueOverflowResets: 0,
     });
+    this.packetGapCount = 0;
+    this.packetGapGeneration = null;
   }
 
   startMicrophone(): void {
@@ -650,6 +762,9 @@ export class AudioController {
     try {
       const chunk = new Chunk({ type: "key", timestamp: frame.timestampUs, duration: frame.durationUs, data: frame.packet });
       this.decoder.decode(chunk);
+      if (this.lastReceivedSequence >= 0 && frame.sequence > this.lastReceivedSequence + 1) {
+        this.packetGapCount += frame.sequence - this.lastReceivedSequence - 1;
+      }
       this.lastReceivedSequence = frame.sequence;
       this.set({ receivedPackets: this.state.receivedPackets + 1 });
     } catch (error) {
@@ -676,6 +791,8 @@ export class AudioController {
         this.listenerContext?.state !== "running"
       ) return;
       this.stopDecoder();
+      this.packetGapCount = 0;
+      this.packetGapGeneration = generation;
       const epoch = this.decoderEpoch;
       const decoder = new Decoder({
         output: (audioData) => { void this.handleDecodedAudio(epoch, audioData); },

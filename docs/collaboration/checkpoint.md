@@ -1,6 +1,6 @@
 # 工作階段 checkpoint
 
-**狀態：T03／#4程式與合成音源驗測完成、真人收聽稍後；2026-11-03。**
+**狀態：T04／#5桌面雙接收與觀測完成、真實裝置品質待補；2026-11-03。**
 
 - 人類原話「開始」並指定implement；按當時唯一無阻擋前沿執行T01。Luna xhigh實作，主代理思考、獨立檢視、最終完整檢查及紀錄；未切到其他票或MVP。
 - 產物：Node26.13.0／React/Vite／Fastify單一應用，production頁面／API／WSS，真實房間成員／有界合成控制，README、鎖版、TLS與瀏覽器腳本、版本授權inventory。
@@ -39,3 +39,15 @@
 人類指定T03、輕量、程式+紀錄commit，並選真人收聽稍後。本輪程式與合成自動驗測完成：兩個獨立Firefox透過可信HTTPS/WSS完成Opus管線至非靜音worklet輸出，第三個synthetic-only profile測denied。所有mic-attempt profile streams.fake=true，無硬體mic／環境錄音或TLS略過。
 
 build/typecheck、13新舊核心整合、smoke及worklet語法通過；快照接收11、解碼11、render4,736、RMS約0.0458，stop後無新增packet，denied不廣播，最終零page/socket error。首輪resume Promise清理失敗已窄修並重跑受影響browser，反例保留。JSON／source指紋及播放／拒絕PNG已讀回及實際查看，SOL-002／008、README用法同步。真mic／人耳／autoplay受阻／E2E延遲／手機／長測未驗，完整POC-01仍Inconclusive；T04未啟動。writer已交接，兩輪server與Firefoxfinally停止，無GitHub／部署／新依賴。按指示本機commit不push；原AGENTS/.agents/.scratch內容保留，.scratch/t03工具／profile不提交。
+
+## T04開工
+
+2026-11-03：人類明確指定T04（#5跨裝置音訊品質基線）、輕量、最後程式+紀錄一起commit。先前手機與真人稍後安排維持；這輪先桌面三Firefox合成一講者雙接收及可下載觀測，不宣稱真跨裝置品質或E2E延遲。原票已讀回，T02/03工程部分可延續，未測前置結果不改寫。R002已配發，root持有docs/Git、Luna xhigh持有派定程式；T05未啟動。
+
+## T04本輪交付／POC-01-R002
+
+人類指定T04、輕量、程式與紀錄一起commit；先前手機/真mic/真人稍後安排維持。本輪一講者兩個桌面Firefox接收的合成管線與可下載觀測完成，並非原票實體手機/真跨裝置品質通過。A先收、B晚加入／退訂／再訂閱，A持續非靜音render，publisher stop兩端計數穩定；三端零page/socket error。
+
+build/typecheck、14核心整合、script syntax與一次三Firefox可信HTTPS/WSS示範通過；root在跑前修正smoke兩處變數名稱。真下載原JSON：A64/64 packet/frame、render50,560/RMS約0.0710；B14/14、render4,352/RMS約0.0531。buffer106.67/109.33ms僅本地queue估計，seq gap0不是無掉音；E2E null，人耳/physical device不收集，來源由測試profile明列fake。沒有20分/湊兩次或p95結論，完整T04/POC-01仍Inconclusive。
+
+docs/poc/evidence/POC-01-R002含實際下載、各phase/ACK/transport/起迄與source hash，JSON已讀回、panel圖已實際看，README與SOL-002/008同步。沒有改server/worklet／manifest/lock或新增依賴，手機T02與真人T03保持待測。代理writer已釋出，server與三Firefoxfinally停止；最後本機commit、不push/寫GitHub/T05/部署；原AGENTS/.agents/.scratch保留，.scratch/t04已ignore。

@@ -126,11 +126,14 @@ button, input { font: inherit; }
 .audio-state.is-error { color: #a34f43; }
 .audio-control-group .primary-button, .audio-control-group .quiet-button { width: fit-content; min-height: 35px; }
 .audio-button-row { display: flex; flex-wrap: wrap; gap: 7px; }
-.audio-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-top: 13px; }
+.audio-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 13px; }
 .audio-stats span { display: flex; flex-direction: column; gap: 5px; min-width: 0; border: 1px solid #eceee8; border-radius: 8px; padding: 9px; background: #fafbf8; }
 .audio-stats strong { color: #858c86; font-size: 8px; font-weight: 600; }
 .audio-stats output { color: #48554b; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-variant-numeric: tabular-nums; }
 .audio-limit-note { margin: 11px 0 0; border-left: 2px solid #e3b292; padding-left: 10px; color: #858a84; font-size: 9px; line-height: 1.55; }
+.audio-observation-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 11px; }
+.audio-observation-actions .quiet-button { min-height: 34px; }
+.audio-observation-actions span { color: #858a84; font-size: 9px; line-height: 1.5; }
 .footer-note { display: flex; justify-content: space-between; gap: 15px; margin: 22px 2px 32px; color: #929892; font-size: 9px; }
 .footer-note span:first-child { color: #727a74; font-weight: 650; }
 

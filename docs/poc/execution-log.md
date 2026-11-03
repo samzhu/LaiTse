@@ -9,7 +9,7 @@
 | 階段 | 執行狀態 | 結果 | Run／證據 | 下一步 |
 |---|---|---|---|---|
 | POC-00 | 執行中 | Inconclusive | R002 T01 Pass；[R004 T02桌面可行](evidence/POC-00-R004/README.md) | 實體手機可信HTTPS／能力矩陣稍後測 |
-| POC-01 | 執行中 | Inconclusive | [R001合成音源管線Pass](evidence/POC-01-R001/README.md) | 真人試說／收聽待補，手機與多接收端未驗 |
+| POC-01 | 執行中 | Inconclusive | R001單接收、[R002桌面雙接收可行](evidence/POC-01-R002/README.md) | 真mic／人耳／手機與跨裝置品質待補 |
 | POC-02 | 尚未執行 | 未判定 | 無 | 依 POC-01 證據加入畫面 |
 | POC-03 | 尚未執行 | 未判定 | 無 | 驗證空間／房間／權限 |
 | POC-04 | 尚未執行 | 未判定 | 無 | 驗證恢復與弱網 |
@@ -117,3 +117,15 @@ Mozilla [Bug2069536](https://bugzilla.mozilla.org/show_bug.cgi?id=2069536)描述
 成功快照為接收11packet、解碼11frame、render4,736sample、RMS約0.0458；stop後streamEnded、publisher idle，250ms無新增packet。模擬denied不廣播。這是短核心示範，不是品質／穩定性／容量數據；E2E延遲未量測，原報告null，queue只是接收端緩衝。
 
 首輪已render但denied清理時產生未觀察的resume Promise pageerror，原失敗保留；主代理窄修即時觀察reject後重建／重跑受影響瀏覽器，三端page/socket errors皆空。13個server核心案例已通過且不受此client窄修影響，未重跑無關全量檢查。精確起迄／來源／版本／兩輪原始結果見[R001](evidence/POC-01-R001/README.md)。已實際查看兩張播放／拒絕截圖、JSON與source指紋讀回一致；public worklets與build一致。README／SOL-002／008已同步；真mic、人耳、原生權限互動／autoplay受阻、手機、弱網、長測／雲端未驗。server與Firefox皆finally停止，不啟動T04或寫GitHub；程式與紀錄一起本機commit，不push。
+
+## POC-01-R002／T04雙接收觀測（配發）
+
+2026-11-03（Asia/Taipei）；主代理思考/驗收，Luna xhigh實作。執行中／Inconclusive，待實際結果。假設：沿用T03原生Opus，同一個本機應用可向兩個真實桌面Firefox接收程序轉送合成音源並實際渲染，單端晚加入/退訂不影響另一端，可下載各頁觀測。依DEC-010只做短核心示範；手機、真人、真mic與E2E延遲未測，不以buffer當p95，不宣告完整T04/POC-01通過。
+
+### POC-01-R002實際結果／T04本輪交付
+
+2026-11-03：本輪桌面程式／合成自動驗測完成，**雙接收核心Pass，真跨裝置品質／完整T04及POC-01仍Inconclusive**。同一本機HTTPS/WSS服務、三個獨立Firefox157程序（一publisher、兩receiver），全部profile streams.fake=true，不選真mic、不錄環境音。A先收聽、B晚加入同generation並實際render；B退訂ACK後400ms binary18→18，A仍binary70→91、render60,160→79,360；B再訂閱恢復非靜音，publisher stop後兩端計數穩定。
+
+兩端透過真正的下載按鈕取得JSON：A快照received/decoded64/64、render50,560、RMS約0.0710，B14/14、render4,352、RMS約0.0531。buffer106.67/109.33ms只是接收queue估計，不是E2E；seq gap0不是沒有掉音證明。E2E延遲null、human/physical device未收集，合成來源由測試profile另記錄。這是一次短run，未做20分/兩次獨立run/p95；依DEC-010不將其作本輪硬門檻，原票手機與品質證據仍未具備。
+
+build/typecheck、14個新舊核心整合、script syntax及三Firefox流程皆exit0；root在執行前修正兩處smoke未定義變數，沒有runtime失敗後偽裝成功。[R002證據](evidence/POC-01-R002/README.md)含精確起迄、scope、下載原檔、快照與原始傳輸。JSON/來源hash讀回，實際查看panel PNG；README、SOL-002/008與協作文件已同步。無新依賴或server/worklet變更；服務與三browserfinally停止，不寫GitHub、不做T05/部署，程式+紀錄一起本機commit不push。

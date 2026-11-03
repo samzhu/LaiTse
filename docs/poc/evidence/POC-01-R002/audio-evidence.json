@@ -1,0 +1,708 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short desktop synthetic-source core demonstration for T04; not the original cross-device quality acceptance run.",
+  "startedAt": "2026-11-03T08:05:59.756Z",
+  "status": "complete",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "mediaSource": {
+    "kind": "Firefox synthetic fake media stream",
+    "preference": "media.navigator.streams.fake=true in every Firefox profile",
+    "realMicrophoneSelected": false,
+    "realAudioRecorded": false,
+    "sourceIdentifiedByApplication": false
+  },
+  "permissionAutomation": {
+    "publisherProfile": "permissions.default.microphone=1 (profile-scoped simulated allow)",
+    "realDevicePermissionPromptUsed": false
+  },
+  "clients": {
+    "publisher": {
+      "browser": "Firefox",
+      "version": "157.0",
+      "role": "synthetic-source publisher"
+    },
+    "receiverA": {
+      "browser": "Firefox",
+      "version": "157.0",
+      "role": "early desktop receiver"
+    },
+    "receiverB": {
+      "browser": "Firefox",
+      "version": "157.0",
+      "role": "late-joining desktop receiver"
+    }
+  },
+  "snapshots": [
+    {
+      "phase": "receiver A rendering before late receiver joins",
+      "capturedAt": "2026-11-03T08:06:05.377Z",
+      "clients": {
+        "receiverA": {
+          "capturedAt": "2026-11-03T08:06:05.371Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 8,
+          "decodedFrames": 8,
+          "renderedSamples": 2560,
+          "queuedSamples": 5120,
+          "receiverBufferMs": 106.67,
+          "packetGapCount": 0,
+          "renderRms": 0.00048497930651826576,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        },
+        "publisher": {
+          "capturedAt": "2026-11-03T08:06:05.377Z",
+          "listenerState": "off",
+          "publisherState": "broadcasting",
+          "publisherGeneration": "1",
+          "receiverGeneration": null,
+          "sentPackets": 9,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "尚未收聽。接收者先按「開始收聽」啟動播放。"
+        }
+      }
+    },
+    {
+      "phase": "publisher and both receivers rendering",
+      "capturedAt": "2026-11-03T08:06:06.459Z",
+      "clients": {
+        "publisher": {
+          "capturedAt": "2026-11-03T08:06:06.459Z",
+          "listenerState": "off",
+          "publisherState": "broadcasting",
+          "publisherGeneration": "1",
+          "receiverGeneration": null,
+          "sentPackets": 63,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "尚未收聽。接收者先按「開始收聽」啟動播放。"
+        },
+        "receiverA": {
+          "capturedAt": "2026-11-03T08:06:06.264Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 53,
+          "decodedFrames": 53,
+          "renderedSamples": 40960,
+          "queuedSamples": 5120,
+          "receiverBufferMs": 106.67,
+          "packetGapCount": 0,
+          "renderRms": 0.07092911716023825,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        },
+        "receiverB": {
+          "capturedAt": "2026-11-03T08:06:06.454Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 10,
+          "decodedFrames": 10,
+          "renderedSamples": 4352,
+          "queuedSamples": 5248,
+          "receiverBufferMs": 109.33,
+          "packetGapCount": 0,
+          "renderRms": 0.05310027042640489,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        }
+      }
+    },
+    {
+      "phase": "receiver B unsubscribed while receiver A continues",
+      "capturedAt": "2026-11-03T08:06:07.038Z",
+      "clients": {
+        "publisher": {
+          "capturedAt": "2026-11-03T08:06:07.032Z",
+          "listenerState": "off",
+          "publisherState": "broadcasting",
+          "publisherGeneration": "1",
+          "receiverGeneration": null,
+          "sentPackets": 91,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "尚未收聽。接收者先按「開始收聽」啟動播放。"
+        },
+        "receiverA": {
+          "capturedAt": "2026-11-03T08:06:07.026Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 91,
+          "decodedFrames": 91,
+          "renderedSamples": 79360,
+          "queuedSamples": 5120,
+          "receiverBufferMs": 106.67,
+          "packetGapCount": 0,
+          "renderRms": 0.07083722738552127,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        },
+        "receiverB": {
+          "capturedAt": "2026-11-03T08:06:07.037Z",
+          "listenerState": "off",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": null,
+          "sentPackets": 0,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已停止收聽。再次開始時，需要重新按播放手勢。"
+        }
+      }
+    },
+    {
+      "phase": "receiver B re-subscribed and rendered fresh audio",
+      "capturedAt": "2026-11-03T08:06:07.328Z",
+      "clients": {
+        "publisher": {
+          "capturedAt": "2026-11-03T08:06:07.324Z",
+          "listenerState": "off",
+          "publisherState": "broadcasting",
+          "publisherGeneration": "1",
+          "receiverGeneration": null,
+          "sentPackets": 106,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "尚未收聽。接收者先按「開始收聽」啟動播放。"
+        },
+        "receiverA": {
+          "capturedAt": "2026-11-03T08:06:07.328Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 106,
+          "decodedFrames": 106,
+          "renderedSamples": 88960,
+          "queuedSamples": 5120,
+          "receiverBufferMs": 106.67,
+          "packetGapCount": 0,
+          "renderRms": 0.07069506269044272,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        },
+        "receiverB": {
+          "capturedAt": "2026-11-03T08:06:07.320Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": "1",
+          "sentPackets": 0,
+          "receivedPackets": 11,
+          "decodedFrames": 11,
+          "renderedSamples": 9152,
+          "queuedSamples": 448,
+          "receiverBufferMs": 9.33,
+          "packetGapCount": 0,
+          "renderRms": 0.06267832504283571,
+          "queueOverflowResets": 0,
+          "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。"
+        }
+      }
+    },
+    {
+      "phase": "publisher stopped; streamEnded acknowledged and packet counts stable",
+      "capturedAt": "2026-11-03T08:06:07.823Z",
+      "clients": {
+        "publisher": {
+          "capturedAt": "2026-11-03T08:06:07.815Z",
+          "listenerState": "off",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": null,
+          "sentPackets": 107,
+          "receivedPackets": 0,
+          "decodedFrames": 0,
+          "renderedSamples": 0,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "尚未收聽。接收者先按「開始收聽」啟動播放。"
+        },
+        "receiverA": {
+          "capturedAt": "2026-11-03T08:06:07.819Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": null,
+          "sentPackets": 0,
+          "receivedPackets": 107,
+          "decodedFrames": 107,
+          "renderedSamples": 97920,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "發布者已停止；播放仍保持啟動並等待下一次發布。"
+        },
+        "receiverB": {
+          "capturedAt": "2026-11-03T08:06:07.823Z",
+          "listenerState": "ready",
+          "publisherState": "idle",
+          "publisherGeneration": null,
+          "receiverGeneration": null,
+          "sentPackets": 0,
+          "receivedPackets": 12,
+          "decodedFrames": 12,
+          "renderedSamples": 10944,
+          "queuedSamples": 0,
+          "receiverBufferMs": 0,
+          "packetGapCount": 0,
+          "renderRms": 0,
+          "queueOverflowResets": 0,
+          "listenerMessage": "發布者已停止；播放仍保持啟動並等待下一次發布。"
+        }
+      }
+    }
+  ],
+  "unsubscribedReceiverCheck": {
+    "receiverBReceivedBinaryAtServerAck": 18,
+    "receiverBReceivedBinaryAfter400Ms": 18,
+    "noBinaryAfterAcknowledgement": true,
+    "receiverAReceivedBinaryAtBUnsubscribeAck": 70,
+    "receiverAReceivedBinaryAfter400Ms": 91,
+    "receiverARenderedSamplesAtBUnsubscribeAck": 60160,
+    "receiverARenderedSamplesAfter400Ms": 79360,
+    "receiverAContinuedReceiving": true,
+    "receiverAContinuedRendering": true
+  },
+  "stopCheck": {
+    "publisherState": "idle",
+    "streamEndedGeneration": 1,
+    "receiverAStableAfter400Ms": true,
+    "receiverBStableAfter400Ms": true,
+    "pageReceivedPacketCountsAtStreamEnd": {
+      "receiverA": 107,
+      "receiverB": 12
+    },
+    "pageReceivedPacketCountsAfter400Ms": {
+      "receiverA": 107,
+      "receiverB": 12
+    },
+    "socketBinaryCountsAtStreamEnd": {
+      "receiverA": 107,
+      "receiverB": 30
+    },
+    "socketBinaryCountsAfter400Ms": {
+      "receiverA": 107,
+      "receiverB": 30
+    }
+  },
+  "observations": [
+    {
+      "client": "receiver-a-observation",
+      "path": ".scratch/t04/desktop-smoke/observations/receiver-a-observation.json",
+      "observedAt": "2026-11-03T08:06:06.485Z",
+      "receiverStreamGeneration": 1,
+      "actualCounters": {
+        "receivedPackets": 64,
+        "decodedFrames": 64,
+        "renderedSamples": 50560,
+        "queuedSamples": 5120,
+        "receiverBufferMs": 106.67,
+        "packetGapCount": 0,
+        "packetGapGeneration": 1,
+        "renderRms": 0.07104810583031902
+      },
+      "source": "not-established-by-application",
+      "endToEndLatencyMs": null
+    },
+    {
+      "client": "receiver-b-observation",
+      "path": ".scratch/t04/desktop-smoke/observations/receiver-b-observation.json",
+      "observedAt": "2026-11-03T08:06:06.527Z",
+      "receiverStreamGeneration": 1,
+      "actualCounters": {
+        "receivedPackets": 14,
+        "decodedFrames": 14,
+        "renderedSamples": 4352,
+        "queuedSamples": 5248,
+        "receiverBufferMs": 109.33,
+        "packetGapCount": 0,
+        "packetGapGeneration": 1,
+        "renderRms": 0.05310027042640489
+      },
+      "source": "not-established-by-application",
+      "endToEndLatencyMs": null
+    }
+  ],
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 107,
+          "receivedTextFrames": 6,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControls": [
+        {
+          "at": "2026-11-03T08:06:04.749Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 1,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "6e883812-acae-40d2-9a05-e9ff61f11a37",
+              "displayName": "T04 synthetic speaker",
+              "at": 1793693164747
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:04.749Z",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "6e883812-acae-40d2-9a05-e9ff61f11a37",
+                "displayName": "T04 synthetic speaker"
+              }
+            ],
+            "lastSeq": 1
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:04.757Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 2,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "8c643687-54f1-4d47-9093-e2bd5469e7e5",
+              "displayName": "T04 receiver A",
+              "at": 1793693164753
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:05.189Z",
+          "message": {
+            "type": "audio.started",
+            "generation": 1,
+            "config": {
+              "codec": "opus",
+              "sampleRate": 48000,
+              "channels": 1,
+              "bitrate": 32000,
+              "frameDurationUs": 20000
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.035Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 3,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "fa531950-a9ee-4f9d-9030-3f92ffed1c35",
+              "displayName": "T04 receiver B late join",
+              "at": 1793693166034
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:07.353Z",
+          "message": {
+            "type": "audio.stopped",
+            "generation": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 2,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 6,
+          "receivedBinaryFrames": 107,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControls": [
+        {
+          "at": "2026-11-03T08:06:04.754Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 2,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "8c643687-54f1-4d47-9093-e2bd5469e7e5",
+              "displayName": "T04 receiver A",
+              "at": 1793693164753
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:04.754Z",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "6e883812-acae-40d2-9a05-e9ff61f11a37",
+                "displayName": "T04 synthetic speaker"
+              },
+              {
+                "id": "8c643687-54f1-4d47-9093-e2bd5469e7e5",
+                "displayName": "T04 receiver A"
+              }
+            ],
+            "lastSeq": 2
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:04.962Z",
+          "message": {
+            "type": "audio.subscribed"
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:05.189Z",
+          "message": {
+            "type": "audio.stream",
+            "generation": 1,
+            "config": {
+              "codec": "opus",
+              "sampleRate": 48000,
+              "channels": 1,
+              "bitrate": 32000,
+              "frameDurationUs": 20000
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.035Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 3,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "fa531950-a9ee-4f9d-9030-3f92ffed1c35",
+              "displayName": "T04 receiver B late join",
+              "at": 1793693166034
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:07.352Z",
+          "message": {
+            "type": "audio.streamEnded",
+            "generation": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 4,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 8,
+          "receivedBinaryFrames": 30,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControls": [
+        {
+          "at": "2026-11-03T08:06:06.035Z",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 3,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "fa531950-a9ee-4f9d-9030-3f92ffed1c35",
+              "displayName": "T04 receiver B late join",
+              "at": 1793693166034
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.036Z",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "6e883812-acae-40d2-9a05-e9ff61f11a37",
+                "displayName": "T04 synthetic speaker"
+              },
+              {
+                "id": "8c643687-54f1-4d47-9093-e2bd5469e7e5",
+                "displayName": "T04 receiver A"
+              },
+              {
+                "id": "fa531950-a9ee-4f9d-9030-3f92ffed1c35",
+                "displayName": "T04 receiver B late join"
+              }
+            ],
+            "lastSeq": 3
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.240Z",
+          "message": {
+            "type": "audio.subscribed"
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.240Z",
+          "message": {
+            "type": "audio.stream",
+            "generation": 1,
+            "config": {
+              "codec": "opus",
+              "sampleRate": 48000,
+              "channels": 1,
+              "bitrate": 32000,
+              "frameDurationUs": 20000
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:06.611Z",
+          "message": {
+            "type": "audio.unsubscribed"
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:07.110Z",
+          "message": {
+            "type": "audio.subscribed"
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:07.110Z",
+          "message": {
+            "type": "audio.stream",
+            "generation": 1,
+            "config": {
+              "codec": "opus",
+              "sampleRate": 48000,
+              "channels": 1,
+              "bitrate": 32000,
+              "frameDurationUs": 20000
+            }
+          }
+        },
+        {
+          "at": "2026-11-03T08:06:07.352Z",
+          "message": {
+            "type": "audio.streamEnded",
+            "generation": 1
+          }
+        }
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": []
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "humanListening": "not-collected",
+    "physicalDeviceEvidence": "not-collected",
+    "phoneBrowser": "not-tested",
+    "qualityThresholds": "not-run under DEC-010 light POC scope"
+  },
+  "screenshot": "receiver-a-audio-panel.png",
+  "finishedAt": "2026-11-03T08:06:08.125Z"
+}

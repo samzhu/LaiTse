@@ -1,0 +1,22 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (185.549667ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (168.598458ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (88.631458ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (62.66525ms)
+✔ invalid capability reports are rejected and not stored (4.067708ms)
+✔ the application serves health and a built-in room catalogue (32.915666ms)
+✔ two clients receive the same authoritative members and sequenced reaction (7.398375ms)
+✔ the websocket rejects cross-origin clients before joining (1.162541ms)
+✔ malformed or oversized control frames close without being broadcast (2.587125ms)
+✔ clients cannot select arbitrary rooms (1.241417ms)
+✔ display names longer than the server limit are rejected (1.14175ms)
+✔ control events reject client-supplied fields outside the protocol (1.228833ms)
+✔ the room has a fixed member limit (6.390166ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.080166ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 606.34675

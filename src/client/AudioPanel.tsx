@@ -37,6 +37,21 @@ export function AudioPanel({ socket }: AudioPanelProps) {
     : state.publisherState === "denied"
       ? "重新要求麥克風權限"
       : "開始麥克風";
+  const currentObservation = controllerRef.current?.getObservation();
+
+  function downloadObservation() {
+    const observation = controllerRef.current?.getObservation();
+    if (!observation) return;
+    const blob = new Blob([`${JSON.stringify(observation, null, 2)}\n`], { type: "application/json" });
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = `laitse-audio-observation-${observation.observedAt.replace(/[:.]/gu, "-")}.json`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+  }
 
   return (
     <section
@@ -52,10 +67,14 @@ export function AudioPanel({ socket }: AudioPanelProps) {
       data-queued-samples={state.queuedSamples}
       data-render-rms={state.renderRms}
       data-queue-overflow-resets={state.queueOverflowResets}
+      data-publisher-generation={currentObservation?.publisher.streamGeneration ?? ""}
+      data-receiver-generation={currentObservation?.receiver.streamGeneration ?? ""}
+      data-packet-gap-count={currentObservation?.receiver.packetGapCount ?? 0}
+      data-receiver-buffer-ms={currentObservation?.receiver.receiverBufferMs ?? 0}
     >
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">T03 · LOCAL AUDIO POC</p>
+          <p className="eyebrow">T04 · AUDIO OBSERVATION</p>
           <h2 id="audio-title">即時語音</h2>
         </div>
         <span className="audio-profile">Opus · mono · 48 kHz</span>
@@ -109,9 +128,15 @@ export function AudioPanel({ socket }: AudioPanelProps) {
         <span><strong>解碼影格</strong><output data-testid="audio-decoded-frames">{state.decodedFrames}</output></span>
         <span><strong>播放樣本</strong><output data-testid="audio-rendered-samples">{state.renderedSamples}</output></span>
         <span><strong>播放佇列</strong><output data-testid="audio-queued-samples">{state.queuedSamples}</output></span>
+        <span><strong>接收緩衝（非端到端延遲）</strong><output data-testid="audio-receiver-buffer-ms">{currentObservation?.receiver.receiverBufferMs.toFixed(2) ?? "0.00"} ms</output></span>
+        <span><strong>封包序號缺口</strong><output data-testid="audio-packet-gap-count">{currentObservation?.receiver.packetGapCount ?? 0}</output></span>
         <span><strong>播放RMS</strong><output data-testid="audio-render-rms">{state.renderRms.toFixed(4)}</output></span>
       </div>
       <p className="audio-limit-note">播放樣本與RMS由接收端 AudioWorklet 實際輸出的PCM計算；它們不代表真人已聽見或量得端到端延遲。</p>
+      <div className="audio-observation-actions">
+        <button className="quiet-button" onClick={downloadObservation}>下載音訊觀測</button>
+        <span>報告只含此頁播放器管線計數；來源裝置與真人收聽狀態不由應用推斷。</span>
+      </div>
     </section>
   );
 }
