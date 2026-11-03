@@ -1,0 +1,19 @@
+✔ a capability report is stored against its sending socket and readable by its server ID (63.240916ms)
+✔ invalid capability reports are rejected and not stored (4.050667ms)
+✔ the application serves health and a built-in room catalogue (31.954791ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.27275ms)
+✔ the websocket rejects cross-origin clients before joining (1.719375ms)
+✔ malformed or oversized control frames close without being broadcast (3.151166ms)
+✔ clients cannot select arbitrary rooms (1.28025ms)
+✔ display names longer than the server limit are rejected (0.956125ms)
+✔ control events reject client-supplied fields outside the protocol (1.181666ms)
+✔ the room has a fixed member limit (6.262917ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.14725ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 232.300416

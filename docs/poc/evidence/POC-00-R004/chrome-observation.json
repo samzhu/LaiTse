@@ -1,0 +1,103 @@
+{
+  "observationId": "6bf77990-4298-4944-8534-89b84f6cce66",
+  "observedAtServer": "2026-11-03T07:14:36.633Z",
+  "connectionId": "462e297f-a58f-461d-8ccb-b23189f1647e",
+  "roomId": "lobby",
+  "member": {
+    "id": "d9210bc6-a383-47fd-bc47-811119852175",
+    "displayName": "T02 Chrome"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "observedAt": "2026-11-03T07:13:57.603Z",
+    "environment": {
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "platform": "MacIntel",
+      "secureContext": true
+    },
+    "apis": {
+      "getUserMedia": "present",
+      "getDisplayMedia": "present",
+      "AudioContext": "present",
+      "AudioWorklet": "present",
+      "MediaRecorder": "present",
+      "MediaSource": "present",
+      "AudioEncoder": "present",
+      "AudioDecoder": "present",
+      "VideoEncoder": "present",
+      "VideoDecoder": "present"
+    },
+    "codecProbes": {
+      "audioEncoderOpus": {
+        "status": "supported"
+      },
+      "audioEncoderAac": {
+        "status": "supported"
+      },
+      "audioDecoderOpus": {
+        "status": "supported"
+      },
+      "audioDecoderAac": {
+        "status": "supported"
+      },
+      "videoEncoderVp8": {
+        "status": "supported"
+      },
+      "videoEncoderH264": {
+        "status": "supported"
+      },
+      "videoDecoderVp8": {
+        "status": "supported"
+      },
+      "videoDecoderH264": {
+        "status": "supported"
+      }
+    },
+    "mediaRecorderTypes": {
+      "audioWebmOpus": {
+        "status": "supported"
+      },
+      "audioMp4Aac": {
+        "status": "supported"
+      },
+      "videoWebmVp8Opus": {
+        "status": "supported"
+      },
+      "videoMp4H264Aac": {
+        "status": "supported"
+      }
+    },
+    "mseTypes": {
+      "audioWebmOpus": {
+        "status": "supported"
+      },
+      "audioMp4Aac": {
+        "status": "supported"
+      },
+      "videoWebmVp8Opus": {
+        "status": "supported"
+      },
+      "videoMp4H264Aac": {
+        "status": "supported"
+      }
+    },
+    "playbackTypes": {
+      "audioWebmOpus": {
+        "status": "supported",
+        "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+      },
+      "audioMp4Aac": {
+        "status": "supported",
+        "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+      },
+      "videoWebmVp8Opus": {
+        "status": "supported",
+        "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+      },
+      "videoMp4H264Aac": {
+        "status": "supported",
+        "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+      }
+    }
+  }
+}

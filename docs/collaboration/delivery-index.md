@@ -30,3 +30,5 @@
 | POC-TICKETS-ACCEPT | 主代理live API獨立驗收 | `docs/poc/ticket-verification.json` | 19票、132AC、標籤、母子與阻擋全通過；母內容未改 | 開發／產品測試尚未執行 |
 | DEC-009 | 人類確認19票拆分及阻擋 | `docs/collaboration/decisions.md` | 原話OK已保存讀回；發布已完成 | 不代表開發開始或風險全數接受 |
 | T01-IMPLEMENT／T01-ACCEPT | #2本機單一應用與量測基線 | 程式／README、`docs/poc/execution-log.md` R001／R002 | T01已完成本機驗收：9測試、雙Firefox HTTPS/WSS；R002 Pass；目前分支本機提交，未push | 只限T01，不部署或啟動MVP |
+| POC-SMOKE／DEC-010 | 輕量測試方法及核心操作示範 | POC-PLAN v1.1；R003證據／execution-log | 已保存讀回，Chrome雙頁核心可行；重整需手動加入 | 依實作進度測後續核心，不做完整QA或部署 |
+| T02-IMPLEMENT／T02-ACCEPT | 手機能力與可信HTTPS的程式／桌面部分 | src/client/capabilities.ts、server觀測、TLS工具／README；R004矩陣與截圖 | 桌面核心可行，11整合／Firefox可信HTTPS／Chrome操作通過；手機依人類選擇待測 | 完整T02／POC-00待實機，不啟動T03或部署 |

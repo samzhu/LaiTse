@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-11-03T05:39:23.623378+00:00",
+  "commit": "66a3fca203f86957b6e06e7ef4849e498dcd5959",
+  "node": "v26.13.0",
+  "topology": "One local Node application on 127.0.0.1:4173, two new tabs of existing Chrome; user tabs untouched",
+  "transport": "HTTP/WS for this manual smoke; HTTPS/WSS not retested",
+  "responses": [
+    {
+      "route": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "body": "built frontend loaded in Chrome"
+    },
+    {
+      "route": "/api/health",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "body": "{\"status\":\"ok\",\"persistence\":\"process-memory\"}"
+    },
+    {
+      "route": "/api/rooms",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "body": "[{\"id\":\"lobby\",\"name\":\"Local test room\"}]"
+    }
+  ]
+}

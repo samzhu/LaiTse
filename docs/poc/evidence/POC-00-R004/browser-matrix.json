@@ -1,0 +1,213 @@
+{
+  "scope": "Capability probes only; no capture, encode/decode workload or playback tested",
+  "desktop": [
+    {
+      "name": "Firefox",
+      "version": "157.0",
+      "condition": "localhost HTTPS/WSS, normal TLS verification in isolated NSS profile",
+      "report": {
+        "schemaVersion": 1,
+        "observedAt": "2026-11-03T07:13:05.248Z",
+        "environment": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+          "platform": "MacIntel",
+          "secureContext": true
+        },
+        "apis": {
+          "getUserMedia": "present",
+          "getDisplayMedia": "present",
+          "AudioContext": "present",
+          "AudioWorklet": "present",
+          "MediaRecorder": "present",
+          "MediaSource": "present",
+          "AudioEncoder": "present",
+          "AudioDecoder": "present",
+          "VideoEncoder": "present",
+          "VideoDecoder": "present"
+        },
+        "codecProbes": {
+          "audioEncoderOpus": {
+            "status": "supported"
+          },
+          "audioEncoderAac": {
+            "status": "unsupported"
+          },
+          "audioDecoderOpus": {
+            "status": "supported"
+          },
+          "audioDecoderAac": {
+            "status": "supported"
+          },
+          "videoEncoderVp8": {
+            "status": "supported"
+          },
+          "videoEncoderH264": {
+            "status": "supported"
+          },
+          "videoDecoderVp8": {
+            "status": "supported"
+          },
+          "videoDecoderH264": {
+            "status": "supported"
+          }
+        },
+        "mediaRecorderTypes": {
+          "audioWebmOpus": {
+            "status": "supported"
+          },
+          "audioMp4Aac": {
+            "status": "unsupported"
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported"
+          },
+          "videoMp4H264Aac": {
+            "status": "unsupported"
+          }
+        },
+        "mseTypes": {
+          "audioWebmOpus": {
+            "status": "supported"
+          },
+          "audioMp4Aac": {
+            "status": "supported"
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported"
+          },
+          "videoMp4H264Aac": {
+            "status": "supported"
+          }
+        },
+        "playbackTypes": {
+          "audioWebmOpus": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "audioMp4Aac": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "videoMp4H264Aac": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          }
+        }
+      }
+    },
+    {
+      "name": "Chrome",
+      "version": "156.0.8078.80",
+      "condition": "127.0.0.1 HTTP/WS loopback (secure context); no Chrome TLS verification",
+      "report": {
+        "schemaVersion": 1,
+        "observedAt": "2026-11-03T07:13:57.603Z",
+        "environment": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+          "platform": "MacIntel",
+          "secureContext": true
+        },
+        "apis": {
+          "getUserMedia": "present",
+          "getDisplayMedia": "present",
+          "AudioContext": "present",
+          "AudioWorklet": "present",
+          "MediaRecorder": "present",
+          "MediaSource": "present",
+          "AudioEncoder": "present",
+          "AudioDecoder": "present",
+          "VideoEncoder": "present",
+          "VideoDecoder": "present"
+        },
+        "codecProbes": {
+          "audioEncoderOpus": {
+            "status": "supported"
+          },
+          "audioEncoderAac": {
+            "status": "supported"
+          },
+          "audioDecoderOpus": {
+            "status": "supported"
+          },
+          "audioDecoderAac": {
+            "status": "supported"
+          },
+          "videoEncoderVp8": {
+            "status": "supported"
+          },
+          "videoEncoderH264": {
+            "status": "supported"
+          },
+          "videoDecoderVp8": {
+            "status": "supported"
+          },
+          "videoDecoderH264": {
+            "status": "supported"
+          }
+        },
+        "mediaRecorderTypes": {
+          "audioWebmOpus": {
+            "status": "supported"
+          },
+          "audioMp4Aac": {
+            "status": "supported"
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported"
+          },
+          "videoMp4H264Aac": {
+            "status": "supported"
+          }
+        },
+        "mseTypes": {
+          "audioWebmOpus": {
+            "status": "supported"
+          },
+          "audioMp4Aac": {
+            "status": "supported"
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported"
+          },
+          "videoMp4H264Aac": {
+            "status": "supported"
+          }
+        },
+        "playbackTypes": {
+          "audioWebmOpus": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "audioMp4Aac": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "videoWebmVp8Opus": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          },
+          "videoMp4H264Aac": {
+            "status": "supported",
+            "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+          }
+        }
+      }
+    }
+  ],
+  "mobile": [
+    {
+      "name": "iPhone/iPad Safari",
+      "status": "unknown",
+      "reason": "User chose phone testing later; no real device measured"
+    },
+    {
+      "name": "Android Chrome",
+      "status": "unknown",
+      "reason": "User chose phone testing later; no real device measured"
+    }
+  ]
+}

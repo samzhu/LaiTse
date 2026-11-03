@@ -9,13 +9,13 @@
 | ID | 方案責任 | 狀態 | 必要證據 | MVP 移轉條件 |
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
-| SOL-002 | 音訊／畫面編碼、轉送與播放 | 待實驗 | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
+| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（僅能力探測） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
 | SOL-003 | 權威 Room／Session／事件與權限 | 待實驗 | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 待實驗 | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
 | SOL-006 | 重連、時基、快照與解碼恢復 | 待實驗 | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
 | SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（盤點完成） | T01／R002盤點；恢復待POC-06 | 本機結果與後續部署耐久性分清，未解限制不能默認忽略 |
-| SOL-008 | 可重現測試、量測與回歸資產 | 待實驗 | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
+| SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
 
 ## 每個方案的交接內容
 
@@ -43,7 +43,7 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 候選：Node26.13.0、TypeScript7.0.2、React19.3.1、Vite8.3.5、Fastify5.12.8、@fastify/static10.1.8、@fastify/websocket11.3.6、ws8.22.1；實際直接／轉依賴版本與宣告授權見[R002 inventory](evidence/POC-00-R002/dependency-inventory.json)。不是全MIT宣告；MPL2.0僅在建置工具盤點中，正式散布仍須按產物檢查授權與通知。
 - 證據：R001保留Firefox/macOS27失敗；[R002](evidence/POC-00-R002/README.md)採同穩定工具，加每個Firefox child隔離應用資料目錄，正常CA驗證下兩端HTTPS/WSS成功。無HOME／使用者profile／系統信任變更；未採alpha測試工具。
 - 可復用：README重現步驟、package-lock、src/server/app.ts的createApp、本機TLS工具、整合及兩端browser腳本、版本／授權inventory。來源逐檔hash及觀測界線在R002。固定API為/api/health、/api/rooms與/ws；協議join→snapshot，server序號事件，非法origin拒絕、非法控制close1008、過大frame1009。僅lobby一房及合成wave/clap，沒有正式身份授權。
-- 條件：目前一次完整兩端成功，不列穩定可採用；T02手機／能力矩陣、其後媒體與CloudRun相容仍未測。3項moderate依賴稽核節點及目前未觸及路徑判讀見R001 review.md；改glob／static設定或上MVP前重查修補相容性。
+- 條件（依DEC-010更新）：T01桌面核心可行及使用方式已確認；不再因固定重跑次數阻擋POC，完整SOL-001仍需對應未測範圍；T02手機／能力矩陣、其後媒體與CloudRun相容仍未測。3項moderate依賴稽核節點及目前未觸及路徑判讀見R001 review.md；改glob／static設定或上MVP前重查修補相容性。
 - MVP前須重構／移除：固定測試房間、合成控制與可見debug活動、以連線代身份；補正式Room／Session／授權、恢復、背壓品質與部署資料方案。不把本機CA或測試profile移入產品部署。
 
 ## SOL-007／T01資料風險交接（2026-11-03）
@@ -57,3 +57,14 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 | POC證據 | 經選擇的JSON/log/PNG持久檔案 | 只供開發追溯，不是產品即時資料或CloudRun保存設計 |
 
 盤點通過並不代表恢復成功。沒有引入DB／Redis／VM／額外服務；尚無符合單一CloudRun下耐久資料語意的實測方案，POC-06仍必要。固定可重建與執行期可遺失不能混為人類接受資料遺失。資源／成本／媒體延遲／重啟恢復未測，不預填推估值。
+
+## DEC-010後的輕量交接補充
+
+[R003](evidence/POC-00-R003/README.md)已用Chrome雙頁實際示範加入、雙向回應、離開及手動重入，並記錄重整需重新加入。依人類新指示，方案評估聚焦「做得到／怎麼用／限制」，不以固定長測或反覆重跑為前置。SOL-001的T01桌面基線是可行候選，可延續作後續POC基底；完整手機與媒體範圍尚待實作。SOL-007的耐久／恢復仍未驗證，不因測試簡化而宣稱可保存資料。前文run的嚴格判定與數值作歷史／診斷參考，未抹除原結果。
+
+## T02／R004補充：SOL-002、SOL-008（2026-11-03）
+
+- SOL-002：新增src/client/capabilities.ts與能力面板；WebCodecs固定配置、Recorder/MSE MIME與canPlayType提示均有實際桌面報告。[矩陣](evidence/POC-00-R004/browser-matrix.md)顯示本次Firefox的AAC編碼設定不支援，Chrome支援；Opus/VP8為兩端設定探測可行候選。未執行真實擷取、編解碼或播放，沒有據此定案媒體pipeline；手機仍未知。
+- SOL-008：可復用scripts/t02-smoke.mjs、tests/capabilities.integration.test.mjs、server能力schema與同一socket觀測ACK／GET讀回、SAN可選LANIP的本機TLS工具；README含桌面兩按鈕操作與未來手機信任CA步驟。核心示範與原始JSON/PNG/JPG見R004，無新依賴、無憑證略過、未變更系統信任。
+- 觀測契約：加入後送capability.report，server產生observationId／connectionId並關聯room/member；GET /api/observations/:id讀回。內容是client自報且經固定schema驗證，server沒有獨立驗codec。frame限8KiB，普通控制仍1KiB，最多64筆process-memory，無授權／耐久／跨instance設計；MVP需按身份與保存需求重新處理此測試入口。
+- 復用界線：本輪先程式＋桌面，實體手機明確待測；LAN證書例子192.0.2.23只驗SAN，不是實機LAN。完成手機同流程後再更新支援矩陣；不以瀏覽器模擬／UA字串代替實體裝置。未移轉CA私鑰或測試profile至產品。

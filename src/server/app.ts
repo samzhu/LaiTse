@@ -4,6 +4,12 @@ import path from "node:path";
 import Fastify, { type FastifyRequest } from "fastify";
 import fastifyStatic from "@fastify/static";
 import fastifyWebsocket from "@fastify/websocket";
+import {
+  MAX_CAPABILITY_MESSAGE_BYTES,
+  MAX_STORED_CAPABILITY_REPORTS,
+  validateCapabilityReport,
+  type SanitizedCapabilityReport,
+} from "./capabilities.ts";
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
 export const MAX_ROOM_MEMBERS = 8;
@@ -31,8 +37,18 @@ type ControlEvent = {
 };
 
 type ClientConnection = {
+  id: string;
   member?: Member;
   eventTimes: number[];
+};
+
+type CapabilityObservation = {
+  observationId: string;
+  observedAtServer: string;
+  connectionId: string;
+  roomId: string;
+  member: Member;
+  report: SanitizedCapabilityReport;
 };
 
 type CreateAppOptions = {
@@ -64,10 +80,11 @@ export async function createApp(options: CreateAppOptions = {}) {
   const app = Fastify({ logger: false, https: options.https ?? null });
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
   const members = new Map<string, Member>();
+  const observations = new Map<string, CapabilityObservation>();
   let sequence = 0;
 
   await app.register(fastifyWebsocket, {
-    options: { maxPayload: MAX_CONTROL_MESSAGE_BYTES },
+    options: { maxPayload: MAX_CAPABILITY_MESSAGE_BYTES },
   });
 
   if (options.serveClient !== false) {
@@ -87,6 +104,12 @@ export async function createApp(options: CreateAppOptions = {}) {
 
   app.get("/api/rooms", async () => [ROOM]);
 
+  app.get<{ Params: { observationId: string } }>("/api/observations/:observationId", async (request, reply) => {
+    const observation = observations.get(request.params.observationId);
+    if (!observation) return reply.code(404).send({ error: "observation_not_found" });
+    return observation;
+  });
+
   app.get(
     "/ws",
     {
@@ -98,7 +121,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       },
     },
     (socket) => {
-      const connection: ClientConnection = { eventTimes: [] };
+      const connection: ClientConnection = { id: randomUUID(), eventTimes: [] };
       clients.set(socket, connection);
 
       const send = (message: unknown) => {
@@ -112,10 +135,10 @@ export async function createApp(options: CreateAppOptions = {}) {
         });
       };
 
-      const rejectControl = (code: string, message: string) => {
+      const rejectControl = (code: string, message: string, closeCode = 1008) => {
         send({ type: "protocol.error", code, message });
         socket.once("error", () => {});
-        socket.close(1008, "Invalid control message");
+        socket.close(closeCode, "Invalid control message");
       };
 
       const emit = (kind: ControlEvent["kind"], member: Member, reaction?: string) => {
@@ -146,8 +169,8 @@ export async function createApp(options: CreateAppOptions = {}) {
       socket.on("message", (raw, isBinary) => {
         if (socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
-        if (isBinary || bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES) {
-          rejectControl("invalid_message", "Control frames must be small UTF-8 JSON text.");
+        if (isBinary || bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
+          rejectControl("invalid_message", "WebSocket frames must be small UTF-8 JSON text.", bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES ? 1009 : 1008);
           return;
         }
 
@@ -155,16 +178,65 @@ export async function createApp(options: CreateAppOptions = {}) {
         try {
           payload = JSON.parse(bytes.toString("utf8"));
         } catch {
-          rejectControl("invalid_message", "Control frames must be valid JSON.");
+          rejectControl("invalid_message", "Control frames must be valid JSON.", bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES ? 1009 : 1008);
           return;
         }
 
         if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-          rejectControl("invalid_message", "Control frames must be JSON objects.");
+          rejectControl("invalid_message", "Control frames must be JSON objects.", bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES ? 1009 : 1008);
           return;
         }
 
         const message = payload as Record<string, unknown>;
+        if (message.type === "capability.report") {
+          if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
+            rejectControl("invalid_capability_report", "Capability reports must stay within the 8 KiB limit.", 1009);
+            return;
+          }
+          if (!connection.member) {
+            rejectControl("invalid_capability_report", "Join the local room before sending a capability report.");
+            return;
+          }
+          if (!hasOnlyKeys(message, ["type", "report"])) {
+            rejectControl("invalid_capability_report", "Capability reports contain fields outside the supported schema.");
+            return;
+          }
+          const report = validateCapabilityReport(message.report);
+          if (!report) {
+            rejectControl("invalid_capability_report", "Capability report schema or bounds are invalid.");
+            return;
+          }
+
+          const observation: CapabilityObservation = {
+            observationId: randomUUID(),
+            observedAtServer: new Date().toISOString(),
+            connectionId: connection.id,
+            roomId: ROOM.id,
+            member: connection.member,
+            report,
+          };
+          observations.set(observation.observationId, observation);
+          while (observations.size > MAX_STORED_CAPABILITY_REPORTS) {
+            const oldestObservationId = observations.keys().next().value;
+            if (!oldestObservationId) break;
+            observations.delete(oldestObservationId);
+          }
+          send({
+            type: "capability.ack",
+            observationId: observation.observationId,
+            observedAtServer: observation.observedAtServer,
+            connectionId: observation.connectionId,
+            roomId: observation.roomId,
+            member: observation.member,
+          });
+          return;
+        }
+
+        if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES) {
+          rejectControl("invalid_message", "Control frames are limited to 1 KiB; capability reports have a separate 8 KiB bound.", 1009);
+          return;
+        }
+
         if (!connection.member) {
           if (
             !hasOnlyKeys(message, ["type", "roomId", "displayName"]) ||
@@ -241,6 +313,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   app.addHook("onClose", async () => {
     clients.clear();
     members.clear();
+    observations.clear();
   });
 
   return app;

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "at": "2026-11-03T07:13:01.204386+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/server.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs"
+    ],
+    "at": "2026-11-03T07:13:02.101484+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "script-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t02-smoke.mjs"
+    ],
+    "at": "2026-11-03T07:13:02.373312+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "certificate-chain",
+    "command": [
+      "openssl",
+      "verify",
+      "-CAfile",
+      "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t02/tls/local-ca.pem",
+      "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t02/tls/localhost-cert.pem"
+    ],
+    "at": "2026-11-03T07:13:02.406718+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "certificate-san",
+    "command": [
+      "openssl",
+      "x509",
+      "-in",
+      "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t02/tls/localhost-cert.pem",
+      "-noout",
+      "-ext",
+      "subjectAltName"
+    ],
+    "at": "2026-11-03T07:13:02.416699+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "desktop-smoke",
+    "command": [
+      "node",
+      "scripts/t02-smoke.mjs"
+    ],
+    "at": "2026-11-03T07:13:02.570686+00:00",
+    "exitCode": 0
+  }
+]

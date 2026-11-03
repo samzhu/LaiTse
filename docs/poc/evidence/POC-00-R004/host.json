@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-11-03T05:04:50.900592+00:00",
+  "os": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "cpuModel": "Apple M1 Max",
+  "memoryBytes": 68719476736,
+  "memoryNote": "Host metadata only; no capacity test. Captured by read-only sysctl outside restricted sandbox.",
+  "operator": "Codex root acceptance; Luna xhigh implementation",
+  "scope": "T02 local desktop capability probes; no physical phone or media test",
+  "beforeSourceCommit": "66a3fca",
+  "results": "R004 desktop core Pass; real phone not tested. See browser evidence.",
+  "hardwareRecordedAt": "2026-11-03T05:23:28.365611+00:00",
+  "hardwareNote": "Hardware fields reused from same-host R002 metadata, not remeasured for this run."
+}

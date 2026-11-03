@@ -4,3 +4,5 @@ node_modules/
 dist/
 .scratch/t01/
 .DS_Store
+
+.scratch/t02/

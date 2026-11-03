@@ -1,0 +1,146 @@
+{
+  "startedAt": "2026-11-03T07:13:02.758Z",
+  "status": "complete",
+  "baseURL": "https://localhost:4173",
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "tls": {
+    "trust": "local CA imported only into this run's isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t02/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t02/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false
+  },
+  "browser": {
+    "name": "Firefox",
+    "version": "157.0"
+  },
+  "client": {
+    "origin": "https://localhost:4173",
+    "secureContext": true,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+    "platform": "MacIntel",
+    "connection": "Connected to Local test room"
+  },
+  "serverObservation": {
+    "observationId": "4891c894-7472-4c40-a92d-e30f12156088",
+    "observedAtServer": "2026-11-03T07:13:05.301Z",
+    "connectionId": "d5cc54ad-46e0-4420-9cc1-cfc4a7476e13",
+    "roomId": "lobby",
+    "member": {
+      "id": "774de04d-0883-4fa4-a565-982963dbb655",
+      "displayName": "T02 desktop"
+    },
+    "report": {
+      "schemaVersion": 1,
+      "observedAt": "2026-11-03T07:13:05.248Z",
+      "environment": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+        "platform": "MacIntel",
+        "secureContext": true
+      },
+      "apis": {
+        "getUserMedia": "present",
+        "getDisplayMedia": "present",
+        "AudioContext": "present",
+        "AudioWorklet": "present",
+        "MediaRecorder": "present",
+        "MediaSource": "present",
+        "AudioEncoder": "present",
+        "AudioDecoder": "present",
+        "VideoEncoder": "present",
+        "VideoDecoder": "present"
+      },
+      "codecProbes": {
+        "audioEncoderOpus": {
+          "status": "supported"
+        },
+        "audioEncoderAac": {
+          "status": "unsupported"
+        },
+        "audioDecoderOpus": {
+          "status": "supported"
+        },
+        "audioDecoderAac": {
+          "status": "supported"
+        },
+        "videoEncoderVp8": {
+          "status": "supported"
+        },
+        "videoEncoderH264": {
+          "status": "supported"
+        },
+        "videoDecoderVp8": {
+          "status": "supported"
+        },
+        "videoDecoderH264": {
+          "status": "supported"
+        }
+      },
+      "mediaRecorderTypes": {
+        "audioWebmOpus": {
+          "status": "supported"
+        },
+        "audioMp4Aac": {
+          "status": "unsupported"
+        },
+        "videoWebmVp8Opus": {
+          "status": "supported"
+        },
+        "videoMp4H264Aac": {
+          "status": "unsupported"
+        }
+      },
+      "mseTypes": {
+        "audioWebmOpus": {
+          "status": "supported"
+        },
+        "audioMp4Aac": {
+          "status": "supported"
+        },
+        "videoWebmVp8Opus": {
+          "status": "supported"
+        },
+        "videoMp4H264Aac": {
+          "status": "supported"
+        }
+      },
+      "playbackTypes": {
+        "audioWebmOpus": {
+          "status": "supported",
+          "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+        },
+        "audioMp4Aac": {
+          "status": "supported",
+          "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+        },
+        "videoWebmVp8Opus": {
+          "status": "supported",
+          "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+        },
+        "videoMp4H264Aac": {
+          "status": "supported",
+          "reason": "canPlayType returned probably; this is only a hint, not a playback test."
+        }
+      }
+    }
+  },
+  "screenshot": "capability-report.png",
+  "transport": {
+    "sockets": [
+      {
+        "url": "wss://localhost:4173/ws",
+        "sentFrames": 3,
+        "receivedFrames": 4,
+        "errors": []
+      }
+    ],
+    "pageErrors": []
+  },
+  "finishedAt": "2026-11-03T07:13:05.675Z"
+}

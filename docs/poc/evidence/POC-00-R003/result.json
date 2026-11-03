@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-03T05:39:37.384Z",
+  "status": "complete",
+  "result": "core-flow-feasible",
+  "checks": [
+    "two participants visible",
+    "wave and clap visible on both tabs",
+    "leaving removes participant",
+    "manual rejoin can send another wave"
+  ],
+  "limitation": "Reload clears display name and connection; manual join required",
+  "consoleA": [],
+  "consoleB": []
+}

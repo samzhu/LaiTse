@@ -1,0 +1,17 @@
+{
+  "src/server/app.ts": "c104ead32c9657e5d087ed5e6e4d146b19f601647882bc9015164f6087a22d60",
+  "src/server/capabilities.ts": "988dfc2d632e4d68b9cda852b30902f10b499bc37eedf5e756091c6a7461650b",
+  "src/server/index.ts": "4214e6d7231c53aae2ae9f94a7265b29f4ad214d1334b9f74ac2cd15f1490999",
+  "src/client/App.tsx": "21815f4024c6b4c7141afe8507530971461eb86b18c8a9340b55342f9a94871e",
+  "src/client/main.tsx": "294f62f7961cca8822a5474309fbc9f35bf45b61fc815fc7d8ecc17b64afe583",
+  "src/client/styles.css": "197403bf7febcf8540e357ece226929e96f3a20911364cd92daf9eea4098fba8",
+  "src/client/capabilities.ts": "1f4d485dfb10933e0317f1f65334112e5f7e0eb9c8e30a4d2aa42f12f91d69ba",
+  "scripts/e2e.mjs": "1d0709617f03df02d0b35697f5c599e8073475e0605ec0cf6977341befdd8113",
+  "scripts/t02-smoke.mjs": "ef32e83886a442600b09c079b84754bdcd1089666c9faae2d80241acb715b1d7",
+  "scripts/setup-local-tls.mjs": "75327eb1c26a4afa1ac7fd737acf4cfc9710324a3102a378b90c53c858c18413",
+  "scripts/dependency-inventory.mjs": "d080302068137d2192b3a26192d8b7be52f96551aa8bc5f584727f9f92b40072",
+  "tests/capabilities.integration.test.mjs": "29b6e6ed85248040cb1c03b790357454ec8e5f91a89dc1af9e50ab84bd822d36",
+  "tests/server.integration.test.mjs": "22661a9e94a2e917baa6657157e3909534cfa64db69dfff1c665ed15e10f0df2",
+  "package.json": "7e72b5253ed8fa6f15411c2dc341ddb7e599dbd92cd4cfc67ab3741d6a271319",
+  "package-lock.json": "4bfdae0b85ddbf841968fe28a787d352293f89c5565055c29e162b4fe0016c80"
+}

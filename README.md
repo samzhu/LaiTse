@@ -1,6 +1,6 @@
 # LaiTse local POC baseline
 
-This is the T01 local baseline. One Fastify process serves the built React page, the health and room APIs, and a WebSocket endpoint. The room flow is deliberately small: two participants can join one local room and observe the same member list and bounded control events.
+This is the T01/T02 local POC baseline. One Fastify process serves the built React page, the health and room APIs, and a WebSocket endpoint. The room flow is deliberately small: two participants can join one local room and observe the same member list and bounded control events.
 
 This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Its state is volatile process memory.
 
@@ -50,6 +50,16 @@ npm start
 
 The generated certificate covers `localhost`, `127.0.0.1`, and `::1`. The CA and private keys stay in ignored `.scratch/t01/tls/`; setup does not change a macOS or browser-wide trust store. HTTP mode is provided for quick local development. HTTPS/WSS is used for browser evidence.
 
+For a later real-phone LAN check, pass the host machine's current LAN IP. The script validates it as a literal IP address, keeps the localhost SANs, reuses the existing local CA, and replaces only the leaf certificate when the requested IP is missing. It also writes `local-ca.cer` for device import. To isolate a one-off certificate from the default T01 files, set an output directory under `.scratch/`:
+
+```sh
+npm run tls:dev -- --host 192.168.1.23
+# or, for an isolated certificate set:
+npm run tls:dev -- --host 192.168.1.23 --output-dir .scratch/t02/tls
+```
+
+`--force` deletes the selected TLS directory and creates a new CA and leaf; any device or browser that trusted the old CA must trust the new one separately. The script never edits trust stores. Transfer only `local-ca.cer` (or `local-ca.pem`) to the device. Never transfer `local-ca-key.pem` or `localhost-key.pem`.
+
 ## Browser evidence
 
 Install Playwright's Firefox build into the ignored tool directory, with NSS `certutil` available on `PATH`:
@@ -74,12 +84,39 @@ The server accepts one fixed room, `lobby` (`Local test room`). A client must jo
 
 WebSocket connections must have an Origin matching the request's scheme and host. Binary, malformed, unknown, or invalid control frames close the connection. Frames are limited to 1 KiB, accepted reactions to 10 per connection per second, and slow receivers are closed once queued output exceeds 64 KiB. The page keeps only the most recent 20 events for display.
 
+Capability reports use a separate, fixed schema with an 8 KiB WebSocket frame limit; regular room controls remain limited to 1 KiB. A joined connection can explicitly send one report, which the server associates with its own connection ID, joined member, room, observation ID, and server time. The server validates and stores at most the latest 64 reports in process memory. `GET /api/observations/:id` is unauthenticated in this local POC; the random observation ID is a lookup key, not an authorization system. Keep this server on a private development LAN and stop it after the test. The codec and API values are browser-reported; the server does not independently verify them.
+
+## T02 browser capability check and phone setup
+
+This is a capability inventory, not a media test. After joining the room, choose **探測此瀏覽器** and then **送出觀測**. The page checks secure-context state, API presence, small WebCodecs codec configurations, `MediaRecorder.isTypeSupported`, `MediaSource.isTypeSupported`, and `canPlayType` hints. It does not call `getUserMedia()` or `getDisplayMedia()`, request microphone/camera/screen permission, create a recording, decode media, or start playback. A `canPlayType` hint and a supported config do not prove that capture or playback works.
+
+For a quick desktop check, use `npm run build` and `npm start`, open `http://127.0.0.1:4173`, join, and press the two capability buttons above. Loopback HTTP is useful for this local UI check; it is not a substitute for the phone’s trusted HTTPS path.
+
+For a scripted desktop HTTPS smoke, keep the HTTPS server running as described above, then run `node scripts/t02-smoke.mjs` from another terminal with the pinned Node runtime and `certutil` on `PATH`. Results and a screenshot go to ignored `.scratch/t02/desktop-smoke/`. Set `T02_CA_CERT` if using a certificate directory other than the default `.scratch/t01/tls`. The [R004 matrix](docs/poc/evidence/POC-00-R004/browser-matrix.md) contains actual desktop results and explicitly unknown mobile rows.
+
+To prepare a later phone check:
+
+1. Put the phone and development computer on the same private Wi-Fi network. Find the computer's current LAN IP and create a leaf certificate for it, for example `npm run tls:dev -- --host 192.168.1.23`.
+2. Start the built app on the LAN interface with the certificate and key paths:
+
+   ```sh
+   HOST=0.0.0.0 PORT=4173 \
+   TLS_CERT_FILE=.scratch/t01/tls/localhost-cert.pem \
+   TLS_KEY_FILE=.scratch/t01/tls/localhost-key.pem \
+   npm start
+   ```
+
+3. Transfer only `.scratch/t01/tls/local-ca.cer` to a phone you control. On iPhone/iPad, install the certificate profile, then enable its SSL/TLS trust under **Settings > General > About > Certificate Trust Settings**. See [Apple's manual certificate trust instructions](https://support.apple.com/en-ie/102390). On Android, find the certificate install controls under **Security & privacy > More security settings > Encryption & credentials**; labels vary by manufacturer and version. The [Pixel certificate guide](https://support.google.com/pixelphone/answer/2844832?hl=en) documents that flow and credential removal. Check the actual browser by opening `https://<LAN-IP>:4173` and confirming that it loads without a certificate warning and reports `安全內容：是`.
+4. Join the room, run the probe, review the matrix, and explicitly send the observation. Remove the development CA/profile from the phone when finished.
+
+The phone's browser may apply trust differently; an installed CA alone is not evidence that a particular browser trusts the site. A real-device check is still required. This POC has no authentication, and the LAN-bound server exposes its page, room, and observation lookup to devices that can reach it. Do not expose it to a public network. The report records only a bounded user-agent string, platform string, client observation time, fixed probe results, and server-assigned connection/member/room metadata; it does not collect camera/microphone data or a client-supplied connection ID.
+
 ## Data classification and limitations
 
 - **Fixed, versioned setup:** the one-room catalogue and its display name are source constants in `src/server/app.ts`; a build from the same source reconstructs them.
 - **Execution-time data:** current members, connection membership, and the event sequence exist in server process memory. A disconnect removes only that participant. The sequence resets when the server process stops or is replaced. The visible recent-event list exists only in page memory and clears when that page reloads or the participant explicitly leaves or joins again.
 - **Not durable:** there is no database, file persistence, identity system, authorization/role model, event history, or cross-process coordination. A future multi-instance Cloud Run deployment would give instances separate memory and can lose all current state on replacement. This local result does not establish a persistence or Cloud Run recovery design.
-- **Not implemented in this ticket:** audio, screen sharing, avatar movement, authentication, room management, capacity, and mobile browser behavior.
+- **Not implemented in this ticket:** audio, screen sharing, avatar movement, authentication, room management, capacity, and phone verification. T02 browser capability checks do not implement capture or playback.
 
 ## Focused commands
 
