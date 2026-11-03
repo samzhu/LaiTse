@@ -1,0 +1,12 @@
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (105.277666ms)
+✔ screen relay rejects non-publisher frames and invalid publishing bounds (87.704959ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.788167ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (87.194625ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 461.439375

@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | POC-00 | 執行中 | Inconclusive | R002 T01 Pass；[R004 T02桌面可行](evidence/POC-00-R004/README.md) | 實體手機可信HTTPS／能力矩陣稍後測 |
 | POC-01 | 執行中 | Inconclusive | R001單接收、[R002桌面雙接收可行](evidence/POC-01-R002/README.md) | 真mic／人耳／手機與跨裝置品質待補 |
-| POC-02 | 尚未執行 | 未判定 | 無 | 依 POC-01 證據加入畫面 |
+| POC-02 | 執行中 | Inconclusive | [R001 T05桌面核心可行](evidence/POC-02-R001/README.md) | T06晚加入/同步；手機與真人品質待補 |
 | POC-03 | 尚未執行 | 未判定 | 無 | 驗證空間／房間／權限 |
 | POC-04 | 尚未執行 | 未判定 | 無 | 驗證恢復與弱網 |
 | POC-05 | 尚未執行 | 未判定 | 無 | 逐級負載，保留真實解碼證據 |
@@ -129,3 +129,18 @@ Mozilla [Bug2069536](https://bugzilla.mozilla.org/show_bug.cgi?id=2069536)描述
 兩端透過真正的下載按鈕取得JSON：A快照received/decoded64/64、render50,560、RMS約0.0710，B14/14、render4,352、RMS約0.0531。buffer106.67/109.33ms只是接收queue估計，不是E2E；seq gap0不是沒有掉音證明。E2E延遲null、human/physical device未收集，合成來源由測試profile另記錄。這是一次短run，未做20分/兩次獨立run/p95；依DEC-010不將其作本輪硬門檻，原票手機與品質證據仍未具備。
 
 build/typecheck、14個新舊核心整合、script syntax及三Firefox流程皆exit0；root在執行前修正兩處smoke未定義變數，沒有runtime失敗後偽裝成功。[R002證據](evidence/POC-01-R002/README.md)含精確起迄、scope、下載原檔、快照與原始傳輸。JSON/來源hash讀回，實際查看panel PNG；README、SOL-002/008與協作文件已同步。無新依賴或server/worklet變更；服務與三browserfinally停止，不寫GitHub、不做T05/部署，程式+紀錄一起本機commit不push。
+
+## POC-02-R001／T05站內分享與獨立啟停
+
+- 配發日期：2026-11-03（Asia/Taipei）；操作者：主代理驗收、Luna xhigh實作。
+- 執行狀態：完成；結果：桌面核心可行，完整POC-02仍Inconclusive。
+- 假設：在現有音訊基底延伸畫面編碼/同一WSS relay/解碼呈現，語音與分享可獨立啟停；本輪按DEC-010短核心驗測，晚加入/同步/手機/品質門檻另測。
+- 前置限制：T04桌面合成雙接收已可行，真mic/真人/手機未補證據，不宣稱已完成原品質基線。實際來源/命令/指紋/結果於執行後補入本run目錄。
+
+### T05完成與限制
+
+本輪VP8＋LTS1沿用同一WSS及獨立Opus路徑；18核心整合、production build/typecheck通過。最終三Firefox合成影音短流程零page/socket errors，320×180原生解碼呈現；screen stop後計數13→13且audio render26,240→55,040，模擬拒權audio續播、停mic畫面續播4→7，track ended狀態清理成功。原始失敗、未定位的第一次browser逾時、受控診斷及修正保留於[R001](evidence/POC-02-R001/README.md)。
+
+另以兩個Chrome156頁面，前景原生chooser只選本機POC分頁，HTTP/WS loopback實際呈現1280×630／快照9.74fps；瀏覽器自己的停止分享令接收端清空，沒有改OS權限或開真mic。這是原生分頁擷取證據，不是螢幕/視窗或原生影音共存品質驗收。Firefox最終短流程ps15樣本CPU最高7.1%／RSS92,016KiB，Chrome資源未測，非容量數據。
+
+下載JSON、DOM與截圖已保存讀回，source hash已核對；README、SOL-002/008、協作文件同步。原票T02/T03/04未補的手機/真人保持待測，晚加入/同步T06尚未開發，不宣告完整POC-02通過。無新依賴、沒有push／GitHub寫入或部署；writer釋出，server及本輪測試browser/tab清理後程式+紀錄一起本機commit。

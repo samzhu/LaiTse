@@ -1,0 +1,9 @@
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+Error: publisher did not receive screen.stopped within 12000 ms.
+    at waitForControl (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:154:9)
+    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:474:3
+
+Node.js v26.13.0

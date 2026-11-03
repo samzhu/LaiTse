@@ -1,0 +1,739 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T05 screen-share core flow with injected synthetic display source; not physical display capture, late-join sync, or quality acceptance.",
+  "startedAt": "2026-11-03T13:40:56.944Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "mediaSource": {
+    "kind": "synthetic animated canvas MediaStreamTrack injected by this test",
+    "replacement": "publisher-page init script replaces navigator.mediaDevices.getDisplayMedia before the app loads",
+    "realDisplayCaptureSelected": false,
+    "realMicrophoneSelected": false,
+    "realMediaRecorded": false
+  },
+  "permissionAutomation": {
+    "microphone": "Firefox fake media stream enabled in all profiles; simulated allow only in publisher profile",
+    "screenCapture": "synthetic source returned by test injection; denial is a synthetic NotAllowedError",
+    "nativeDisplayPickerUsed": false
+  },
+  "clients": {
+    "publisher": {
+      "browser": "Firefox",
+      "role": "synthetic display and microphone publisher"
+    },
+    "receiverA": {
+      "browser": "Firefox",
+      "role": "screen and audio receiver"
+    },
+    "receiverB": {
+      "browser": "Firefox",
+      "role": "second screen and audio receiver"
+    }
+  },
+  "snapshots": [
+    {
+      "client": "receiver-a-first-share",
+      "capturedAt": "2026-11-03T13:41:02.135Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.49,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        33,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-b-first-share",
+      "capturedAt": "2026-11-03T13:41:02.136Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.49,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        33,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-b-audio-start",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:02.390Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 9,
+        "decodedFrames": 9,
+        "renderedSamples": 2560,
+        "renderRms": 0.06403566602485265,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-a-audio-start",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:02.490Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 14,
+        "decodedFrames": 14,
+        "renderedSamples": 7040,
+        "renderRms": 0.06836109725661252,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-a-before-screen-stop",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:02.957Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 37,
+        "decodedFrames": 37,
+        "renderedSamples": 26240,
+        "renderRms": 0.07057975832838298,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-a-before-screen-stop",
+      "capturedAt": "2026-11-03T13:41:02.962Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 13,
+      "decodedFrames": 12,
+      "renderedFrames": 12,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.57,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        33,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-after-screen-stop",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:03.498Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 64,
+        "decodedFrames": 64,
+        "renderedSamples": 55040,
+        "renderRms": 0.06990537881989427,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-a-after-screen-stop",
+      "capturedAt": "2026-11-03T13:41:03.502Z",
+      "publisherState": "idle",
+      "receiverState": "waiting",
+      "sentFrames": 0,
+      "receivedFrames": 13,
+      "decodedFrames": 12,
+      "renderedFrames": 12,
+      "renderedWidth": null,
+      "renderedHeight": null,
+      "renderFps": 0,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": null,
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "發布者已停止；畫面已清除，正在等待下一次分享。"
+    },
+    {
+      "client": "receiver-a-before-synthetic-denial",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:03.554Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 67,
+        "decodedFrames": 67,
+        "renderedSamples": 55040,
+        "renderRms": 0.06990537881989427,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "publisher-after-synthetic-denial",
+      "capturedAt": "2026-11-03T13:41:04.122Z",
+      "publisherState": "denied",
+      "receiverState": "off",
+      "sentFrames": 0,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "renderedFrames": 0,
+      "renderedWidth": null,
+      "renderedHeight": null,
+      "renderFps": 0,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "publisherMessage": "已取消或拒絕畫面擷取；沒有建立分享。 Synthetic test denial",
+      "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+    },
+    {
+      "client": "receiver-a-after-synthetic-denial",
+      "audio": {
+        "capturedAt": "2026-11-03T13:41:04.129Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 96,
+        "decodedFrames": 96,
+        "renderedSamples": 83840,
+        "renderRms": 0.06990537567173544,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-b-share-restarted",
+      "capturedAt": "2026-11-03T13:41:04.608Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.77,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-share-restarted",
+      "capturedAt": "2026-11-03T13:41:04.608Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.77,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-before-audio-stop",
+      "capturedAt": "2026-11-03T13:41:04.613Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.77,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-after-audio-stop",
+      "capturedAt": "2026-11-03T13:41:04.924Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 8,
+      "decodedFrames": 7,
+      "renderedFrames": 7,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.63,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        33,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "failure-state",
+      "capturedAt": "2026-11-03T13:41:46.956Z",
+      "publisherState": "sharing",
+      "receiverState": "off",
+      "sentFrames": 409,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "renderedFrames": 0,
+      "renderedWidth": null,
+      "renderedHeight": null,
+      "renderFps": 0,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 4112,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "publisherMessage": "正在傳送瀏覽器選取的畫面；track 設定會標示來源回報值，編碼檔位與接收呈現另行觀測。",
+      "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+    },
+    {
+      "client": "failure-state",
+      "capturedAt": "2026-11-03T13:42:16.967Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 696,
+      "decodedFrames": 695,
+      "renderedFrames": 695,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.59,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "failure-state",
+      "capturedAt": "2026-11-03T13:42:46.976Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 983,
+      "decodedFrames": 982,
+      "renderedFrames": 982,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.46,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        35,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    }
+  ],
+  "independenceChecks": [
+    {
+      "check": "audio-continues-after-screen-stop",
+      "passed": true,
+      "beforePackets": 37,
+      "afterPackets": 64,
+      "beforeRenderedSamples": 26240,
+      "afterRenderedSamples": 55040
+    },
+    {
+      "check": "screen-frames-stop-and-canvas-clears",
+      "passed": true,
+      "beforeFrames": 13,
+      "afterFrames": 13,
+      "canvasPixelAfterStop": null
+    },
+    {
+      "check": "synthetic-capture-denial-does-not-start-screen-or-stop-audio",
+      "passed": true,
+      "screenStartedCountBefore": 1,
+      "screenStartedCountAfter": 1,
+      "beforeRenderedSamples": 55040,
+      "afterRenderedSamples": 83840,
+      "source": "injected NotAllowedError, not a native picker denial"
+    },
+    {
+      "check": "screen-continues-after-microphone-stop",
+      "passed": true,
+      "beforeFrames": 4,
+      "afterFrames": 7
+    }
+  ],
+  "observations": [
+    {
+      "client": "publisher",
+      "path": ".scratch/t05/desktop-smoke/observations/publisher-screen.json",
+      "json": {
+        "schemaVersion": 1,
+        "observedAt": "2026-11-03T13:41:02.906Z",
+        "environment": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+          "platform": "MacIntel",
+          "secureContext": true
+        },
+        "capture": {
+          "trackSettingsReportedByBrowser": {
+            "width": 320,
+            "height": 180,
+            "frameRate": null,
+            "displaySurface": null
+          },
+          "physicalDisplayVerified": false
+        },
+        "encoding": {
+          "codec": "vp8",
+          "targetWidth": 320,
+          "targetHeight": 180,
+          "targetFrameRate": 10,
+          "targetBitrateBps": 800000,
+          "sentFrames": 12,
+          "captureFramesSkipped": 0,
+          "encodeQueueHighWater": 0,
+          "socketQueueHighWaterBytes": 3577
+        },
+        "rendering": {
+          "state": "off",
+          "width": null,
+          "height": null,
+          "receivedFrames": 0,
+          "decodedFrames": 0,
+          "renderedFrames": 0,
+          "rollingFiveSecondRenderedFps": 0,
+          "decodeQueueHighWater": 0
+        },
+        "resources": {
+          "browserJsHeapBytes": null,
+          "browserJsHeapScope": "browser-reported JavaScript heap only; excludes media/GPU/process memory"
+        },
+        "evidence": {
+          "endToEndLatencyMs": null,
+          "lateJoinSynchronization": "not-implemented",
+          "serverCpuAndMemory": "not-collected-in-browser",
+          "sourceAttribution": "track settings are browser-reported and do not prove a physical display was selected"
+        }
+      }
+    },
+    {
+      "client": "receiver-a",
+      "path": ".scratch/t05/desktop-smoke/observations/receiver-a-screen.json",
+      "json": {
+        "schemaVersion": 1,
+        "observedAt": "2026-11-03T13:41:02.947Z",
+        "environment": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+          "platform": "MacIntel",
+          "secureContext": true
+        },
+        "capture": {
+          "trackSettingsReportedByBrowser": null,
+          "physicalDisplayVerified": false
+        },
+        "encoding": {
+          "codec": "vp8",
+          "targetWidth": 0,
+          "targetHeight": 0,
+          "targetFrameRate": 10,
+          "targetBitrateBps": 800000,
+          "sentFrames": 0,
+          "captureFramesSkipped": 0,
+          "encodeQueueHighWater": 0,
+          "socketQueueHighWaterBytes": 0
+        },
+        "rendering": {
+          "state": "rendering",
+          "width": 320,
+          "height": 180,
+          "receivedFrames": 12,
+          "decodedFrames": 11,
+          "renderedFrames": 11,
+          "rollingFiveSecondRenderedFps": 9.61,
+          "decodeQueueHighWater": 0
+        },
+        "resources": {
+          "browserJsHeapBytes": null,
+          "browserJsHeapScope": "browser-reported JavaScript heap only; excludes media/GPU/process memory"
+        },
+        "evidence": {
+          "endToEndLatencyMs": null,
+          "lateJoinSynchronization": "not-implemented",
+          "serverCpuAndMemory": "not-collected-in-browser",
+          "sourceAttribution": "track settings are browser-reported and do not prove a physical display was selected"
+        }
+      }
+    }
+  ],
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 6,
+          "sentBinaryFrames": 1117,
+          "receivedTextFrames": 7,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "screen.started",
+        "audio.started",
+        "screen.stopped",
+        "screen.started",
+        "audio.stopped"
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 12,
+          "receivedBinaryFrames": 1117,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "screen.subscribed",
+        "audio.subscribed",
+        "screen.stream",
+        "audio.stream",
+        "screen.streamEnded",
+        "screen.stream",
+        "audio.streamEnded",
+        "screen.streamEnded",
+        "control.event"
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 14,
+          "receivedBinaryFrames": 1117,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "control.event",
+        "screen.subscribed",
+        "audio.subscribed",
+        "screen.stream",
+        "audio.stream",
+        "screen.streamEnded",
+        "screen.stream",
+        "audio.streamEnded",
+        "screen.streamEnded",
+        "control.event",
+        "control.event"
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "Error: publisher did not receive screen.stopped within 12000 ms.\n    at waitForControl (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:154:9)\n    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:474:3"
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "physicalDisplayCapture": "not-tested; script replaces getDisplayMedia with a synthetic canvas track",
+    "phoneBrowser": "not-tested",
+    "lateJoinSynchronization": "not-implemented",
+    "serverCpuAndMemory": "not-collected-by-browser-script",
+    "qualityThresholds": "not-run under DEC-010 light POC scope"
+  },
+  "screenshots": [
+    "receiver-a-screen-panel-active.png",
+    "receiver-a-audio-panel-active.png",
+    "receiver-a-screen-cleared-audio-continuing.png",
+    "receiver-a-screen-cleared-after-ended.png"
+  ],
+  "failureSnapshots": [
+    {
+      "capturedAt": "2026-11-03T13:41:46.956Z",
+      "publisherState": "sharing",
+      "receiverState": "off",
+      "sentFrames": 409,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "renderedFrames": 0,
+      "renderedWidth": null,
+      "renderedHeight": null,
+      "renderFps": 0,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 4112,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "publisherMessage": "正在傳送瀏覽器選取的畫面；track 設定會標示來源回報值，編碼檔位與接收呈現另行觀測。",
+      "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+    },
+    {
+      "capturedAt": "2026-11-03T13:42:16.967Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 696,
+      "decodedFrames": 695,
+      "renderedFrames": 695,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.59,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "capturedAt": "2026-11-03T13:42:46.976Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 983,
+      "decodedFrames": 982,
+      "renderedFrames": 982,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.46,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        35,
+        150,
+        88,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    }
+  ],
+  "finishedAt": "2026-11-03T13:42:47.566Z"
+}

@@ -1,0 +1,11 @@
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 15000ms exceeded.
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:395:23 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v26.13.0

@@ -1,0 +1,7 @@
+{
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "osVersion": "27.2",
+  "node": "v26.13.0",
+  "topology": "same macOS host; local application; desktop browsers; not physical mobile evidence"
+}

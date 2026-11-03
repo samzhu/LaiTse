@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T05 screen-share core flow with injected synthetic display source; not physical display capture, late-join sync, or quality acceptance.",
+  "startedAt": "2026-11-03T13:39:45.546Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "mediaSource": {
+    "kind": "synthetic animated canvas MediaStreamTrack injected by this test",
+    "replacement": "publisher-page init script replaces navigator.mediaDevices.getDisplayMedia before the app loads",
+    "realDisplayCaptureSelected": false,
+    "realMicrophoneSelected": false,
+    "realMediaRecorded": false
+  },
+  "permissionAutomation": {
+    "microphone": "Firefox fake media stream enabled in all profiles; simulated allow only in publisher profile",
+    "screenCapture": "synthetic source returned by test injection; denial is a synthetic NotAllowedError",
+    "nativeDisplayPickerUsed": false
+  },
+  "clients": {
+    "publisher": {
+      "browser": "Firefox",
+      "role": "synthetic display and microphone publisher"
+    },
+    "receiverA": {
+      "browser": "Firefox",
+      "role": "screen and audio receiver"
+    },
+    "receiverB": {
+      "browser": "Firefox",
+      "role": "second screen and audio receiver"
+    }
+  },
+  "snapshots": [
+    {
+      "client": "receiver-b-first-share",
+      "capturedAt": "2026-11-03T13:39:51.689Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.49,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-first-share",
+      "capturedAt": "2026-11-03T13:39:51.689Z",
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "sentFrames": 0,
+      "receivedFrames": 5,
+      "decodedFrames": 4,
+      "renderedFrames": 4,
+      "renderedWidth": 320,
+      "renderedHeight": 180,
+      "renderFps": 9.49,
+      "encodeQueueHighWater": 0,
+      "decodeQueueHighWater": 0,
+      "socketQueueHighWaterBytes": 0,
+      "pixel": [
+        228,
+        81,
+        45,
+        255
+      ],
+      "publisherMessage": "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
+      "receiverMessage": "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。"
+    },
+    {
+      "client": "receiver-a-audio-start",
+      "audio": {
+        "capturedAt": "2026-11-03T13:39:54.603Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 121,
+        "decodedFrames": 121,
+        "renderedSamples": 2816,
+        "renderRms": 0.06613929957355572,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    },
+    {
+      "client": "receiver-b-audio-start",
+      "audio": {
+        "capturedAt": "2026-11-03T13:39:54.602Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 121,
+        "decodedFrames": 112,
+        "renderedSamples": 2432,
+        "renderRms": 0.06464213606541185,
+        "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+        "publisherMessage": "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。"
+      }
+    }
+  ],
+  "independenceChecks": [],
+  "observations": [],
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 1039,
+          "receivedTextFrames": 5,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "screen.started",
+        "audio.started"
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 4,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 10,
+          "receivedBinaryFrames": 884,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "screen.subscribed",
+        "audio.subscribed",
+        "screen.stream",
+        "audio.stream",
+        "screen.unsubscribed",
+        "audio.streamEnded",
+        "control.event",
+        "control.event"
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 4,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 11,
+          "receivedBinaryFrames": 883,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "control.event",
+        "screen.subscribed",
+        "audio.subscribed",
+        "screen.stream",
+        "audio.stream",
+        "screen.unsubscribed",
+        "audio.streamEnded",
+        "control.event"
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "page.waitForFunction: Timeout 15000ms exceeded.\n    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:395:23"
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "physicalDisplayCapture": "not-tested; script replaces getDisplayMedia with a synthetic canvas track",
+    "phoneBrowser": "not-tested",
+    "lateJoinSynchronization": "not-implemented",
+    "serverCpuAndMemory": "not-collected-by-browser-script",
+    "qualityThresholds": "not-run under DEC-010 light POC scope"
+  },
+  "screenshots": [
+    "receiver-a-screen-panel-active.png",
+    "receiver-a-audio-panel-active.png",
+    "receiver-a-screen-cleared-audio-continuing.png",
+    "receiver-a-screen-cleared-after-ended.png"
+  ],
+  "finishedAt": "2026-11-03T13:40:10.247Z"
+}

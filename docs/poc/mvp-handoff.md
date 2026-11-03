@@ -9,7 +9,7 @@
 | ID | 方案責任 | 狀態 | 必要證據 | MVP 移轉條件 |
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
-| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（合成語音管線可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
+| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面合成影音及原生分頁分享可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
 | SOL-003 | 權威 Room／Session／事件與權限 | 待實驗 | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 待實驗 | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
@@ -84,3 +84,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 新回歸：scripts/t04-smoke.mjs（3獨立Firefox、正常CA、全部fake media、真下載檔、訂閱ACK／視窗計數與panel screenshot）；tests/audio.integration.test.mjs新增兩訂閱者相同bytes／隔離退訂／再訂閱目前generation案例。14核心整合及一次瀏覽器示範通過；沒有為湊次數重跑。
 - 不可擴張：receiverBufferMs不是E2E延遲，packetGapCount不是實際擷取/編解碼/喇叭中斷，render RMS不是人耳聽見；endToEndLatencyMs仍null，來源/實體裝置/人耳由一般應用不自判。手機/真人／品質留待補測，原長測/p95僅依DEC-010作日後品質參考。
 - MVP前：此本地JSON是診斷工具，不是產品統計／耐久記錄或跨程序身份；仍需正式Room/Session/授權、多房、重連與品質決策，不能整包視為可採用。實際使用與未驗範圍均保留，測試profile／CA不進產品。
+
+## T05／POC-02-R001：SOL-002、SOL-008（2026-11-03）
+
+- SOL-002：可延續`screen.ts`、`ScreenPanel.tsx`、`screen-relay.ts`的VP8/canvas及同一WS LTS1分流；LTA1 Opus規格不變。各來源獨立啟停，track ended及readyState防護、拒權、斷線清理；24B header與512KiB影格上限，整條WS總待送1.5MiB，文字1KiB/能力8KiB維持。此總佇列門檻與T01/03的64KiB不同，不能將舊品質結論直接繼承。
+- 最終三Firefox合成影音／雙接收可行，另兩Chrome原生分頁擷取1280×630與瀏覽器停止清空可行，兩種拓樸／傳輸／音源分開記錄。[R001](evidence/POC-02-R001/README.md)含原始失敗、修正及未定位第一次browser逾時；只是一個本機候選可行，不是長時間或跨裝置品質通過。
+- SOL-008：`scripts/t05-smoke.mjs`、少量screen整合契約、實際下載的schema1觀測、尺寸/render窗口fps/queue與nullable JS heap可復用。設定target、track回報與實際呈現分開；server ps外部量測不混入browser heap，沒有E2E latency值或品質承諾。
+- MVP使用前補晚加入與keyframe初始化、時鐘/音畫同步、來源更換、多房／權限、重連／弱網與必要裝置品質；重整偵錯欄位/測試注入、固定codec及總佇列策略。一般使用需接收者先觀看、發布頁前景點擊正常來源選擇器；本步對晚加入明確拒絕。

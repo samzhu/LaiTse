@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AudioPanel } from "./AudioPanel";
+import { ScreenPanel } from "./ScreenPanel";
 import {
   API_KEYS,
   API_LABELS,
@@ -493,6 +494,7 @@ export function App() {
       </section>
 
       {connected ? <AudioPanel socket={currentSocket} /> : null}
+      {connected ? <ScreenPanel socket={currentSocket} /> : null}
 
       <footer className="footer-note">
         <span>Local experiment</span>

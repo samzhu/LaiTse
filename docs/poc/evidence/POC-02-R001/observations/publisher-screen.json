@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-03T13:45:55.588Z",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+    "platform": "MacIntel",
+    "secureContext": true
+  },
+  "capture": {
+    "trackSettingsReportedByBrowser": {
+      "width": 320,
+      "height": 180,
+      "frameRate": null,
+      "displaySurface": null
+    },
+    "physicalDisplayVerified": false
+  },
+  "encoding": {
+    "codec": "vp8",
+    "targetWidth": 320,
+    "targetHeight": 180,
+    "targetFrameRate": 10,
+    "targetBitrateBps": 800000,
+    "sentFrames": 12,
+    "captureFramesSkipped": 0,
+    "encodeQueueHighWater": 0,
+    "socketQueueHighWaterBytes": 3587
+  },
+  "rendering": {
+    "state": "off",
+    "width": null,
+    "height": null,
+    "receivedFrames": 0,
+    "decodedFrames": 0,
+    "renderedFrames": 0,
+    "rollingFiveSecondRenderedFps": 0,
+    "decodeQueueHighWater": 0
+  },
+  "resources": {
+    "browserJsHeapBytes": null,
+    "browserJsHeapScope": "browser-reported JavaScript heap only; excludes media/GPU/process memory"
+  },
+  "evidence": {
+    "endToEndLatencyMs": null,
+    "lateJoinSynchronization": "not-implemented",
+    "serverCpuAndMemory": "not-collected-in-browser",
+    "sourceAttribution": "track settings are browser-reported and do not prove a physical display was selected"
+  }
+}

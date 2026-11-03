@@ -57,3 +57,15 @@ docs/poc/evidence/POC-01-R002含實際下載、各phase/ACK/transport/起迄與s
 人類要求將「將這個小步小步驗證 再合併到最後的商品精神」納入指定product-collaboration-workflow。主代理唯一writer已更新該skill主文與既有references/implementation.md：以最終使用情境切最小可操作步驟，POC先釐清可行／用法／限制，每步將可延續成果接回共同基底，程式與紀錄依既有提交約定維持同版本，商品整合再核對完整流程與必要品質。
 
 未寫死LaiTse/Node/CloudRun/特定代理平台；小改可直接實作，正式交付採相符驗收，缺裝置/模擬結果界線及授權仍保留。已實際讀回兩檔與前後差異，quick_validate.py回報Skill is valid，相對參考連結存在；人工情境檢視涵蓋小修、輕量POC、缺裝置部分交付及已授權商品整合。純文字修改，沒有跑應用測試或啟動服務，亦未作獨立代理行為實測。已保存、writer釋出；後續人類明確要求「先將 skill 更新與協作紀錄 commit」，本次提交完整技能四檔（含既有參考文件，避免斷鏈）及四份協作紀錄。格式/連結及git diff空白檢查通過；不push、不啟動T05。
+
+## T05啟動（2026-11-03）
+
+完成skill commit 21470c6後人類指示「繼續」，依目前進度接續#6「站內畫面分享」。本輪沿用輕量驗測、程式與紀錄一起commit；T04僅桌面合成核心可行，未將手機/真人品質前置改成通過。先驗證同一應用畫面轉送與音訊獨立啟停；T06晚加入/同步及雲部署不在範圍。範圍包已記dispatch，root獨占docs/Git與驗收，Luna xhigh負責程式。
+
+### T05完成（2026-11-03）
+
+代理已停止writer，root接手窄修／驗收。實作主文README、screen controller/panel/relay、同socket分流與共有1.5MiB待送上限、獨立來源啟停及capture ended/readyState清理；無新依賴。前置review修canvas mount、資源早綁定與queue一致性，實測修測試close碼預期、未觸達的synthetic ended訊號、stop前後基準競態；第一次browser逾時未定位，未據此改產品queue，所有失敗保存。
+
+最終18核心整合與build/typecheck通過，三Firefox可信HTTPS/WSS短合成影音流程零page/socket errors；真下載320×180／9.67fps，screen stop/deny audio持續、audio stop screen持續。另Chrome156兩頁前景原生分頁捕捉→同一本機HTTP/WS→1280×630畫面／9.74fps快照、原生停止617影格後清空；未開真mic/桌面/視窗/OS權限。原生初次背景Invalid state已改前景操作成功，data:fixture遭安全政策阻擋未繞過。
+
+R001 JSON/圖/hash讀回且代表圖實際查看，README／執行紀錄／SOL-002/008及brief/交付索引同步。真mic/真人/手機與晚加入/同步/品質/容量仍未驗，完整POC-02 Inconclusive。writer與本輪server/Firefox/Chrome tabs已釋出；本機commit程式及紀錄，不push/GitHub/T06/部署。

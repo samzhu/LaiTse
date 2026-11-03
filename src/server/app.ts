@@ -11,10 +11,11 @@ import {
   type SanitizedCapabilityReport,
 } from "./capabilities.ts";
 import { createAudioRelay } from "./audio-relay.ts";
+import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
 export const MAX_ROOM_MEMBERS = 8;
-export const MAX_SOCKET_BUFFERED_BYTES = 64 * 1_024;
+export const MAX_SOCKET_BUFFERED_BYTES = MAX_SCREEN_SOCKET_BUFFERED_BYTES;
 
 const ROOM = { id: "lobby", name: "Local test room" } as const;
 const REACTIONS = new Set(["wave", "clap", "heart"]);
@@ -83,10 +84,11 @@ export async function createApp(options: CreateAppOptions = {}) {
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const audioRelay = createAudioRelay();
+  const screenRelay = createScreenRelay();
   let sequence = 0;
 
   await app.register(fastifyWebsocket, {
-    options: { maxPayload: MAX_CAPABILITY_MESSAGE_BYTES },
+    options: { maxPayload: MAX_SCREEN_FRAME_BYTES },
   });
 
   if (options.serveClient !== false) {
@@ -128,19 +130,31 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       const send = (message: unknown) => {
         if (socket.readyState !== socket.OPEN) return;
-        if (socket.bufferedAmount > MAX_SOCKET_BUFFERED_BYTES) {
+        const payload = JSON.stringify(message);
+        if (socket.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
           socket.close(1013, "Receiver is too slow");
           return;
         }
-        socket.send(JSON.stringify(message), (error) => {
+        socket.send(payload, (error) => {
           if (error) socket.terminate();
         });
       };
 
       const sendBinary = (message: Buffer) => {
         if (socket.readyState !== socket.OPEN) return;
-        if (socket.bufferedAmount > MAX_SOCKET_BUFFERED_BYTES) {
+        if (socket.bufferedAmount + message.byteLength > MAX_SOCKET_BUFFERED_BYTES) {
           socket.close(1013, "Receiver is too slow");
+          return;
+        }
+        socket.send(message, { binary: true, compress: false }, (error) => {
+          if (error) socket.terminate();
+        });
+      };
+
+      const sendScreenBinary = (message: Buffer) => {
+        if (socket.readyState !== socket.OPEN) return;
+        if (socket.bufferedAmount + message.byteLength > MAX_SCREEN_SOCKET_BUFFERED_BYTES) {
+          socket.close(1013, "Screen receiver is too slow");
           return;
         }
         socket.send(message, { binary: true, compress: false }, (error) => {
@@ -161,6 +175,14 @@ export async function createApp(options: CreateAppOptions = {}) {
         readyState: () => socket.readyState,
         openState: socket.OPEN,
       });
+      screenRelay.register(connection.id, {
+        sendControl: send,
+        sendBinary,
+        sendScreenBinary,
+        reject: rejectControl,
+        readyState: () => socket.readyState,
+        openState: socket.OPEN,
+      });
 
       const emit = (kind: ControlEvent["kind"], member: Member, reaction?: string) => {
         const event: ControlEvent = {
@@ -175,10 +197,11 @@ export async function createApp(options: CreateAppOptions = {}) {
         const message = { type: "control.event", event };
         for (const [target, targetConnection] of clients) {
           if (targetConnection.member && target.readyState === target.OPEN) {
-            if (target.bufferedAmount > MAX_SOCKET_BUFFERED_BYTES) {
+            const payload = JSON.stringify(message);
+            if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
               target.close(1013, "Receiver is too slow");
             } else {
-              target.send(JSON.stringify(message), (error) => {
+              target.send(payload, (error) => {
                 if (error) target.terminate();
               });
             }
@@ -191,6 +214,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         if (socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
         if (isBinary) {
+          if (screenRelay.handleBinary(connection.id, bytes)) return;
           audioRelay.handleBinary(connection.id, bytes);
           return;
         }
@@ -213,7 +237,6 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
 
         const message = payload as Record<string, unknown>;
-        if (audioRelay.handleControl(connection.id, message)) return;
         if (message.type === "capability.report") {
           if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
             rejectControl("invalid_capability_report", "Capability reports must stay within the 8 KiB limit.", 1009);
@@ -263,6 +286,9 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
+        if (audioRelay.handleControl(connection.id, message)) return;
+        if (screenRelay.handleControl(connection.id, message)) return;
+
         if (!connection.member) {
           if (
             !hasOnlyKeys(message, ["type", "roomId", "displayName"]) ||
@@ -293,6 +319,7 @@ export async function createApp(options: CreateAppOptions = {}) {
           const member = { id: randomUUID(), displayName };
           connection.member = member;
           audioRelay.markJoined(connection.id);
+          screenRelay.markJoined(connection.id);
           members.set(member.id, member);
           const event = emit("member.joined", member);
           send({
@@ -327,6 +354,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       socket.on("close", () => {
         clients.delete(socket);
         audioRelay.disconnect(connection.id);
+        screenRelay.disconnect(connection.id);
         if (!connection.member) return;
         members.delete(connection.member.id);
         emit("member.left", connection.member);
@@ -343,6 +371,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     members.clear();
     observations.clear();
     audioRelay.close();
+    screenRelay.close();
   });
 
   return app;

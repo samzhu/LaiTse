@@ -4,7 +4,7 @@ const AUDIO_BITRATE = 32_000;
 const AUDIO_FRAME_DURATION_US = 20_000;
 const AUDIO_FRAME_HEADER_BYTES = 24;
 const MAX_OPUS_PACKET_BYTES = 4_096;
-const MAX_SOCKET_BUFFERED_BYTES = 64 * 1_024;
+const MAX_SOCKET_BUFFERED_BYTES = 1_536 * 1_024;
 const AUDIO_MAGIC = [0x4c, 0x54, 0x41, 0x31];
 
 const PUBLISH_CONFIG: Record<string, unknown> = {
@@ -600,6 +600,8 @@ export class AudioController {
     }
 
     if (message.type === "protocol.error") {
+      const code = String(message.code ?? "");
+      if (!code.startsWith("audio_") && !code.startsWith("invalid_audio")) return;
       this.set({ publisherMessage: `房間拒絕音訊控制：${String(message.message ?? message.code ?? "protocol error")}` });
       return;
     }
@@ -727,8 +729,8 @@ export class AudioController {
 
   private handleEncodedChunk(attempt: CaptureAttempt, chunk: EncodedChunk): void {
     if (this.captureAttempt !== attempt || attempt.cancelled || this.publishGeneration === null || !isOpen(this.socket)) return;
-    if (this.socket.bufferedAmount > MAX_SOCKET_BUFFERED_BYTES) {
-      this.failCapture(attempt, new Error("The outgoing audio queue exceeded 64 KiB; publishing stopped."));
+    if (this.socket.bufferedAmount + AUDIO_FRAME_HEADER_BYTES + chunk.byteLength > MAX_SOCKET_BUFFERED_BYTES) {
+      this.failCapture(attempt, new Error("The shared outgoing WebSocket queue exceeded 1.5 MiB; audio publishing stopped."));
       return;
     }
     if (chunk.byteLength < 1 || chunk.byteLength > MAX_OPUS_PACKET_BYTES || !Number.isFinite(chunk.timestamp) || chunk.timestamp < 0) {
@@ -748,6 +750,8 @@ export class AudioController {
   }
 
   private handleBinaryFrame(data: ArrayBuffer): void {
+    const header = new Uint8Array(data, 0, Math.min(4, data.byteLength));
+    if (header.byteLength !== AUDIO_MAGIC.length || AUDIO_MAGIC.some((value, index) => header[index] !== value)) return;
     const frame = parseAudioFrame(data);
     if (!frame) {
       this.set({ listenerMessage: "收到格式無效的音訊封包；此封包已略過。" });

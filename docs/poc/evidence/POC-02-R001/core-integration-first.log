@@ -1,0 +1,46 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (192.866542ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (169.807125ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.689458ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (68.998167ms)
+✔ invalid capability reports are rejected and not stored (4.38225ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (110.64875ms)
+✔ screen relay rejects non-publisher frames and invalid publishing bounds (87.9195ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.397791ms)
+✖ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (5.48075ms)
+✔ the application serves health and a built-in room catalogue (37.198333ms)
+✔ two clients receive the same authoritative members and sequenced reaction (6.762167ms)
+✔ the websocket rejects cross-origin clients before joining (1.82875ms)
+✔ malformed or oversized control frames close without being broadcast (2.983083ms)
+✔ clients cannot select arbitrary rooms (1.124ms)
+✔ display names longer than the server limit are rejected (1.039208ms)
+✔ control events reject client-supplied fields outside the protocol (1.433417ms)
+✔ the room has a fixed member limit (6.53825ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.184916ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 713.481667
+
+✖ failing tests:
+
+test at tests/screen.integration.test.mjs:253:1
+✖ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (5.48075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1006 !== 1009
+  
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/screen.integration.test.mjs:270:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1006,
+    expected: 1009,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T13:38:50.310130+00:00",
+    "finishedAt": "2026-11-03T13:38:51.510400+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T13:38:51.511471+00:00",
+    "finishedAt": "2026-11-03T13:38:52.268618+00:00",
+    "exitCode": 1
+  }
+]

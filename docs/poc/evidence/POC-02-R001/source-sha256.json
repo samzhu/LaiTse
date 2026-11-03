@@ -1,0 +1,14 @@
+{
+  "src/client/App.tsx": "e92850fd4b6af1d1609cfe248dfbb1449926359763d5565f5aba9cd56d232025",
+  "src/client/audio.ts": "1e7978e72db8798bbfff56d09a6d8471ea89e5c27ec2439f8372d6f59d555bdd",
+  "src/client/ScreenPanel.tsx": "59b77c03ac04c39630be334a78f958370f15c2c2888b8618b34c394008397210",
+  "src/client/screen.ts": "def82ba45ca37f3caff44edf324776ef9de47a6334886dc9dca4d78bcab05fc5",
+  "src/client/styles.css": "92e6ed89f26515d6def77ba701d51b01ed4964da1833b202fe25a357071dc056",
+  "src/server/app.ts": "bde899a3f1d9cc4f4bfcc7b49f5bf060919c3cf79daf1b6fc5aacec565650fb6",
+  "src/server/screen-relay.ts": "5a9500183e98e62be52ef83d09473f21d6f0c7f8dec555205526f7421cd2ed29",
+  "scripts/t05-smoke.mjs": "7e109ac6e2cf881b308bec0ccef530540b9038b989b66a853dc0d17d9d2f9899",
+  "tests/screen.integration.test.mjs": "fed032a2e682514700b3f4e8ea3aeeaf23e3a83c6ae3f6f3f999306b8f64028d",
+  "README.md": "644bd411e44874023ee2b60d88f0029e29a153d4fe14a900515796d18c8eafd5",
+  "package.json": "7e72b5253ed8fa6f15411c2dc341ddb7e599dbd92cd4cfc67ab3741d6a271319",
+  "package-lock.json": "4bfdae0b85ddbf841968fe28a787d352293f89c5565055c29e162b4fe0016c80"
+}

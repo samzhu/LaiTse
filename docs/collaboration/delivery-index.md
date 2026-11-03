@@ -35,3 +35,4 @@
 | T03-IMPLEMENT／T03-ACCEPT | 語音最小閉環程式／合成自動驗測 | audio controller/relay/worklets、README；POC-01-R001 | 合成Opus管線、stop、模擬denied、13核心案例通過；真人稍後 | 完整T03/POC-01待真mic／人耳，不啟動T04 |
 | T04-IMPLEMENT／T04-ACCEPT | 桌面雙接收核心與音訊觀測下載 | AudioController/Panel、t04-smoke、README；POC-01-R002 | 14核心／三Firefox合成晚加入/退訂/再加入/stop與真JSON下載通過 | 手機/真人/E2E品質未測，完整T04待補，不啟動T05 |
 | WORKFLOW-STEPWISE | 小步驗證累積至完整商品的協作思維 | .agents/skills/product-collaboration-workflow/SKILL.md及references/implementation.md | 已保存讀回、格式/連結檢查通過；小改/POC/商品整合情境已人工檢視 | 不預設技術、設備或平台，不擴張產品授權；依後續人類指示與協作紀錄一起本機commit，不push |
+| T05-IMPLEMENT／T05-ACCEPT | 站內畫面分享、獨立啟停與觀測 | ScreenController/Panel/relay、t05-smoke、README；POC-02-R001 | 18核心/build、三Firefox合成影音、原生Chrome分頁擷取/瀏覽器停止成功；失敗與修正保留 | 桌面核心可行，完整POC-02待晚加入/同步與必要裝置；本機commit、不push；資源釋出 |

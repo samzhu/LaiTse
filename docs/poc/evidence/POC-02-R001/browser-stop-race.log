@@ -1,0 +1,18 @@
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: screen frames should stop after streamEnded
+
+13 !== 12
+
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t05-smoke.mjs:424:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 13,
+  expected: 12,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.13.0

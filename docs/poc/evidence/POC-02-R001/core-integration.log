@@ -1,0 +1,26 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (198.968042ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (168.204167ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (85.864125ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (89.14875ms)
+✔ invalid capability reports are rejected and not stored (4.608ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (118.176875ms)
+✔ screen relay rejects non-publisher frames and invalid publishing bounds (89.268084ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.462791ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (85.167167ms)
+✔ the application serves health and a built-in room catalogue (53.700792ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.457375ms)
+✔ the websocket rejects cross-origin clients before joining (2.440333ms)
+✔ malformed or oversized control frames close without being broadcast (4.400292ms)
+✔ clients cannot select arbitrary rooms (1.797833ms)
+✔ display names longer than the server limit are rejected (1.471458ms)
+✔ control events reject client-supplied fields outside the protocol (1.617125ms)
+✔ the room has a fixed member limit (7.658708ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.825916ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 757.831
