@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "observedAt": "2026-11-03T16:13:55.856Z",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+    "platform": "MacIntel",
+    "secureContext": true
+  },
+  "capture": {
+    "trackSettingsReportedByBrowser": null,
+    "physicalDisplayVerified": false
+  },
+  "encoding": {
+    "codec": "vp8",
+    "targetWidth": 0,
+    "targetHeight": 0,
+    "targetFrameRate": 15,
+    "targetBitrateBps": 800000,
+    "sentFrames": 0,
+    "captureFramesSkipped": 0,
+    "encodeQueueHighWater": 0,
+    "socketQueueHighWaterBytes": 0
+  },
+  "rendering": {
+    "state": "rendering",
+    "width": 640,
+    "height": 360,
+    "receivedFrames": 15,
+    "decodedFrames": 14,
+    "renderedFrames": 9,
+    "rollingFiveSecondRenderedFps": 13.7,
+    "decodeQueueHighWater": 0
+  },
+  "audioVideoSync": {
+    "mode": "audio-master",
+    "matchingAudioPublisherClock": true,
+    "scheduledSourceClockOffsetMs": 7.833,
+    "audioMaster": {
+      "generation": 1,
+      "sourceTimestampUs": 15312166,
+      "receiverPerformanceTimeMs": 12657.667,
+      "mapping": "output-timestamp",
+      "observationWindowMs": 21.333333333333332,
+      "mappingErrorBoundMs": null
+    },
+    "recentAudioPulseEvents": [
+      {
+        "clockId": "da34736c-dfdd-44b4-8743-093eb9e6f962",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 4922833,
+        "graphTimestampUs": 1429333,
+        "receiverPerformanceTimeMs": 2267.666333333333,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp"
+      },
+      {
+        "clockId": "da34736c-dfdd-44b4-8743-093eb9e6f962",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 7333499,
+        "graphTimestampUs": 3840000,
+        "receiverPerformanceTimeMs": 4678.666666666666,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp"
+      },
+      {
+        "clockId": "da34736c-dfdd-44b4-8743-093eb9e6f962",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 9722833,
+        "graphTimestampUs": 6229333,
+        "receiverPerformanceTimeMs": 7066.666333333333,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp"
+      },
+      {
+        "clockId": "da34736c-dfdd-44b4-8743-093eb9e6f962",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 12112166,
+        "graphTimestampUs": 8618667,
+        "receiverPerformanceTimeMs": 9455.667,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp"
+      },
+      {
+        "clockId": "da34736c-dfdd-44b4-8743-093eb9e6f962",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 14522833,
+        "graphTimestampUs": 11029333,
+        "receiverPerformanceTimeMs": 11866.666333333333,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp"
+      }
+    ],
+    "queuedDecodedFrames": 5,
+    "maximumQueuedDecodedFrames": 16
+  },
+  "resources": {
+    "browserJsHeapBytes": null,
+    "browserJsHeapScope": "browser-reported JavaScript heap only; excludes media/GPU/process memory"
+  },
+  "evidence": {
+    "endToEndLatencyMs": null,
+    "lateJoinSynchronization": "keyframe-gated-with-config-metadata",
+    "serverCpuAndMemory": "not-collected-in-browser",
+    "sourceAttribution": "track settings are browser-reported and do not prove a physical display was selected"
+  }
+}

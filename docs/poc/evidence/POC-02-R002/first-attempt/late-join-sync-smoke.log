@@ -1,0 +1,17 @@
+[T06] room-ready
+[T06] synthetic-audio-active {"clockId":"63325abc-6f56-4f65-8269-35154f85fd83"}
+[T06] screen-active {"generation":1,"width":1280,"height":720,"clockId":"63325abc-6f56-4f65-8269-35154f85fd83"}
+[T06] late-join-decoded {"generation":1,"clockId":"63325abc-6f56-4f65-8269-35154f85fd83","dimensions":[1280,720],"syncMode":"audio-master"}
+[T06] same-receiver-marker-samples {"pairedCycles":3,"offsetsMs":[108.55,122.35,129.27],"mappingErrorBoundMs":null}
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 10000ms exceeded.
+    at waitForRendered (/Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:332:14)
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:599:26 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v26.13.0

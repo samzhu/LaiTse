@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { AudioController, type AudioSnapshot } from "./audio";
+import { MediaTimeline } from "./media-timeline";
 
 type AudioPanelProps = {
   socket: WebSocket | null;
+  timeline: MediaTimeline;
 };
 
-export function AudioPanel({ socket }: AudioPanelProps) {
+export function AudioPanel({ socket, timeline }: AudioPanelProps) {
   const [state, setState] = useState<AudioSnapshot | null>(null);
   const controllerRef = useRef<AudioController | null>(null);
 
@@ -14,13 +16,13 @@ export function AudioPanel({ socket }: AudioPanelProps) {
       setState(null);
       return;
     }
-    const controller = new AudioController(socket, setState);
+    const controller = new AudioController(socket, timeline, setState);
     controllerRef.current = controller;
     return () => {
       controller.dispose();
       if (controllerRef.current === controller) controllerRef.current = null;
     };
-  }, [socket]);
+  }, [socket, timeline]);
 
   if (!socket || !state) return null;
 
@@ -71,10 +73,12 @@ export function AudioPanel({ socket }: AudioPanelProps) {
       data-receiver-generation={currentObservation?.receiver.streamGeneration ?? ""}
       data-packet-gap-count={currentObservation?.receiver.packetGapCount ?? 0}
       data-receiver-buffer-ms={currentObservation?.receiver.receiverBufferMs ?? 0}
+      data-audio-pulse-events={JSON.stringify(timeline.getPulseEvents())}
+      data-audio-playback-clock-id={timeline.getActiveAudioStream()?.clockId ?? ""}
     >
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">T04 · AUDIO OBSERVATION</p>
+          <p className="eyebrow">T06 · AUDIO OBSERVATION</p>
           <h2 id="audio-title">即時語音</h2>
         </div>
         <span className="audio-profile">Opus · mono · 48 kHz</span>

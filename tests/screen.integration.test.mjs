@@ -99,13 +99,13 @@ function makeAudioFrame(generation, sequence, packet = Buffer.from([0xf8, 0xff, 
   return frame;
 }
 
-function makeScreenFrame(generation, sequence, payload = Buffer.from([0x00, 0x00, 0x00])) {
+function makeScreenFrame(generation, sequence, payload = Buffer.from([0x00, 0x00, 0x00]), chunkType = 0) {
   const frame = Buffer.alloc(24 + payload.byteLength);
   frame.write("LTS1", 0, "ascii");
   frame.writeUInt32BE(generation, 4);
   frame.writeUInt32BE(sequence, 8);
   frame.writeDoubleBE(sequence * 100_000, 12);
-  frame[20] = 0;
+  frame[20] = chunkType;
   payload.copy(frame, 24);
   return frame;
 }
@@ -150,16 +150,21 @@ test("LTA1 audio and LTS1 screen frames share the socket but keep independent su
     const audioStreamAtReceiver = nextJson(receiver, (message) => message.type === "audio.stream");
     const screenStarted = await startScreen(publisher);
     const audioStarted = await startAudio(publisher);
-    assert.deepEqual(await screenStreamAtReceiver, {
+    const screenStream = await screenStreamAtReceiver;
+    assert.deepEqual(screenStream, {
       type: "screen.stream",
       generation: screenStarted.generation,
+      clockId: screenStream.clockId,
       codec: "vp8",
       width: 320,
       height: 180,
       frameRate: 10,
       bitrate: 800_000,
     });
-    assert.equal((await audioStreamAtReceiver).generation, audioStarted.generation);
+    const audioStream = await audioStreamAtReceiver;
+    assert.equal(audioStream.generation, audioStarted.generation);
+    assert.equal(typeof screenStream.clockId, "string");
+    assert.equal(audioStream.clockId, screenStream.clockId);
 
     const screenFrameAtReceiver = nextBinaryWithMagic(receiver, "LTS1");
     const audioFrameAtReceiver = nextBinaryWithMagic(receiver, "LTA1");
@@ -200,7 +205,7 @@ test("LTA1 audio and LTS1 screen frames share the socket but keep independent su
   }
 });
 
-test("screen relay rejects non-publisher frames and invalid publishing bounds", async () => {
+test("screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config", async () => {
   const publisher = await connect();
   const intruder = await connect();
   const receiver = await connect();
@@ -214,12 +219,34 @@ test("screen relay rejects non-publisher frames and invalid publishing bounds", 
     assert.equal((await invalidConfig).code, "unsupported_screen_config");
 
     const streamAtReceiver = nextJson(receiver, (message) => message.type === "screen.stream");
+    const keyframeRequest = nextJson(publisher, (message) => message.type === "screen.keyframeRequest");
     const started = await startScreen(publisher);
-    await streamAtReceiver;
+    const firstStream = await streamAtReceiver;
+    assert.equal(typeof firstStream.clockId, "string");
+    assert.ok(firstStream.clockId.length > 0);
 
-    const lateJoinError = nextJson(lateViewer, (message) => message.type === "screen.error");
+    const initialKeyframe = nextBinaryWithMagic(receiver, "LTS1");
+    publisher.send(makeScreenFrame(started.generation, 0, Buffer.from([0x00]), 0));
+    assert.equal((await initialKeyframe)[20], 0, "the initial subscriber receives the publisher's start keyframe");
+
+    const lateSubscribed = nextJson(lateViewer, (message) => message.type === "screen.subscribed");
+    const lateStream = nextJson(lateViewer, (message) => message.type === "screen.stream");
     lateViewer.send(JSON.stringify({ type: "screen.subscribe" }));
-    assert.equal((await lateJoinError).code, "late_join_not_supported");
+    await lateSubscribed;
+    const activeStream = await lateStream;
+    assert.equal(activeStream.generation, started.generation);
+    assert.equal(activeStream.clockId, firstStream.clockId);
+    assert.equal((await keyframeRequest).generation, started.generation);
+
+    const existingDelta = nextBinaryWithMagic(receiver, "LTS1");
+    const lateShouldWait = expectNoBinary(lateViewer);
+    publisher.send(makeScreenFrame(started.generation, 1, Buffer.from([0x01]), 1));
+    assert.equal((await existingDelta)[20], 1, "already joined receiver can continue to receive deltas");
+    await lateShouldWait;
+
+    const lateKeyframe = nextBinaryWithMagic(lateViewer, "LTS1");
+    publisher.send(makeScreenFrame(started.generation, 2, Buffer.from([0x02]), 0));
+    assert.equal((await lateKeyframe)[20], 0, "late receiver starts only on a keyframe");
 
     const error = nextJson(intruder, (message) => message.type === "protocol.error");
     const closed = new Promise((resolve) => intruder.once("close", (code) => resolve(code)));

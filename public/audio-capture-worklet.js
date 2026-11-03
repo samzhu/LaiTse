@@ -1,11 +1,15 @@
 const CAPTURE_BLOCK_FRAMES = 960;
 
 class LaiTseCaptureProcessor extends AudioWorkletProcessor {
-  constructor() {
+  constructor(options) {
     super();
     this.block = new Float32Array(CAPTURE_BLOCK_FRAMES);
     this.blockFrames = 0;
     this.firstFrame = 0;
+    const anchor = options.processorOptions ?? {};
+    this.performanceOffsetUs = Number.isFinite(anchor.performanceTimeUs) && Number.isFinite(anchor.contextTimeUs)
+      ? anchor.performanceTimeUs - anchor.contextTimeUs
+      : 0;
   }
 
   process(inputs, outputs) {
@@ -30,7 +34,7 @@ class LaiTseCaptureProcessor extends AudioWorkletProcessor {
         const samples = this.block;
         this.port.postMessage({
           type: "pcm",
-          timestampUs: Math.round(this.firstFrame * 1_000_000 / sampleRate),
+          timestampUs: Math.round(this.firstFrame * 1_000_000 / sampleRate + this.performanceOffsetUs),
           samples,
         }, [samples.buffer]);
         this.block = new Float32Array(CAPTURE_BLOCK_FRAMES);

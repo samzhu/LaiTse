@@ -1,0 +1,14 @@
+[T06] room-ready
+[T06] synthetic-audio-active {"clockId":"306a9179-aab8-41ba-8cbc-b5715a67edef"}
+[T06] screen-active {"generation":1,"width":1280,"height":720,"clockId":"306a9179-aab8-41ba-8cbc-b5715a67edef"}
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 10000ms exceeded.
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:515:23 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v26.13.0

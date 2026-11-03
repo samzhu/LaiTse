@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { INITIAL_SCREEN_STATE, ScreenController, type ScreenSnapshot } from "./screen";
+import { MediaTimeline } from "./media-timeline";
 
 type ScreenPanelProps = {
   socket: WebSocket | null;
+  timeline: MediaTimeline;
 };
 
-export function ScreenPanel({ socket }: ScreenPanelProps) {
+export function ScreenPanel({ socket, timeline }: ScreenPanelProps) {
   const [state, setState] = useState<ScreenSnapshot>({ ...INITIAL_SCREEN_STATE });
   const controllerRef = useRef<ScreenController | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -13,13 +15,13 @@ export function ScreenPanel({ socket }: ScreenPanelProps) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!socket || !canvas) return;
-    const controller = new ScreenController(socket, canvas, setState);
+    const controller = new ScreenController(socket, canvas, timeline, setState);
     controllerRef.current = controller;
     return () => {
       controller.dispose();
       if (controllerRef.current === controller) controllerRef.current = null;
     };
-  }, [socket]);
+  }, [socket, timeline]);
 
   if (!socket) return null;
 
@@ -45,16 +47,20 @@ export function ScreenPanel({ socket }: ScreenPanelProps) {
       data-encode-queue-high-water={state.encodeQueueHighWater}
       data-decode-queue-high-water={state.decodeQueueHighWater}
       data-socket-queue-high-water-bytes={state.socketQueueHighWaterBytes}
+      data-sync-mode={state.syncMode}
+      data-sync-clock-id={state.syncClockId ?? ""}
+      data-scheduled-source-clock-offset-ms={state.scheduledSourceClockOffsetMs ?? ""}
+      data-dropped-decoded-frames={state.droppedDecodedFrames}
     >
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">T05 · SCREEN SHARE</p>
+          <p className="eyebrow">T06 · SCREEN SHARE</p>
           <h2 id="screen-title">站內畫面分享</h2>
         </div>
         <span className="screen-profile">VP8 · WebCodecs</span>
       </div>
-      <p className="screen-intro">
-        分享者由按鈕呼叫瀏覽器來源選擇器；畫面和麥克風各自啟停。觀看者須在分享開始前加入，本步尚未處理晚加入同步。
+        <p className="screen-intro">
+        分享者由按鈕呼叫瀏覽器來源選擇器；畫面和麥克風各自啟停。晚加入會取得目前設定並等待下一個關鍵影格。
       </p>
 
       <div className="screen-controls">
@@ -64,7 +70,10 @@ export function ScreenPanel({ socket }: ScreenPanelProps) {
             <p className={`screen-state ${["denied", "blocked", "unsupported", "error"].includes(state.publisherState) ? "is-error" : ""}`} role="status" data-screen-status="publisher">{state.publisherMessage}</p>
           </div>
           {isSharing ? (
-            <button className="quiet-button" onClick={() => controllerRef.current?.stopShare()}>停止分享</button>
+            <div className="audio-button-row">
+              <button className="quiet-button" onClick={() => controllerRef.current?.replaceShareSource()}>更換分享來源</button>
+              <button className="quiet-button" onClick={() => controllerRef.current?.stopShare()}>停止分享</button>
+            </div>
           ) : (
             <button className="primary-button" onClick={() => void controllerRef.current?.startShare()} disabled={isStartingShare}>
               {isStartingShare ? "等待來源選擇…" : state.publisherState === "denied" ? "重新要求分享權限" : "開始分享畫面"}
@@ -100,8 +109,11 @@ export function ScreenPanel({ socket }: ScreenPanelProps) {
         <span><strong>擷取影格跳過數</strong><output data-testid="screen-capture-skipped">{state.captureFramesSkipped}</output></span>
         <span><strong>編碼／解碼佇列峰值</strong><output data-testid="screen-queue-high-water">{state.encodeQueueHighWater} / {state.decodeQueueHighWater}</output></span>
         <span><strong>WebSocket 待送峰值</strong><output data-testid="screen-socket-queue-high-water">{state.socketQueueHighWaterBytes} bytes</output></span>
+        <span><strong>同步模式</strong><output data-testid="screen-sync-mode">{state.syncMode === "audio-master" ? "同發布者音訊播放時鐘" : state.syncMode === "standalone" ? "獨立畫面時鐘" : "等待可解碼影格"}</output></span>
+        <span><strong>排程時間差</strong><output data-testid="screen-source-clock-offset">{state.scheduledSourceClockOffsetMs === null ? "尚無樣本" : `${state.scheduledSourceClockOffsetMs.toFixed(2)} ms`}</output></span>
+        <span><strong>解碼影格丟棄</strong><output data-testid="screen-dropped-decoded-frames">{state.droppedDecodedFrames}</output></span>
       </div>
-      <p className="screen-limit-note">track 設定由瀏覽器回報；編碼尺寸、接收尺寸與影格率是各自實測值。fps 是瀏覽器最近 5 秒呈現時間窗口的 render 計數，不是端到端延遲或真人觀看證據。分享來源的實體性不由應用推斷。</p>
+      <p className="screen-limit-note">同發布者且音訊播放樣本新鮮時，畫面依 AudioWorklet 樣本時間排程；沒有可用的同源時鐘時回到獨立畫面。排程時間差是兩個編碼時間戳的差，不是實測人耳／人眼偏移；畫面時間戳表示本機複製至編碼畫布的時刻，不是實體擷取時刻。fps 是最近 5 秒 render 計數，來源實體性不由應用推斷。</p>
       <div className="screen-observation-actions">
         <button className="quiet-button" onClick={() => controllerRef.current?.downloadObservation()}>下載畫面觀測</button>
         <span>觀測不含桌面影像內容；伺服器 CPU／記憶體需由外部執行環境另行量測。</span>

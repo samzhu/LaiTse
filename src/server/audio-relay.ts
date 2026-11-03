@@ -54,6 +54,7 @@ export function createAudioRelay() {
   const currentStreamMessage = (active: Publisher) => ({
     type: "audio.stream",
     generation: active.generation,
+    clockId: active.connectionId,
     config: AUDIO_CONFIG,
   });
 

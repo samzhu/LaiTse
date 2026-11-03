@@ -1,0 +1,7 @@
+{
+  "osVersion": "27.2",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "topology": "one macOS host; one local application; isolated desktop browsers; no physical phone or real microphone evidence",
+  "baselineCommit": "516ef9e3723286fdba7435d9f0bae067318d4d6f"
+}

@@ -1,0 +1,1279 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T06 synthetic browser feasibility flow: publisher-clocked audio/video, active-share late join, keyframe gating, source replacement, resubscribe, and same-receiver marker sampling.",
+  "startedAt": "2026-11-03T16:07:59.274Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "sources": {
+    "audio": "test-created oscillator → AudioContext → MediaStreamDestination; no hardware microphone",
+    "video": "animated canvas MediaStreamTrack returned by a test-only getDisplayMedia replacement",
+    "marker": {
+      "kind": "same synthetic audio-context pulse drives an audible oscillator interval and a color-coded canvas tile",
+      "periodMs": 2400,
+      "activeDurationMs": 480,
+      "colors": [
+        {
+          "cycleCode": 0,
+          "rgb": [
+            250,
+            50,
+            40
+          ]
+        },
+        {
+          "cycleCode": 1,
+          "rgb": [
+            35,
+            220,
+            80
+          ]
+        },
+        {
+          "cycleCode": 2,
+          "rgb": [
+            45,
+            90,
+            255
+          ]
+        },
+        {
+          "cycleCode": 3,
+          "rgb": [
+            245,
+            220,
+            35
+          ]
+        },
+        {
+          "cycleCode": 4,
+          "rgb": [
+            225,
+            45,
+            225
+          ]
+        },
+        {
+          "cycleCode": 5,
+          "rgb": [
+            20,
+            215,
+            220
+          ]
+        },
+        {
+          "cycleCode": 6,
+          "rgb": [
+            250,
+            135,
+            25
+          ]
+        },
+        {
+          "cycleCode": 7,
+          "rgb": [
+            245,
+            245,
+            245
+          ]
+        }
+      ],
+      "physicalInputLatency": "unknown; source audio timestamp is an approximate capture-graph/performance mapping",
+      "sourceJitter": "AudioContext gain transitions use a 12 ms test timer and a short gain ramp; transition timing is not exact"
+    },
+    "physicalDisplayCaptureSelected": false,
+    "physicalMicrophoneSelected": false,
+    "realMediaRecorded": false
+  },
+  "clients": {
+    "publisher": {
+      "browser": "Firefox",
+      "role": "synthetic oscillator and canvas publisher"
+    },
+    "receiverA": {
+      "browser": "Firefox",
+      "role": "early audio and screen receiver"
+    },
+    "receiverB": {
+      "browser": "Firefox",
+      "role": "late audio and screen receiver"
+    }
+  },
+  "stages": [
+    {
+      "name": "room-ready",
+      "at": "2026-11-03T16:08:05.619Z"
+    },
+    {
+      "name": "synthetic-audio-active",
+      "at": "2026-11-03T16:08:07.935Z",
+      "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4"
+    },
+    {
+      "name": "screen-active",
+      "at": "2026-11-03T16:08:08.424Z",
+      "generation": 1,
+      "width": 1280,
+      "height": 720,
+      "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4"
+    },
+    {
+      "name": "late-join-decoded",
+      "at": "2026-11-03T16:08:10.955Z",
+      "generation": 1,
+      "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "syncMode": "audio-master"
+    },
+    {
+      "name": "same-receiver-marker-samples",
+      "at": "2026-11-03T16:08:18.997Z",
+      "pairedCycles": 3,
+      "offsetsMs": [
+        110.15,
+        132.57,
+        147.49
+      ],
+      "mappingErrorBoundMs": null
+    }
+  ],
+  "snapshots": [
+    {
+      "client": "receiver-a-audio-active",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:07.934Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 2,
+        "decodedFrames": 1,
+        "renderedSamples": 512,
+        "renderRms": 0.017753292235933377,
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "pulseEvents": [
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 2739000,
+            "graphTimestampUs": 1792000,
+            "receiverPerformanceTimeMs": 2756.3333333333335,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "receiver-a-first-screen",
+      "screen": {
+        "capturedAt": "2026-11-03T16:08:08.424Z",
+        "receiverState": "rendering",
+        "renderedFrames": 4,
+        "receivedFrames": 7,
+        "decodedFrames": 4,
+        "width": 1280,
+        "height": 720,
+        "renderFps": 14.71,
+        "syncMode": "audio-master",
+        "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "scheduledSourceClockOffsetMs": 151.833,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          245,
+          53,
+          43,
+          255
+        ],
+        "receiverMessage": "依同一發布者時鐘取樣音訊播放位置呈現；主時鐘失去新樣本或不同來源時回到獨立顯示。"
+      }
+    },
+    {
+      "client": "receiver-b-late-audio",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:10.777Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 75,
+        "decodedFrames": 75,
+        "renderedSamples": 49920,
+        "renderRms": 0.1325290327214257,
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "pulseEvents": [
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 5131167,
+            "graphTimestampUs": 1514667,
+            "receiverPerformanceTimeMs": 2319.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "receiver-b-late-join",
+      "screen": {
+        "capturedAt": "2026-11-03T16:08:10.807Z",
+        "receiverState": "rendering",
+        "renderedFrames": 14,
+        "receivedFrames": 27,
+        "decodedFrames": 24,
+        "width": 1280,
+        "height": 720,
+        "renderFps": 8.2,
+        "syncMode": "audio-master",
+        "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "scheduledSourceClockOffsetMs": 9.167,
+        "droppedDecodedFrames": 6,
+        "pixel": [
+          23,
+          33,
+          45,
+          255
+        ],
+        "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+      }
+    },
+    {
+      "client": "receiver-b-after-marker-sampling",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:18.994Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 485,
+        "decodedFrames": 485,
+        "renderedSamples": 444160,
+        "renderRms": 2.0345869483764863e-34,
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "pulseEvents": [
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 5131167,
+            "graphTimestampUs": 1514667,
+            "receiverPerformanceTimeMs": 2319.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 7520500,
+            "graphTimestampUs": 3904000,
+            "receiverPerformanceTimeMs": 4708.666666666667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 9931167,
+            "graphTimestampUs": 6314667,
+            "receiverPerformanceTimeMs": 7119.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 12341833,
+            "graphTimestampUs": 8725333,
+            "receiverPerformanceTimeMs": 9529.666333333333,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:08:29.122Z",
+        "receiverState": "off",
+        "renderedFrames": 0,
+        "receivedFrames": 0,
+        "decodedFrames": 0,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+      }
+    },
+    {
+      "client": "failure-audio-state",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:29.128Z",
+        "listenerState": "off",
+        "publisherState": "broadcasting",
+        "sentPackets": 1061,
+        "receivedPackets": 0,
+        "decodedFrames": 0,
+        "renderedSamples": 0,
+        "renderRms": 0,
+        "clockId": "",
+        "pulseEvents": []
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:08:29.166Z",
+        "receiverState": "rendering",
+        "renderedFrames": 139,
+        "receivedFrames": 141,
+        "decodedFrames": 140,
+        "width": 640,
+        "height": 360,
+        "renderFps": 13.8,
+        "syncMode": "audio-master",
+        "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "scheduledSourceClockOffsetMs": 14.833,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          23,
+          33,
+          45,
+          255
+        ],
+        "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+      }
+    },
+    {
+      "client": "failure-audio-state",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:29.172Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 1064,
+        "decodedFrames": 1064,
+        "renderedSamples": 1018432,
+        "renderRms": 2.0345869483764863e-34,
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "pulseEvents": [
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 2739000,
+            "graphTimestampUs": 1792000,
+            "receiverPerformanceTimeMs": 2756.3333333333335,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 5124500,
+            "graphTimestampUs": 4213333,
+            "receiverPerformanceTimeMs": 5177.666333333334,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 7523167,
+            "graphTimestampUs": 6624000,
+            "receiverPerformanceTimeMs": 7587.666666666666,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 9933833,
+            "graphTimestampUs": 9034667,
+            "receiverPerformanceTimeMs": 9998.667000000001,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 12323167,
+            "graphTimestampUs": 11424000,
+            "receiverPerformanceTimeMs": 12387.666666666666,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 14733833,
+            "graphTimestampUs": 13834667,
+            "receiverPerformanceTimeMs": 14797.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 17123167,
+            "graphTimestampUs": 16224000,
+            "receiverPerformanceTimeMs": 17187.666666666664,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 19533833,
+            "graphTimestampUs": 18634667,
+            "receiverPerformanceTimeMs": 19598.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 21923167,
+            "graphTimestampUs": 21024000,
+            "receiverPerformanceTimeMs": 21987.666666666668,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:08:29.208Z",
+        "receiverState": "rendering",
+        "renderedFrames": 0,
+        "receivedFrames": 141,
+        "decodedFrames": 140,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 136,
+        "pixel": null,
+        "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+      }
+    },
+    {
+      "client": "failure-audio-state",
+      "audio": {
+        "capturedAt": "2026-11-03T16:08:29.214Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 997,
+        "decodedFrames": 997,
+        "renderedSamples": 934656,
+        "renderRms": 2.0345869483764863e-34,
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "pulseEvents": [
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 5131167,
+            "graphTimestampUs": 1514667,
+            "receiverPerformanceTimeMs": 2319.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 7520500,
+            "graphTimestampUs": 3904000,
+            "receiverPerformanceTimeMs": 4708.666666666667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 9931167,
+            "graphTimestampUs": 6314667,
+            "receiverPerformanceTimeMs": 7119.667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 12341833,
+            "graphTimestampUs": 8725333,
+            "receiverPerformanceTimeMs": 9529.666333333333,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 14731167,
+            "graphTimestampUs": 11114667,
+            "receiverPerformanceTimeMs": 11918.667000000001,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 17120500,
+            "graphTimestampUs": 13504000,
+            "receiverPerformanceTimeMs": 14307.666666666664,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 19531167,
+            "graphTimestampUs": 15914667,
+            "receiverPerformanceTimeMs": 16718.666999999998,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 21920500,
+            "graphTimestampUs": 18304000,
+            "receiverPerformanceTimeMs": 19107.666666666664,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    }
+  ],
+  "controlEvents": [],
+  "keyframeRequests": [
+    {
+      "client": "publisher",
+      "at": "2026-11-03T16:08:08.903Z",
+      "generation": 1
+    }
+  ],
+  "markerMeasurement": {
+    "scope": "receiver browser AudioWorklet graph/output-clock observations versus receiver RAF canvas-pixel observations",
+    "matching": "cycle-coded marker color and source publisher performance-clock pulse cycle, not nearest modulo-time matching",
+    "receiverClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+    "pulseOriginPublisherPerformanceTimeMs": 2719,
+    "nominalObservationIntervalMs": 20,
+    "markerSampling": {
+      "startedAtPerformanceTimeMs": 2537,
+      "endedAtPerformanceTimeMs": 10543.76,
+      "maximumRafIntervalMs": 50.09999999999991,
+      "markers": [
+        {
+          "cycleCode": 2,
+          "receiverPerformanceTimeMs": 4818.82,
+          "observedPixel": [
+            46,
+            90,
+            251
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 9.833
+        },
+        {
+          "cycleCode": 3,
+          "receiverPerformanceTimeMs": 7252.24,
+          "observedPixel": [
+            243,
+            221,
+            36
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 17.833
+        },
+        {
+          "cycleCode": 4,
+          "receiverPerformanceTimeMs": 9677.16,
+          "observedPixel": [
+            223,
+            47,
+            224
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 3.5
+        }
+      ]
+    },
+    "audioPulseEvents": [
+      {
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 5131167,
+        "graphTimestampUs": 1514667,
+        "receiverPerformanceTimeMs": 2319.667,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 1,
+        "cycleIndex": 1,
+        "cycleCode": 1,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      },
+      {
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 7520500,
+        "graphTimestampUs": 3904000,
+        "receiverPerformanceTimeMs": 4708.666666666667,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 2,
+        "cycleIndex": 2,
+        "cycleCode": 2,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      },
+      {
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 9931167,
+        "graphTimestampUs": 6314667,
+        "receiverPerformanceTimeMs": 7119.667,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 3,
+        "cycleIndex": 3,
+        "cycleCode": 3,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      },
+      {
+        "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+        "generation": 1,
+        "epoch": 3,
+        "sourceTimestampUs": 12341833,
+        "graphTimestampUs": 8725333,
+        "receiverPerformanceTimeMs": 9529.666333333333,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 4,
+        "cycleIndex": 4,
+        "cycleCode": 4,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      }
+    ],
+    "matchedMarkers": [
+      {
+        "cycleIndex": 2,
+        "cycleCode": 2,
+        "audio": {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 7520500,
+          "graphTimestampUs": 3904000,
+          "receiverPerformanceTimeMs": 4708.666666666667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 2,
+          "receiverPerformanceTimeMs": 4818.82,
+          "observedPixel": [
+            46,
+            90,
+            251
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 9.833
+        },
+        "receiverPerfOffsetMs": 110.15,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.1,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      },
+      {
+        "cycleIndex": 3,
+        "cycleCode": 3,
+        "audio": {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 9931167,
+          "graphTimestampUs": 6314667,
+          "receiverPerformanceTimeMs": 7119.667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 3,
+          "receiverPerformanceTimeMs": 7252.24,
+          "observedPixel": [
+            243,
+            221,
+            36
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 17.833
+        },
+        "receiverPerfOffsetMs": 132.57,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.1,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      },
+      {
+        "cycleIndex": 4,
+        "cycleCode": 4,
+        "audio": {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 12341833,
+          "graphTimestampUs": 8725333,
+          "receiverPerformanceTimeMs": 9529.666333333333,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 4,
+          "receiverPerformanceTimeMs": 9677.16,
+          "observedPixel": [
+            223,
+            47,
+            224
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "audioClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "scheduledSourceClockOffsetMs": 3.5
+        },
+        "receiverPerfOffsetMs": 147.49,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.1,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      }
+    ],
+    "rawReceiverPerformanceOffsetsMs": [
+      110.15,
+      132.57,
+      147.49
+    ],
+    "uncertainty": {
+      "audioObservationWindowMsPerPairedCycle": [
+        {
+          "cycleIndex": 2,
+          "windowMs": 21.333333333333332
+        },
+        {
+          "cycleIndex": 3,
+          "windowMs": 21.333333333333332
+        },
+        {
+          "cycleIndex": 4,
+          "windowMs": 21.333333333333332
+        }
+      ],
+      "markerRafMaximumIntervalMs": 50.1,
+      "mappingErrorBoundMs": null,
+      "sourceAudioInputLatency": "unknown"
+    },
+    "p95Claim": null
+  },
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 5,
+          "sentBinaryFrames": 1362,
+          "receivedTextFrames": 9,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "audio.started",
+        "screen.started",
+        "control.event",
+        "screen.keyframeRequest",
+        "screen.stopped",
+        "screen.started"
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 12,
+          "receivedBinaryFrames": 1365,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "screen.subscribed",
+        "audio.subscribed",
+        "audio.stream",
+        "screen.stream",
+        "control.event",
+        "screen.streamEnded",
+        "screen.stream",
+        "audio.streamEnded",
+        "screen.streamEnded",
+        "control.event"
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 12,
+          "receivedBinaryFrames": 1283,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "screen.subscribed",
+        "screen.stream",
+        "audio.subscribed",
+        "audio.stream",
+        "screen.streamEnded",
+        "screen.stream",
+        "audio.streamEnded",
+        "screen.streamEnded",
+        "control.event",
+        "control.event"
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "page.waitForFunction: Timeout 10000ms exceeded.\n    at waitForRendered (/Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:332:14)\n    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:601:26"
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "physicalDisplayCapture": "not-tested; getDisplayMedia is replaced by a synthetic canvas stream",
+    "physicalMicrophoneAndHumanListening": "not-tested; capture source is a synthetic oscillator",
+    "phoneBrowser": "not-tested",
+    "crossDeviceClockCalibration": "not-tested",
+    "mappingErrorBoundMs": null,
+    "audioVideoP95": "not-claimed; this short DEC-010 run samples a few color-coded marker cycles",
+    "screenCaptureTimestamp": "canvas-to-encoder copy time, not the physical source capture instant",
+    "audioOutputTimestamp": "browser AudioContext output-device clock mapping, not physical-speaker or human-hearing evidence",
+    "serverCpuAndMemory": "not-collected-by-browser-script",
+    "codecFallback": "VP8/Opus only; no Recorder/MSE negotiation in this run"
+  },
+  "screenshots": [
+    "receiver-b-late-join.png",
+    "receiver-b-source-replaced.png",
+    "receiver-b-resubscribed.png"
+  ],
+  "failureSnapshots": [
+    {
+      "capturedAt": "2026-11-03T16:08:29.122Z",
+      "receiverState": "off",
+      "renderedFrames": 0,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+    },
+    {
+      "capturedAt": "2026-11-03T16:08:29.128Z",
+      "listenerState": "off",
+      "publisherState": "broadcasting",
+      "sentPackets": 1061,
+      "receivedPackets": 0,
+      "decodedFrames": 0,
+      "renderedSamples": 0,
+      "renderRms": 0,
+      "clockId": "",
+      "pulseEvents": []
+    },
+    {
+      "capturedAt": "2026-11-03T16:08:29.166Z",
+      "receiverState": "rendering",
+      "renderedFrames": 139,
+      "receivedFrames": 141,
+      "decodedFrames": 140,
+      "width": 640,
+      "height": 360,
+      "renderFps": 13.8,
+      "syncMode": "audio-master",
+      "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+      "scheduledSourceClockOffsetMs": 14.833,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        23,
+        33,
+        45,
+        255
+      ],
+      "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+    },
+    {
+      "capturedAt": "2026-11-03T16:08:29.172Z",
+      "listenerState": "ready",
+      "publisherState": "idle",
+      "sentPackets": 0,
+      "receivedPackets": 1064,
+      "decodedFrames": 1064,
+      "renderedSamples": 1018432,
+      "renderRms": 2.0345869483764863e-34,
+      "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+      "pulseEvents": [
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 2739000,
+          "graphTimestampUs": 1792000,
+          "receiverPerformanceTimeMs": 2756.3333333333335,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 5124500,
+          "graphTimestampUs": 4213333,
+          "receiverPerformanceTimeMs": 5177.666333333334,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 7523167,
+          "graphTimestampUs": 6624000,
+          "receiverPerformanceTimeMs": 7587.666666666666,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 9933833,
+          "graphTimestampUs": 9034667,
+          "receiverPerformanceTimeMs": 9998.667000000001,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 12323167,
+          "graphTimestampUs": 11424000,
+          "receiverPerformanceTimeMs": 12387.666666666666,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 14733833,
+          "graphTimestampUs": 13834667,
+          "receiverPerformanceTimeMs": 14797.667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 17123167,
+          "graphTimestampUs": 16224000,
+          "receiverPerformanceTimeMs": 17187.666666666664,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 19533833,
+          "graphTimestampUs": 18634667,
+          "receiverPerformanceTimeMs": 19598.667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 21923167,
+          "graphTimestampUs": 21024000,
+          "receiverPerformanceTimeMs": 21987.666666666668,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        }
+      ]
+    },
+    {
+      "capturedAt": "2026-11-03T16:08:29.208Z",
+      "receiverState": "rendering",
+      "renderedFrames": 0,
+      "receivedFrames": 141,
+      "decodedFrames": 140,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 136,
+      "pixel": null,
+      "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+    },
+    {
+      "capturedAt": "2026-11-03T16:08:29.214Z",
+      "listenerState": "ready",
+      "publisherState": "idle",
+      "sentPackets": 0,
+      "receivedPackets": 997,
+      "decodedFrames": 997,
+      "renderedSamples": 934656,
+      "renderRms": 2.0345869483764863e-34,
+      "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+      "pulseEvents": [
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 5131167,
+          "graphTimestampUs": 1514667,
+          "receiverPerformanceTimeMs": 2319.667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 7520500,
+          "graphTimestampUs": 3904000,
+          "receiverPerformanceTimeMs": 4708.666666666667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 9931167,
+          "graphTimestampUs": 6314667,
+          "receiverPerformanceTimeMs": 7119.667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 12341833,
+          "graphTimestampUs": 8725333,
+          "receiverPerformanceTimeMs": 9529.666333333333,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 14731167,
+          "graphTimestampUs": 11114667,
+          "receiverPerformanceTimeMs": 11918.667000000001,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 17120500,
+          "graphTimestampUs": 13504000,
+          "receiverPerformanceTimeMs": 14307.666666666664,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 19531167,
+          "graphTimestampUs": 15914667,
+          "receiverPerformanceTimeMs": 16718.666999999998,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        {
+          "clockId": "d81c4337-c9f9-4d33-9c16-0d306a1d7ab4",
+          "generation": 1,
+          "epoch": 3,
+          "sourceTimestampUs": 21920500,
+          "graphTimestampUs": 18304000,
+          "receiverPerformanceTimeMs": 19107.666666666664,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        }
+      ]
+    }
+  ],
+  "finishedAt": "2026-11-03T16:08:30.186Z"
+}

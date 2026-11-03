@@ -1,7 +1,7 @@
 # POC 執行紀錄
 
 - 權威計畫：[POC-PLAN v1.1](plan.md)；v1.0執行的歷史run依當時方法解讀，原始證據保留。
-- 建立日期：2026-11-03；狀態：T01本機工程驗收完成；R001 Inconclusive、R002 Pass（僅T01），完整POC-00尚無通過結論。
+- 建立日期：2026-11-03；更新：2026-11-04。T06本機晚加入／同步排程核心已有證據；裝置、品質及完整階段尚未通過。
 - 本表只記實際執行與證據；階段需求與篩選值以計畫書為準，不在此重訂需求。
 
 ## 階段現況
@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | POC-00 | 執行中 | Inconclusive | R002 T01 Pass；[R004 T02桌面可行](evidence/POC-00-R004/README.md) | 實體手機可信HTTPS／能力矩陣稍後測 |
 | POC-01 | 執行中 | Inconclusive | R001單接收、[R002桌面雙接收可行](evidence/POC-01-R002/README.md) | 真mic／人耳／手機與跨裝置品質待補 |
-| POC-02 | 執行中 | Inconclusive | [R001 T05桌面核心可行](evidence/POC-02-R001/README.md) | T06晚加入/同步；手機與真人品質待補 |
+| POC-02 | 核心流程已驗 | Inconclusive | R001分享；[R002晚加入/同步排程核心可行](evidence/POC-02-R002/README.md) | 手機／真人及實體品質、其他codec與必要條件待補 |
 | POC-03 | 尚未執行 | 未判定 | 無 | 驗證空間／房間／權限 |
 | POC-04 | 尚未執行 | 未判定 | 無 | 驗證恢復與弱網 |
 | POC-05 | 尚未執行 | 未判定 | 無 | 逐級負載，保留真實解碼證據 |
@@ -144,3 +144,17 @@ build/typecheck、14個新舊核心整合、script syntax及三Firefox流程皆e
 另以兩個Chrome156頁面，前景原生chooser只選本機POC分頁，HTTP/WS loopback實際呈現1280×630／快照9.74fps；瀏覽器自己的停止分享令接收端清空，沒有改OS權限或開真mic。這是原生分頁擷取證據，不是螢幕/視窗或原生影音共存品質驗收。Firefox最終短流程ps15樣本CPU最高7.1%／RSS92,016KiB，Chrome資源未測，非容量數據。
 
 下載JSON、DOM與截圖已保存讀回，source hash已核對；README、SOL-002/008、協作文件同步。原票T02/T03/04未補的手機/真人保持待測，晚加入/同步T06尚未開發，不宣告完整POC-02通過。無新依賴、沒有push／GitHub寫入或部署；writer釋出，server及本輪測試browser/tab清理後程式+紀錄一起本機commit。
+
+## POC-02-R002／T06晚加入與音畫同步
+
+- 配發日期：2026-11-03（Asia/Taipei）；實際完成：2026-11-04。結果：桌面合成核心流程可行，完整POC-02仍Inconclusive。
+- 假設：同一publisher共同媒體時基＋接收audio播放時鐘可支援晚加入可解碼起點、來源世代重建與同步呈現；以同接收端合成聲光標記做短流程觀測。
+- 範圍：DEC-010／人類本輪輕量要求；真mic/手機/硬體輸出及原品質門檻不預先判通過，不部署或做T07。
+
+### T06完成與保存讀回（2026-11-04）
+
+最終00:13:35～00:13:56（Asia/Taipei）一服務三Firefox，合成oscillator/canvas經真實Opus/VP8及可信HTTPS/WSS完成：影音已播放時B晚加入、metadata/新keyframe初始化、同publisher audio-master；generation1→2及1280×720→640×360重建、退訂再訂閱、獨立停止，最後停audio轉standalone。23核心案例、build/typecheck及最終smoke通過，零page/socket errors。client緩衝窄修後以重建與受影響browser驗證，未重跑無關檢查。
+
+同接收端三色碼週期graph/render偏移64.77/151.71/129.35ms，audio窗口21.33ms、RAF最大50.08ms，mapping error bound null、E2E null；非人耳／螢幕或p95品質通過，151.71高於原150ms參考。未為湊兩次而另做固定長測，手機/真mic/真人與其他codec/弱網/容量/CloudRun仍未驗。
+
+原始失敗分別保存[R002](evidence/POC-02-R002/README.md)的first/second/third-attempt；root修有界時鐘歷史、PCM/畫面緩衝配合及原生decode初始化burst容許量，保留未直接量測根因的推論界線。下載schema2 JSON、代表圖及source hash讀回，圖已查看；SOL-002/008、操作與協作紀錄同步。writer已釋出，server/Firefox finally停止；程式+紀錄一起本機commit、不push或修改GitHub，不啟動T07。

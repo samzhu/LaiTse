@@ -287,7 +287,7 @@ async function downloadObservation(page, clientName) {
   mkdirSync(dirname(destination), { recursive: true });
   await download.saveAs(destination);
   const observation = JSON.parse(readFileSync(destination, "utf8"));
-  assert.equal(observation.schemaVersion, 1);
+  assert.equal(observation.schemaVersion, 2);
   assert.equal(observation.encoding.codec, "vp8");
   if (clientName.startsWith("receiver")) {
     assert.ok(observation.rendering.renderedFrames > 0);
@@ -299,7 +299,7 @@ async function downloadObservation(page, clientName) {
     assert.ok(observation.encoding.sentFrames > 0);
   }
   assert.equal(observation.capture.physicalDisplayVerified, false);
-  assert.equal(observation.evidence.lateJoinSynchronization, "not-implemented");
+  assert.equal(observation.evidence.lateJoinSynchronization, "keyframe-gated-with-config-metadata");
   assert.equal(observation.evidence.endToEndLatencyMs, null);
   assert.equal(observation.evidence.serverCpuAndMemory, "not-collected-in-browser");
   report.observations.push({ client: clientName, path: relative(root, destination), json: observation });

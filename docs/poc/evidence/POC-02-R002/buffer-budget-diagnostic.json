@@ -1,0 +1,19 @@
+{
+  "scope": "deterministic synthetic queue budget model, not browser playback or performance evidence",
+  "fps": 15,
+  "audioLagMs": 500,
+  "inputTicks": 150,
+  "policy": "append video, drop oldest above frame count, render latest timestamp not newer than audio",
+  "results": [
+    {
+      "frameLimit": 4,
+      "selectedRenderOpportunities": 0,
+      "discardedBeforeSelection": 146
+    },
+    {
+      "frameLimit": 16,
+      "selectedRenderOpportunities": 142,
+      "discardedBeforeSelection": 0
+    }
+  ]
+}

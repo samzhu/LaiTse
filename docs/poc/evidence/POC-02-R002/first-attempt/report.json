@@ -1,0 +1,818 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T06 synthetic browser feasibility flow: publisher-clocked audio/video, active-share late join, keyframe gating, source replacement, resubscribe, and same-receiver marker sampling.",
+  "startedAt": "2026-11-03T16:02:58.795Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "sources": {
+    "audio": "test-created oscillator → AudioContext → MediaStreamDestination; no hardware microphone",
+    "video": "animated canvas MediaStreamTrack returned by a test-only getDisplayMedia replacement",
+    "marker": {
+      "kind": "same synthetic audio-context pulse drives an audible oscillator interval and a color-coded canvas tile",
+      "periodMs": 2400,
+      "activeDurationMs": 480,
+      "colors": [
+        {
+          "cycleCode": 0,
+          "rgb": [
+            250,
+            50,
+            40
+          ]
+        },
+        {
+          "cycleCode": 1,
+          "rgb": [
+            35,
+            220,
+            80
+          ]
+        },
+        {
+          "cycleCode": 2,
+          "rgb": [
+            45,
+            90,
+            255
+          ]
+        },
+        {
+          "cycleCode": 3,
+          "rgb": [
+            245,
+            220,
+            35
+          ]
+        },
+        {
+          "cycleCode": 4,
+          "rgb": [
+            225,
+            45,
+            225
+          ]
+        },
+        {
+          "cycleCode": 5,
+          "rgb": [
+            20,
+            215,
+            220
+          ]
+        },
+        {
+          "cycleCode": 6,
+          "rgb": [
+            250,
+            135,
+            25
+          ]
+        },
+        {
+          "cycleCode": 7,
+          "rgb": [
+            245,
+            245,
+            245
+          ]
+        }
+      ],
+      "physicalInputLatency": "unknown; source audio timestamp is an approximate capture-graph/performance mapping",
+      "sourceJitter": "AudioContext gain transitions use a 12 ms test timer and a short gain ramp; transition timing is not exact"
+    },
+    "physicalDisplayCaptureSelected": false,
+    "physicalMicrophoneSelected": false,
+    "realMediaRecorded": false
+  },
+  "clients": {
+    "publisher": {
+      "browser": "Firefox",
+      "role": "synthetic oscillator and canvas publisher"
+    },
+    "receiverA": {
+      "browser": "Firefox",
+      "role": "early audio and screen receiver"
+    },
+    "receiverB": {
+      "browser": "Firefox",
+      "role": "late audio and screen receiver"
+    }
+  },
+  "stages": [
+    {
+      "name": "room-ready",
+      "at": "2026-11-03T16:03:05.976Z"
+    },
+    {
+      "name": "synthetic-audio-active",
+      "at": "2026-11-03T16:03:08.410Z",
+      "clockId": "63325abc-6f56-4f65-8269-35154f85fd83"
+    },
+    {
+      "name": "screen-active",
+      "at": "2026-11-03T16:03:08.970Z",
+      "generation": 1,
+      "width": 1280,
+      "height": 720,
+      "clockId": "63325abc-6f56-4f65-8269-35154f85fd83"
+    },
+    {
+      "name": "late-join-decoded",
+      "at": "2026-11-03T16:03:11.975Z",
+      "generation": 1,
+      "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "syncMode": "audio-master"
+    },
+    {
+      "name": "same-receiver-marker-samples",
+      "at": "2026-11-03T16:03:20.015Z",
+      "pairedCycles": 3,
+      "offsetsMs": [
+        108.55,
+        122.35,
+        129.27
+      ],
+      "mappingErrorBoundMs": null
+    }
+  ],
+  "snapshots": [
+    {
+      "client": "receiver-a-audio-active",
+      "audio": {
+        "capturedAt": "2026-11-03T16:03:08.409Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 3,
+        "decodedFrames": 2,
+        "renderedSamples": 1280,
+        "renderRms": 0.11158140977584514,
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "pulseEvents": [
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 3,
+            "sourceTimestampUs": 3009666,
+            "graphTimestampUs": 1874667,
+            "receiverPerformanceTimeMs": 3029.6670000000004,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "receiver-a-first-screen",
+      "screen": {
+        "capturedAt": "2026-11-03T16:03:08.968Z",
+        "receiverState": "rendering",
+        "renderedFrames": 4,
+        "receivedFrames": 7,
+        "decodedFrames": 4,
+        "width": 1280,
+        "height": 720,
+        "renderFps": 13.82,
+        "syncMode": "audio-master",
+        "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "scheduledSourceClockOffsetMs": 154.479,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          245,
+          53,
+          43,
+          255
+        ],
+        "receiverMessage": "依同一發布者時鐘取樣音訊播放位置呈現；主時鐘失去新樣本或不同來源時回到獨立顯示。"
+      }
+    },
+    {
+      "client": "receiver-b-late-audio",
+      "audio": {
+        "capturedAt": "2026-11-03T16:03:11.600Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 48,
+        "decodedFrames": 48,
+        "renderedSamples": 5376,
+        "renderRms": 0.12474353773676317,
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "pulseEvents": [
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 4,
+            "sourceTimestampUs": 5857812,
+            "graphTimestampUs": 962667,
+            "receiverPerformanceTimeMs": 2575.6670000000004,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "receiver-b-late-join",
+      "screen": {
+        "capturedAt": "2026-11-03T16:03:11.733Z",
+        "receiverState": "rendering",
+        "renderedFrames": 13,
+        "receivedFrames": 19,
+        "decodedFrames": 16,
+        "width": 1280,
+        "height": 720,
+        "renderFps": 10.98,
+        "syncMode": "audio-master",
+        "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "scheduledSourceClockOffsetMs": 17.479,
+        "droppedDecodedFrames": 1,
+        "pixel": [
+          34,
+          220,
+          83,
+          255
+        ],
+        "receiverMessage": "依同一發布者時鐘取樣音訊播放位置呈現；主時鐘失去新樣本或不同來源時回到獨立顯示。"
+      }
+    },
+    {
+      "client": "receiver-b-after-marker-sampling",
+      "audio": {
+        "capturedAt": "2026-11-03T16:03:20.012Z",
+        "listenerState": "ready",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 469,
+        "decodedFrames": 469,
+        "renderedSamples": 408832,
+        "renderRms": 2.0345887850864095e-34,
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "pulseEvents": [
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 4,
+            "sourceTimestampUs": 5857812,
+            "graphTimestampUs": 962667,
+            "receiverPerformanceTimeMs": 2575.6670000000004,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 4,
+            "sourceTimestampUs": 7799145,
+            "graphTimestampUs": 2904000,
+            "receiverPerformanceTimeMs": 4515.666666666667,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 4,
+            "sourceTimestampUs": 10188479,
+            "graphTimestampUs": 5293333,
+            "receiverPerformanceTimeMs": 6905.666333333333,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          },
+          {
+            "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+            "generation": 1,
+            "epoch": 4,
+            "sourceTimestampUs": 12599145,
+            "graphTimestampUs": 7704000,
+            "receiverPerformanceTimeMs": 9315.666666666668,
+            "observationWindowMs": 21.333333333333332,
+            "mappingErrorBoundMs": null,
+            "mapping": "output-timestamp"
+          }
+        ]
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:03:30.132Z",
+        "receiverState": "rendering",
+        "renderedFrames": 0,
+        "receivedFrames": 140,
+        "decodedFrames": 139,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 135,
+        "pixel": null,
+        "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:03:30.186Z",
+        "receiverState": "off",
+        "renderedFrames": 0,
+        "receivedFrames": 0,
+        "decodedFrames": 0,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-03T16:03:30.234Z",
+        "receiverState": "rendering",
+        "renderedFrames": 139,
+        "receivedFrames": 142,
+        "decodedFrames": 141,
+        "width": 640,
+        "height": 360,
+        "renderFps": 13.89,
+        "syncMode": "audio-master",
+        "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "scheduledSourceClockOffsetMs": 10.145,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          34,
+          220,
+          83,
+          255
+        ],
+        "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+      }
+    }
+  ],
+  "controlEvents": [],
+  "keyframeRequests": [
+    {
+      "client": "publisher",
+      "at": "2026-11-03T16:03:10.229Z",
+      "generation": 1
+    }
+  ],
+  "markerMeasurement": {
+    "scope": "receiver browser AudioWorklet graph/output-clock observations versus receiver RAF canvas-pixel observations",
+    "matching": "cycle-coded marker color and source publisher performance-clock pulse cycle, not nearest modulo-time matching",
+    "receiverClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+    "pulseOriginPublisherPerformanceTimeMs": 2992,
+    "nominalObservationIntervalMs": 20,
+    "markerSampling": {
+      "startedAtPerformanceTimeMs": 3014,
+      "endedAtPerformanceTimeMs": 11019.9,
+      "maximumRafIntervalMs": 50.01999999999998,
+      "markers": [
+        {
+          "cycleCode": 2,
+          "receiverPerformanceTimeMs": 4624.22,
+          "observedPixel": [
+            46,
+            90,
+            251
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 11.479
+        },
+        {
+          "cycleCode": 3,
+          "receiverPerformanceTimeMs": 7028.02,
+          "observedPixel": [
+            243,
+            221,
+            36
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 9.479
+        },
+        {
+          "cycleCode": 4,
+          "receiverPerformanceTimeMs": 9444.94,
+          "observedPixel": [
+            223,
+            47,
+            224
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 8.479
+        }
+      ]
+    },
+    "audioPulseEvents": [
+      {
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "generation": 1,
+        "epoch": 4,
+        "sourceTimestampUs": 5857812,
+        "graphTimestampUs": 962667,
+        "receiverPerformanceTimeMs": 2575.6670000000004,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 1,
+        "cycleIndex": 1,
+        "cycleCode": 1,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      },
+      {
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "generation": 1,
+        "epoch": 4,
+        "sourceTimestampUs": 7799145,
+        "graphTimestampUs": 2904000,
+        "receiverPerformanceTimeMs": 4515.666666666667,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 2,
+        "cycleIndex": 2,
+        "cycleCode": 2,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      },
+      {
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "generation": 1,
+        "epoch": 4,
+        "sourceTimestampUs": 10188479,
+        "graphTimestampUs": 5293333,
+        "receiverPerformanceTimeMs": 6905.666333333333,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 2,
+        "cycleIndex": 3,
+        "cycleCode": 3,
+        "cycleAdjustmentMs": 3.5210000000006403,
+        "cycleAssignment": "next-cycle-within-reported-audio-window"
+      },
+      {
+        "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+        "generation": 1,
+        "epoch": 4,
+        "sourceTimestampUs": 12599145,
+        "graphTimestampUs": 7704000,
+        "receiverPerformanceTimeMs": 9315.666666666668,
+        "observationWindowMs": 21.333333333333332,
+        "mappingErrorBoundMs": null,
+        "mapping": "output-timestamp",
+        "rawCycleIndex": 4,
+        "cycleIndex": 4,
+        "cycleCode": 4,
+        "cycleAdjustmentMs": 0,
+        "cycleAssignment": "source-timestamp-cycle"
+      }
+    ],
+    "matchedMarkers": [
+      {
+        "cycleIndex": 2,
+        "cycleCode": 2,
+        "audio": {
+          "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "generation": 1,
+          "epoch": 4,
+          "sourceTimestampUs": 7799145,
+          "graphTimestampUs": 2904000,
+          "receiverPerformanceTimeMs": 4515.666666666667,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 2,
+          "receiverPerformanceTimeMs": 4624.22,
+          "observedPixel": [
+            46,
+            90,
+            251
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 11.479
+        },
+        "receiverPerfOffsetMs": 108.55,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.02,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      },
+      {
+        "cycleIndex": 3,
+        "cycleCode": 3,
+        "audio": {
+          "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "generation": 1,
+          "epoch": 4,
+          "sourceTimestampUs": 10188479,
+          "graphTimestampUs": 5293333,
+          "receiverPerformanceTimeMs": 6905.666333333333,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 3,
+          "receiverPerformanceTimeMs": 7028.02,
+          "observedPixel": [
+            243,
+            221,
+            36
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 9.479
+        },
+        "receiverPerfOffsetMs": 122.35,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.02,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      },
+      {
+        "cycleIndex": 4,
+        "cycleCode": 4,
+        "audio": {
+          "clockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "generation": 1,
+          "epoch": 4,
+          "sourceTimestampUs": 12599145,
+          "graphTimestampUs": 7704000,
+          "receiverPerformanceTimeMs": 9315.666666666668,
+          "observationWindowMs": 21.333333333333332,
+          "mappingErrorBoundMs": null,
+          "mapping": "output-timestamp"
+        },
+        "marker": {
+          "cycleCode": 4,
+          "receiverPerformanceTimeMs": 9444.94,
+          "observedPixel": [
+            223,
+            47,
+            224
+          ],
+          "syncMode": "audio-master",
+          "screenClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "audioClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+          "scheduledSourceClockOffsetMs": 8.479
+        },
+        "receiverPerfOffsetMs": 129.27,
+        "uncertainty": {
+          "audioObservationWindowMs": 21.333333333333332,
+          "markerRafMaximumIntervalMs": 50.02,
+          "mappingErrorBoundMs": null
+        },
+        "sameClock": true
+      }
+    ],
+    "rawReceiverPerformanceOffsetsMs": [
+      108.55,
+      122.35,
+      129.27
+    ],
+    "uncertainty": {
+      "audioObservationWindowMsPerPairedCycle": [
+        {
+          "cycleIndex": 2,
+          "windowMs": 21.333333333333332
+        },
+        {
+          "cycleIndex": 3,
+          "windowMs": 21.333333333333332
+        },
+        {
+          "cycleIndex": 4,
+          "windowMs": 21.333333333333332
+        }
+      ],
+      "markerRafMaximumIntervalMs": 50.02,
+      "mappingErrorBoundMs": null,
+      "sourceAudioInputLatency": "unknown"
+    },
+    "p95Claim": null
+  },
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 5,
+          "sentBinaryFrames": 1416,
+          "receivedTextFrames": 9,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "audio.started",
+        "screen.started",
+        "control.event",
+        "screen.keyframeRequest",
+        "screen.stopped",
+        "screen.started",
+        "control.event"
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 14,
+          "receivedBinaryFrames": 1419,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "control.event",
+        "screen.subscribed",
+        "audio.subscribed",
+        "audio.stream",
+        "screen.stream",
+        "control.event",
+        "screen.streamEnded",
+        "screen.stream",
+        "control.event",
+        "audio.streamEnded",
+        "screen.streamEnded",
+        "control.event"
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 8,
+          "receivedBinaryFrames": 1257,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "control.event",
+        "room.snapshot",
+        "screen.subscribed",
+        "screen.stream",
+        "audio.subscribed",
+        "audio.stream",
+        "screen.streamEnded",
+        "screen.stream"
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "page.waitForFunction: Timeout 10000ms exceeded.\n    at waitForRendered (/Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:332:14)\n    at /Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:599:26"
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "physicalDisplayCapture": "not-tested; getDisplayMedia is replaced by a synthetic canvas stream",
+    "physicalMicrophoneAndHumanListening": "not-tested; capture source is a synthetic oscillator",
+    "phoneBrowser": "not-tested",
+    "crossDeviceClockCalibration": "not-tested",
+    "mappingErrorBoundMs": null,
+    "audioVideoP95": "not-claimed; this short DEC-010 run samples a few color-coded marker cycles",
+    "screenCaptureTimestamp": "canvas-to-encoder copy time, not the physical source capture instant",
+    "audioOutputTimestamp": "browser AudioContext output-device clock mapping, not physical-speaker or human-hearing evidence",
+    "serverCpuAndMemory": "not-collected-by-browser-script",
+    "codecFallback": "VP8/Opus only; no Recorder/MSE negotiation in this run"
+  },
+  "screenshots": [
+    "receiver-b-late-join.png",
+    "receiver-b-source-replaced.png",
+    "receiver-b-resubscribed.png"
+  ],
+  "failureSnapshots": [
+    {
+      "capturedAt": "2026-11-03T16:03:30.132Z",
+      "receiverState": "rendering",
+      "renderedFrames": 0,
+      "receivedFrames": 140,
+      "decodedFrames": 139,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 135,
+      "pixel": null,
+      "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+    },
+    {
+      "capturedAt": "2026-11-03T16:03:30.186Z",
+      "receiverState": "off",
+      "renderedFrames": 0,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "receiverMessage": "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。"
+    },
+    {
+      "capturedAt": "2026-11-03T16:03:30.234Z",
+      "receiverState": "rendering",
+      "renderedFrames": 139,
+      "receivedFrames": 142,
+      "decodedFrames": 141,
+      "width": 640,
+      "height": 360,
+      "renderFps": 13.89,
+      "syncMode": "audio-master",
+      "syncClockId": "63325abc-6f56-4f65-8269-35154f85fd83",
+      "scheduledSourceClockOffsetMs": 10.145,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        34,
+        220,
+        83,
+        255
+      ],
+      "receiverMessage": "正在解碼並呈現 VP8 畫面；fps 是最近 5 秒的本機 render 計數。"
+    }
+  ],
+  "finishedAt": "2026-11-03T16:03:31.190Z"
+}

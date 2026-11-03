@@ -1,5 +1,5 @@
 const MAX_QUEUED_SAMPLES = 24_000;
-const STATS_INTERVAL_SAMPLES = 9_600;
+const STATS_INTERVAL_SAMPLES = 960;
 
 class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
   constructor() {
@@ -8,34 +8,47 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     this.queuedSamples = 0;
     this.renderedSamples = 0;
     this.overflowResets = 0;
+    this.epoch = 0;
+    this.generation = null;
+    this.clockId = null;
     this.statsFrameCount = 0;
     this.rmsSquareSum = 0;
     this.rmsSampleCount = 0;
-    this.port.onmessage = (event) => {
-      const message = event.data;
-      if (message?.type === "clear") {
-        this.queue = [];
-        this.queuedSamples = 0;
-        this.port.postMessage({
-          type: "stats",
-          renderedSamples: this.renderedSamples,
-          queuedSamples: 0,
-          overflowResets: this.overflowResets,
-          rms: 0,
-        });
-        return;
-      }
-      if (message?.type !== "pcm" || !(message.samples instanceof Float32Array)) return;
-      const samples = message.samples;
-      if (samples.length === 0) return;
-      if (this.queuedSamples + samples.length > MAX_QUEUED_SAMPLES) {
-        this.queue = [];
-        this.queuedSamples = 0;
-        this.overflowResets += 1;
-      }
-      this.queue.push({ samples, offset: 0 });
-      this.queuedSamples += samples.length;
-    };
+    this.statsGraphTimestampUs = null;
+    this.statsPlayheadTimestampUs = null;
+    this.port.onmessage = (event) => this.handleMessage(event.data);
+  }
+
+  handleMessage(message) {
+    if (message?.type === "clear") {
+      this.epoch = Number.isInteger(message.epoch) ? message.epoch : this.epoch + 1;
+      this.generation = Number.isInteger(message.generation) ? message.generation : null;
+      this.clockId = typeof message.clockId === "string" ? message.clockId : null;
+      this.queue = [];
+      this.queuedSamples = 0;
+      this.resetStatsWindow();
+      return;
+    }
+    if (
+      message?.type !== "pcm" ||
+      !(message.samples instanceof Float32Array) ||
+      message.epoch !== this.epoch ||
+      message.generation !== this.generation ||
+      message.clockId !== this.clockId ||
+      !Number.isFinite(message.timestampUs) ||
+      message.timestampUs < 0
+    ) return;
+    const samples = message.samples;
+    if (samples.length === 0) return;
+    if (this.queuedSamples + samples.length > MAX_QUEUED_SAMPLES) {
+      this.queue = [];
+      this.queuedSamples = 0;
+      this.overflowResets += 1;
+      this.resetStatsWindow();
+      this.port.postMessage(this.statsMessage(null, null, 0, true, 0));
+    }
+    this.queue.push({ samples, offset: 0, timestampUs: message.timestampUs });
+    this.queuedSamples += samples.length;
   }
 
   process(_inputs, outputs) {
@@ -45,11 +58,18 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     const frameCount = output[0].length;
     for (const channel of output) channel.fill(0);
 
+    const graphStartUs = Math.round(currentFrame * 1_000_000 / sampleRate);
     let outputOffset = 0;
+    let intervalPlayheadUs = null;
+    let intervalGraphTimestampUs = null;
     while (outputOffset < frameCount && this.queue.length > 0) {
       const head = this.queue[0];
       const available = head.samples.length - head.offset;
       const copyCount = Math.min(available, frameCount - outputOffset);
+      if (intervalPlayheadUs === null) {
+        intervalPlayheadUs = head.timestampUs + Math.round(head.offset * 1_000_000 / sampleRate);
+        intervalGraphTimestampUs = graphStartUs + Math.round(outputOffset * 1_000_000 / sampleRate);
+      }
       for (let index = 0; index < copyCount; index += 1) {
         const sample = head.samples[head.offset + index];
         for (let channelIndex = 0; channelIndex < channelCount; channelIndex += 1) {
@@ -66,20 +86,47 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     }
 
     this.statsFrameCount += frameCount;
+    if (this.statsPlayheadTimestampUs === null && intervalPlayheadUs !== null) {
+      this.statsPlayheadTimestampUs = intervalPlayheadUs;
+      this.statsGraphTimestampUs = intervalGraphTimestampUs;
+    }
     if (this.statsFrameCount >= STATS_INTERVAL_SAMPLES) {
-      const rms = this.rmsSampleCount > 0 ? Math.sqrt(this.rmsSquareSum / this.rmsSampleCount) : 0;
-      this.port.postMessage({
-        type: "stats",
-        renderedSamples: this.renderedSamples,
-        queuedSamples: this.queuedSamples,
-        overflowResets: this.overflowResets,
+      const rms = this.rmsSampleCount > 0 ? Math.sqrt(this.rmsSquareSum / this.statsFrameCount) : 0;
+      this.port.postMessage(this.statsMessage(
+        this.statsPlayheadTimestampUs,
+        this.statsGraphTimestampUs,
         rms,
-      });
-      this.statsFrameCount = 0;
-      this.rmsSquareSum = 0;
-      this.rmsSampleCount = 0;
+        false,
+        this.statsFrameCount / sampleRate * 1_000,
+      ));
+      this.resetStatsWindow();
     }
     return true;
+  }
+
+  statsMessage(playheadTimestampUs, graphTimestampUs, rms, overflowReset, observationWindowMs) {
+    return {
+      type: "stats",
+      epoch: this.epoch,
+      generation: this.generation,
+      clockId: this.clockId,
+      renderedSamples: this.renderedSamples,
+      queuedSamples: this.queuedSamples,
+      overflowResets: this.overflowResets,
+      rms,
+      playheadTimestampUs,
+      graphTimestampUs,
+      observationWindowMs,
+      overflowReset,
+    };
+  }
+
+  resetStatsWindow() {
+    this.statsFrameCount = 0;
+    this.rmsSquareSum = 0;
+    this.rmsSampleCount = 0;
+    this.statsGraphTimestampUs = null;
+    this.statsPlayheadTimestampUs = null;
   }
 }
 

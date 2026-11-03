@@ -1,0 +1,13 @@
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.971834ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.134791ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.256834ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.24175ms)
+✔ new future output samples do not hide a due audio-master sample (0.191333ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.788875

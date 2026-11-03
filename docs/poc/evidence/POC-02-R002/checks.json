@@ -1,0 +1,160 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T16:02:55.929177+00:00",
+    "finishedAt": "2026-11-03T16:02:57.346470+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:57.347450+00:00",
+    "finishedAt": "2026-11-03T16:02:58.182360+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:58.182923+00:00",
+    "finishedAt": "2026-11-03T16:02:58.262058+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "late-join-sync-smoke",
+    "command": [
+      "node",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:58.506862+00:00",
+    "finishedAt": "2026-11-03T16:03:31.244813+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "build-fixed",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T16:07:56.334371+00:00",
+    "finishedAt": "2026-11-03T16:07:57.618262+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration-fixed",
+    "command": [
+      "node",
+      "--test",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T16:07:57.619674+00:00",
+    "finishedAt": "2026-11-03T16:07:58.672743+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:07:58.673421+00:00",
+    "finishedAt": "2026-11-03T16:07:58.747476+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "late-join-sync-smoke",
+    "command": [
+      "node",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:07:58.986587+00:00",
+    "finishedAt": "2026-11-03T16:08:30.240326+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "build-fixed",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T16:11:48.708612+00:00",
+    "finishedAt": "2026-11-03T16:11:50.230988+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:11:50.231592+00:00",
+    "finishedAt": "2026-11-03T16:11:50.309219+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "late-join-sync-smoke",
+    "command": [
+      "node",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:11:50.655750+00:00",
+    "finishedAt": "2026-11-03T16:12:13.584790+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "build-fixed",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T16:13:33.127279+00:00",
+    "finishedAt": "2026-11-03T16:13:34.598335+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:13:34.598944+00:00",
+    "finishedAt": "2026-11-03T16:13:34.676645+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "late-join-sync-smoke",
+    "command": [
+      "node",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:13:35.017267+00:00",
+    "finishedAt": "2026-11-03T16:13:56.954047+00:00",
+    "exitCode": 0
+  }
+]

@@ -1,3 +1,5 @@
+import { MediaTimeline, selectVideoFrameIndex } from "./media-timeline";
+
 const SCREEN_FRAME_HEADER_BYTES = 24;
 const MAX_SCREEN_FRAME_PAYLOAD_BYTES = 512 * 1_024;
 const MAX_SCREEN_FRAME_BYTES = SCREEN_FRAME_HEADER_BYTES + MAX_SCREEN_FRAME_PAYLOAD_BYTES;
@@ -5,8 +7,11 @@ const MAX_SCREEN_SOCKET_BUFFERED_BYTES = 1_536 * 1_024;
 const SCREEN_WIDTH_LIMIT = 1_280;
 const SCREEN_HEIGHT_LIMIT = 720;
 const SCREEN_FRAME_RATE_LIMIT = 15;
-const TARGET_FRAME_RATE = 10;
+const TARGET_FRAME_RATE = 15;
 const TARGET_BITRATE = 800_000;
+// Cover the 500 ms PCM queue plus bounded device-output lead at 15 fps.
+const MAX_DECODED_VIDEO_FRAMES = 16;
+const MAX_PENDING_VIDEO_DECODES = 8;
 const VIDEO_MAGIC = [0x4c, 0x54, 0x53, 0x31];
 
 type EncodedVideoChunkLike = {
@@ -19,6 +24,7 @@ type EncodedVideoChunkLike = {
 type VideoFrameLike = {
   readonly displayWidth: number;
   readonly displayHeight: number;
+  readonly timestamp: number;
   close(): void;
 };
 
@@ -97,10 +103,14 @@ export type ScreenSnapshot = {
   encodeQueueHighWater: number;
   decodeQueueHighWater: number;
   socketQueueHighWaterBytes: number;
+  syncMode: "waiting" | "audio-master" | "standalone";
+  syncClockId: string | null;
+  scheduledSourceClockOffsetMs: number | null;
+  droppedDecodedFrames: number;
 };
 
 export type ScreenObservation = {
-  schemaVersion: 1;
+  schemaVersion: 2;
   observedAt: string;
   environment: {
     userAgent: string;
@@ -132,13 +142,29 @@ export type ScreenObservation = {
     rollingFiveSecondRenderedFps: number;
     decodeQueueHighWater: number;
   };
+  audioVideoSync: {
+    mode: "waiting" | "audio-master" | "standalone";
+    matchingAudioPublisherClock: boolean;
+    scheduledSourceClockOffsetMs: number | null;
+    audioMaster: {
+      generation: number;
+      sourceTimestampUs: number;
+      receiverPerformanceTimeMs: number;
+      mapping: "output-timestamp" | "graph-estimate";
+      observationWindowMs: number;
+      mappingErrorBoundMs: null;
+    } | null;
+    recentAudioPulseEvents: ReturnType<MediaTimeline["getPulseEvents"]>;
+    queuedDecodedFrames: number;
+    maximumQueuedDecodedFrames: number;
+  };
   resources: {
     browserJsHeapBytes: { used: number; total: number; limit: number } | null;
     browserJsHeapScope: "browser-reported JavaScript heap only; excludes media/GPU/process memory";
   };
   evidence: {
     endToEndLatencyMs: null;
-    lateJoinSynchronization: "not-implemented";
+    lateJoinSynchronization: "keyframe-gated-with-config-metadata";
     serverCpuAndMemory: "not-collected-in-browser";
     sourceAttribution: "track settings are browser-reported and do not prove a physical display was selected";
   };
@@ -163,6 +189,10 @@ export const INITIAL_SCREEN_STATE: ScreenSnapshot = {
   encodeQueueHighWater: 0,
   decodeQueueHighWater: 0,
   socketQueueHighWaterBytes: 0,
+  syncMode: "waiting",
+  syncClockId: null,
+  scheduledSourceClockOffsetMs: null,
+  droppedDecodedFrames: 0,
 };
 
 type StartWaiter = {
@@ -230,6 +260,8 @@ export class ScreenController {
   private readonly socket: WebSocket;
   private readonly canvas: HTMLCanvasElement;
   private readonly onChange: (state: ScreenSnapshot) => void;
+  private readonly timeline: MediaTimeline;
+  private readonly unsubscribeTimeline: () => void;
   private state: ScreenSnapshot = { ...INITIAL_SCREEN_STATE };
   private captureStream: MediaStream | null = null;
   private captureTrack: MediaStreamTrack | null = null;
@@ -243,22 +275,26 @@ export class ScreenController {
   private publisherToken = 0;
   private pendingStart: StartWaiter | null = null;
   private animationFrameId: number | null = null;
-  private captureStartedAt = 0;
+  private renderAnimationFrameId: number | null = null;
   private lastCaptureAt = 0;
   private lastKeyframeAt = 0;
   private forceKeyframe = true;
   private captureFramesSkipped = 0;
   private decodeGeneration: number | null = null;
   private decoderEpoch = 0;
+  private activeClockId: string | null = null;
+  private readonly decodedFrameQueue: VideoFrameLike[] = [];
   private receivedFrames = 0;
   private readonly renderedAt: number[] = [];
 
-  constructor(socket: WebSocket, canvas: HTMLCanvasElement, onChange: (state: ScreenSnapshot) => void) {
+  constructor(socket: WebSocket, canvas: HTMLCanvasElement, timeline: MediaTimeline, onChange: (state: ScreenSnapshot) => void) {
     this.socket = socket;
     this.canvas = canvas;
+    this.timeline = timeline;
     this.onChange = onChange;
     this.socket.addEventListener("message", this.handleSocketMessage);
     this.socket.addEventListener("close", this.handleSocketClose);
+    this.unsubscribeTimeline = timeline.subscribe(() => this.scheduleRenderFrames());
     this.publish();
   }
 
@@ -269,7 +305,7 @@ export class ScreenController {
   getObservation(): ScreenObservation {
     const state = this.snapshot();
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
       observedAt: new Date().toISOString(),
       environment: {
         userAgent: navigator.userAgent.slice(0, 256),
@@ -301,13 +337,32 @@ export class ScreenController {
         rollingFiveSecondRenderedFps: state.renderFps,
         decodeQueueHighWater: state.decodeQueueHighWater,
       },
+      audioVideoSync: {
+        mode: state.syncMode,
+        matchingAudioPublisherClock: Boolean(this.activeClockId && this.timeline.getActiveAudioStream()?.clockId === this.activeClockId),
+        scheduledSourceClockOffsetMs: state.scheduledSourceClockOffsetMs,
+        audioMaster: (() => {
+          const master = this.timeline.getAudioMaster(this.activeClockId, performance.now());
+          return master ? {
+            generation: master.generation,
+            sourceTimestampUs: master.sourceTimestampUs,
+            receiverPerformanceTimeMs: master.receiverPerformanceTimeMs,
+            mapping: master.mapping,
+            observationWindowMs: master.observationWindowMs,
+            mappingErrorBoundMs: null,
+          } : null;
+        })(),
+        recentAudioPulseEvents: this.activeClockId ? this.timeline.getPulseEvents(this.activeClockId) : [],
+        queuedDecodedFrames: this.decodedFrameQueue.length,
+        maximumQueuedDecodedFrames: MAX_DECODED_VIDEO_FRAMES,
+      },
       resources: {
         browserJsHeapBytes: browserJsHeapSample(),
         browserJsHeapScope: "browser-reported JavaScript heap only; excludes media/GPU/process memory",
       },
       evidence: {
         endToEndLatencyMs: null,
-        lateJoinSynchronization: "not-implemented",
+        lateJoinSynchronization: "keyframe-gated-with-config-metadata",
         serverCpuAndMemory: "not-collected-in-browser",
         sourceAttribution: "track settings are browser-reported and do not prove a physical display was selected",
       },
@@ -326,7 +381,7 @@ export class ScreenController {
     this.renderedAt.length = 0;
     this.set({
       receiverState: "subscribing",
-      receiverMessage: "正在加入畫面接收；請在分享開始前加入。",
+      receiverMessage: "正在加入畫面接收；若分享已進行，會等待下一個可解碼關鍵影格。",
       receivedFrames: 0,
       decodedFrames: 0,
       renderedFrames: 0,
@@ -334,6 +389,10 @@ export class ScreenController {
       renderedHeight: null,
       renderFps: 0,
       decodeQueueHighWater: 0,
+      syncMode: "waiting",
+      syncClockId: null,
+      scheduledSourceClockOffsetMs: null,
+      droppedDecodedFrames: 0,
     });
     this.socket.send(JSON.stringify({ type: "screen.subscribe" }));
   }
@@ -350,6 +409,9 @@ export class ScreenController {
       renderedWidth: null,
       renderedHeight: null,
       renderFps: 0,
+      syncMode: "waiting",
+      syncClockId: null,
+      scheduledSourceClockOffsetMs: null,
     });
   }
 
@@ -458,7 +520,6 @@ export class ScreenController {
       }
       this.publisherGeneration = generation;
       this.publisherSequence = 0;
-      this.captureStartedAt = performance.now();
       this.lastCaptureAt = 0;
       this.lastKeyframeAt = 0;
       this.forceKeyframe = true;
@@ -475,6 +536,12 @@ export class ScreenController {
         publisherMessage: isDenied ? `${classified.prefix} ${errorMessage(error)}` : `無法開始畫面分享：${errorMessage(error)}`,
       });
     }
+  }
+
+  replaceShareSource(): void {
+    if (this.state.publisherState !== "sharing") return;
+    this.stopShare("正在更換分享來源；新來源啟動時會建立新世代，語音維持獨立。");
+    void this.startShare();
   }
 
   stopShare(message = "已停止畫面分享並釋放擷取與編碼資源。"): void {
@@ -510,6 +577,7 @@ export class ScreenController {
     this.socket.removeEventListener("close", this.handleSocketClose);
     this.stopShare("房間連線已關閉，畫面發布已停止。");
     this.stopWatching();
+    this.unsubscribeTimeline();
   }
 
   private publish(): void {
@@ -587,7 +655,7 @@ export class ScreenController {
       const context = canvas.getContext("2d", { alpha: false });
       if (!context) throw new Error("畫面編碼 Canvas context 已關閉。");
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const timestamp = Math.max(0, Math.floor((now - this.captureStartedAt) * 1_000));
+      const timestamp = Math.max(0, Math.floor(performance.now() * 1_000));
       const frame = new screenWindow.VideoFrame(canvas, { timestamp });
       const keyFrame = this.forceKeyframe || now - this.lastKeyframeAt >= 2_000;
       try {
@@ -678,6 +746,12 @@ export class ScreenController {
       waiter.resolve(generation);
       return;
     }
+    if (message.type === "screen.keyframeRequest") {
+      if (Number(message.generation) === this.publisherGeneration && this.state.publisherState === "sharing") {
+        this.forceKeyframe = true;
+      }
+      return;
+    }
     if (message.type === "screen.error") {
       const error = new Error(String(message.message ?? message.code ?? "房間無法開始畫面分享。"));
       if (this.pendingStart) {
@@ -714,6 +788,9 @@ export class ScreenController {
           renderedWidth: null,
           renderedHeight: null,
           renderFps: 0,
+          syncMode: "waiting",
+          syncClockId: null,
+          scheduledSourceClockOffsetMs: null,
         });
       }
       return;
@@ -730,17 +807,19 @@ export class ScreenController {
     const generation = Number(message.generation);
     const width = Number(message.width);
     const height = Number(message.height);
+    const clockId = typeof message.clockId === "string" ? message.clockId : "";
     if (
       !Number.isInteger(generation) || generation < 1 ||
       !Number.isInteger(width) || width < 1 || width > SCREEN_WIDTH_LIMIT ||
       !Number.isInteger(height) || height < 1 || height > SCREEN_HEIGHT_LIMIT ||
-      message.codec !== "vp8"
+      message.codec !== "vp8" || clockId.length === 0
     ) {
       this.set({ receiverState: "error", receiverMessage: "伺服器分享設定格式無效。" });
       return;
     }
     if (this.state.receiverState === "off") return;
     this.stopDecoder();
+    this.activeClockId = clockId;
     const Decoder = (window as unknown as ScreenWindow).VideoDecoder;
     if (!Decoder) {
       this.set({ receiverState: "error", receiverMessage: "此瀏覽器沒有 WebCodecs VideoDecoder。" });
@@ -764,7 +843,7 @@ export class ScreenController {
       this.renderedAt.length = 0;
       this.set({
         receiverState: "waiting",
-        receiverMessage: `已收到 VP8 設定 ${width}×${height}；等待關鍵影格。晚加入同步未實作。`,
+        receiverMessage: `已收到 VP8 設定 ${width}×${height}；伺服器會等關鍵影格再轉送，音訊同時訂閱時依同發布者時鐘呈現。`,
         receivedFrames: 0,
         decodedFrames: 0,
         renderedFrames: 0,
@@ -772,6 +851,10 @@ export class ScreenController {
         renderedHeight: null,
         renderFps: 0,
         decodeQueueHighWater: 0,
+        syncMode: "waiting",
+        syncClockId: clockId,
+        scheduledSourceClockOffsetMs: null,
+        droppedDecodedFrames: 0,
       });
     } catch (error) {
       this.set({ receiverState: "error", receiverMessage: `無法設定 VP8 解碼器：${errorMessage(error)}` });
@@ -797,9 +880,9 @@ export class ScreenController {
     const decoder = this.decoder;
     const Chunk = (window as unknown as ScreenWindow).EncodedVideoChunk;
     if (!decoder || !Chunk) return;
-    if (decoder.decodeQueueSize >= 2) {
+    if (decoder.decodeQueueSize >= MAX_PENDING_VIDEO_DECODES) {
       this.stopWatching();
-      this.set({ receiverState: "error", receiverMessage: "解碼器佇列超過 2 個影格；已停止接收並清除畫面以維持有界資源。" });
+      this.set({ receiverState: "error", receiverMessage: "解碼器待處理達 8 個影格；已停止接收並清除畫面以維持有界資源。" });
       return;
     }
     try {
@@ -824,6 +907,52 @@ export class ScreenController {
       frame.close();
       return;
     }
+    if (!Number.isFinite(frame.timestamp) || frame.timestamp < 0) {
+      frame.close();
+      this.set({ receiverState: "error", receiverMessage: "VP8 解碼影格沒有有效時間戳；已略過。" });
+      return;
+    }
+    this.decodedFrameQueue.push(frame);
+    this.decodedFrameQueue.sort((left, right) => left.timestamp - right.timestamp);
+    while (this.decodedFrameQueue.length > MAX_DECODED_VIDEO_FRAMES) {
+      this.decodedFrameQueue.shift()?.close();
+      this.set({ droppedDecodedFrames: this.state.droppedDecodedFrames + 1 });
+    }
+    this.set({ decodedFrames: this.state.decodedFrames + 1 });
+    this.scheduleRenderFrames();
+  }
+
+  private scheduleRenderFrames(): void {
+    if (this.renderAnimationFrameId !== null || this.decodedFrameQueue.length === 0 || this.state.receiverState === "off") return;
+    this.renderAnimationFrameId = requestAnimationFrame(this.renderQueuedFrames);
+  }
+
+  private readonly renderQueuedFrames = (): void => {
+    this.renderAnimationFrameId = null;
+    if (this.decodedFrameQueue.length === 0 || this.state.receiverState === "off") return;
+    const now = performance.now();
+    const audioMaster = this.timeline.getAudioMaster(this.activeClockId, now);
+    if (audioMaster && audioMaster.receiverPerformanceTimeMs > now) {
+      this.scheduleRenderFrames();
+      return;
+    }
+    const selectedIndex = selectVideoFrameIndex(
+      this.decodedFrameQueue.map((frame) => frame.timestamp),
+      audioMaster?.sourceTimestampUs ?? null,
+    );
+
+    if (selectedIndex >= 0) {
+      for (let index = 0; index < selectedIndex; index += 1) {
+        this.decodedFrameQueue.shift()?.close();
+        this.set({ droppedDecodedFrames: this.state.droppedDecodedFrames + 1 });
+      }
+      const frame = this.decodedFrameQueue.shift();
+      if (frame) this.renderFrame(frame, audioMaster);
+    }
+    this.scheduleRenderFrames();
+  };
+
+  private renderFrame(frame: VideoFrameLike, audioMaster: ReturnType<MediaTimeline["getAudioMaster"]>): void {
     try {
       const context = this.canvas.getContext("2d", { alpha: false });
       if (!context) throw new Error("接收 Canvas context 已關閉。");
@@ -835,20 +964,21 @@ export class ScreenController {
       const now = performance.now();
       this.renderedAt.push(now);
       while (this.renderedAt.length > 75 || (this.renderedAt[0] !== undefined && now - this.renderedAt[0] > 5_000)) this.renderedAt.shift();
-      const elapsedMs = this.renderedAt.length < 2
-        ? 0
-        : Math.max(1, now - (this.renderedAt[0] ?? now));
-      const renderFps = elapsedMs === 0
-        ? 0
-        : Number((((this.renderedAt.length - 1) * 1_000) / elapsedMs).toFixed(2));
+      const elapsedMs = this.renderedAt.length < 2 ? 0 : Math.max(1, now - (this.renderedAt[0] ?? now));
+      const renderFps = elapsedMs === 0 ? 0 : Number((((this.renderedAt.length - 1) * 1_000) / elapsedMs).toFixed(2));
+      const scheduledSourceClockOffsetMs = audioMaster ? Math.max(0, (audioMaster.sourceTimestampUs - frame.timestamp) / 1_000) : null;
       this.set({
         receiverState: "rendering",
-        receiverMessage: "瀏覽器已解碼並繪製畫面；窗口 fps 依最近 5 秒 render 計數。",
-        decodedFrames: this.state.decodedFrames + 1,
+        receiverMessage: audioMaster
+          ? "依同一發布者時鐘取樣音訊播放位置呈現；主時鐘失去新樣本或不同來源時回到獨立顯示。"
+          : "畫面以獨立模式呈現；尚無同發布者且新鮮的音訊播放時鐘。",
         renderedFrames: this.state.renderedFrames + 1,
         renderedWidth: frame.displayWidth,
         renderedHeight: frame.displayHeight,
         renderFps,
+        syncMode: audioMaster ? "audio-master" : "standalone",
+        syncClockId: this.activeClockId,
+        scheduledSourceClockOffsetMs,
       });
     } catch (error) {
       this.set({ receiverState: "error", receiverMessage: `畫面已解碼但無法繪製：${errorMessage(error)}` });
@@ -860,9 +990,13 @@ export class ScreenController {
 
   private stopDecoder(): void {
     this.decoderEpoch += 1;
+    if (this.renderAnimationFrameId !== null) cancelAnimationFrame(this.renderAnimationFrameId);
+    this.renderAnimationFrameId = null;
+    while (this.decodedFrameQueue.length > 0) this.decodedFrameQueue.shift()?.close();
     const decoder = this.decoder;
     this.decoder = null;
     this.decodeGeneration = null;
+    this.activeClockId = null;
     if (!decoder || decoder.state === "closed") return;
     try { decoder.close(); } catch { /* Decoder may have closed after an error callback. */ }
   }
@@ -908,6 +1042,9 @@ export class ScreenController {
       renderedWidth: null,
       renderedHeight: null,
       renderFps: 0,
+      syncMode: "waiting",
+      syncClockId: null,
+      scheduledSourceClockOffsetMs: null,
     });
   };
 }

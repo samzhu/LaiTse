@@ -1,0 +1,30 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (203.430416ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (169.926708ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.596625ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (98.449125ms)
+✔ invalid capability reports are rejected and not stored (6.715375ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.88925ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.138375ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.247917ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.223042ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (122.373875ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (174.52175ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (4.152083ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (87.089166ms)
+✔ the application serves health and a built-in room catalogue (64.13675ms)
+✔ two clients receive the same authoritative members and sequenced reaction (12.604375ms)
+✔ the websocket rejects cross-origin clients before joining (3.015667ms)
+✔ malformed or oversized control frames close without being broadcast (6.134666ms)
+✔ clients cannot select arbitrary rooms (2.633959ms)
+✔ display names longer than the server limit are rejected (2.237917ms)
+✔ control events reject client-supplied fields outside the protocol (2.470791ms)
+✔ the room has a fixed member limit (12.596042ms)
+✔ the server closes a client that exceeds the reaction rate limit (4.00075ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 750.44775

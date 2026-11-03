@@ -1,0 +1,49 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T16:02:55.929177+00:00",
+    "finishedAt": "2026-11-03T16:02:57.346470+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:57.347450+00:00",
+    "finishedAt": "2026-11-03T16:02:58.182360+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:58.182923+00:00",
+    "finishedAt": "2026-11-03T16:02:58.262058+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "late-join-sync-smoke",
+    "command": [
+      "node",
+      "scripts/t06-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T16:02:58.506862+00:00",
+    "finishedAt": "2026-11-03T16:03:31.244813+00:00",
+    "exitCode": 1
+  }
+]

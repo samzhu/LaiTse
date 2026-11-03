@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
+import { MediaTimeline } from "./media-timeline";
 import {
   API_KEYS,
   API_LABELS,
@@ -70,6 +71,7 @@ export function App() {
   const [isSendingObservation, setIsSendingObservation] = useState(false);
   const [observation, setObservation] = useState<StoredObservation | null>(null);
   const [currentSocket, setCurrentSocket] = useState<WebSocket | null>(null);
+  const mediaTimeline = useMemo(() => new MediaTimeline(), [currentSocket]);
   const socketRef = useRef<WebSocket | null>(null);
   const pendingReportRef = useRef<CapabilityReport | null>(null);
   const lastSequenceRef = useRef(0);
@@ -493,8 +495,8 @@ export function App() {
         ) : null}
       </section>
 
-      {connected ? <AudioPanel socket={currentSocket} /> : null}
-      {connected ? <ScreenPanel socket={currentSocket} /> : null}
+      {connected ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
+      {connected ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
 
       <footer className="footer-note">
         <span>Local experiment</span>

@@ -1,3 +1,5 @@
+import { mapGraphTimeToPerformanceTime, MediaTimeline } from "./media-timeline";
+
 const AUDIO_SAMPLE_RATE = 48_000;
 const AUDIO_CHANNELS = 1;
 const AUDIO_BITRATE = 32_000;
@@ -32,6 +34,7 @@ type EncodedChunk = {
 type DecodedAudioData = {
   readonly numberOfFrames: number;
   readonly numberOfChannels: number;
+  readonly timestamp: number;
   close(): void;
   copyTo(destination: AllowSharedBufferSource, options?: { planeIndex?: number; format?: string }): Promise<void>;
 };
@@ -267,9 +270,17 @@ export class AudioController {
   private decoderEpoch = 0;
   private decoderRequestId = 0;
   private announcedStreamGeneration: number | null = null;
+  private announcedStreamClockId: string | null = null;
+  private activeAudioClockId: string | null = null;
+  private playbackEpoch = 0;
+  private lastOverflowResets = 0;
+  private audioPulseActive = false;
+  private audioPulseQuietSinceMs: number | null = null;
+  private readonly timeline: MediaTimeline;
 
-  constructor(socket: WebSocket, onChange: (state: AudioSnapshot) => void) {
+  constructor(socket: WebSocket, timeline: MediaTimeline, onChange: (state: AudioSnapshot) => void) {
     this.socket = socket;
+    this.timeline = timeline;
     this.onChange = onChange;
     this.socket.addEventListener("message", this.handleSocketMessage);
     this.socket.addEventListener("close", this.handleSocketClose);
@@ -378,6 +389,7 @@ export class AudioController {
           if (context.state === "running") {
             this.set({ listenerState: "ready", listenerMessage: "播放已啟動；尚未收到發布者音訊。" });
           } else if (context.state === "suspended") {
+            this.stopDecoder();
             this.set({ listenerState: "suspended", listenerMessage: "播放目前暫停。按「繼續收聽」恢復播放。" });
           }
         };
@@ -404,7 +416,9 @@ export class AudioController {
     this.set({ listenerState: "starting", listenerMessage: "正在恢復播放…" });
     void resumePromise.then(() => {
       if (this.listenerContext !== context || !this.listenerActive) return;
-      if (this.announcedStreamGeneration !== null) void this.startDecoder(this.announcedStreamGeneration);
+      if (this.announcedStreamGeneration !== null && this.announcedStreamClockId !== null) {
+        void this.startDecoder(this.announcedStreamGeneration, this.announcedStreamClockId);
+      }
       this.set({ listenerState: "ready", listenerMessage: this.streamGeneration === null
         ? "播放已啟動；正在等待發布者音訊。"
         : "播放已恢復，正在接收 Opus 音訊。" });
@@ -419,6 +433,7 @@ export class AudioController {
     if (this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
     this.listenerActive = false;
     this.announcedStreamGeneration = null;
+    this.announcedStreamClockId = null;
     this.stopDecoder();
     this.stopListenerResources();
     this.set({
@@ -517,6 +532,10 @@ export class AudioController {
           outputChannelCount: [AUDIO_CHANNELS],
           channelCount: AUDIO_CHANNELS,
           channelCountMode: "explicit",
+          processorOptions: {
+            contextTimeUs: context.currentTime * 1_000_000,
+            performanceTimeUs: performance.now() * 1_000,
+          },
         });
         worklet.port.onmessage = (event: MessageEvent) => this.handleCapturePcm(attempt, event.data);
         worklet.connect(context.destination);
@@ -575,6 +594,7 @@ export class AudioController {
     if (this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
     this.listenerActive = false;
     this.announcedStreamGeneration = null;
+    this.announcedStreamClockId = null;
     this.captureToken += 1;
     this.listenerToken += 1;
     if (this.captureAttempt) this.captureAttempt.cancelled = true;
@@ -622,16 +642,19 @@ export class AudioController {
     }
     if (message.type === "audio.stream") {
       const generation = Number(message.generation);
-      if (Number.isInteger(generation) && generation > 0 && this.listenerActive) {
-        if (generation !== this.announcedStreamGeneration) this.stopDecoder();
+      const clockId = typeof message.clockId === "string" ? message.clockId : "";
+      if (Number.isInteger(generation) && generation > 0 && clockId.length > 0 && this.listenerActive) {
+        if (generation !== this.announcedStreamGeneration || clockId !== this.announcedStreamClockId) this.stopDecoder();
         this.announcedStreamGeneration = generation;
-        void this.startDecoder(generation);
+        this.announcedStreamClockId = clockId;
+        void this.startDecoder(generation, clockId);
       }
       return;
     }
     if (message.type === "audio.streamEnded") {
       if (Number(message.generation) === this.announcedStreamGeneration) {
         this.announcedStreamGeneration = null;
+        this.announcedStreamClockId = null;
         this.stopDecoder();
         this.set({ listenerMessage: "發布者已停止；播放仍保持啟動並等待下一次發布。", queuedSamples: 0, renderRms: 0 });
       }
@@ -776,7 +799,7 @@ export class AudioController {
     }
   }
 
-  private async startDecoder(generation: number): Promise<void> {
+  private async startDecoder(generation: number, clockId: string): Promise<void> {
     if (!this.listenerActive || this.listenerContext?.state !== "running") return;
     if (this.streamGeneration === generation && this.decoder) return;
     const Decoder = (window as unknown as AudioWindow).AudioDecoder;
@@ -791,6 +814,7 @@ export class AudioController {
       if (
         requestId !== this.decoderRequestId ||
         this.announcedStreamGeneration !== generation ||
+        this.announcedStreamClockId !== clockId ||
         !this.listenerActive ||
         this.listenerContext?.state !== "running"
       ) return;
@@ -808,11 +832,22 @@ export class AudioController {
       decoder.configure(DECODE_CONFIG);
       this.decoder = decoder;
       this.streamGeneration = generation;
+      this.activeAudioClockId = clockId;
+      this.playbackEpoch += 1;
+      this.lastOverflowResets = this.state.queueOverflowResets;
+      this.audioPulseActive = false;
+      this.audioPulseQuietSinceMs = null;
+      this.timeline.beginAudioStream(clockId, generation, this.playbackEpoch);
       this.lastReceivedSequence = -1;
-      this.playbackWorklet?.port.postMessage({ type: "clear" });
+      this.playbackWorklet?.port.postMessage({
+        type: "clear",
+        epoch: this.playbackEpoch,
+        generation,
+        clockId,
+      });
       this.set({ listenerState: "ready", listenerMessage: "已收到發布資料，正在解碼 Opus 音訊。" });
     } catch (error) {
-      if (requestId !== this.decoderRequestId || this.announcedStreamGeneration !== generation) return;
+      if (requestId !== this.decoderRequestId || this.announcedStreamGeneration !== generation || this.announcedStreamClockId !== clockId) return;
       const message = error instanceof UnsupportedAudioError ? error.message : `無法啟動 Opus 解碼器：${errorMessage(error)}`;
       this.set({ listenerState: "error", listenerMessage: message });
     }
@@ -820,11 +855,22 @@ export class AudioController {
 
   private async handleDecodedAudio(epoch: number, audioData: DecodedAudioData): Promise<void> {
     try {
-      if (epoch !== this.decoderEpoch || !this.listenerActive || !this.playbackWorklet) return;
+      const streamGeneration = this.streamGeneration;
+      const clockId = this.activeAudioClockId;
+      if (epoch !== this.decoderEpoch || !this.listenerActive || !this.playbackWorklet || streamGeneration === null || !clockId) return;
+      const timestampUs = audioData.timestamp;
+      if (!Number.isFinite(timestampUs) || timestampUs < 0) return;
       const samples = new Float32Array(audioData.numberOfFrames);
       await audioData.copyTo(samples, { planeIndex: 0, format: "f32-planar" });
-      if (epoch !== this.decoderEpoch || !this.listenerActive || !this.playbackWorklet) return;
-      this.playbackWorklet.port.postMessage({ type: "pcm", samples }, [samples.buffer]);
+      if (epoch !== this.decoderEpoch || !this.listenerActive || !this.playbackWorklet || streamGeneration !== this.streamGeneration || clockId !== this.activeAudioClockId) return;
+      this.playbackWorklet.port.postMessage({
+        type: "pcm",
+        samples,
+        timestampUs,
+        epoch: this.playbackEpoch,
+        generation: streamGeneration,
+        clockId,
+      }, [samples.buffer]);
       this.set({ decodedFrames: this.state.decodedFrames + 1 });
     } catch (error) {
       if (epoch === this.decoderEpoch) this.set({ listenerMessage: `無法轉送解碼後音訊到播放佇列：${errorMessage(error)}` });
@@ -837,12 +883,86 @@ export class AudioController {
     if (!value || typeof value !== "object") return;
     const stats = value as Record<string, unknown>;
     if (stats.type !== "stats") return;
+    if (
+      stats.epoch !== this.playbackEpoch ||
+      stats.generation !== this.streamGeneration ||
+      stats.clockId !== this.activeAudioClockId
+    ) return;
+    const overflowResets = Number.isFinite(stats.overflowResets) ? Number(stats.overflowResets) : this.lastOverflowResets;
     this.set({
       renderedSamples: Number.isFinite(stats.renderedSamples) ? Number(stats.renderedSamples) : this.state.renderedSamples,
       queuedSamples: Number.isFinite(stats.queuedSamples) ? Number(stats.queuedSamples) : this.state.queuedSamples,
       renderRms: Number.isFinite(stats.rms) ? Number(stats.rms) : this.state.renderRms,
-      queueOverflowResets: Number.isFinite(stats.overflowResets) ? Number(stats.overflowResets) : this.state.queueOverflowResets,
+      queueOverflowResets: overflowResets,
     });
+    if (overflowResets > this.lastOverflowResets || stats.overflowReset === true) {
+      this.lastOverflowResets = overflowResets;
+      this.resetPlaybackTimelineAfterOverflow();
+      return;
+    }
+    this.lastOverflowResets = overflowResets;
+    if (!Number.isFinite(stats.playheadTimestampUs) || !Number.isFinite(stats.graphTimestampUs)) return;
+    const context = this.listenerContext;
+    if (!context || context.state !== "running" || !this.activeAudioClockId || this.streamGeneration === null) return;
+    const observedAtPerformanceTimeMs = performance.now();
+    let outputTimestamp: AudioTimestamp | null = null;
+    try {
+      if (typeof context.getOutputTimestamp === "function") outputTimestamp = context.getOutputTimestamp();
+    } catch {
+      outputTimestamp = null;
+    }
+    const outputContextTime = outputTimestamp?.contextTime ?? 0;
+    const outputPerformanceTime = outputTimestamp?.performanceTime ?? 0;
+    const outputFresh = Boolean(outputTimestamp &&
+      Number.isFinite(outputContextTime) && outputContextTime > 0 &&
+      Number.isFinite(outputPerformanceTime) && outputPerformanceTime > 0 &&
+      observedAtPerformanceTimeMs - outputPerformanceTime >= -20 &&
+      observedAtPerformanceTimeMs - outputPerformanceTime <= 250);
+    const mapped = mapGraphTimeToPerformanceTime({
+      graphTimeUs: Number(stats.graphTimestampUs),
+      observedAtPerformanceTimeMs,
+      contextTimeSeconds: context.currentTime,
+      outputPerformanceTimeMs: outputPerformanceTime,
+      outputContextTimeSeconds: outputContextTime,
+      outputTimestampFresh: outputFresh,
+    });
+    const sample = {
+      clockId: this.activeAudioClockId,
+      generation: this.streamGeneration,
+      epoch: this.playbackEpoch,
+      sourceTimestampUs: Number(stats.playheadTimestampUs),
+      graphTimestampUs: Number(stats.graphTimestampUs),
+      receiverPerformanceTimeMs: mapped.performanceTimeMs,
+      observationWindowMs: Number(stats.observationWindowMs),
+      mappingErrorBoundMs: null,
+      mapping: mapped.mapping,
+    } as const;
+    this.timeline.updateAudioMaster(sample, observedAtPerformanceTimeMs);
+
+    const rms = Number.isFinite(stats.rms) ? Number(stats.rms) : 0;
+    if (rms >= 0.015) {
+      if (!this.audioPulseActive) this.timeline.recordAudioPulse(sample);
+      this.audioPulseActive = true;
+      this.audioPulseQuietSinceMs = null;
+    } else if (this.audioPulseActive) {
+      if (this.audioPulseQuietSinceMs === null) this.audioPulseQuietSinceMs = observedAtPerformanceTimeMs;
+      if (observedAtPerformanceTimeMs - this.audioPulseQuietSinceMs >= 100) {
+        this.audioPulseActive = false;
+        this.audioPulseQuietSinceMs = null;
+      }
+    }
+  }
+
+  private resetPlaybackTimelineAfterOverflow(): void {
+    const clockId = this.activeAudioClockId;
+    const generation = this.streamGeneration;
+    this.audioPulseActive = false;
+    this.audioPulseQuietSinceMs = null;
+    if (!clockId || generation === null) return;
+    this.timeline.endAudioStream(this.playbackEpoch);
+    this.playbackEpoch += 1;
+    this.timeline.beginAudioStream(clockId, generation, this.playbackEpoch);
+    this.playbackWorklet?.port.postMessage({ type: "clear", epoch: this.playbackEpoch, generation, clockId });
   }
 
   private failCapture(attempt: CaptureAttempt, error: unknown): void {
@@ -869,12 +989,17 @@ export class AudioController {
   private stopDecoder(): void {
     this.decoderEpoch += 1;
     this.decoderRequestId += 1;
+    this.timeline.endAudioStream(this.playbackEpoch);
+    this.playbackEpoch += 1;
     this.streamGeneration = null;
+    this.activeAudioClockId = null;
     this.lastReceivedSequence = -1;
+    this.audioPulseActive = false;
+    this.audioPulseQuietSinceMs = null;
     const decoder = this.decoder;
     this.decoder = null;
     try { if (decoder && decoder.state !== "closed") decoder.close(); } catch {}
-    this.playbackWorklet?.port.postMessage({ type: "clear" });
+    this.playbackWorklet?.port.postMessage({ type: "clear", epoch: this.playbackEpoch, generation: null, clockId: null });
   }
 
   private stopListenerResources(): void {

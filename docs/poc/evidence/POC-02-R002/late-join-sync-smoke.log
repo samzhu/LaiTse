@@ -1,0 +1,11 @@
+[T06] room-ready
+[T06] synthetic-audio-active {"clockId":"da34736c-dfdd-44b4-8743-093eb9e6f962"}
+[T06] screen-active {"generation":1,"width":1280,"height":720,"clockId":"da34736c-dfdd-44b4-8743-093eb9e6f962"}
+[T06] late-join-decoded {"generation":1,"clockId":"da34736c-dfdd-44b4-8743-093eb9e6f962","dimensions":[1280,720],"syncMode":"audio-master"}
+[T06] same-receiver-marker-samples {"pairedCycles":3,"offsetsMs":[64.77,151.71,129.35],"mappingErrorBoundMs":null}
+[T06] source-replaced {"fromGeneration":1,"toGeneration":2,"fromDimensions":[1280,720],"toDimensions":[640,360]}
+[T06] receiver-resubscribed {"generation":2,"renderedFrames":7,"syncMode":"audio-master"}
+[T06] observation-downloaded {"path":".scratch/t06/desktop-smoke/observations/receiver-b-screen.json","pulseEvents":5}
+[T06] screen-stopped-audio-continuing
+[T06] audio-stopped-screen-continuing {"beforeFrames":4,"afterFrames":7}
+T06 smoke passed; evidence saved under .scratch/t06/desktop-smoke.

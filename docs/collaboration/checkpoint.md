@@ -69,3 +69,15 @@ docs/poc/evidence/POC-01-R002含實際下載、各phase/ACK/transport/起迄與s
 最終18核心整合與build/typecheck通過，三Firefox可信HTTPS/WSS短合成影音流程零page/socket errors；真下載320×180／9.67fps，screen stop/deny audio持續、audio stop screen持續。另Chrome156兩頁前景原生分頁捕捉→同一本機HTTP/WS→1280×630畫面／9.74fps快照、原生停止617影格後清空；未開真mic/桌面/視窗/OS權限。原生初次背景Invalid state已改前景操作成功，data:fixture遭安全政策阻擋未繞過。
 
 R001 JSON/圖/hash讀回且代表圖實際查看，README／執行紀錄／SOL-002/008及brief/交付索引同步。真mic/真人/手機與晚加入/同步/品質/容量仍未驗，完整POC-02 Inconclusive。writer與本輪server/Firefox/Chrome tabs已釋出；本機commit程式及紀錄，不push/GitHub/T06/部署。
+
+## T06啟動（2026-11-03）
+
+人類明確指定「繼續做T06，驗測維持輕量，確認晚加入與音畫同步的核心功能可行及使用方式，完成後把程式和驗測紀錄一起commit」。#7原票已讀回；root負責設計/驗收/文件/Git、Luna xhigh負責派定程式。R002已配發；不套用原固定兩次/p95/長測硬門檻，也不預先宣稱品質或完整POC-02通過。手機/真人先前待測維持，T07不在本輪。
+
+### T06完成（2026-11-04）
+
+Luna已明確釋出writer，root接手驗收及窄修。23核心案例通過，client緩衝修正後production build/typecheck與最終21秒三Firefox流程通過；晚加入同clockId/audio-master1280×720、換generation/640×360、退訂再入、停screen留audio/停audio轉standalone可行。無新依賴／外部服務或手機/真mic/真人結果。
+
+R002保留三個失敗版本：先有換來源render0，時鐘歷史修正未單獨解決；獨立模型確認4幀不足以配合500ms PCM，改16幀；另late-join明確被2筆decoder門檻退訂，改有界8筆後完整流程成功。32筆clock history避免未來樣本遮蔽due樣本，5個clock回歸通過；沒有將所有根因推論說成已直接量到。
+
+原始下載schema2含同clock/master、5個pulse、待呈現5/16frame。三個同端marker64.77/151.71/129.35ms，actual21.33ms窗口／RAF最大50.08ms、mappingErrorBound null；高於150ms的一筆未略過、不宣稱p95/實體品質。JSON/hash已讀回、代表圖實際查看，README／SOL／execution-log／brief/交付索引同步。server與隔離Firefox finally關閉、writer釋出；程式與紀錄本機commit，不push/寫GitHub/T07/部署。原AGENTS/.scratch未追蹤內容保留。

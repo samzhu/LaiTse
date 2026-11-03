@@ -1,0 +1,19 @@
+{
+  "src/client/App.tsx": "a70bff6c104f55bf556c974fbf1a81749ad33c021ad2e0019b16851f090b6248",
+  "src/client/AudioPanel.tsx": "6a652559623b519bb14050327ea32fa2726a8d8ea7719882a1731f6113287937",
+  "src/client/ScreenPanel.tsx": "2af11c868e74212b3bd32cf408873b0296ced81b9ec87327a8f02f8efc570f0a",
+  "src/client/audio.ts": "760f218e345c7bb83529f26df66c344363723e9441f925d50486a1f533ad28f1",
+  "src/client/screen.ts": "b648c3b568b8b275ab0b4d155b2d643ead3ed11cd061d54cb5d1be9bb96c0f8c",
+  "src/client/media-timeline.ts": "e951df562348ab57b574ae1426d51e1425a8f75b087731b9492892bdf1a5d227",
+  "public/audio-capture-worklet.js": "a1b408f100cac534fe3e7a83b083ac1c61490a2e0573e5a881616054d96219bc",
+  "public/audio-playback-worklet.js": "51da4385e99bb0c14b027fe394e693fc2a648c581a6795f5f519dcab33f3e608",
+  "src/server/audio-relay.ts": "80446cafe4d4923f7627f46dd84ae29bcd3bf55a396931edfe77dcb555e72683",
+  "src/server/screen-relay.ts": "d4b65b35cf90d305cf96fde1fa1c2bbfa3fb1d9cd39fbf47f5d0ded519f5f51f",
+  "scripts/t05-smoke.mjs": "efb8818532bef3709e4d757627951762dce2115d320045df29ab0ef91aaafbd5",
+  "scripts/t06-smoke.mjs": "4e9be42b6099f293b7e79dc2a57205fa2a0e8b187a564cd636048acdc3bb960c",
+  "tests/screen.integration.test.mjs": "f79fc708f23896c58f6ebfe5583dca24c12551b1f1e9730334ba256e655b18c0",
+  "tests/media-timeline.test.mjs": "c2794f7954fbd0995394241e4049e55f583ab96a26bcaccbdee004c39ab14c70",
+  "README.md": "e4e10df72e1045a7a00bb312efbe2c0467a8eaa44b67de9a54bcafe309bc033b",
+  "package.json": "7e72b5253ed8fa6f15411c2dc341ddb7e599dbd92cd4cfc67ab3741d6a271319",
+  "package-lock.json": "4bfdae0b85ddbf841968fe28a787d352293f89c5565055c29e162b4fe0016c80"
+}

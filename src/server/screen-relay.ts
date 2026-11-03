@@ -25,6 +25,7 @@ type RelayConnection = {
   peer: RelayPeer;
   joined: boolean;
   subscribed: boolean;
+  waitingForKeyframeGeneration: number | null;
 };
 
 type ScreenPublisher = {
@@ -35,7 +36,10 @@ type ScreenPublisher = {
   height: number;
   frameRate: number;
   bitrate: number;
+  lastKeyframeRequestAt: number;
 };
+
+const KEYFRAME_REQUEST_MIN_INTERVAL_MS = 250;
 
 function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: readonly string[]): boolean {
   return Object.keys(value).every((key) => allowedKeys.includes(key));
@@ -57,12 +61,22 @@ export function createScreenRelay() {
   const streamMessage = (active: ScreenPublisher) => ({
     type: "screen.stream",
     generation: active.generation,
+    clockId: active.connectionId,
     codec: SCREEN_CONFIG.codec,
     width: active.width,
     height: active.height,
     frameRate: active.frameRate,
     bitrate: active.bitrate,
   });
+
+  const requestKeyframe = (active: ScreenPublisher) => {
+    const now = Date.now();
+    if (now - active.lastKeyframeRequestAt < KEYFRAME_REQUEST_MIN_INTERVAL_MS) return;
+    active.lastKeyframeRequestAt = now;
+    const connection = connections.get(active.connectionId);
+    if (!connection || connection.peer.readyState() !== connection.peer.openState) return;
+    connection.peer.sendControl({ type: "screen.keyframeRequest", generation: active.generation });
+  };
 
   const tellSubscribers = (message: unknown, excludeConnectionId?: string) => {
     for (const [connectionId, connection] of connections) {
@@ -79,7 +93,7 @@ export function createScreenRelay() {
   };
 
   function register(connectionId: string, peer: RelayPeer): void {
-    connections.set(connectionId, { peer, joined: false, subscribed: false });
+    connections.set(connectionId, { peer, joined: false, subscribed: false, waitingForKeyframeGeneration: null });
   }
 
   function markJoined(connectionId: string): void {
@@ -103,12 +117,13 @@ export function createScreenRelay() {
         fail("invalid_screen_control", "Screen subscription controls contain unsupported fields.");
         return true;
       }
-      if (publisher) {
-        connection.peer.sendControl({ type: "screen.error", code: "late_join_not_supported", message: "This local POC requires viewers to subscribe before sharing starts; late-join synchronization is not implemented." });
-        return true;
-      }
       connection.subscribed = true;
+      connection.waitingForKeyframeGeneration = publisher?.generation ?? null;
       connection.peer.sendControl({ type: "screen.subscribed" });
+      if (publisher) {
+        connection.peer.sendControl(streamMessage(publisher));
+        requestKeyframe(publisher);
+      }
       return true;
     }
 
@@ -118,6 +133,7 @@ export function createScreenRelay() {
         return true;
       }
       connection.subscribed = false;
+      connection.waitingForKeyframeGeneration = null;
       connection.peer.sendControl({ type: "screen.unsubscribed" });
       return true;
     }
@@ -152,7 +168,11 @@ export function createScreenRelay() {
         height: message.height,
         frameRate: message.frameRate,
         bitrate: message.bitrate,
+        lastKeyframeRequestAt: 0,
       };
+      for (const subscriber of connections.values()) {
+        if (subscriber.subscribed) subscriber.waitingForKeyframeGeneration = publisher.generation;
+      }
       connection.peer.sendControl({ type: "screen.started", generation, codec: SCREEN_CONFIG.codec });
       tellSubscribers(streamMessage(publisher));
       return true;
@@ -169,6 +189,9 @@ export function createScreenRelay() {
       }
       const active = publisher;
       publisher = null;
+      for (const subscriber of connections.values()) {
+        if (subscriber.waitingForKeyframeGeneration === active.generation) subscriber.waitingForKeyframeGeneration = null;
+      }
       connection.peer.sendControl({ type: "screen.stopped", generation: active.generation });
       tellSubscribers({ type: "screen.streamEnded", generation: active.generation }, active.connectionId);
       return true;
@@ -213,6 +236,10 @@ export function createScreenRelay() {
         target.subscribed &&
         target.peer.readyState() === target.peer.openState
       ) {
+        if (target.waitingForKeyframeGeneration === publisher.generation) {
+          if (chunkType !== 0) continue;
+          target.waitingForKeyframeGeneration = null;
+        }
         target.peer.sendScreenBinary(bytes);
       }
     }
@@ -223,6 +250,9 @@ export function createScreenRelay() {
     if (publisher?.connectionId !== connectionId) return;
     const active = publisher;
     publisher = null;
+    for (const subscriber of connections.values()) {
+      if (subscriber.waitingForKeyframeGeneration === active.generation) subscriber.waitingForKeyframeGeneration = null;
+    }
     tellSubscribers({ type: "screen.streamEnded", generation: active.generation }, active.connectionId);
   }
 

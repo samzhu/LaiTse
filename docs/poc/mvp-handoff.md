@@ -1,6 +1,6 @@
 # POC 至 MVP 方案交接表
 
-- 權威計畫：[POC-PLAN v1.0](plan.md)；實際證據：[執行紀錄](execution-log.md)。
+- 權威計畫：[POC-PLAN v1.1](plan.md)；實際證據：[執行紀錄](execution-log.md)。
 - 建立日期：2026-11-03；狀態：T01本機基線已有證據，SOL-001／007驗證中；**目前仍無完整階段證據可列穩定可採用**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
@@ -9,7 +9,7 @@
 | ID | 方案責任 | 狀態 | 必要證據 | MVP 移轉條件 |
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
-| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面合成影音及原生分頁分享可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
+| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面晚加入與同步排程核心可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
 | SOL-003 | 權威 Room／Session／事件與權限 | 待實驗 | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 待實驗 | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
@@ -91,3 +91,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 最終三Firefox合成影音／雙接收可行，另兩Chrome原生分頁擷取1280×630與瀏覽器停止清空可行，兩種拓樸／傳輸／音源分開記錄。[R001](evidence/POC-02-R001/README.md)含原始失敗、修正及未定位第一次browser逾時；只是一個本機候選可行，不是長時間或跨裝置品質通過。
 - SOL-008：`scripts/t05-smoke.mjs`、少量screen整合契約、實際下載的schema1觀測、尺寸/render窗口fps/queue與nullable JS heap可復用。設定target、track回報與實際呈現分開；server ps外部量測不混入browser heap，沒有E2E latency值或品質承諾。
 - MVP使用前補晚加入與keyframe初始化、時鐘/音畫同步、來源更換、多房／權限、重連／弱網與必要裝置品質；重整偵錯欄位/測試注入、固定codec及總佇列策略。一般使用需接收者先觀看、發布頁前景點擊正常來源選擇器；本步對晚加入明確拒絕。
+
+## T06／POC-02-R002：SOL-002、SOL-008（2026-11-04）
+
+- SOL-002：晚加入取目前config/generation/clockId，server向publisher節流要求keyframe，逐訂閱者擋住起始delta；更換來源以stop/new generation重建VP8尺寸/decoder並清除舊frame，非無縫切換。1280×720→640×360及再開480×270已實測，其他codec切換/Recorder-MSE未驗。
+- 共同時間戳採publisher頁performance時基；音訊worklet context anchor近似映射，server clockId區分來源；AudioWorklet真實PCM播放位置映射接收端時基，`MediaTimeline`保留32筆有界樣本，選已到時且新鮮的樣本；不同publisher、過期/停止時不假同步，無外插/漂移預測。client/server需配套版本，並未建立正式協議版本協商。
+- 緩衝候選：現有PCM500ms；decoded video最多16幀，decoder pending最多8筆，總WS1.5MiB／VP8每packet512KiB不變。前兩輪換來源有decoded卻render0、第三輪晚加入被2筆decode門檻退訂；修正及policy模型/原始反例保存在[R002](evidence/POC-02-R002/README.md)。門檻仍需依MVP裝置/尺寸/網路實測，不是容量或穩定性保證。
+- 最終一服務三Firefox合成閉環可行；同接收端3個聲光週期64.77/151.71/129.35ms只是graph/render觀測，mapping誤差未校準，不宣稱原150ms品質或p95通過。只有軟體pipeline，硬體輸入/喇叭/螢幕/真人/手機/跨裝置時鐘待測，完整POC-02 Inconclusive。
+- SOL-008：可延續`media-timeline.ts`的純時基/選幀seam與5個clock回歸、late-join gating契約、`t06-smoke.mjs`色碼marker/世代/重新訂閱及schema2下載。實際窗口/取樣條件與null mappingErrorBound/E2E均保留，不把排程差當實測偏移。測試注入只在script；正式商品需整理診斷欄位、固定codec/房間及同步/背壓/恢復策略。SOL-006的恢復仍由後續POC驗證，時基部分可參考本輪候選。
