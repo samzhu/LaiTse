@@ -32,3 +32,4 @@
 | T01-IMPLEMENT／T01-ACCEPT | #2本機單一應用與量測基線 | 程式／README、`docs/poc/execution-log.md` R001／R002 | T01已完成本機驗收：9測試、雙Firefox HTTPS/WSS；R002 Pass；目前分支本機提交，未push | 只限T01，不部署或啟動MVP |
 | POC-SMOKE／DEC-010 | 輕量測試方法及核心操作示範 | POC-PLAN v1.1；R003證據／execution-log | 已保存讀回，Chrome雙頁核心可行；重整需手動加入 | 依實作進度測後續核心，不做完整QA或部署 |
 | T02-IMPLEMENT／T02-ACCEPT | 手機能力與可信HTTPS的程式／桌面部分 | src/client/capabilities.ts、server觀測、TLS工具／README；R004矩陣與截圖 | 桌面核心可行，11整合／Firefox可信HTTPS／Chrome操作通過；手機依人類選擇待測 | 完整T02／POC-00待實機，不啟動T03或部署 |
+| T03-IMPLEMENT／T03-ACCEPT | 語音最小閉環程式／合成自動驗測 | audio controller/relay/worklets、README；POC-01-R001 | 合成Opus管線、stop、模擬denied、13核心案例通過；真人稍後 | 完整T03/POC-01待真mic／人耳，不啟動T04 |

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AudioPanel } from "./AudioPanel";
 import {
   API_KEYS,
   API_LABELS,
@@ -67,6 +68,7 @@ export function App() {
   const [isProbingCapabilities, setIsProbingCapabilities] = useState(false);
   const [isSendingObservation, setIsSendingObservation] = useState(false);
   const [observation, setObservation] = useState<StoredObservation | null>(null);
+  const [currentSocket, setCurrentSocket] = useState<WebSocket | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const pendingReportRef = useRef<CapabilityReport | null>(null);
   const lastSequenceRef = useRef(0);
@@ -105,7 +107,9 @@ export function App() {
 
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
     const socket = new WebSocket(`${scheme}//${window.location.host}/ws`);
+    socket.binaryType = "arraybuffer";
     socketRef.current = socket;
+    setCurrentSocket(socket);
 
     socket.addEventListener("open", () => {
       if (socketRef.current !== socket) return;
@@ -115,6 +119,7 @@ export function App() {
 
     socket.addEventListener("message", (messageEvent) => {
       if (socketRef.current !== socket) return;
+      if (typeof messageEvent.data !== "string") return;
       let message: ServerMessage;
       try {
         message = JSON.parse(String(messageEvent.data)) as ServerMessage;
@@ -220,6 +225,7 @@ export function App() {
     socket.addEventListener("close", () => {
       if (socketRef.current !== socket) return;
       socketRef.current = null;
+      setCurrentSocket(null);
       setMembers([]);
       setConnectionStatus("Not connected");
       pendingReportRef.current = null;
@@ -242,6 +248,7 @@ export function App() {
   const leaveRoom = () => {
     socketRef.current?.close(1000, "Participant left");
     socketRef.current = null;
+    setCurrentSocket(null);
     setMembers([]);
     setEvents([]);
     pendingReportRef.current = null;
@@ -484,6 +491,8 @@ export function App() {
           </div>
         ) : null}
       </section>
+
+      {connected ? <AudioPanel socket={currentSocket} /> : null}
 
       <footer className="footer-note">
         <span>Local experiment</span>

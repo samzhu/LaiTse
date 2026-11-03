@@ -9,7 +9,7 @@
 | ID | 方案責任 | 狀態 | 必要證據 | MVP 移轉條件 |
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
-| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（僅能力探測） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
+| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（合成語音管線可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
 | SOL-003 | 權威 Room／Session／事件與權限 | 待實驗 | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 待實驗 | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
@@ -68,3 +68,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-008：可復用scripts/t02-smoke.mjs、tests/capabilities.integration.test.mjs、server能力schema與同一socket觀測ACK／GET讀回、SAN可選LANIP的本機TLS工具；README含桌面兩按鈕操作與未來手機信任CA步驟。核心示範與原始JSON/PNG/JPG見R004，無新依賴、無憑證略過、未變更系統信任。
 - 觀測契約：加入後送capability.report，server產生observationId／connectionId並關聯room/member；GET /api/observations/:id讀回。內容是client自報且經固定schema驗證，server沒有獨立驗codec。frame限8KiB，普通控制仍1KiB，最多64筆process-memory，無授權／耐久／跨instance設計；MVP需按身份與保存需求重新處理此測試入口。
 - 復用界線：本輪先程式＋桌面，實體手機明確待測；LAN證書例子192.0.2.23只驗SAN，不是實機LAN。完成手機同流程後再更新支援矩陣；不以瀏覽器模擬／UA字串代替實體裝置。未移轉CA私鑰或測試profile至產品。
+
+## T03／POC-01-R001：SOL-002、SOL-008（2026-11-03）
+
+- SOL-002：固定原生Opus48kHz mono32kbps／20ms；兩個真實Firefox完成合成getUserMedia→capture worklet→AudioEncoder→同一WSS→server opaque relay→AudioDecoder→playback worklet的非靜音輸出、stop與模擬denied。這是管線可行候選，真mic／人耳、手機、多接收者、跨瀏覽器及品質／E2E延遲未驗，不把T02配置探測當媒體實作證據。
+- 可復用入口：src/client/audio.ts（AudioController）／AudioPanel.tsx、public兩個worklet、src/server/audio-relay.ts與app接點、scripts/t03-smoke.mjs、tests/audio.integration.test.mjs；使用／證據見[R001](evidence/POC-01-R001/README.md)。無新套件或外部服務。
+- 契約：已加入socket明確audio.subscribe/unsubscribe、audio.start取得server generation、audio.stop釋出；24-byte LTA1 header（generation/seq/timestamp/duration）加至多4KiB raw Opus，只送顯式訂閱者、不回送publisher、不儲存媒體。單房單publisher不是正式Room/Session授權。接收PCM queue24,000sample（500ms）、送／收WS64KiB界線未做弱網品質驗證。
+- 清理／錯誤：拒絕、裝置缺少、codec與安全內容不符有可見訊息；stop釋放tracks、encoder及播放資源，generation/epoch丟棄舊資料。首輪denied的resume Promise清理錯誤已修正，反例保留，受影響瀏覽器重跑成功。
+- SOL-008：render sample/RMS來自worklet實際輸出，不是實體喇叭／人耳或端到端延遲。來源與模擬allow/deny設定均記錄，不錄真實聲音、不略過TLS／改系統信任；MVP前仍需權限、多房、重連、codec協商／時鐘／品質，整理POC計數與測試profile，不能整包當MVP。

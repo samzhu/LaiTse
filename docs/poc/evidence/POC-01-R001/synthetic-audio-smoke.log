@@ -1,0 +1,17 @@
+T03 synthetic audio smoke failed; evidence saved to /Users/samzhu/workspace_herdr/LaiTse/.scratch/t03/desktop-smoke/audio-evidence.json
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   'Closed before resume completed'
++ ]
+- []
+
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t03-smoke.mjs:231:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

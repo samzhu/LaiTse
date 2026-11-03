@@ -1,0 +1,23 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T07:44:58.347748+00:00",
+    "finishedAt": "2026-11-03T07:44:59.391847+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "synthetic-audio-smoke",
+    "command": [
+      "node",
+      "scripts/t03-smoke.mjs"
+    ],
+    "startedAt": "2026-11-03T07:44:59.626790+00:00",
+    "finishedAt": "2026-11-03T07:45:07.790870+00:00",
+    "exitCode": 0
+  }
+]

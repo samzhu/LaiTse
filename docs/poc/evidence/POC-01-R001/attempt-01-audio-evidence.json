@@ -1,0 +1,74 @@
+{
+  "startedAt": "2026-11-03T07:43:14.433Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "tls": {
+    "trust": "local CA imported only into isolated Firefox NSS profiles",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false
+  },
+  "mediaSource": {
+    "kind": "Firefox synthetic fake media stream",
+    "preference": "media.navigator.streams.fake=true in every mic-attempt profile",
+    "realMicrophoneSelected": false,
+    "realAudioRecorded": false
+  },
+  "permissionAutomation": {
+    "allowedProfile": "permissions.default.microphone=1 (profile-scoped simulated allow)",
+    "deniedProfile": "permissions.default.microphone=2 (profile-scoped simulated denial)",
+    "permissionDisabledPreferenceUsed": false
+  },
+  "publisher": {
+    "browser": "Firefox",
+    "version": "157.0",
+    "role": "synthetic microphone publisher"
+  },
+  "listener": {
+    "browser": "Firefox",
+    "version": "157.0",
+    "role": "explicit subscriber"
+  },
+  "denial": {
+    "verified": true,
+    "status": "denied",
+    "visibleMessage": "麥克風權限遭拒或被瀏覽器封鎖；目前沒有發布音訊。",
+    "source": "synthetic-only isolated Firefox profile with permissions.default.microphone=2",
+    "broadcastingClaimed": false
+  },
+  "transport": [],
+  "playback": {
+    "receivedPackets": 12,
+    "decodedFrames": 12,
+    "renderedSamples": 6656,
+    "queuedSamples": 3904,
+    "renderRms": 0.054389854753861114,
+    "queueOverflowResets": 0,
+    "listenerMessage": "已收到發布資料，正在解碼 Opus 音訊。",
+    "source": "synthetic Firefox fake media stream; not a real microphone",
+    "workletRenderEvidence": "non-silent decoded PCM samples were emitted to AudioContext.destination"
+  },
+  "limitations": {
+    "humanListening": false,
+    "endToEndLatencyMs": null,
+    "mobileBrowser": "not-tested"
+  },
+  "screenshots": [
+    "listener-playback.png",
+    "microphone-denied.png"
+  ],
+  "stop": {
+    "publisherState": "idle",
+    "noNewPacketsAfterStreamEnd": true
+  },
+  "failure": "AssertionError: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Closed before resume completed'\n+ ]\n- []\n",
+  "finishedAt": "2026-11-03T07:43:21.846Z"
+}

@@ -9,7 +9,7 @@
 | 階段 | 執行狀態 | 結果 | Run／證據 | 下一步 |
 |---|---|---|---|---|
 | POC-00 | 執行中 | Inconclusive | R002 T01 Pass；[R004 T02桌面可行](evidence/POC-00-R004/README.md) | 實體手機可信HTTPS／能力矩陣稍後測 |
-| POC-01 | 尚未執行 | 未判定 | 無 | 依 POC-00 證據進入語音閉環 |
+| POC-01 | 執行中 | Inconclusive | [R001合成音源管線Pass](evidence/POC-01-R001/README.md) | 真人試說／收聽待補，手機與多接收端未驗 |
 | POC-02 | 尚未執行 | 未判定 | 無 | 依 POC-01 證據加入畫面 |
 | POC-03 | 尚未執行 | 未判定 | 無 | 驗證空間／房間／權限 |
 | POC-04 | 尚未執行 | 未判定 | 無 | 驗證恢復與弱網 |
@@ -105,3 +105,15 @@ Mozilla [Bug2069536](https://bugzilla.mozilla.org/show_bug.cgi?id=2069536)描述
 結果及如何操作見[R004 README](evidence/POC-00-R004/README.md)，逐瀏覽器結果見[browser-matrix](evidence/POC-00-R004/browser-matrix.md)。Firefox本次AAC encoder設定不支援、Chrome支援；Opus/VP8設定兩端支援，但不當成影音閉環證據。手機兩列維持未知。LAN SAN只以預留測試IP192.0.2.23驗證簽發及CA鏈，未取得本機LAN IP、未連實體手機，不宣稱AC1／手機AC3／4通過。
 
 已讀回JSON、source指紋，實際查看Firefox全頁及Chrome代表截圖；本機server及測試browser均停止。SOL-002／008已同步；不做壓力／長測、不啟動T03、不部署或修改GitHub。前置T01工程證據有效，GitHub#2仍open不阻擋人類明確指定的本輪本機實作；完整階段判定維持手機待測。
+
+## POC-01-R001／T03語音最小閉環（配發）
+
+2026-11-03（Asia/Taipei）；實作Luna xhigh、驗收主代理。執行中／Inconclusive，待實際結果。假設：兩個真實桌面瀏覽器能以原生Opus編碼、單一本機WSS壓縮音訊relay、解碼及AudioWorklet渲染打通音訊流程，支援手勢收聽、允許/拒絕回饋及停止。依人類選擇，本輪自動驗測使用明確合成音源，真mic試說與真人收聽稍後；不把合成管線證據當原票真mic或人耳實測，不宣告完整POC-01通過。
+
+### POC-01-R001實際結果與保存讀回
+
+2026-11-03：本輪程式及自動驗測完成；**合成音源管線Pass，真mic／真人收聽及完整POC-01仍Inconclusive**。兩個獨立Firefox157以正常CA驗證HTTPS/WSS完成合成getUserMedia流→AudioWorklet→原生Opus→同一本機relay→AudioDecoder→播放AudioWorklet；第三個synthetic-only profile測模擬拒絕。所有mic-attempt profile均streams.fake=true，沒有真實硬體／環境錄音或真人聽見宣稱。
+
+成功快照為接收11packet、解碼11frame、render4,736sample、RMS約0.0458；stop後streamEnded、publisher idle，250ms無新增packet。模擬denied不廣播。這是短核心示範，不是品質／穩定性／容量數據；E2E延遲未量測，原報告null，queue只是接收端緩衝。
+
+首輪已render但denied清理時產生未觀察的resume Promise pageerror，原失敗保留；主代理窄修即時觀察reject後重建／重跑受影響瀏覽器，三端page/socket errors皆空。13個server核心案例已通過且不受此client窄修影響，未重跑無關全量檢查。精確起迄／來源／版本／兩輪原始結果見[R001](evidence/POC-01-R001/README.md)。已實際查看兩張播放／拒絕截圖、JSON與source指紋讀回一致；public worklets與build一致。README／SOL-002／008已同步；真mic、人耳、原生權限互動／autoplay受阻、手機、弱網、長測／雲端未驗。server與Firefox皆finally停止，不啟動T04或寫GitHub；程式與紀錄一起本機commit，不push。

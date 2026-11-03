@@ -115,6 +115,22 @@ button, input { font: inherit; }
 .observation-card dl div { display: contents; }
 .observation-card dt { color: #838b84; }
 .observation-card dd { margin: 0; color: #48564a; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+.audio-panel { margin-top: 18px; padding: 24px; }
+.audio-panel .panel-heading h2 { font-size: 19px; }
+.audio-profile { border: 1px solid #e5e7e0; border-radius: 99px; padding: 6px 9px; color: #707872; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+.audio-intro { max-width: 760px; margin: 13px 0 0; color: #747c76; font-size: 11px; line-height: 1.65; }
+.audio-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; margin-top: 16px; }
+.audio-control-group { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; min-width: 0; border: 1px solid #eceee8; border-radius: 10px; padding: 14px; background: rgba(255, 255, 253, .7); }
+.audio-control-group h3 { margin: 0; color: #59625b; font-size: 11px; font-weight: 700; }
+.audio-state { min-height: 34px; margin: 8px 0 0; color: #68716a; font-size: 10px; line-height: 1.55; }
+.audio-state.is-error { color: #a34f43; }
+.audio-control-group .primary-button, .audio-control-group .quiet-button { width: fit-content; min-height: 35px; }
+.audio-button-row { display: flex; flex-wrap: wrap; gap: 7px; }
+.audio-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-top: 13px; }
+.audio-stats span { display: flex; flex-direction: column; gap: 5px; min-width: 0; border: 1px solid #eceee8; border-radius: 8px; padding: 9px; background: #fafbf8; }
+.audio-stats strong { color: #858c86; font-size: 8px; font-weight: 600; }
+.audio-stats output { color: #48554b; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-variant-numeric: tabular-nums; }
+.audio-limit-note { margin: 11px 0 0; border-left: 2px solid #e3b292; padding-left: 10px; color: #858a84; font-size: 9px; line-height: 1.55; }
 .footer-note { display: flex; justify-content: space-between; gap: 15px; margin: 22px 2px 32px; color: #929892; font-size: 9px; }
 .footer-note span:first-child { color: #727a74; font-weight: 650; }
 
@@ -127,6 +143,9 @@ button, input { font: inherit; }
   .side-column { grid-template-rows: auto auto; }
   .capability-panel { padding: 19px; }
   .capability-grid { grid-template-columns: 1fr; }
+  .audio-controls { grid-template-columns: 1fr; }
+  .audio-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .audio-panel { padding: 19px; }
   .capability-group li { flex-wrap: wrap; }
   .probe-reason { flex-basis: 100%; }
   .footer-note { flex-direction: column; gap: 6px; }

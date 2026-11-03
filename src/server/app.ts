@@ -10,6 +10,7 @@ import {
   validateCapabilityReport,
   type SanitizedCapabilityReport,
 } from "./capabilities.ts";
+import { createAudioRelay } from "./audio-relay.ts";
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
 export const MAX_ROOM_MEMBERS = 8;
@@ -81,6 +82,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
+  const audioRelay = createAudioRelay();
   let sequence = 0;
 
   await app.register(fastifyWebsocket, {
@@ -135,11 +137,30 @@ export async function createApp(options: CreateAppOptions = {}) {
         });
       };
 
+      const sendBinary = (message: Buffer) => {
+        if (socket.readyState !== socket.OPEN) return;
+        if (socket.bufferedAmount > MAX_SOCKET_BUFFERED_BYTES) {
+          socket.close(1013, "Receiver is too slow");
+          return;
+        }
+        socket.send(message, { binary: true, compress: false }, (error) => {
+          if (error) socket.terminate();
+        });
+      };
+
       const rejectControl = (code: string, message: string, closeCode = 1008) => {
         send({ type: "protocol.error", code, message });
         socket.once("error", () => {});
         socket.close(closeCode, "Invalid control message");
       };
+
+      audioRelay.register(connection.id, {
+        sendControl: send,
+        sendBinary,
+        reject: rejectControl,
+        readyState: () => socket.readyState,
+        openState: socket.OPEN,
+      });
 
       const emit = (kind: ControlEvent["kind"], member: Member, reaction?: string) => {
         const event: ControlEvent = {
@@ -169,7 +190,11 @@ export async function createApp(options: CreateAppOptions = {}) {
       socket.on("message", (raw, isBinary) => {
         if (socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
-        if (isBinary || bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
+        if (isBinary) {
+          audioRelay.handleBinary(connection.id, bytes);
+          return;
+        }
+        if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
           rejectControl("invalid_message", "WebSocket frames must be small UTF-8 JSON text.", bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES ? 1009 : 1008);
           return;
         }
@@ -188,6 +213,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
 
         const message = payload as Record<string, unknown>;
+        if (audioRelay.handleControl(connection.id, message)) return;
         if (message.type === "capability.report") {
           if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
             rejectControl("invalid_capability_report", "Capability reports must stay within the 8 KiB limit.", 1009);
@@ -266,6 +292,7 @@ export async function createApp(options: CreateAppOptions = {}) {
 
           const member = { id: randomUUID(), displayName };
           connection.member = member;
+          audioRelay.markJoined(connection.id);
           members.set(member.id, member);
           const event = emit("member.joined", member);
           send({
@@ -299,6 +326,7 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       socket.on("close", () => {
         clients.delete(socket);
+        audioRelay.disconnect(connection.id);
         if (!connection.member) return;
         members.delete(connection.member.id);
         emit("member.left", connection.member);
@@ -314,6 +342,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     clients.clear();
     members.clear();
     observations.clear();
+    audioRelay.close();
   });
 
   return app;

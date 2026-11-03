@@ -1,6 +1,6 @@
 # LaiTse local POC baseline
 
-This is the T01/T02 local POC baseline. One Fastify process serves the built React page, the health and room APIs, and a WebSocket endpoint. The room flow is deliberately small: two participants can join one local room and observe the same member list and bounded control events.
+This is the T01/T02/T03 local POC baseline. One Fastify process serves the built React page, the health and room APIs, and a WebSocket endpoint. The room flow is deliberately small: participants can join one local room and observe the same member list and bounded control events. T03 adds a native Opus publish path through that same socket for members who explicitly start listening.
 
 This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Its state is volatile process memory.
 
@@ -80,9 +80,9 @@ The script launches two independent Firefox processes with isolated temporary pr
 
 ## Control protocol and bounds
 
-The server accepts one fixed room, `lobby` (`Local test room`). A client must join with a display name of 1–32 printable characters. The room is limited to eight connected members. After joining, the only accepted control is a `wave`, `clap`, or `heart` reaction. The server assigns a process-wide sequence number to join, leave, and reaction events and broadcasts them to current room members.
+The server accepts one fixed room, `lobby` (`Local test room`). A client must join with a display name of 1–32 printable characters. The room is limited to eight connected members. Room reactions accept only `wave`, `clap`, or `heart`; T03 audio controls separately handle explicit subscribe, start, and stop requests. The server assigns a process-wide sequence number to join, leave, and reaction events and broadcasts them to current room members.
 
-WebSocket connections must have an Origin matching the request's scheme and host. Binary, malformed, unknown, or invalid control frames close the connection. Frames are limited to 1 KiB, accepted reactions to 10 per connection per second, and slow receivers are closed once queued output exceeds 64 KiB. The page keeps only the most recent 20 events for display.
+WebSocket connections must have an Origin matching the request's scheme and host. Malformed, unknown, or invalid control frames close the connection. Regular control frames are limited to 1 KiB, accepted reactions to 10 per connection per second, and slow receivers are closed once queued output exceeds 64 KiB. T03 binary frames use a separate fixed audio header and are accepted only from the current publisher. The page keeps only the most recent 20 room events for display.
 
 Capability reports use a separate, fixed schema with an 8 KiB WebSocket frame limit; regular room controls remain limited to 1 KiB. A joined connection can explicitly send one report, which the server associates with its own connection ID, joined member, room, observation ID, and server time. The server validates and stores at most the latest 64 reports in process memory. `GET /api/observations/:id` is unauthenticated in this local POC; the random observation ID is a lookup key, not an authorization system. Keep this server on a private development LAN and stop it after the test. The codec and API values are browser-reported; the server does not independently verify them.
 
@@ -111,18 +111,29 @@ To prepare a later phone check:
 
 The phone's browser may apply trust differently; an installed CA alone is not evidence that a particular browser trusts the site. A real-device check is still required. This POC has no authentication, and the LAN-bound server exposes its page, room, and observation lookup to devices that can reach it. Do not expose it to a public network. The report records only a bounded user-agent string, platform string, client observation time, fixed probe results, and server-assigned connection/member/room metadata; it does not collect camera/microphone data or a client-supplied connection ID.
 
+## T03 live audio and synthetic browser smoke
+
+For a desktop audio path, start the app with trusted local HTTPS/WSS as described above, then open it in two separate browsers. Join the same room in each browser. On the receiving browser, press **開始收聽** first; this user gesture resumes its AudioContext and subscribes that socket to audio. On the speaking browser, press **開始麥克風** and allow the normal browser permission prompt. The UI reports denial, blocked context, missing device, unsupported codec, and other startup failures without showing an active-publisher state. Press **停止麥克風** to release the microphone and encoder and stop new relay frames. The receiver can press **停止收聽** to unsubscribe and release its decoder, playback queue, AudioWorklet, and AudioContext.
+
+The profile is fixed to mono Opus, 48 kHz, 32 kbit/s, and 20 ms frames. The server forwards bounded compressed bytes to joined members who explicitly subscribed. It does not decode, transcode, retain, or record audio; it keeps only the current publisher generation and subscription flags in process memory. WebSocket packets are not written to disk. Receiver counters show packets sent/received, decoded frames, samples actually emitted by its playback AudioWorklet, queued samples, and RMS calculated from those rendered PCM samples. These counters establish browser pipeline output only; they do not establish that a person heard it or measure end-to-end latency.
+
+For a scripted synthetic desktop run, keep the trusted HTTPS/WSS server running and execute `node scripts/t03-smoke.mjs` with Node 26.13.0 and `certutil` on `PATH`. It launches isolated Firefox profiles with Firefox's synthetic media-stream preference enabled, imports the local CA only into those profiles, joins two independent Firefox processes, starts listening before publishing, and checks that the receiver's playback worklet emits non-silent samples. A separate synthetic-only profile attempts the denied-permission path when the configured Firefox permission setting can verify it; the report marks denial verification as unavailable if the browser does not expose that outcome. The script does not select or record a real microphone, and its result is not real-mic or human-listening evidence. Output and screenshots stay in ignored `.scratch/t03/`.
+
+For a real human listening demonstration, run the ordinary browser steps above with a user-controlled microphone and another participant's speakers/headphones. Headphones help avoid feedback when both pages are on the same computer. This has not been performed by the synthetic smoke. Mobile browsers, cross-device quality, weak networks, long runs, end-to-end latency, and deployment remain outside this T03 check.
+
 ## Data classification and limitations
 
 - **Fixed, versioned setup:** the one-room catalogue and its display name are source constants in `src/server/app.ts`; a build from the same source reconstructs them.
-- **Execution-time data:** current members, connection membership, and the event sequence exist in server process memory. A disconnect removes only that participant. The sequence resets when the server process stops or is replaced. The visible recent-event list exists only in page memory and clears when that page reloads or the participant explicitly leaves or joins again.
+- **Execution-time data:** current members, connection membership, the event sequence, active audio publisher generation, and explicit audio subscriptions exist in server process memory. A disconnect removes that participant and stops its stream. These values clear when the server process stops or is replaced. The visible recent-event list and playback counters exist only in page memory and clear when the page reloads or the participant leaves.
 - **Not durable:** there is no database, file persistence, identity system, authorization/role model, event history, or cross-process coordination. A future multi-instance Cloud Run deployment would give instances separate memory and can lose all current state on replacement. This local result does not establish a persistence or Cloud Run recovery design.
-- **Not implemented in this ticket:** audio, screen sharing, avatar movement, authentication, room management, capacity, and phone verification. T02 browser capability checks do not implement capture or playback.
+- **Not implemented in this ticket:** screen sharing, avatar movement, authentication, room management, production capacity, and phone verification. T03's local one-publisher audio path does not establish mobile support, multi-instance media routing, or durable media storage.
 
 ## Focused commands
 
 ```sh
 npm run typecheck
 npm run test:integration
+node --test tests/*.test.mjs
 npm run build
 npm run licenses
 ```
@@ -132,3 +143,5 @@ The focused integration suite exercises the API and real WebSocket connections f
 ## Recorded verification
 
 [POC-00-R001](docs/poc/evidence/POC-00-R001/README.md) preserves the original Firefox launch failure. R002 records the final two-browser acceptance with private application-data directories; the authoritative status and remaining stage requirements are in [the execution log](docs/poc/execution-log.md). On macOS an automation sandbox may prevent Firefox from launching; run the test from a normal local terminal. Do not substitute certificate-ignore flags. Runtime dependencies remain stable releases; the diagnostic prerelease browser was rejected and is unused.
+
+[T03 POC-01-R001](docs/poc/evidence/POC-01-R001/README.md) records synthetic Opus encode/relay/decode/render, simulated denial, stop, and the first-run cleanup failure and correction. Real microphone and human listening remain pending. `npm run test:integration` retains the original T01 subset; `node --test tests/*.test.mjs` covers all current T01–T03 core integration cases.

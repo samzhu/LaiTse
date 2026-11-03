@@ -1,6 +1,6 @@
 # 工作階段 checkpoint
 
-**狀態：T02／#3程式與桌面核心完成、實體手機稍後測；2026-11-03。**
+**狀態：T03／#4程式與合成音源驗測完成、真人收聽稍後；2026-11-03。**
 
 - 人類原話「開始」並指定implement；按當時唯一無阻擋前沿執行T01。Luna xhigh實作，主代理思考、獨立檢視、最終完整檢查及紀錄；未切到其他票或MVP。
 - 產物：Node26.13.0／React/Vite／Fastify單一應用，production頁面／API／WSS，真實房間成員／有界合成控制，README、鎖版、TLS與瀏覽器腳本、版本授權inventory。
@@ -29,3 +29,13 @@
 - 證據：docs/poc/evidence/POC-00-R004/，browser-matrix分列Firefox157、Chrome156.0.8078.80與兩列手機未知。Firefox本次AAC encoder配置不支援、Chrome支援；Opus/VP8配置探測支援不是實際影音通過。
 - 手機仍未測；SAN測試IP192.0.2.23為文件保留值，非本機LAN。README提供真實IP、手機CA安裝／信任與兩按鈕使用方式；不變更系統／使用者信任、不對外開放。完整T02原手機條件及POC-00仍Inconclusive。
 - SOL-002／008已補復用與限制。代理明確停止寫入釋出，主代理已停止server／Firefox／新建Chrome tab；未改使用者原tab、未啟動T03、不部署／寫GitHub。按本輪Git紀錄作本機提交，無push；原既有AGENTS/.agents/.scratch內容保留。
+
+## T03開工
+
+2026-11-03：人類明確指定T03（#4即時語音最小閉環）、輕量驗測、最後程式與紀錄一起commit；另指定真人收聽稍後，本輪只程式與自動驗測。派工已記T03唯一writer，主代理思考/驗收，Luna xhigh寫程式。POC-01-R001已配發；沒有實測成功宣稱，T04未啟動，手機T02仍待測。
+
+## T03交付／POC-01-R001
+
+人類指定T03、輕量、程式+紀錄commit，並選真人收聽稍後。本輪程式與合成自動驗測完成：兩個獨立Firefox透過可信HTTPS/WSS完成Opus管線至非靜音worklet輸出，第三個synthetic-only profile測denied。所有mic-attempt profile streams.fake=true，無硬體mic／環境錄音或TLS略過。
+
+build/typecheck、13新舊核心整合、smoke及worklet語法通過；快照接收11、解碼11、render4,736、RMS約0.0458，stop後無新增packet，denied不廣播，最終零page/socket error。首輪resume Promise清理失敗已窄修並重跑受影響browser，反例保留。JSON／source指紋及播放／拒絕PNG已讀回及實際查看，SOL-002／008、README用法同步。真mic／人耳／autoplay受阻／E2E延遲／手機／長測未驗，完整POC-01仍Inconclusive；T04未啟動。writer已交接，兩輪server與Firefoxfinally停止，無GitHub／部署／新依賴。按指示本機commit不push；原AGENTS/.agents/.scratch內容保留，.scratch/t03工具／profile不提交。
