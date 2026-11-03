@@ -51,3 +51,9 @@ build/typecheck、13新舊核心整合、smoke及worklet語法通過；快照接
 build/typecheck、14核心整合、script syntax與一次三Firefox可信HTTPS/WSS示範通過；root在跑前修正smoke兩處變數名稱。真下載原JSON：A64/64 packet/frame、render50,560/RMS約0.0710；B14/14、render4,352/RMS約0.0531。buffer106.67/109.33ms僅本地queue估計，seq gap0不是無掉音；E2E null，人耳/physical device不收集，來源由測試profile明列fake。沒有20分/湊兩次或p95結論，完整T04/POC-01仍Inconclusive。
 
 docs/poc/evidence/POC-01-R002含實際下載、各phase/ACK/transport/起迄與source hash，JSON已讀回、panel圖已實際看，README與SOL-002/008同步。沒有改server/worklet／manifest/lock或新增依賴，手機T02與真人T03保持待測。代理writer已釋出，server與三Firefoxfinally停止；最後本機commit、不push/寫GitHub/T05/部署；原AGENTS/.agents/.scratch保留，.scratch/t04已ignore。
+
+## WORKFLOW-STEPWISE／技能思維更新（2026-11-03）
+
+人類要求將「將這個小步小步驗證 再合併到最後的商品精神」納入指定product-collaboration-workflow。主代理唯一writer已更新該skill主文與既有references/implementation.md：以最終使用情境切最小可操作步驟，POC先釐清可行／用法／限制，每步將可延續成果接回共同基底，程式與紀錄依既有提交約定維持同版本，商品整合再核對完整流程與必要品質。
+
+未寫死LaiTse/Node/CloudRun/特定代理平台；小改可直接實作，正式交付採相符驗收，缺裝置/模擬結果界線及授權仍保留。已實際讀回兩檔與前後差異，quick_validate.py回報Skill is valid，相對參考連結存在；人工情境檢視涵蓋小修、輕量POC、缺裝置部分交付及已授權商品整合。純文字修改，沒有跑應用測試或啟動服務，亦未作獨立代理行為實測。已保存、writer釋出；後續人類明確要求「先將 skill 更新與協作紀錄 commit」，本次提交完整技能四檔（含既有參考文件，避免斷鏈）及四份協作紀錄。格式/連結及git diff空白檢查通過；不push、不啟動T05。
