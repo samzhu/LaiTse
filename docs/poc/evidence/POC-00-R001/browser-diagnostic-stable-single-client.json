@@ -1,0 +1,68 @@
+{
+  "startedAt": "2026-11-03T05:28:06.098Z",
+  "status": "complete",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "playwright": {
+    "version": "1.64.1",
+    "license": "Apache-2.0"
+  },
+  "browser": {
+    "name": "Firefox",
+    "version": "157.0",
+    "playwrightRevision": "1555",
+    "actualVersion": "157.0"
+  },
+  "tls": {
+    "baseURL": "https://localhost:4173",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "CA imported only into per-run Firefox NSS profiles",
+    "ignoreCertificateErrors": false
+  },
+  "firefoxAppData": {
+    "strategy": "Mozilla MOZ_APP_DATA and MOZ_LOCAL_APP_DATA overrides scoped to this child process",
+    "appData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/browser-diagnostic/run-stable-private-appdata/firefox-app-data",
+    "localAppData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/browser-diagnostic/run-stable-private-appdata/firefox-local-app-data",
+    "homeEnvironmentModified": false
+  },
+  "clients": [
+    {
+      "name": "single-client",
+      "state": {
+        "connection": "Connected to Local test room",
+        "api": "API ready · process-memory",
+        "members": [
+          "Diagnostic"
+        ],
+        "events": [
+          {
+            "sequence": 2,
+            "kind": "reaction",
+            "roomId": "lobby",
+            "participantId": "54f02fa8-e456-4a0d-b666-71e9da3ace3b",
+            "displayName": "Diagnostic",
+            "reaction": "wave",
+            "at": 1793683688313
+          },
+          {
+            "sequence": 1,
+            "kind": "member.joined",
+            "roomId": "lobby",
+            "participantId": "54f02fa8-e456-4a0d-b666-71e9da3ace3b",
+            "displayName": "Diagnostic",
+            "reaction": "",
+            "at": 1793683688256
+          }
+        ]
+      }
+    }
+  ],
+  "screenshots": [
+    "single-client.png"
+  ],
+  "finishedAt": "2026-11-03T05:28:08.584Z"
+}

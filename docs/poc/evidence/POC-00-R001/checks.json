@@ -1,0 +1,56 @@
+[
+  {
+    "check": "install",
+    "command": [
+      "npm",
+      "ci"
+    ],
+    "startedAt": "2026-11-03T05:18:30.415171+00:00",
+    "finishedAt": "2026-11-03T05:18:31.731521+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "script-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/e2e.mjs"
+    ],
+    "startedAt": "2026-11-03T05:18:31.731550+00:00",
+    "finishedAt": "2026-11-03T05:18:31.767284+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T05:18:31.767307+00:00",
+    "finishedAt": "2026-11-03T05:18:33.265502+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "integration",
+    "command": [
+      "npm",
+      "run",
+      "test:integration"
+    ],
+    "startedAt": "2026-11-03T05:18:33.265529+00:00",
+    "finishedAt": "2026-11-03T05:18:33.609677+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "licenses",
+    "command": [
+      "npm",
+      "run",
+      "licenses"
+    ],
+    "startedAt": "2026-11-03T05:18:33.609701+00:00",
+    "finishedAt": "2026-11-03T05:18:33.826519+00:00",
+    "exitCode": 0
+  }
+]

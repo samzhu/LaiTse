@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-03T05:21:57.265655+00:00",
+  "certificateVerified": true,
+  "origin": "https://127.0.0.1:4173",
+  "responses": [
+    {
+      "route": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 557,
+      "body": null,
+      "sha256": "b6b70828dc70189228f8d2acd57934a8c29ca461bf39ea5afdea490665f14c36"
+    },
+    {
+      "route": "/api/health",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 46,
+      "body": "{\"status\":\"ok\",\"persistence\":\"process-memory\"}",
+      "sha256": "a2fd1c1332c5022531b4a5b11f3264cb25e0a938b60492c5e886c3b6c303683b"
+    },
+    {
+      "route": "/api/rooms",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 41,
+      "body": "[{\"id\":\"lobby\",\"name\":\"Local test room\"}]",
+      "sha256": "6614b2523b073aa50bf8969d8f7cffa0cd21467f62ffc27fd9ec706220ba94e2"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  ".nvmrc": "6e775beae185bb3f5837d2f6d3fbe910e6f60e18fa507e661e312e84d707a92f",
+  "index.html": "3038d0cbca598dc46191d5a0b9e31519902f55a790d24e90c82e966d5cb02576",
+  "package-lock.json": "4bfdae0b85ddbf841968fe28a787d352293f89c5565055c29e162b4fe0016c80",
+  "package.json": "7e72b5253ed8fa6f15411c2dc341ddb7e599dbd92cd4cfc67ab3741d6a271319",
+  "scripts/dependency-inventory.mjs": "d080302068137d2192b3a26192d8b7be52f96551aa8bc5f584727f9f92b40072",
+  "scripts/e2e.mjs": "1d0709617f03df02d0b35697f5c599e8073475e0605ec0cf6977341befdd8113",
+  "scripts/setup-local-tls.mjs": "4fcf6da8308d3d49ca257adf4e8e2958a95f08f9148be61ad9457ecc76bdc0ac",
+  "src/client/App.tsx": "88a6f38de26c9a8a93b3f0656a81dcdfe3268c0cad100299d1831a25c96c7aad",
+  "src/client/main.tsx": "294f62f7961cca8822a5474309fbc9f35bf45b61fc815fc7d8ecc17b64afe583",
+  "src/client/styles.css": "8e607a76065cdc3dd30b23ceeb93ea2621400bf7cec0b975307f83edc7f95f35",
+  "src/server/app.ts": "3e75d9b20db31690e10f4ae08474499d5345933dd4eeead2fd061b0f3ea6dfa5",
+  "src/server/index.ts": "4214e6d7231c53aae2ae9f94a7265b29f4ad214d1334b9f74ac2cd15f1490999",
+  "tests/server.integration.test.mjs": "22661a9e94a2e917baa6657157e3909534cfa64db69dfff1c665ed15e10f0df2",
+  "tsconfig.app.json": "f939d99342215a97be9a9f247ea611448210f826ac11e0f046c4e11c92c5b339",
+  "tsconfig.json": "fc8f349e3185b401ac14b6b4930ed6f98e9c293e80e05ca8c4794b2969e9e838",
+  "tsconfig.server.json": "1dde6a1665af85b442c7b654510a40246eb81422f23671ff00eea85f9c03a99f",
+  "vite.config.ts": "1fca3d06e71e33211a6b7f861f8a0410a15e097ca4ff35d0a2e3da356cfefb18"
+}

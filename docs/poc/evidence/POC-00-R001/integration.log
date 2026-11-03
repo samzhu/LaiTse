@@ -1,0 +1,21 @@
+
+> laitse-local-poc@0.1.0 test:integration
+> node --test tests/server.integration.test.mjs
+
+✔ the application serves health and a built-in room catalogue (31.574125ms)
+✔ two clients receive the same authoritative members and sequenced reaction (7.076792ms)
+✔ the websocket rejects cross-origin clients before joining (1.480166ms)
+✔ malformed or oversized control frames close without being broadcast (3.329917ms)
+✔ clients cannot select arbitrary rooms (1.382667ms)
+✔ display names longer than the server limit are rejected (1.090625ms)
+✔ control events reject client-supplied fields outside the protocol (1.319125ms)
+✔ the room has a fixed member limit (6.368459ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.057417ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 210.32475

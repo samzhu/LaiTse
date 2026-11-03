@@ -1,0 +1,6 @@
+
+> laitse-local-poc@0.1.0 test:e2e
+> node scripts/e2e.mjs
+
+Two Firefox clients joined and observed the same members and wave event.
+Screenshots and environment evidence: /Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r002

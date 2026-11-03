@@ -1,0 +1,207 @@
+{
+  "verified_on_taipei": "2026-11-03",
+  "verifier": "main agent independent live GitHub readback",
+  "passed": true,
+  "issue_count": 19,
+  "native_parent_links": 19,
+  "native_blocked_by_edges": 21,
+  "acceptance_criteria": 132,
+  "parent_title_body_state_comments_unchanged": true,
+  "frontier": [
+    "T01"
+  ],
+  "tickets": {
+    "T19": {
+      "number": 20,
+      "url": "https://github.com/samzhu/LaiTse/issues/20",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T17",
+        "T18"
+      ],
+      "native_blockers_match": true
+    },
+    "T18": {
+      "number": 19,
+      "url": "https://github.com/samzhu/LaiTse/issues/19",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T15"
+      ],
+      "native_blockers_match": true
+    },
+    "T17": {
+      "number": 18,
+      "url": "https://github.com/samzhu/LaiTse/issues/18",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T16"
+      ],
+      "native_blockers_match": true
+    },
+    "T16": {
+      "number": 17,
+      "url": "https://github.com/samzhu/LaiTse/issues/17",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T15"
+      ],
+      "native_blockers_match": true
+    },
+    "T15": {
+      "number": 16,
+      "url": "https://github.com/samzhu/LaiTse/issues/16",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T14"
+      ],
+      "native_blockers_match": true
+    },
+    "T14": {
+      "number": 15,
+      "url": "https://github.com/samzhu/LaiTse/issues/15",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T13"
+      ],
+      "native_blockers_match": true
+    },
+    "T13": {
+      "number": 14,
+      "url": "https://github.com/samzhu/LaiTse/issues/14",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T12"
+      ],
+      "native_blockers_match": true
+    },
+    "T12": {
+      "number": 13,
+      "url": "https://github.com/samzhu/LaiTse/issues/13",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T09",
+        "T11"
+      ],
+      "native_blockers_match": true
+    },
+    "T11": {
+      "number": 12,
+      "url": "https://github.com/samzhu/LaiTse/issues/12",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T10"
+      ],
+      "native_blockers_match": true
+    },
+    "T10": {
+      "number": 11,
+      "url": "https://github.com/samzhu/LaiTse/issues/11",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T08"
+      ],
+      "native_blockers_match": true
+    },
+    "T09": {
+      "number": 10,
+      "url": "https://github.com/samzhu/LaiTse/issues/10",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T08"
+      ],
+      "native_blockers_match": true
+    },
+    "T08": {
+      "number": 9,
+      "url": "https://github.com/samzhu/LaiTse/issues/9",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T07"
+      ],
+      "native_blockers_match": true
+    },
+    "T07": {
+      "number": 8,
+      "url": "https://github.com/samzhu/LaiTse/issues/8",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T06"
+      ],
+      "native_blockers_match": true
+    },
+    "T06": {
+      "number": 7,
+      "url": "https://github.com/samzhu/LaiTse/issues/7",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T05"
+      ],
+      "native_blockers_match": true
+    },
+    "T05": {
+      "number": 6,
+      "url": "https://github.com/samzhu/LaiTse/issues/6",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T04"
+      ],
+      "native_blockers_match": true
+    },
+    "T04": {
+      "number": 5,
+      "url": "https://github.com/samzhu/LaiTse/issues/5",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T02",
+        "T03"
+      ],
+      "native_blockers_match": true
+    },
+    "T03": {
+      "number": 4,
+      "url": "https://github.com/samzhu/LaiTse/issues/4",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T01"
+      ],
+      "native_blockers_match": true
+    },
+    "T02": {
+      "number": 3,
+      "url": "https://github.com/samzhu/LaiTse/issues/3",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [
+        "T01"
+      ],
+      "native_blockers_match": true
+    },
+    "T01": {
+      "number": 2,
+      "url": "https://github.com/samzhu/LaiTse/issues/2",
+      "body_sections_match_draft": true,
+      "label_and_state_valid": true,
+      "blocker_tids": [],
+      "native_blockers_match": true
+    }
+  },
+  "product_tests_run": false
+}

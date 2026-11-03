@@ -1,0 +1,228 @@
+{
+  "startedAt": "2026-11-03T05:29:28.237Z",
+  "baseURL": "https://localhost:4173",
+  "headless": true,
+  "status": "complete",
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "tls": {
+    "trust": "local CA imported only into two per-run Firefox NSS profiles",
+    "certificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "ignoreCertificateErrors": false
+  },
+  "browser": {
+    "name": "Firefox",
+    "version": "157.0"
+  },
+  "clients": [
+    {
+      "name": "client-1",
+      "appData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r002/app-data/client-1",
+      "localAppData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r002/local-app-data/client-1",
+      "state": {
+        "origin": "https://localhost:4173",
+        "secureContext": true,
+        "connection": "Connected to Local test room",
+        "api": "API ready · process-memory",
+        "members": [
+          "Ada",
+          "Grace"
+        ],
+        "events": [
+          {
+            "sequence": 4,
+            "kind": "reaction",
+            "roomId": "lobby",
+            "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+            "displayName": "Grace",
+            "reaction": "clap",
+            "at": 1793683772721,
+            "text": "✦Grace sent a clap01:29 PM"
+          },
+          {
+            "sequence": 3,
+            "kind": "reaction",
+            "roomId": "lobby",
+            "participantId": "239b7dc8-69ae-4449-aad2-b3b294bfbb64",
+            "displayName": "Ada",
+            "reaction": "wave",
+            "at": 1793683772693,
+            "text": "✦Ada sent a wave01:29 PM"
+          },
+          {
+            "sequence": 2,
+            "kind": "member.joined",
+            "roomId": "lobby",
+            "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+            "displayName": "Grace",
+            "reaction": "",
+            "at": 1793683772621,
+            "text": "+Grace joined the room01:29 PM"
+          },
+          {
+            "sequence": 1,
+            "kind": "member.joined",
+            "roomId": "lobby",
+            "participantId": "239b7dc8-69ae-4449-aad2-b3b294bfbb64",
+            "displayName": "Ada",
+            "reaction": "",
+            "at": 1793683772547,
+            "text": "+Ada joined the room01:29 PM"
+          }
+        ]
+      },
+      "transport": {
+        "sockets": [
+          {
+            "url": "wss://localhost:4173/ws",
+            "sentFrames": 2,
+            "receivedFrames": 6,
+            "errors": []
+          }
+        ],
+        "pageErrors": []
+      }
+    },
+    {
+      "name": "client-2",
+      "appData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r002/app-data/client-2",
+      "localAppData": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r002/local-app-data/client-2",
+      "state": {
+        "origin": "https://localhost:4173",
+        "secureContext": true,
+        "connection": "Connected to Local test room",
+        "api": "API ready · process-memory",
+        "members": [
+          "Ada",
+          "Grace"
+        ],
+        "events": [
+          {
+            "sequence": 4,
+            "kind": "reaction",
+            "roomId": "lobby",
+            "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+            "displayName": "Grace",
+            "reaction": "clap",
+            "at": 1793683772721,
+            "text": "✦Grace sent a clap01:29 PM"
+          },
+          {
+            "sequence": 3,
+            "kind": "reaction",
+            "roomId": "lobby",
+            "participantId": "239b7dc8-69ae-4449-aad2-b3b294bfbb64",
+            "displayName": "Ada",
+            "reaction": "wave",
+            "at": 1793683772693,
+            "text": "✦Ada sent a wave01:29 PM"
+          },
+          {
+            "sequence": 2,
+            "kind": "member.joined",
+            "roomId": "lobby",
+            "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+            "displayName": "Grace",
+            "reaction": "",
+            "at": 1793683772621,
+            "text": "+Grace joined the room01:29 PM"
+          }
+        ]
+      },
+      "transport": {
+        "sockets": [
+          {
+            "url": "wss://localhost:4173/ws",
+            "sentFrames": 2,
+            "receivedFrames": 4,
+            "errors": []
+          }
+        ],
+        "pageErrors": []
+      }
+    }
+  ],
+  "screenshots": [
+    "client-1.png",
+    "client-2.png"
+  ],
+  "sharedEventPayloadsAndSequencesMatch": true,
+  "postLeave": {
+    "remainingClient": {
+      "origin": "https://localhost:4173",
+      "secureContext": true,
+      "connection": "Connected to Local test room",
+      "api": "API ready · process-memory",
+      "members": [
+        "Ada"
+      ],
+      "events": [
+        {
+          "sequence": 5,
+          "kind": "member.left",
+          "roomId": "lobby",
+          "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+          "displayName": "Grace",
+          "reaction": "",
+          "at": 1793683772872,
+          "text": "−Grace left the room01:29 PM"
+        },
+        {
+          "sequence": 4,
+          "kind": "reaction",
+          "roomId": "lobby",
+          "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+          "displayName": "Grace",
+          "reaction": "clap",
+          "at": 1793683772721,
+          "text": "✦Grace sent a clap01:29 PM"
+        },
+        {
+          "sequence": 3,
+          "kind": "reaction",
+          "roomId": "lobby",
+          "participantId": "239b7dc8-69ae-4449-aad2-b3b294bfbb64",
+          "displayName": "Ada",
+          "reaction": "wave",
+          "at": 1793683772693,
+          "text": "✦Ada sent a wave01:29 PM"
+        },
+        {
+          "sequence": 2,
+          "kind": "member.joined",
+          "roomId": "lobby",
+          "participantId": "60b7470a-8471-48c3-b702-053c0ad65595",
+          "displayName": "Grace",
+          "reaction": "",
+          "at": 1793683772621,
+          "text": "+Grace joined the room01:29 PM"
+        },
+        {
+          "sequence": 1,
+          "kind": "member.joined",
+          "roomId": "lobby",
+          "participantId": "239b7dc8-69ae-4449-aad2-b3b294bfbb64",
+          "displayName": "Ada",
+          "reaction": "",
+          "at": 1793683772547,
+          "text": "+Ada joined the room01:29 PM"
+        }
+      ]
+    },
+    "leavingClient": {
+      "origin": "https://localhost:4173",
+      "secureContext": true,
+      "connection": "Not connected",
+      "api": "API ready · process-memory",
+      "members": [],
+      "events": []
+    }
+  },
+  "finishedAt": "2026-11-03T05:29:33.104Z"
+}

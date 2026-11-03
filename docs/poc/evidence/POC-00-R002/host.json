@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-11-03T05:04:50.900592+00:00",
+  "os": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "cpuModel": "Apple M1 Max",
+  "memoryBytes": 68719476736,
+  "memoryNote": "Host metadata only; no capacity test. Captured by read-only sysctl outside restricted sandbox.",
+  "operator": "Codex root acceptance; Luna xhigh implementation",
+  "scope": "T01 only, localhost, no Cloud Run deployment",
+  "beforeSourceCommit": "366933a3f81188386ad300b1d84b35d581a43fe8",
+  "results": "R002 T01 Pass; see checks and browser evidence. No capacity measurement.",
+  "hardwareRecordedAt": "2026-11-03T05:23:28.365611+00:00"
+}

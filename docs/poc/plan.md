@@ -1,0 +1,195 @@
+# 來坐 LaiTse 分階段 POC 計畫書
+
+- 識別碼：POC-PLAN；版本：v1.0；日期：2026-11-03。
+- 狀態：計畫已整理，POC 開發與測試均尚未開始；各階段結果預設為未執行。
+- 權威界線：產品目標依來坐 PRD v0.7、DEC-001～008；本計畫只定義技術驗證，不取代產品需求。
+- 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
+- 發布方式：GitHub Issues 為本計畫的發布鏡像，套用 `ready-for-agent`；標籤不表示已開始開發或已通過驗收。
+
+## Problem Statement
+
+來坐需要真實多人共享空間、像素人物、同房語音廣播與畫面分享、現場只互動模式，以及可撤銷的主持權限。目前只有產品文件與官方資料研究，尚未建立可執行產品，也沒有裝置、影音品質或 50 人容量證據。
+
+直接開發 MVP，可能直到後期才發現瀏覽器編解碼不相容、音畫延遲不可接受、慢速觀眾拖垮全房、重連復活舊權限，或本機保存方式不符合未來單一 Cloud Run 的部署條件。單次展示成功也不足以把實驗程式當成可重用方案。
+
+因此需要先分階段驗證最難與最有影響的技術；每次實驗同步記錄版本、條件、失敗、修正與證據，最後才能選出有依據的方案供 MVP 使用。
+
+## Solution
+
+以同一個最小 POC 應用逐段增加能力。先建立 Node.js 26 LTS 基線與量測，再依序驗證音訊、音畫、多人空間與權限、重連、負載與資料恢復，最後做 MVP 進場審查。每階段可包含多次實驗；失敗不刪除，後續成功以新的執行紀錄取代結論，而不是覆寫歷史。
+
+主要驗證邊界為 **真實瀏覽器 → 本機單一應用的公開介面 → 另一個真實瀏覽器**。此完整流程邊界已由人類確認；原提議中的 Cloud Run 端點依人類後續指示改為本機端點。編解碼能力探測、解析器或狀態機單元測試只作必要診斷與防回歸，不替代端到端證據。
+
+POC 可使用最薄的操作介面與預設場景，不提前建造正式 MVP。測試驅動器、負載產生器和手機都是測試端，不是額外產品服務；不得為了讓方案成功，偷偷加入外部影音 SaaS、Redis、資料庫或其他部署服務。
+
+### 分階段路線與進出條件
+
+| 階段 | 要回答的問題／最小工作 | 進入條件 | 完成證據與下一步 |
+|---|---|---|---|
+| POC-00：本機基線 | Node 26、候選套件鎖版、單一 server 提供前端／API／WSS；桌面與手機信任的 HTTPS；編解碼能力探測與量測方法；列出資料保存架構紅旗 | 計畫與人類決策已保存 | 可重現安裝、建置與啟動；兩個真實接收端連到同一應用；版本／授權／能力矩陣與基線紀錄完整。缺設備或未實測須明示，不寫成支援 |
+| POC-01：語音閉環 | 一位主講人 → 本機 relay → 至少兩個接收端；優先 WebCodecs＋AudioWorklet，必要時比較另一 pipeline；驗證播放手勢、拒絕權限、開關麥與連續收聽 | POC-00 通過必要能力項目 | 真正擷取／傳送／播放的證據、延遲與音訊中斷量測；至少一個接收端為實體手機。必要裝置無可用路徑則停止該候選 |
+| POC-02：畫面與音畫同步 | 加入螢幕分享；晚加入、聲音與畫面獨立啟停、來源停止／更換、codec/config 更新及音畫時鐘 | POC-01 路徑可用 | 語音與畫面同時接收；停止任一來源不破壞另一來源；晚加入取得可解碼起點。WebCodecs 與 Recorder／MSE 比較須用相同條件，不以錄影 Blob 能傳送當成直播通過 |
+| POC-03：空間、房間與權限 | 最小 Phaser 像素角色、桌面移動／手機選房；兩房各一主講人；回饋／文字／圖案／明確彈幕、直接入房、觀看與只互動；最小展示端及主持操作 | POC-02 通過 | 真實多人可見移動與切房；媒體／互動不跨房；無權 client 無法加入／發布／接收；撤權、鎖房、移除及結束 Session 生效，房間仍存在 |
+| POC-04：重連與弱網 | 斷線、晚加入、重新整理、擷取來源消失、慢接收者、前景／背景切回；先重驗身份／權限再恢復狀態與媒體 | POC-03 權威規則成立 | 不復活撤銷權限、不補播過期彈幕；慢端佇列有界且不拖垮健康端。模擬 timeout 與至少 65 分鐘本機穩定性分開記錄，不宣稱驗證 Cloud Run 真實逾時 |
+| POC-05：50 人負載 | 依 2、10、25、50 人逐級測試；一房集中與兩房同時分享；另測只互動比例；分清真瀏覽器解碼與合成 relay 負載 | POC-04 正常／弱網結果可重現 | 完整紀錄 CPU、記憶體、佇列、流量、互動 p95、媒體延遲／畫質／中斷及負載端飽和狀況。50 個空 socket 不算 50 人影音驗證 |
+| POC-06：重啟與資料語意 | 本機程序重啟、替換／重連與舊憑證；分類固定場景、執行期設定、角色／成員、撤權、訊息與統計應如何恢復 | POC-00 已列風險，可先完成資料盤點；整合恢復測試依 POC-04 | 提供恢復實驗與符合後續部署限制的資料方案；本機檔案／SQLite 能保存不代表 Cloud Run 可保存。若無符合需求的方案，列 No-Go 並提交決策，不擅自接受資料遺失 |
+| POC-07：MVP 交接審查 | 用一套候選組合重跑關鍵流程；整理可採用、需重構、拒絕與未解方案，提出 MVP 架構與開發順序 | 前述必要階段有可讀證據；無核心阻擋被隱藏 | 形成可追溯方案交接包及技術 Go／No-Go 結論。未通過必填條件不啟動 MVP；技術 Go 不表示產品已驗收、Cloud Run 已實測或已發布 |
+
+順序優先消除影音風險；資料盤點可及早進行，避免到最後才發現架構矛盾。只有必要依賴通過才推進相依實驗；獨立盤點可繼續。人類要求先 POC 後 MVP，因此 POC-07 前不得轉入 MVP 功能擴充。
+
+## User Stories
+
+1. As a product owner, I want staged POC gates, so that I can resolve technical risks before funding MVP development.
+2. As a product owner, I want the existing product requirements preserved, so that experiments do not silently reduce the product scope.
+3. As a product owner, I want local development and testing only, so that this phase does not require a Cloud Run deployment.
+4. As a product owner, I want cloud assumptions separated from local evidence, so that I understand what remains unverified.
+5. As a POC developer, I want Node.js 26 LTS as the shared baseline, so that development and later deployment use the agreed runtime.
+6. As a POC developer, I want exact dependency and build versions recorded, so that another developer can reproduce an experiment.
+7. As a POC developer, I want one application server, so that the experiment respects the intended deployment shape.
+8. As a POC developer, I want a trusted local HTTPS setup, so that real phones can exercise protected browser APIs.
+9. As a participant, I want audio playback to respect my gesture and permission choices, so that sound does not start unexpectedly.
+10. As a speaker, I want to broadcast my microphone, so that room participants can hear a real live source.
+11. As a speaker, I want to share my screen independently of my microphone, so that stopping one does not interrupt the other.
+12. As a remote participant, I want to join an ongoing share, so that I can start listening and watching after the activity begins.
+13. As a mobile participant, I want actual playback tested on my device class, so that desktop success is not mistaken for mobile support.
+14. As a developer, I want codec negotiation tested across target browsers, so that incompatible clients are identified before MVP work.
+15. As a participant, I want an identifiable pixel avatar, so that others can recognize my presence.
+16. As a participant, I want movement and room changes synchronized, so that everyone sees the authoritative shared space.
+17. As a mobile participant, I want a direct room selection path, so that participation does not depend on precise map movement.
+18. As an onsite participant, I want interaction-only mode without media subscription, so that my phone does not create echo or waste bandwidth.
+19. As a participant, I want mode changes to preserve my room and draft, so that I do not need to rejoin.
+20. As a participant, I want reactions, chat and explicitly public bullet comments to have distinct destinations, so that private interaction intent is preserved.
+21. As a host, I want room isolation enforced by the server, so that another room cannot receive unauthorized content.
+22. As a host, I want publishing and receiving permissions revoked immediately for future delivery, so that hiding a player is not the only protection.
+23. As a host, I want room locks to reject new unauthorized joins without ejecting existing members, so that access rules remain predictable.
+24. As a host, I want ending a Session to stop its media while retaining the Room, so that an activity is not confused with the space itself.
+25. As a participant, I want automatic reconnection after a disconnect, so that a temporary network interruption does not require manual re-entry.
+26. As a host, I want reconnection to use current permissions, so that revoked privileges cannot return from stale client state.
+27. As a participant, I want expired effects discarded on reconnect, so that old reactions are not replayed as current activity.
+28. As a participant with a slow connection, I want bounded buffering and recovery, so that I do not accumulate unlimited delay or memory.
+29. As a healthy participant, I want slow receivers isolated, so that one device cannot degrade the whole room.
+30. As a developer, I want process restart tested separately from socket reconnection, so that lost server state is not hidden by a reconnect animation.
+31. As a product owner, I want the persistence gap made explicit, so that local disk success is not mistaken for future cloud durability.
+32. As a developer, I want representative load at multiple participant levels, so that I can identify where resource use grows.
+33. As a reviewer, I want synthetic load distinguished from real decoding clients, so that capacity claims match the evidence.
+34. As a developer, I want each failed experiment retained with its cause and next action, so that the team avoids repeating rejected approaches.
+35. As an MVP developer, I want versioned contracts and regression evidence, so that I can reuse a proven solution without copying the entire prototype.
+36. As an MVP developer, I want test-only controls and experimental code identified, so that they are not accidentally shipped as product features.
+37. As a reviewer, I want every adopted solution linked to reproducible runs, so that a recommendation can be audited.
+38. As a product owner, I want a clear technical Go or No-Go decision, so that MVP development starts only after its prerequisites are satisfied.
+39. As a participant, I want keyboard and reduced-motion paths exercised, so that the shared space remains usable without its optional effects.
+40. As a developer, I want cost inputs and local hardware limits recorded, so that later deployment sizing is based on evidence rather than package popularity.
+
+## Implementation Decisions
+
+### 已確認事項與工程候選
+
+- 已確認：自研來坐、人物像素圖、核心不強制依賴影音 SaaS、後續單一 Cloud Run、可暖機與自動重連、Node.js 26 LTS。
+- 已確認本輪 POC 只在本機開發與測試；不執行 GCP 部署、建立雲端資源或進行雲端計費實驗。
+- 工程候選：React／Vite、Phaser 4、Fastify、WebSocket 插件與 ws。除了 Node 26，其餘是 POC 的比較基準，不是整套框架已獲產品確認。
+- 優先音畫候選為 WebCodecs＋Web Audio／AudioWorklet＋WSS；MediaRecorder＋MSE 為有條件替代實驗，沿用相同裝置與品質標準。候選失敗時可比較同限制內方案，不自動回到外部 SaaS、P2P-only 或額外媒體服務。
+- 不自己實作編解碼演算法；伺服器首輪只轉送瀏覽器壓縮資料，不轉碼、不儲存真實影音作為產品功能。
+
+### 概念與模組邊界
+
+沿用 PRD 詞彙：Space 是共享場域，Room 是成員、媒體與互動邊界，Session 是一次活動；Participant／Avatar 是參與身份與呈現；Broadcast 與 ScreenShare 分別描述語音與畫面發布。測試執行與參與者不混用同一個 Session 概念。
+
+最小應用分成場景／操作介面、權威房間與活動核心、身份與權限、控制事件通道、音畫 pipeline 與 relay、觀測與故障測試支援。模組分離不等於拆成額外服務。控制與媒體可分 socket、共用同一 server；最終連線數與隔離效果以實驗決定。
+
+對 MVP 暴露的協定以版本化行為契約描述：加入／切房、開始／結束活動、授權／撤權、回饋去重、狀態快照、媒體發布／訂閱、重連與初始化。控制事件具請求識別、結果與失敗原因；媒體具來源、世代、時間戳、序號、格式／初始化版本及可解碼起點。伺服器以連線身份綁定房間和權限，不相信 client 自填房間或角色。
+
+實際 schema 在對應 POC 開發時產生、鎖版並連結證據；本計畫不預先把未實作欄位寫成現成 API。升版須記錄相容行為、遷移與受影響回歸案例。
+
+### 本機環境與測試資料
+
+- 同機桌面可先用 localhost，但手機連入區域網路時，使用實體裝置信任的開發憑證與 HTTPS／WSS；不得靠忽略安全限制的瀏覽器旗標作通過證據。
+- 建置後介面與 API／WSS 由同一應用提供；開發熱更新工具只能作開發支援，正式可重現流程須能不依賴它啟動。
+- 使用有使用權的像素測試角色、測試音訊／畫面與暱稱；不得把測試角色或合成音畫描述為真實產品內容。實際擷取與編解碼仍須至少有真實操作證據。
+- 固定場景／房間可由版本化設定重建；動態管理、成員、撤權與歷史資料的保存需求須另分類，不能把前者可重建當成後者已耐久。
+- 本機檔案或 SQLite 若用來比較恢復語意，須標示為本機實驗；不因此把它認定為未來 Cloud Run 的耐久儲存。
+
+### 開發同步紀錄規則
+
+每次實驗使用穩定階段 ID 與新的 run ID；每個 run 在開始前記錄假設、條件與篩選值，結束時記錄觀察、證據、結論與下一步。run ID 不回收，失敗與中止也保留。已有紀錄以追加修正說明處理，不覆寫原始觀察。
+
+每個 run 至少包含：實際日期與操作者、目的、程式 commit 或可驗證版本、Node／依賴／codec 版本、OS／瀏覽器／裝置、server 與負載端硬體、參與者與房間數、網路條件、測量方法、原始資料位置、結果與未跑項目。無法取得的資訊明列未取得，不補造雜湊、時數或數值。
+
+每階段結束前完成三件事：更新執行紀錄；更新該方案的採用／拒絕與限制；以同版本重新讀回證據。重大失敗、改框架、改協定或縮限支援裝置，都需寫理由與相依影響，不只留下聊天訊息。
+
+### MVP 可用方案交接
+
+方案以穩定識別追蹤，狀態分為待實驗、驗證中、可採用、需重構、拒絕。不得在沒有成功 run 的情況下標為可採用。
+
+每個交接項目包含：問題與替代方案、選擇理由、適用版本／裝置／規模、公開行為契約、成功與反例、回歸案例、效能與資源、授權義務、失敗恢復、未解風險、必須移除的測試支援、需要重構的程式以及 MVP 採用前條件。
+
+POC 程式可復用，但不得整包複製後稱為 MVP。只有交接條目有證據的契約、模組與測試可進入 MVP 候選；調整版本、網路路徑或部署環境後，重跑受影響案例。
+
+## Testing Decisions
+
+### 測試原則與既有基礎
+
+目前沒有產品程式、現成測試或可沿用的測試套件；既有 PRD 的驗收情境與研究中的風險，是本輪測試設計依據，不是已通過的 prior art。
+
+好測試從使用者或外部 client 觀察收聽、觀看、房間隔離、管理效果和恢復。主要黑箱邊界維持同一個本機應用；必要單元測試集中在難以穩定從外部覆蓋的協定解析、去重、權限與媒體恢復規則，不檢查私有函式名稱或逐步照抄實作。
+
+候選工具是 Vitest、Playwright、受控外部負載／故障驅動器與真實桌面／手機。多個 BrowserContext 能驗證身份與互動，不能代替實體手機的解碼、播放手勢、背景與音訊輸出行為。
+
+### 工程篩選值與量測方法
+
+以下數值是本計畫的**暫定工程篩選值**，用來比較路線與及早發現問題；不是使用者已接受的 MVP 品質或容量保證。POC-00 需保存版本化測試設定；後續改值須先記原因並重跑，不得看到失敗後只降低門檻宣稱通過。
+
+| 項目 | 暫定工程篩選值／必要行為 | 證據與限制 |
+|---|---|---|
+| 真實基本播放 | 1 位主講、至少 2 位接收連續 20 分鐘；至少一台實體手機；正常條件下沒有未恢復的播放錯誤 | 開始／結束時間、接收端播放與錯誤事件、觀察片段；不把 socket 開啟當播放成功 |
+| 音訊端到端延遲 | p95 ≤ 500 ms | 測試脈衝／聲音標記與接收端實際輸出；若無法可靠量測，標未驗證，不只報 server 轉送耗時 |
+| 分享測試檔位 | 1280×720、目標 15 fps；端到端畫面延遲 p95 ≤ 1,000 ms；穩態實際呈現平均 ≥ 10 fps | 來源與呈現 frame 標記；需報動態畫面與靜態簡報兩種條件。這是測試檔位，不是產品解析度上限 |
+| 音畫偏移 | 兩來源同時存在時 p95 絕對偏移 ≤ 150 ms | 同時產生聲光標記、以同一接收觀測時計算；網路抵達時間不能代替播放時間 |
+| 網路斷線恢復 | 網路恢復後 p95 ≤ 5 秒回到可操作控制與可解碼媒體 | 各至少 20 次受控中斷，保留每次數據；需要重新操作分享授權時分開報告，不捏造自動恢復 |
+| 互動 | 沿用 PRD 提議的 server 接受至接收端顯示 p95 ≤ 1 秒；同 ID 重送不重複計數 | 每個主要情境至少 100 個已接受事件，拒絕／遺失／斷線也另計，不從樣本移除 |
+| 房間／權限 | 未授權與跨房的新增媒體／事件下送為 0；撤權後不復活權限 | 正常與自行構造 client 皆測。撤權前已送達內容不可追回，須區分來源時間與接收端舊緩衝 |
+| 只互動模式 | 媒體訂閱與媒體 payload 下送為 0，控制通道仍可用 | 以 server 訂閱／位元組與接收端網路證據核對，不只看沒有聲音或播放器被隱藏 |
+| 慢端與記憶體 | 每連線佇列與媒體年齡有預先設定的硬上限；超限後可丟棄／重同步且健康端繼續符合篩選值 | POC-00 鎖定佇列／年齡設定；分別報 server、接收端與負載端資源，不用無限排隊換取零丟失 |
+| 長連線 | 本機至少 65 分鐘，加受控中斷後可恢復 | 本機結果不等於 Cloud Run 60 分鐘 request timeout 已實測 |
+| 50 人 | 每級穩態至少 20 分鐘，50 人集中及分散兩房各測；完成一個不低於 65 分鐘的整合場次 | 50 是原 PRD 的實驗規模，未通過前不承諾容量。每場記錄真正編解碼人數、合成client數、角色分布與總媒體接收數 |
+| 程序重啟 | 不接受 stale client 自證主講／主持權；按已記錄規則重建或誠實拒絕恢復 | 單獨檢查動態資料保存。可重新連線不等於狀態已正確恢復 |
+
+跨裝置時間不可直接相減：沒有校時或共同觀測基準時，延遲數字不能作端到端通過證據。每項保留樣本數、分布／p50／p95／最大值與量測誤差；至少兩次獨立重跑通過後才將候選列為穩定可採用。
+
+網路擾動使用對測試 client／測試連線有範圍限制的工具，預設包含正常 LAN、100 ms 額外 RTT、受限 2 Mbps 接收端、單端中斷與恢復；保留設定，不把軟體延遲注入當真實行動網路驗證。若另做丟包／抖動情境，記錄工具與實際作用層；不能在 WebSocket 訊息層刪封包後稱為 TCP 網路丟包。
+
+### 瀏覽器、資料與結果狀態
+
+桌面 Chrome／Edge／Firefox／Safari，以及實體 iPhone Safari／Android Chrome 均建立能力與實測欄位，記錄實際版本。手機發布螢幕與手機接收分開，依 PRD 不支援發布時仍須驗證接收與互動；缺裝置不得把模擬器冒充實測。
+
+測試資料以合成／已獲授權來源為主。應用不錄製使用者影音作產品資料；為量測短暫錄製測試聲光或畫面，須明示用途、來源及刪除規則。log 不包含憑證、私人聊天全文或不必要身份資訊。
+
+執行紀錄分開「尚未執行／執行中／完成／中止」與「Pass／Fail／Inconclusive」。階段通過需所有必填案例有有效結果、暫定篩選值符合、必要裝置有證據、限制已揭露；設備缺漏或無可靠量測為 Inconclusive，不能當 Pass。
+
+### 停止條件與 MVP 進場
+
+- 核心裝置沒有共同可行編解碼路徑、弱網緩衝無法有界、跨房／撤權可繞過，立即停止提升該候選為預設方案；記錄失敗後比較另一條同限制內路線。
+- 無法在資料需求與單一服務限制之間提出可用恢復方案，POC-06 及最終技術 Go 保持未通過；可繼續無相依的技術盤點，不偷增服務或刪資料需求。
+- 原工具操作重現同樣錯誤或證據矛盾時，依專案規則停止該操作，保存狀態；測試本身的失敗則按新的假設與新 run 受控重試，不重複碰運氣。
+- MVP 進場必要條件：POC-00～06 的核心條件可重現、端到端回歸成功、採用清單與拒絕理由完整、無核心未解問題假裝結案，並完成 POC-07 技術審查。工程 Go、產品品質接受、MVP 開發開始、雲端驗證及正式發布分開記錄。
+- 人類後續接受實驗結果或調整條件時，沿用既有決策紀錄保存精確範圍。不得將一般回覆或 `ready-for-agent` 標籤當成所有品質／風險都已接受。
+
+## Out of Scope
+
+- 本輪不開始正式 MVP 開發；不建完整管理後台、正式登入產品、正式美術系統或所有產品頁。
+- POC 執行不部署 Cloud Run、不建立雲端資源、不建立外部影音服務、不做 GCP 帳單實測。
+- 不開發自有 codec、標準 WebRTC SFU／TURN 底層、3D 世界、攝影機會議、近距離音訊、錄影產品、完整地圖編輯器。
+- 不因 POC 採最小介面就宣稱完整產品可用；也不將本機 SQLite／磁碟結果當作雲端耐久證據。
+- 不在缺少真實裝置或負載證據時宣稱全瀏覽器支援、50 人容量、低延遲或雲端成本達標。
+- 不為了越過失敗門檻改回 WorkAdventure、外部播放器或偷偷加入額外服務。
+
+## Further Notes
+
+目前沒有 POC 執行結果、部署結果或已驗證可交接程式。計畫書、執行紀錄與 MVP 方案交接表先建立；執行紀錄不得填入尚未發生的 run，交接表中的候選不得標為可採用。
+
+GitHub Issue 是這份 POC 計畫的發布鏡像；修改本計畫時同步 Issue，開發中的 run 與方案證據沿用專案紀錄，不另外維護競爭的需求文件或資源占用清冊。Issue 的 `ready-for-agent` 只表示規格已整理可供代理接手；階段仍逐一實作、驗證及記錄。
+
+本機 POC 的結論限定於其版本、裝置、硬體與網路；未來若開始 Cloud Run 工作，仍需額外驗證實際入口、request timeout、實例替換、資源／流量與保存方式，不能把這次本機計畫的完成標記挪作雲端通過。
+
+既有研究依據是框架可行性、瀏覽器音畫 pipeline、Cloud Run 平台邊界與維護／授權比較；本計畫把研究假設轉成可執行驗證，不把官方文件當作產品測試結果。
+
+主要官方參考：[Node.js LTS](https://nodejs.org/en/about/previous-releases)、[WebCodecs](https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API)、[MediaStream Recording](https://www.w3.org/TR/mediastream-recording/)、[安全環境](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Secure_Contexts)、[麥克風授權](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)、[Cloud Run WebSocket](https://docs.cloud.google.com/run/docs/triggering/websockets)。技術實驗開始時再核對實際版本，不盲用浮動 latest。

@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-11-03T05:18:56.127Z",
+  "baseURL": "https://localhost:4173",
+  "status": "failed",
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2"
+  },
+  "tls": {
+    "trust": "local CA imported only into two per-run Firefox NSS profiles",
+    "certificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "ignoreCertificateErrors": false
+  },
+  "browser": null,
+  "clients": [],
+  "screenshots": [],
+  "failure": "Error: browserType.launchPersistentContext: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r001/profiles/client-1 -juggler-pipe about:blank\n<launched> pid=85326\n[pid=85326][err] *** You are running in headless mode.\n[pid=85326] <process did exit: exitCode=null, signal=SIGABRT>\n[pid=85326] starting temporary directories cleanup\nCall log:\n\u001b[2m  - <launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/acceptance-r001/profiles/client-1 -juggler-pipe about:blank\u001b[22m\n\u001b[2m  - <launched> pid=85326\u001b[22m\n\u001b[2m  - [pid=85326][err] *** You are running in headless mode.\u001b[22m\n\u001b[2m  - [pid=85326] <process did exit: exitCode=null, signal=SIGABRT>\u001b[22m\n\u001b[2m  - [pid=85326] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=85326] <gracefully close start>\u001b[22m\n\u001b[2m  - [pid=85326] <kill>\u001b[22m\n\u001b[2m  - [pid=85326] <skipped force kill spawnedProcess.killed=false processClosed=true>\u001b[22m\n\u001b[2m  - [pid=85326] finished temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=85326] <gracefully close end>\u001b[22m\n",
+  "finishedAt": "2026-11-03T05:18:57.879Z"
+}

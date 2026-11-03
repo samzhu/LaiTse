@@ -1,0 +1,10 @@
+{
+  "runtime": "Node.js v26.13.0",
+  "platform": "darwin-arm64",
+  "archive": "node-v26.13.0-darwin-arm64.tar.xz",
+  "officialChecksumURL": "https://nodejs.org/dist/v26.13.0/SHASUMS256.txt",
+  "archiveURL": "https://nodejs.org/dist/v26.13.0/node-v26.13.0-darwin-arm64.tar.xz",
+  "sha256": "6f5b3187d9df9fc007e881167905bc7d69ad26450ddc377c83d63256a2495b6e",
+  "checksumMatches": true,
+  "nodeLicenseFile": "node-license.txt"
+}

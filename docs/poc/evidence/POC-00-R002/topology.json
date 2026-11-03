@@ -1,0 +1,16 @@
+{
+  "serverPid": 86648,
+  "listener": "https://127.0.0.1:4173",
+  "browserOrigin": "https://localhost:4173",
+  "serverCommand": [
+    "node",
+    "dist/server/index.js"
+  ],
+  "instances": 1,
+  "testClients": 2,
+  "clientType": "Independent Firefox desktop processes, headless rendering, same host",
+  "certificateValidation": "Per-profile NSS CA, normal hostname/chain verification",
+  "mediaClients": 0,
+  "network": "loopback, no emulation",
+  "clock": "Single host wall-clock UTC event at + server sequence; no E2E latency measurement"
+}

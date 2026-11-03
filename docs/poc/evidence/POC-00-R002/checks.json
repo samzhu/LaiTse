@@ -1,0 +1,90 @@
+[
+  {
+    "check": "syntax-dependency-inventory",
+    "command": [
+      "node",
+      "--check",
+      "scripts/dependency-inventory.mjs"
+    ],
+    "startedAt": "2026-11-03T05:29:26.249115+00:00",
+    "finishedAt": "2026-11-03T05:29:26.280555+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "syntax-e2e",
+    "command": [
+      "node",
+      "--check",
+      "scripts/e2e.mjs"
+    ],
+    "startedAt": "2026-11-03T05:29:26.280808+00:00",
+    "finishedAt": "2026-11-03T05:29:26.311935+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "syntax-setup-local-tls",
+    "command": [
+      "node",
+      "--check",
+      "scripts/setup-local-tls.mjs"
+    ],
+    "startedAt": "2026-11-03T05:29:26.312165+00:00",
+    "finishedAt": "2026-11-03T05:29:26.343870+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "syntax-server.integration.test",
+    "command": [
+      "node",
+      "--check",
+      "tests/server.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-03T05:29:26.344163+00:00",
+    "finishedAt": "2026-11-03T05:29:26.377201+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-03T05:29:26.377512+00:00",
+    "finishedAt": "2026-11-03T05:29:27.242865+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "integration",
+    "command": [
+      "npm",
+      "run",
+      "test:integration"
+    ],
+    "startedAt": "2026-11-03T05:29:27.243064+00:00",
+    "finishedAt": "2026-11-03T05:29:27.589167+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "licenses",
+    "command": [
+      "npm",
+      "run",
+      "licenses"
+    ],
+    "startedAt": "2026-11-03T05:29:27.589354+00:00",
+    "finishedAt": "2026-11-03T05:29:27.823996+00:00",
+    "exitCode": 0
+  },
+  {
+    "check": "browser",
+    "command": [
+      "npm",
+      "run",
+      "test:e2e"
+    ],
+    "startedAt": "2026-11-03T05:29:27.961190+00:00",
+    "finishedAt": "2026-11-03T05:29:33.112264+00:00",
+    "exitCode": 0
+  }
+]

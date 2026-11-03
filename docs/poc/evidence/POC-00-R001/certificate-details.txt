@@ -1,0 +1,5 @@
+subject=CN=localhost
+X509v3 Subject Alternative Name: 
+    DNS:localhost, IP Address:127.0.0.1, IP Address:0:0:0:0:0:0:0:1
+notBefore=Nov  3 05:14:04 2026 GMT
+notAfter=Dec  3 05:14:04 2026 GMT
