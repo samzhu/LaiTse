@@ -9,9 +9,15 @@ export type SpacePlayer = {
   y: number;
 };
 
+export type SpaceKind = "open-area" | "meeting-room";
+export type AudioPolicy = "proximity" | "room";
+
 export type SpaceRoom = {
   id: SpaceRoomId;
   name: string;
+  kind: SpaceKind;
+  audioPolicy: AudioPolicy;
+  audioRadiusGridUnits: number | null;
   style: "sunroom" | "blueprint";
   players: SpacePlayer[];
   membersVisible: boolean;

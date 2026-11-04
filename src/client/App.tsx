@@ -3,7 +3,7 @@ import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
 import { SpacePanel } from "./SpacePanel";
-import type { MoveDirection, SpaceSnapshot } from "./pixel-space";
+import type { AudioPolicy, MoveDirection, SpaceKind, SpaceSnapshot } from "./pixel-space";
 import {
   API_KEYS,
   API_LABELS,
@@ -34,7 +34,13 @@ type RoomEvent = {
 type ServerMessage =
   | {
       type: "room.snapshot";
-      room: { id: string; name: string };
+      room: {
+        id: string;
+        name: string;
+        kind: SpaceKind;
+        audioPolicy: AudioPolicy;
+        audioRadiusGridUnits: number | null;
+      };
       members: Member[];
       lastSeq: number;
     }
@@ -59,7 +65,13 @@ type StoredObservation = {
   readBackMatched: boolean;
 };
 
-type RoomSummary = { id: string; name: string };
+type RoomSummary = {
+  id: string;
+  name: string;
+  kind: SpaceKind;
+  audioPolicy: AudioPolicy;
+  audioRadiusGridUnits: number | null;
+};
 
 export function App() {
   const [displayName, setDisplayName] = useState("");

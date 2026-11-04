@@ -1,0 +1,139 @@
+{
+  "result": "incomplete source trace during teardown; core script assertions had passed before teardown",
+  "unmatchedFinalRecords": {
+    "near": [
+      {
+        "at": 1793762014322,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 8,
+        "bytes": 99,
+        "sha256": "b81966fa72e787fbe4df97312f9c21f6b8f16628f8add9c30b5d7b6453ad8400"
+      },
+      {
+        "at": 1793762014322,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 9,
+        "bytes": 93,
+        "sha256": "f312dd46f90a2d949ea5b509ee6b7594605a109783694c3b6c7a1a90ba11ce1c"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 10,
+        "bytes": 93,
+        "sha256": "5c2e9a7e6d0d259f8c77553ec2aaab7f0602cd30545545048a223b7d39913773"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 11,
+        "bytes": 89,
+        "sha256": "a1c227feac17d598809df4843e49500c13b29d04a80826b7b281cb698a1cc9f5"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 12,
+        "bytes": 95,
+        "sha256": "d6ae8ecdbdb408f3d35b4428e43ea3a56ef57983df793d0967d428519f49b931"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 13,
+        "bytes": 93,
+        "sha256": "0a0366d5ced002f77f776d3a2ea5a56ed19499b8e13e3aa9360717c07fa4a23f"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 14,
+        "bytes": 90,
+        "sha256": "3e01fcbd26015762b826d59ff1e2e827e842033c79de2b584a8908bbfc954d8e"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 15,
+        "bytes": 99,
+        "sha256": "9f70c9d8e2a9bf4c63a890ebbd68f55abe190d76bae7186721a08eea589d16d4"
+      }
+    ],
+    "far": [
+      {
+        "at": 1793762014322,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 8,
+        "bytes": 99,
+        "sha256": "b81966fa72e787fbe4df97312f9c21f6b8f16628f8add9c30b5d7b6453ad8400"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 9,
+        "bytes": 93,
+        "sha256": "f312dd46f90a2d949ea5b509ee6b7594605a109783694c3b6c7a1a90ba11ce1c"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 10,
+        "bytes": 93,
+        "sha256": "5c2e9a7e6d0d259f8c77553ec2aaab7f0602cd30545545048a223b7d39913773"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 11,
+        "bytes": 89,
+        "sha256": "a1c227feac17d598809df4843e49500c13b29d04a80826b7b281cb698a1cc9f5"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 12,
+        "bytes": 95,
+        "sha256": "d6ae8ecdbdb408f3d35b4428e43ea3a56ef57983df793d0967d428519f49b931"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 13,
+        "bytes": 93,
+        "sha256": "0a0366d5ced002f77f776d3a2ea5a56ed19499b8e13e3aa9360717c07fa4a23f"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 14,
+        "bytes": 90,
+        "sha256": "3e01fcbd26015762b826d59ff1e2e827e842033c79de2b584a8908bbfc954d8e"
+      },
+      {
+        "at": 1793762014323,
+        "magic": "LTA1",
+        "generation": 1,
+        "sequence": 15,
+        "bytes": 99,
+        "sha256": "9f70c9d8e2a9bf4c63a890ebbd68f55abe190d76bae7186721a08eea589d16d4"
+      }
+    ]
+  },
+  "hypothesis": "close publisher context while still broadcasting loses final sender-side transport observations; receivers close later",
+  "nextControlledChange": "explicitly stop microphone, await source and receiver stop acknowledgements, verify stable counters, then audit and close"
+}

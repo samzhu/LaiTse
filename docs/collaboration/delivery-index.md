@@ -39,3 +39,5 @@
 | T06-IMPLEMENT／T06-ACCEPT | 晚加入、世代重建與同發布者音訊主時鐘排程 | media-timeline、relays/controllers/worklets、t06-smoke；POC-02-R002 | 23核心/build、三Firefox合成閉環及marker觀測；失敗/修正保存，schema2下載已讀回 | 軟體核心可行，完整品質/裝置未通過；本機commit、不push/T07；資源釋出 |
 | T07-IMPLEMENT／T07-ACCEPT | Phaser像素人物、server權威兩房/位置與操作入口 | SpacePanel/pixel-space、space model、t07-smoke；POC-03-R001 | 26核心/build、雙FirefoxWebGL移動/切房/離開重入/減少動態通過；SOL-004/008與MIT notices同步 | 桌面核心可行；手機/完整跨房影音/POC-03待補，本機commit不push/T08；資源釋出 |
 | T08-IMPLEMENT／T08-ACCEPT | 房間影音與成員隔離、切房及惡意client拒絕 | app per-room relays/guard、room-isolation契約、t08-smoke；POC-03-R002 | 27核心/build、四Firefox合成雙房/切房/來源hash與六外部拒絕通過，SOL-002/003/008同步；失敗保存 | 匿名連線核心可行；帳號/角色/私密准入及完整POC-03待補，本機commit不push/T09；資源釋出 |
+| DEC-011 | 空間類型/距離廣播/會議室密碼門禁 | decisions；PRD/handoff v0.8、POC-PLAN v1.2、ticket-breakdown與SOL影響 | 人類原話/釐清已保存讀回，純文件一致性檢查 | 新規則未實作/未驗，需補POC與票面；未啟動T09或寫GitHub |
+| DEC011-A | 會議室全房/開放空間距離語音 | space/audio relay/UI、space-policy-smoke；POC-03-R003 | 30核心/build、三Firefox實際render/過界/meeting9格，原始收尾trace與窄修/完整hash讀回保存；SOL同步 | 6格暫定、單來源；門/密碼/真人裝置待補，程式/需求/紀錄本機commit不push，資源釋出 |

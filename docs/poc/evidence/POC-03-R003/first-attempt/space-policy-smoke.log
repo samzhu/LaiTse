@@ -1,0 +1,6 @@
+[SPACE-POLICY] open-area-near-renders-far-is-silent {"publisherGeneration":1,"near":{"listenerState":"ready","receivedPackets":2,"decodedFrames":2,"renderedSamples":960,"queuedSamples":0,"renderRms":0.11236726785296379},"farReceivedPackets":0,"farRawPackets":0}
+[SPACE-POLICY] open-area-reentry-and-clear {"nearRender":{"listenerState":"ready","receivedPackets":2,"decodedFrames":2,"renderedSamples":960,"queuedSamples":0,"renderRms":0.11236726785296379},"farRender":{"listenerState":"ready","receivedPackets":10,"decodedFrames":10,"renderedSamples":8896,"queuedSamples":704,"renderRms":0.15525099768072334},"endedReason":"out_of_range","farRawPacketsAfterBoundary":12}
+[SPACE-POLICY] publisher-movement-reconciles-distance {"receiverEndedReason":"out_of_range","restoredSameGeneration":true}
+[SPACE-POLICY] meeting-room-distant-member-renders {"publisherGeneration":1,"near":{"listenerState":"ready","receivedPackets":2,"decodedFrames":2,"renderedSamples":960,"queuedSamples":0,"renderRms":0.11236726785296379},"far":{"listenerState":"ready","receivedPackets":2,"decodedFrames":2,"renderedSamples":960,"queuedSamples":0,"renderRms":0.11236726785296379}}
+[SPACE-POLICY] bounded-traces-and-errors-checked
+Space policy smoke passed; evidence saved under .scratch/space-policy/desktop-smoke.

@@ -114,3 +114,18 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - T07共享地圖的全空間人物可見策略由T08收斂：目錄仍可見、room.snapshot／events及space.players只含本房，異房membersVisible=false。不要以空players宣稱房間為空。此策略可供MVP空間bridge參考，正式可見性需依產品/授權定義。
 - 復用界線：開放匿名join/switch與server UUID不等於帳號認證或私密房間ACL；每channel單publisher ownership非主持人授權主講角色，audio/screen仍能由不同成員佔用。正式身份/Session/角色/撤權/恢復、觀測API授權仍待後續，完整T08/POC-03未通過。固定房與process-memory不改變SOL-007耐久風險。
 - SOL-008：可沿用room-isolation.integration契約、t08-smoke的四真browser/兩合成來源、SHA256來源比對、切房ACK前後window、外部WSS拒絕與trace無截斷檢查；27核心/build及最終browser通過，早期fixture失敗和root窄修保存。/api/media-diagnostics僅聚合有界計數，代表排入WS不是對端已收；MVP需關閉或限制診斷。原t07-smoke全空間可見預期屬歷史，不作現行回歸入口。長名字標籤重疊仍需整理，沒有新增依賴。
+
+## DEC-011新需求對既有候選的影響（2026-11-04；尚未實作）
+
+- SOL-002/003：開放空間接收資格改依server權威人物距離；會議室仍依入房成員全房接收。T08固定每room一組relay僅證明房間隔離，不能直接當距離路由/多個附近來源或混音證據；來源識別/有界訂閱需補POC。
+- SOL-003/004：場景增加會議室門/鎖/密碼准入，合法入房才取得影音/成員資格，移動與直接入口一致。T07按鈕切房不是可穿越門，T08開放匿名join/switch不是密碼門禁。鎖與聲音邊界分開，未鎖會議室也不向房外洩漏影音。
+- SOL-008：補近/遠跨界、無/錯/正確密碼、直接入房繞過、房內遠距仍可聽/房外近門不可聽的短真browser外部證據。依DEC-010維持輕量，沒有新run結果；計畫與票面差異見POC-PLAN v1.2/ticket-breakdown。
+- 已確認產品方向與未定參數分開；距離、邊界緩衝/音量、多源、密碼重入有效期及正式身份設計待補。既有code/evidence/commit保留，不因需求擴充改判歷史實驗或宣稱MVP可採用。
+
+## DEC011-A／POC-03-R003：兩類空間收聽候選（2026-11-04）
+
+- SOL-002/003：server SPACE_ROOMS回報kind/audioPolicy/audioRadiusGridUnits，保留lobby/studio wire ID但顯示Open area/Meeting room。isRecipientEligible callback只讀server connection→participant→space位置，開放區距離平方<=半徑平方、會議室只核同區成員；公告與binary均受資格控制。每room/channel仍單publisher、每page一WS，無新服務/依賴。
+- AudioRelay為每訂閱者保存已公告generation，成功移動後reconcile；超界audio.streamEnded reason out_of_range，初始遠端audio.unavailable無source config，入界重送現行stream。重複subscribe可重取metadata，普通移動不重複公告。client沿用decoderRequestId/epoch與worklet.clear丟舊PCM，意願仍開啟；同generation可重新初始化。不是只client靜音。
+- SOL-004：Phaser位置/方向按鈕與room入口沿用，UI顯示類型與暫定6格；既有Room字樣/API容器仍可含OpenArea，MVP需統一領域命名而非將開放區當會議室。可見門口/密碼尚未實作，不能把room按鈕稱為門。
+- SOL-008：[R003](evidence/POC-03-R003/README.md)新3個Node外部契約與三Firefox合成audio流程可沿用；30核心/build、近/遠邊界、publisher移動、meeting9格及真render通過。首次關閉尾端8包來源trace不完整已保留，root窄修先stop/ACK/穩定再audit；最終127 sent/127 near/43 far全hash匹配且cap未達，無人耳/E2E品質承諾。
+- MVP前：6格只是示範、斜向體感/邊界抖動/多源與混音/音量/必要裝置/跨區移動需依需求驗證；screen仍原手動zone訂閱，本輪沒測新距離與影音同步共存。帳號/角色/門禁/恢復/耐久未補，不能視為完整商品。舊smoke名稱/政策屬歷史，當前回歸入口space-policy-smoke。

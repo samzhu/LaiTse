@@ -175,6 +175,16 @@ For a short synthetic desktop run, start the app with trusted local HTTPS/WSS an
 
 The server assigns connection and participant IDs and derives the current room from that connection's accepted join/switch messages. Those IDs are not verified account identities. The two rooms are open local POC rooms: private-room entry, account authentication, host roles, and verified-user authorization are not implemented. Keep the development server on a private machine or LAN.
 
+## DEC-011-A space audio policy POC
+
+The fixed `lobby` room is displayed as **Open area** and applies proximity eligibility to audio only. The current local demonstration uses an inclusive Euclidean radius of 6 avatar-grid units; the server reads both positions from its space model and checks the current positions again before forwarding every binary audio packet. Moving either the publisher or receiver can stop delivery and clear the receiver's active decoder/worklet queue; the listener stays enabled and resumes when it returns in range. Screen sharing and member visibility are not distance-filtered.
+
+The fixed `studio` room is displayed as **Meeting room** and sends audio to every subscribed member in that room regardless of distance. Room membership still isolates audio. The UI labels both policies and calls the 6-unit open-area radius a provisional demo setting. Existing one-publisher-per-room behavior remains in place.
+
+For a short real-browser demonstration, run the app on the already trusted local HTTPS/WSS setup and execute `node scripts/space-policy-smoke.mjs` with Node 26.13.0, Playwright Firefox, `certutil`, and `.scratch/t01/tls/local-ca.pem` available. It launches three isolated Firefox processes, injects a synthetic oscillator through the test-only `getUserMedia()` replacement, moves the distant receiver with the visible controls, then switches all three clients to the meeting room and restarts audio by hand. The report stores authoritative position snapshots, control transitions, bounded opaque LTA1 packet hashes, receiver decode/render windows, errors, and two screenshots under `.scratch/space-policy/desktop-smoke/`; it does not store audio payloads.
+
+This POC does not implement room doors, password entry, multi-source mixing, distance-based volume changes, authenticated identities, phone support, real microphones, or human listening. The 6-unit radius is an experiment value rather than a final product setting.
+
 ## Data classification and limitations
 
 - **Fixed, versioned setup:** the lobby/studio catalogue and room names are source constants in `src/server/space.ts`; a build from the same source reconstructs them.
@@ -211,3 +221,5 @@ T05 local evidence: [POC-02-R001](docs/poc/evidence/POC-02-R001/README.md) recor
 [T07 POC-03-R001](docs/poc/evidence/POC-03-R001/README.md) records the two-Firefox WebGL avatar/room flow, focused keyboard movement, leave/rejoin and reduced motion. Phone and full cross-room media remain pending.
 
 [T08 POC-03-R002](docs/poc/evidence/POC-03-R002/README.md) records two-room synthetic media, packet-source isolation, switch/reset, and six rejected external probes. Account authentication/private entry and physical-device quality remain pending. T07 shared-map visibility is historical; the current map hides other-room members.
+
+[DEC011-A POC-03-R003](docs/poc/evidence/POC-03-R003/README.md) records the current Open area proximity/Meeting room whole-room audio flow. The 6-grid radius is provisional; doors/passwords and physical-device quality remain pending. Use `scripts/space-policy-smoke.mjs` for this version; older smoke scripts preserve historical names/policies.

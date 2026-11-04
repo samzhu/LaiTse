@@ -1,6 +1,20 @@
 export const SPACE_ROOMS = [
-  { id: "lobby", name: "Local test room", style: "sunroom" },
-  { id: "studio", name: "Studio", style: "blueprint" },
+  {
+    id: "lobby",
+    name: "Open area",
+    kind: "open-area",
+    audioPolicy: "proximity",
+    audioRadiusGridUnits: 6,
+    style: "sunroom",
+  },
+  {
+    id: "studio",
+    name: "Meeting room",
+    kind: "meeting-room",
+    audioPolicy: "room",
+    audioRadiusGridUnits: null,
+    style: "blueprint",
+  },
 ] as const;
 
 export const SPACE_GRID = { width: 16, height: 10 } as const;
@@ -30,6 +44,9 @@ export type SpaceState = {
   rooms: Array<{
     id: RoomId;
     name: string;
+    kind: (typeof SPACE_ROOMS)[number]["kind"];
+    audioPolicy: (typeof SPACE_ROOMS)[number]["audioPolicy"];
+    audioRadiusGridUnits: number | null;
     style: (typeof SPACE_ROOMS)[number]["style"];
     players: SpacePlayer[];
     membersVisible: boolean;

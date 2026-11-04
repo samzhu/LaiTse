@@ -150,7 +150,27 @@ export async function createApp(options: CreateAppOptions = {}) {
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
-    audio: createAudioRelay(),
+    audio: createAudioRelay({
+      isRecipientEligible: (publisherConnectionId, recipientConnectionId) => {
+        const findCurrentPlayer = (connectionId: string) => {
+          for (const connection of clients.values()) {
+            if (connection.id === connectionId && connection.member && connection.currentRoomId === id) {
+              return space.getPlayer(connection.member.id);
+            }
+          }
+          return null;
+        };
+        const publisher = findCurrentPlayer(publisherConnectionId);
+        const recipient = findCurrentPlayer(recipientConnectionId);
+        if (!publisher || !recipient || publisher.roomId !== id || recipient.roomId !== id) return false;
+        const room = SPACE_ROOMS.find((candidate) => candidate.id === id)!;
+        if (room.audioPolicy === "room") return true;
+        const dx = publisher.x - recipient.x;
+        const dy = publisher.y - recipient.y;
+        const radius = room.audioRadiusGridUnits;
+        return radius !== null && dx * dx + dy * dy <= radius * radius;
+      },
+    }),
     screen: createScreenRelay(),
   }]));
   const roomMetrics = new Map<RoomId, RoomMetricCounters>(SPACE_ROOMS.map(({ id }) => [id, createRoomMetricCounters()]));
@@ -177,7 +197,13 @@ export async function createApp(options: CreateAppOptions = {}) {
     persistence: "process-memory",
   }));
 
-  app.get("/api/rooms", async () => SPACE_ROOMS.map(({ id, name }) => ({ id, name })));
+  app.get("/api/rooms", async () => SPACE_ROOMS.map(({ id, name, kind, audioPolicy, audioRadiusGridUnits }) => ({
+    id,
+    name,
+    kind,
+    audioPolicy,
+    audioRadiusGridUnits,
+  })));
 
   app.get("/api/media-diagnostics", async () => ({
     rooms: SPACE_ROOMS.map(({ id }) => ({
@@ -497,7 +523,13 @@ export async function createApp(options: CreateAppOptions = {}) {
           const room = SPACE_ROOMS.find((candidate) => candidate.id === roomId)!;
           sendRoomMessage(socket, connection, roomId, {
             type: "room.snapshot",
-            room: { id: room.id, name: room.name },
+            room: {
+              id: room.id,
+              name: room.name,
+              kind: room.kind,
+              audioPolicy: room.audioPolicy,
+              audioRadiusGridUnits: room.audioRadiusGridUnits,
+            },
             members: space.roomMembers(roomId),
             lastSeq: event.seq,
           }, "roomSnapshotsSent");
@@ -522,6 +554,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             sendProtocolError("movement_out_of_bounds", "That step is outside this room. Your position was not changed.");
             return;
           }
+          mediaRooms.get(connection.currentRoomId!)!.audio.reconcileRecipients();
           broadcastSpaceState();
           return;
         }
@@ -551,7 +584,13 @@ export async function createApp(options: CreateAppOptions = {}) {
           const room = SPACE_ROOMS.find((candidate) => candidate.id === nextRoomId)!;
           sendRoomMessage(socket, connection, nextRoomId, {
             type: "room.snapshot",
-            room: { id: room.id, name: room.name },
+            room: {
+              id: room.id,
+              name: room.name,
+              kind: room.kind,
+              audioPolicy: room.audioPolicy,
+              audioRadiusGridUnits: room.audioRadiusGridUnits,
+            },
             members: space.roomMembers(nextRoomId),
             lastSeq: sequence,
           }, "roomSnapshotsSent");

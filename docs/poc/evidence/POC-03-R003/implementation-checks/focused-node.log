@@ -1,0 +1,26 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (181.785ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (165.661042ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.001583ms)
+✔ the application serves health and a built-in room catalogue (36.331708ms)
+✔ two clients receive the same authoritative members and sequenced reaction (7.86025ms)
+✔ the websocket rejects cross-origin clients before joining (1.295333ms)
+✔ malformed or oversized control frames close without being broadcast (3.054333ms)
+✔ clients cannot select arbitrary rooms (1.386708ms)
+✔ display names longer than the server limit are rejected (1.287167ms)
+✔ control events reject client-supplied fields outside the protocol (1.600416ms)
+✔ the room has a fixed member limit (8.494917ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.715042ms)
+✔ open-area audio follows authoritative distance, including the six-unit edge (301.429708ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (190.241375ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (7.144291ms)
+✔ space snapshots expose member positions only for the recipient's current room (24.316333ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (72.737458ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (107.924458ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 674.453459

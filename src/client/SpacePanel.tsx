@@ -7,7 +7,13 @@ import {
   type SpaceSnapshot,
 } from "./pixel-space";
 
-type RoomChoice = { id: string; name: string };
+type RoomChoice = {
+  id: string;
+  name: string;
+  kind: SpaceRoom["kind"];
+  audioPolicy: SpaceRoom["audioPolicy"];
+  audioRadiusGridUnits: number | null;
+};
 
 type SpacePanelProps = {
   rooms: RoomChoice[];
@@ -31,6 +37,8 @@ function describeRooms(roomChoices: RoomChoice[], snapshot: SpaceSnapshot | null
   if (snapshot) return snapshot.rooms;
   return roomChoices.map((room) => ({
     ...room,
+    kind: room.kind,
+    audioPolicy: room.audioPolicy,
     style: room.id === "lobby" ? "sunroom" : "blueprint",
     players: [],
     membersVisible: false,
@@ -149,7 +157,7 @@ export function SpacePanel({
         </span>
       </div>
 
-      <p className="space-intro">Choose a room to enter. Every character and position in the map comes from the room server.</p>
+      <p className="space-intro">Choose a room to enter. Open area voice follows avatar distance; meeting room voice reaches everyone inside. The visible 6-grid-unit range is a provisional demo setting.</p>
 
       <div className="space-room-choices" role="group" aria-label="Choose a room">
         {rooms.map((room) => {
@@ -167,7 +175,12 @@ export function SpacePanel({
               onClick={() => onSelectRoom(room.id)}
             >
               <span className="space-room-choice-name">{room.name}</span>
-              <span className="space-room-choice-detail">/{room.id}{isCurrent ? " · You are here" : ""}</span>
+              <span className="space-room-choice-detail">
+                {room.kind === "open-area"
+                  ? `Open area · proximity voice · demo range ${room.audioRadiusGridUnits} grid units`
+                  : "Meeting room · everyone inside can hear"}
+                {isCurrent ? " · You are here" : ""}
+              </span>
             </button>
           );
         })}

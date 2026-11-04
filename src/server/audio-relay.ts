@@ -26,12 +26,18 @@ type RelayConnection = {
   peer: RelayPeer;
   joined: boolean;
   subscribed: boolean;
+  announcedGeneration: number | null;
+  outOfRangeGeneration: number | null;
 };
 
 type Publisher = {
   connectionId: string;
   generation: number;
   lastSequence: number;
+};
+
+type AudioRelayOptions = {
+  isRecipientEligible?: (publisherConnectionId: string, recipientConnectionId: string) => boolean;
 };
 
 function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: readonly string[]): boolean {
@@ -46,7 +52,7 @@ function matchesConfig(value: Record<string, unknown>): boolean {
     value.frameDurationUs === AUDIO_CONFIG.frameDurationUs;
 }
 
-export function createAudioRelay() {
+export function createAudioRelay(options: AudioRelayOptions = {}) {
   const connections = new Map<string, RelayConnection>();
   let publisher: Publisher | null = null;
   let generation = 0;
@@ -58,22 +64,66 @@ export function createAudioRelay() {
     config: AUDIO_CONFIG,
   });
 
-  const tellSubscribers = (message: unknown, excludeConnectionId?: string) => {
+  const sendToOpenSubscriber = (connection: RelayConnection, message: unknown) => {
+    if (connection.joined && connection.subscribed && connection.peer.readyState() === connection.peer.openState) {
+      connection.peer.sendControl(message);
+    }
+  };
+
+  const endSubscriber = (
+    connectionId: string,
+    connection: RelayConnection,
+    active: Publisher,
+    reason: "publisher_stopped" | "out_of_range",
+  ) => {
+    if (connectionId === active.connectionId || connection.announcedGeneration !== active.generation) return;
+    sendToOpenSubscriber(connection, { type: "audio.streamEnded", generation: active.generation, reason });
+    connection.announcedGeneration = null;
+    if (reason === "out_of_range") connection.outOfRangeGeneration = active.generation;
+  };
+
+  const endAnnouncedSubscribers = (active: Publisher, reason: "publisher_stopped" | "out_of_range") => {
+    for (const [connectionId, connection] of connections) endSubscriber(connectionId, connection, active, reason);
+  };
+
+  const reconcileRecipients = () => {
+    if (!publisher) return;
     for (const [connectionId, connection] of connections) {
-      if (
-        connectionId !== publisher?.connectionId &&
-        connectionId !== excludeConnectionId &&
-        connection.joined &&
-        connection.subscribed &&
-        connection.peer.readyState() === connection.peer.openState
-      ) {
-        connection.peer.sendControl(message);
+      if (connectionId === publisher.connectionId || !connection.joined || !connection.subscribed) continue;
+      if (connection.peer.readyState() !== connection.peer.openState) continue;
+      const eligible = options.isRecipientEligible?.(publisher.connectionId, connectionId) ?? true;
+      if (eligible) {
+        if (connection.announcedGeneration !== publisher.generation) {
+          connection.peer.sendControl(currentStreamMessage(publisher));
+          connection.announcedGeneration = publisher.generation;
+        }
+        connection.outOfRangeGeneration = null;
+        continue;
+      }
+      if (connection.announcedGeneration === publisher.generation) {
+        endSubscriber(connectionId, connection, publisher, "out_of_range");
+      }
+      if (connection.outOfRangeGeneration !== publisher.generation) {
+        connection.peer.sendControl({ type: "audio.unavailable", reason: "out_of_range" });
+        connection.outOfRangeGeneration = publisher.generation;
       }
     }
   };
 
+  const clearUnavailableGeneration = (active: Publisher) => {
+    for (const connection of connections.values()) {
+      if (connection.outOfRangeGeneration === active.generation) connection.outOfRangeGeneration = null;
+    }
+  };
+
   function register(connectionId: string, peer: RelayPeer): void {
-    connections.set(connectionId, { peer, joined: false, subscribed: false });
+    connections.set(connectionId, {
+      peer,
+      joined: false,
+      subscribed: false,
+      announcedGeneration: null,
+      outOfRangeGeneration: null,
+    });
   }
 
   function markJoined(connectionId: string): void {
@@ -101,8 +151,10 @@ export function createAudioRelay() {
         return true;
       }
       connection.subscribed = true;
+      connection.announcedGeneration = null;
+      connection.outOfRangeGeneration = null;
       connection.peer.sendControl({ type: "audio.subscribed" });
-      if (publisher && publisher.connectionId !== connectionId) connection.peer.sendControl(currentStreamMessage(publisher));
+      reconcileRecipients();
       return true;
     }
 
@@ -112,6 +164,8 @@ export function createAudioRelay() {
         return true;
       }
       connection.subscribed = false;
+      connection.announcedGeneration = null;
+      connection.outOfRangeGeneration = null;
       connection.peer.sendControl({ type: "audio.unsubscribed" });
       return true;
     }
@@ -133,7 +187,7 @@ export function createAudioRelay() {
       generation = generation >= 0xffff_ffff ? 1 : generation + 1;
       publisher = { connectionId, generation, lastSequence: -1 };
       connection.peer.sendControl({ type: "audio.started", generation, config: AUDIO_CONFIG });
-      tellSubscribers(currentStreamMessage(publisher));
+      reconcileRecipients();
       return true;
     }
 
@@ -149,7 +203,8 @@ export function createAudioRelay() {
       const active = publisher;
       publisher = null;
       connection.peer.sendControl({ type: "audio.stopped", generation: active.generation });
-      tellSubscribers({ type: "audio.streamEnded", generation: active.generation }, active.connectionId);
+      endAnnouncedSubscribers(active, "publisher_stopped");
+      clearUnavailableGeneration(active);
       return true;
     }
 
@@ -194,6 +249,8 @@ export function createAudioRelay() {
         targetId !== connectionId &&
         target.joined &&
         target.subscribed &&
+        target.announcedGeneration === publisher.generation &&
+        (options.isRecipientEligible?.(connectionId, targetId) ?? true) &&
         target.peer.readyState() === target.peer.openState
       ) {
         target.peer.sendBinary(bytes);
@@ -207,7 +264,8 @@ export function createAudioRelay() {
     if (publisher?.connectionId === connectionId) {
       const active = publisher;
       publisher = null;
-      tellSubscribers({ type: "audio.streamEnded", generation: active.generation }, active.connectionId);
+      endAnnouncedSubscribers(active, "publisher_stopped");
+      clearUnavailableGeneration(active);
     }
     if (connection) connection.subscribed = false;
   }
@@ -217,5 +275,5 @@ export function createAudioRelay() {
     publisher = null;
   }
 
-  return { register, markJoined, handleControl, handleBinary, disconnect, close };
+  return { register, markJoined, handleControl, handleBinary, reconcileRecipients, disconnect, close };
 }

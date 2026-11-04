@@ -182,3 +182,15 @@ Phaser4.2.1實際WebGL／原創16×20像素人物、server權威16×10位置、�
 初期fixture/語法與首輪browser將合法移房成員誤分類的測試失敗已保留；root窄修script後只重跑受影響browser及語法。代表紅/綠播放器與隱藏異房地圖已實際查看，長名重疊屬POC呈現限制。無新依賴／codec變更；SOL-002/003/008、操作與協作文件同步。
 
 本輪桌面合成隔離核心可行；server UUID仍非帳號驗證、房間開放join/switch，正式主講授權/私密准入未實作，因此完整T08/POC-03仍Inconclusive。手機/真mic/真人/品質/容量/雲端不預填通過。程式+紀錄一起本機commit，不push/GitHub/T09/部署，writer與server/browser已停止釋出。
+
+## POC-03-R003／DEC011-A兩類空間收聽規則
+
+2026-11-04配發；進行中，尚未判定。人類恢復並釐清本輪「會議室跟開放空間」；驗會議室全房收聽、開放空間距離過界的server路由與client清理，一個合成publisher，Node26/本機真browser輕量。暫定示範6格，不把參數當產品已確認；門/密碼/多來源/手機/真人尚未驗。
+
+### DEC011-A完成與保存讀回（2026-11-04）
+
+兩類空間metadata/catalogue/snapshot與UI明確化；開放空間依server權威Euclidean距離（示範6格含邊界）、會議室全房語音。receiver/publisher移動reconcile公告與binary gate，超界清decoder/timeline/worklet、保留手勢收聽意願，重入恢復。30核心/production build/typecheck通過，最終三Firefox合成短流程近端可render、遠端0bytes/移入6格播放/移出7格清buffer與300ms0新增、publisher移動、會議室9格仍播放可行，page/socket errors空。
+
+首輪主流程通過但關閉後raw尾端各8筆接收包缺來源trace；root獨立讀回揭露，原始資料保存在[R003 first-attempt](evidence/POC-03-R003/first-attempt/)。只窄修script先停發布/等ACK與穩定後再核對，重跑受影響browser/語法成功：source127、near127/far43全部LTA1 hash匹配、cap未達；未重跑無關30測試。R003含實際位置/政策/計數、原始control/hash、兩圖及source指紋，root代表圖實際查看/JSON讀回完成。
+
+桌面合成兩類空間核心可行，6格不是產品定案，無多人混音/音量漸變/門/密碼或正式帳號權限；手機/真人/影音共存/品質/容量/部署仍未知，完整POC-03不判通過。SOL-002/003/004/008與需求/操作/協作同步，上次DEC-011未commit文件與本步程式+紀錄一起本機commit；無新依賴，不push/遠端票/T09/門禁/部署，server/browser與writer已停止釋出。

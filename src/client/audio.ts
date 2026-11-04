@@ -651,12 +651,24 @@ export class AudioController {
       }
       return;
     }
+    if (message.type === "audio.unavailable") {
+      if (message.reason === "out_of_range" && this.listenerActive) {
+        this.set({ listenerMessage: "超出目前示範收聽範圍；收聽仍保持啟用，靠近後會自動恢復。" });
+      }
+      return;
+    }
     if (message.type === "audio.streamEnded") {
       if (Number(message.generation) === this.announcedStreamGeneration) {
         this.announcedStreamGeneration = null;
         this.announcedStreamClockId = null;
         this.stopDecoder();
-        this.set({ listenerMessage: "發布者已停止；播放仍保持啟動並等待下一次發布。", queuedSamples: 0, renderRms: 0 });
+        this.set({
+          listenerMessage: message.reason === "out_of_range"
+            ? "已超出目前示範收聽範圍；收聽仍保持啟用，靠近後會自動恢復。"
+            : "發布者已停止；播放仍保持啟動並等待下一次發布。",
+          queuedSamples: 0,
+          renderRms: 0,
+        });
       }
       return;
     }

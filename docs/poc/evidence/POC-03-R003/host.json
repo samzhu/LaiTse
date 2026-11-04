@@ -1,0 +1,7 @@
+{
+  "osVersion": "27.2",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "baselineCommit": "d83433b81b8c3d0270d131208c49424096c9c8c6",
+  "scope": "one local app, synthetic desktop audio; two spatial audio policies; phone/hardware/human hearing deferred"
+}

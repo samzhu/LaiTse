@@ -1,0 +1,74 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T03:13:21.537390+00:00",
+    "finishedAt": "2026-11-04T03:13:22.903733+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=15000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T03:13:22.904539+00:00",
+    "finishedAt": "2026-11-04T03:13:23.702403+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/space-policy-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T03:13:23.702784+00:00",
+    "finishedAt": "2026-11-04T03:13:23.743427+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "space-policy-smoke",
+    "command": [
+      "node",
+      "scripts/space-policy-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T03:13:23.866182+00:00",
+    "finishedAt": "2026-11-04T03:13:35.026276+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax-final",
+    "command": [
+      "node",
+      "--check",
+      "scripts/space-policy-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T03:14:49.988224+00:00",
+    "finishedAt": "2026-11-04T03:14:50.029086+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "space-policy-smoke-final",
+    "command": [
+      "node",
+      "scripts/space-policy-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T03:14:50.257567+00:00",
+    "finishedAt": "2026-11-04T03:15:01.450760+00:00",
+    "exitCode": 0
+  }
+]

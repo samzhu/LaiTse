@@ -127,9 +127,22 @@ test("space snapshots expose member positions only for the recipient's current r
     const ada = await connect();
     sockets.push(ada);
     const adaJoined = await join(ada, "Ada", "lobby");
-    assert.deepEqual(adaJoined.room.room, { id: "lobby", name: "Local test room" });
+    assert.deepEqual(adaJoined.room.room, {
+      id: "lobby",
+      name: "Open area",
+      kind: "open-area",
+      audioPolicy: "proximity",
+      audioRadiusGridUnits: 6,
+    });
     assert.deepEqual(adaJoined.room.members.map((member) => member.displayName), ["Ada"]);
     assert.deepEqual(adaJoined.space.rooms.map((room) => room.id), ["lobby", "studio"]);
+    assert.deepEqual(
+      adaJoined.space.rooms.map(({ kind, audioPolicy, audioRadiusGridUnits }) => ({ kind, audioPolicy, audioRadiusGridUnits })),
+      [
+        { kind: "open-area", audioPolicy: "proximity", audioRadiusGridUnits: 6 },
+        { kind: "meeting-room", audioPolicy: "room", audioRadiusGridUnits: null },
+      ],
+    );
     assert.equal(adaJoined.space.participantId, player(adaJoined.space, "Ada").id);
 
     const grace = await connect();

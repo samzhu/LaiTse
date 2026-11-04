@@ -1,0 +1,5926 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short three-Firefox space policy smoke: open-area proximity audio, receiver and publisher movement, then meeting-room whole-room audio.",
+  "startedAt": "2026-11-04T03:13:24.056Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "browserProcesses": 3,
+    "clients": [
+      "publisher",
+      "near",
+      "far"
+    ],
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported into isolated Firefox profiles only",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "syntheticSource": "The publisher page replaces getUserMedia() with a generated oscillator routed to MediaStreamDestination. No hardware microphone is used.",
+  "settings": {
+    "openAreaRadiusGridUnits": 6,
+    "meaning": "provisional demonstration setting only; not a product decision",
+    "boundary": "inclusive Euclidean distance in authoritative grid units"
+  },
+  "clients": {
+    "publisher": {
+      "sockets": 1,
+      "latestSpaceSnapshot": {
+        "seq": 19,
+        "currentRoomId": "studio",
+        "roomKind": "meeting-room",
+        "audioPolicy": "room",
+        "audioRadiusGridUnits": null,
+        "players": [
+          {
+            "displayName": "Policy speaker",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "displayName": "Near listener",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "displayName": "Far listener",
+            "x": 11,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793762008637,
+          "direction": "sent",
+          "type": "join"
+        },
+        {
+          "at": 1793762008638,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762008638,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "lobby",
+            "name": "Open area",
+            "kind": "open-area",
+            "audioPolicy": "proximity",
+            "audioRadiusGridUnits": 6
+          }
+        },
+        {
+          "at": 1793762008638,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 1,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 1,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009036,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762009039,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 2,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 2,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009460,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762009461,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 3,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 3,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009596,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 4,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 4,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009830,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 5,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 5,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010044,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 6,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 6,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010604,
+          "direction": "sent",
+          "type": "audio.start"
+        },
+        {
+          "at": 1793762010604,
+          "direction": "received",
+          "type": "audio.started",
+          "generation": 1
+        },
+        {
+          "at": 1793762011171,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 7,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 7,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011386,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 8,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 8,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011603,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 9,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 9,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011838,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 10,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 10,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012362,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 11,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 11,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012579,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762012580,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 12,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 12,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012795,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762012796,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 13,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 13,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013032,
+          "direction": "sent",
+          "type": "audio.stop",
+          "generation": 1
+        },
+        {
+          "at": 1793762013032,
+          "direction": "sent",
+          "type": "room.switch"
+        },
+        {
+          "at": 1793762013032,
+          "direction": "received",
+          "type": "audio.stopped",
+          "generation": 1
+        },
+        {
+          "at": 1793762013034,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013035,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "studio",
+            "name": "Meeting room",
+            "kind": "meeting-room",
+            "audioPolicy": "room",
+            "audioRadiusGridUnits": null
+          }
+        },
+        {
+          "at": 1793762013035,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 14,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 14,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013072,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013072,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 15,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 15,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013185,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013186,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 16,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 16,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013256,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 17,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 17,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013470,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 18,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 18,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013686,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 19,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 19,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762014001,
+          "direction": "sent",
+          "type": "audio.start"
+        },
+        {
+          "at": 1793762014001,
+          "direction": "received",
+          "type": "audio.started",
+          "generation": 1
+        }
+      ],
+      "droppedControls": 0,
+      "packets": {
+        "sent": [
+          {
+            "at": 1793762010627,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 102,
+            "sha256": "8e6da89d5858d601421c3ae51d4349dd453e55f547f398f0117fa3fef23a326b"
+          },
+          {
+            "at": 1793762010647,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 96,
+            "sha256": "fa2326d65bf56509f143d4402532d5f6929e48d08f7b624d7ce7473a2449190c"
+          },
+          {
+            "at": 1793762010668,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 96,
+            "sha256": "e83a90dc929b1b3f7f9296fdc1bcb7c7998fcd56b4da850ded3157bc569b6727"
+          },
+          {
+            "at": 1793762010684,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 92,
+            "sha256": "f0d9bd4f503d8083bc77330015a3b7c217b12ad8386c81eeb773a9a4f316b3b8"
+          },
+          {
+            "at": 1793762010706,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 91,
+            "sha256": "5d52c1d22721407f3fed7241c7f071481aef57b2588fe8c115b80dbf0e90edda"
+          },
+          {
+            "at": 1793762010727,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 97,
+            "sha256": "53dac062301e03036dd9c21d035a31bee6e4cf46f2ed6319798b022d066ee8f0"
+          },
+          {
+            "at": 1793762010749,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 94,
+            "sha256": "7db72272660b72fdc3a20fcd742d20c79919165bdcbd5750b3bbc430c219b862"
+          },
+          {
+            "at": 1793762010764,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 91,
+            "sha256": "c83321523903ec840738109aebdd6e3a14ee0d50883897229dea1c792ce84497"
+          },
+          {
+            "at": 1793762010786,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 8,
+            "bytes": 99,
+            "sha256": "b5a47d8155bcfb243404fd260d6a79bef0933cfb27c6c3f058022b567bad32da"
+          },
+          {
+            "at": 1793762010807,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 9,
+            "bytes": 93,
+            "sha256": "bd40c33ffb53bb72d3c7f58c4fe97037fbd7a9f03275830cdceb74e09315c472"
+          },
+          {
+            "at": 1793762010828,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 10,
+            "bytes": 93,
+            "sha256": "7d0bd1e87f5ac9ff17d81afa14e1903babc1391241fbab0fab795352d43078e3"
+          },
+          {
+            "at": 1793762010844,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 11,
+            "bytes": 89,
+            "sha256": "bcb167910d5ad796d2ca79ea5a27fc1e7d1b2b0a6804dd0fe38e2a579697ab03"
+          },
+          {
+            "at": 1793762010865,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 12,
+            "bytes": 95,
+            "sha256": "e0f0caeb20bf7f1bbc10961da0fc17a6ae90f853f3d04f621637bb5b47d51778"
+          },
+          {
+            "at": 1793762010887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 13,
+            "bytes": 93,
+            "sha256": "45640347899e10c11b2b545722bfb2cf735fe93c5667cc79334784078f3d4405"
+          },
+          {
+            "at": 1793762010909,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 14,
+            "bytes": 90,
+            "sha256": "15cb32c27191484eabe872b6b27551f78c06ac1e7a1b52daf9486e27ce65a23e"
+          },
+          {
+            "at": 1793762010924,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 15,
+            "bytes": 99,
+            "sha256": "55447de27effbc2cef9da47242f1debc37d9ab8ffb773e61088841274770a4b4"
+          },
+          {
+            "at": 1793762010947,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 16,
+            "bytes": 95,
+            "sha256": "7703448c91f0155422a508d37116466994afe6cd4027ad23a78a39fdbbf134fe"
+          },
+          {
+            "at": 1793762010967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 17,
+            "bytes": 133,
+            "sha256": "2e662e6e4f2db6d556dfac9f3d327abf518170a6cb9d63151a0e562121c0a64f"
+          },
+          {
+            "at": 1793762010988,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 18,
+            "bytes": 124,
+            "sha256": "79df65bd55aa494acda4eed6fa0601c17a7b3dfeef42d5f3d09f8a472ae3ba29"
+          },
+          {
+            "at": 1793762011004,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 19,
+            "bytes": 124,
+            "sha256": "c79cd02b69448873ad6ece81295b8dea8c28d0e9381a87fb9fe8e437a7c32f4d"
+          },
+          {
+            "at": 1793762011026,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 20,
+            "bytes": 124,
+            "sha256": "d8053a7c7db4e0101880948b844cbd2b610ea1fa75c935d3bb1d5318832f9b32"
+          },
+          {
+            "at": 1793762011046,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 21,
+            "bytes": 125,
+            "sha256": "d700ba188363562dcc166ec0e0d56b13224c040d6566b8d19bcd9c6f247fbfac"
+          },
+          {
+            "at": 1793762011068,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 22,
+            "bytes": 125,
+            "sha256": "6cdda6f8e4e215d0a2158b980916d64b6d0fdf154f66e596dfc952becbd9277f"
+          },
+          {
+            "at": 1793762011086,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 23,
+            "bytes": 127,
+            "sha256": "dbc8739d2a80ca74070c372388f23d9c8a57fb63906ed6cb01fd9542b07895e6"
+          },
+          {
+            "at": 1793762011105,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 24,
+            "bytes": 127,
+            "sha256": "4038325951e5d477195483a9a103a9d3eaf6b059efc4f0425d6ea1609aa3c9d0"
+          },
+          {
+            "at": 1793762011127,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 25,
+            "bytes": 129,
+            "sha256": "bf41c84216e3437aba011eaad04322f5f1f029fdf2d3911997448cfb301cf149"
+          },
+          {
+            "at": 1793762011148,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 26,
+            "bytes": 128,
+            "sha256": "28766904ee1b6caf92830973cab0616d0b1f3e0950619c78e5526f6f907c5986"
+          },
+          {
+            "at": 1793762011164,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 27,
+            "bytes": 130,
+            "sha256": "be043f2c7f56f5c4f1792d8931758ce09bf09c1870630788d3cdee72aa069008"
+          },
+          {
+            "at": 1793762011186,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 28,
+            "bytes": 130,
+            "sha256": "4fbfa1e1fd81c1508df4b07d0295793bef5cdbd7b2d57167f748c86acf357934"
+          },
+          {
+            "at": 1793762011207,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 29,
+            "bytes": 132,
+            "sha256": "3127c4d0d7b4f2d2dc4cb87a1e79f7aeab8258f4b048f0fa37646ce4d4f00b5c"
+          },
+          {
+            "at": 1793762011228,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 30,
+            "bytes": 134,
+            "sha256": "ac22fcfe42be08eec3c5508ebf1c313603569174fefe1feea2cdafef870a7993"
+          },
+          {
+            "at": 1793762011244,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 31,
+            "bytes": 135,
+            "sha256": "fb53587e5bf5a062abd8b10f65b49c5da71ced22a0b93933849cc51fc879fc9a"
+          },
+          {
+            "at": 1793762011265,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 32,
+            "bytes": 137,
+            "sha256": "c60e5d3ac1fe5266c7c1cc5b5d728ce1cf72ac40829e858835a2e426da02f103"
+          },
+          {
+            "at": 1793762011287,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 33,
+            "bytes": 139,
+            "sha256": "9982407566be79783bf9ead9de9a4599e2843979a3acd65fe0090975f9d6f5b2"
+          },
+          {
+            "at": 1793762011309,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 34,
+            "bytes": 142,
+            "sha256": "b3108a047cce6977c7f26d7ef4cd063fed18acb8f62e78fa7b302e0d493f9bb2"
+          },
+          {
+            "at": 1793762011324,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 35,
+            "bytes": 142,
+            "sha256": "1501f58fc51bcc387b0bdb68c9e734b6d7c1a7181f2c6c56871c9d989b802a4d"
+          },
+          {
+            "at": 1793762011345,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 36,
+            "bytes": 142,
+            "sha256": "1a551b3ffde1d9f2b845a54d5b6d4c82873400820f1360a37f4d103fe9869e21"
+          },
+          {
+            "at": 1793762011368,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 37,
+            "bytes": 141,
+            "sha256": "1d907a9413aa2a0172b24505c83a531e6004021f43ad5db53a3b021885c8fcc1"
+          },
+          {
+            "at": 1793762011388,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 38,
+            "bytes": 142,
+            "sha256": "e064bec655b3a7bde33fa5eee1ab218f81b2918a346a4e97407e63b51b8a766c"
+          },
+          {
+            "at": 1793762011404,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 39,
+            "bytes": 142,
+            "sha256": "46cb3a21ee4d4c09ee4424dddf242746a0b9db53eb56154bae07240924c7cedc"
+          },
+          {
+            "at": 1793762011426,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 40,
+            "bytes": 143,
+            "sha256": "65405fd452b81aa657e30e09006a321f8f99b12bd0ac707d86cc658e07b30ae4"
+          },
+          {
+            "at": 1793762011446,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 41,
+            "bytes": 142,
+            "sha256": "1426dd8f143efa0c46b26c589a7c2d7ce1512f0bb7ee561cf13bedc61052fdf1"
+          },
+          {
+            "at": 1793762011468,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 42,
+            "bytes": 143,
+            "sha256": "dc514fc50198e31ee06bc52a47cbbf42e2f8143aa38c9825a493e09fa31c5d54"
+          },
+          {
+            "at": 1793762011485,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 43,
+            "bytes": 143,
+            "sha256": "ecbea672739aa435951bf25541909331607a98b4ea5653a2540db5141fdcd19f"
+          },
+          {
+            "at": 1793762011505,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 44,
+            "bytes": 144,
+            "sha256": "efcd92f63ca11944a3581899b201265eb6e517caa1b1d26be677eadb5fc41d92"
+          },
+          {
+            "at": 1793762011526,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 45,
+            "bytes": 144,
+            "sha256": "27a784050c31a0bc65ab5f36a5783910eb42186ab34f10683d27ec300f54a1f8"
+          },
+          {
+            "at": 1793762011548,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 46,
+            "bytes": 144,
+            "sha256": "678382fdf132190f1921348e456b26356d1662348f3f2c689171c001f902ea99"
+          },
+          {
+            "at": 1793762011564,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 47,
+            "bytes": 145,
+            "sha256": "eea77f697754018cbcb37fd12520c51ce81525e433d0ec5217e2b779bdd6f8a1"
+          },
+          {
+            "at": 1793762011585,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 48,
+            "bytes": 146,
+            "sha256": "1f0b284b3c3e013b344888d9a4bc5b3af77f64715a989899f937a783e3e21d23"
+          },
+          {
+            "at": 1793762011606,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 49,
+            "bytes": 146,
+            "sha256": "35c9cac41701008924c928ce2bec5775cf94926c3bfb3c381e25e52c3cc5c2df"
+          },
+          {
+            "at": 1793762011628,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 50,
+            "bytes": 146,
+            "sha256": "062cb7c53313f76353f3c2a1f61b0bd689345c21bd51d85cf9147956aaf812f8"
+          },
+          {
+            "at": 1793762011644,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 51,
+            "bytes": 145,
+            "sha256": "ac5c14f336f089c9b9973e5e2d0505a806b03d24b3d0150b5e8b9245e1d2a9ec"
+          },
+          {
+            "at": 1793762011665,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 52,
+            "bytes": 145,
+            "sha256": "6ca39127d7b5019c3965265d27b8ef4521f36880db8d2cce37f3a90bf6b91dc4"
+          },
+          {
+            "at": 1793762011686,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 53,
+            "bytes": 145,
+            "sha256": "8ec6cc2d1b8a7b3b163c29013d47f5c250030008e43ee724061bf3273e77ca14"
+          },
+          {
+            "at": 1793762011708,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 54,
+            "bytes": 145,
+            "sha256": "1867efde94807ca07b1b4d9341be2fcea585f231456c1cfdfbabc3d25f9d8a7d"
+          },
+          {
+            "at": 1793762011724,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 55,
+            "bytes": 144,
+            "sha256": "f8537b6be389cb479b9002a37ef11d525177b6eb153da52163cc8ea6a52dcf30"
+          },
+          {
+            "at": 1793762011745,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 56,
+            "bytes": 144,
+            "sha256": "7e4a087d114cff1f90b2ed7aa605c6b712aeef074784ca150aedaa8e80835c6e"
+          },
+          {
+            "at": 1793762011768,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 57,
+            "bytes": 143,
+            "sha256": "5de85e2ae0541e283fe8c30fd0116b7d020e31536e979ca33dc4c8eb01242cd5"
+          },
+          {
+            "at": 1793762011788,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 58,
+            "bytes": 143,
+            "sha256": "20805573c627f6c10c3840a810c8b168ae25e5dd868ec28ff61ff7a03b788136"
+          },
+          {
+            "at": 1793762011804,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 59,
+            "bytes": 142,
+            "sha256": "5832f99b00295d3f654e81f5d90cbd07bc557bbca20f9741583b6fa2ebfb7f81"
+          },
+          {
+            "at": 1793762011826,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 60,
+            "bytes": 142,
+            "sha256": "bf92c9210a02920816762b15ec3f75a6ec65624a55946be21fab995df72bfb59"
+          },
+          {
+            "at": 1793762011846,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 61,
+            "bytes": 142,
+            "sha256": "be672faa17c08f7e5ab57b1f572dacf12201eff140d12d954882505b6969cd28"
+          },
+          {
+            "at": 1793762011869,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 62,
+            "bytes": 141,
+            "sha256": "4d42f6b6cc5cddb05daddfeb133c360a31f1abba1596066641793ae9653e82e1"
+          },
+          {
+            "at": 1793762011885,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 63,
+            "bytes": 142,
+            "sha256": "2ebda2baae0f74d287d5cff8afaeabf5c0c4bdb87342776efddba14c5bc3a652"
+          },
+          {
+            "at": 1793762011905,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 64,
+            "bytes": 142,
+            "sha256": "2cb8cb28550c3962e632de6962399e80a32b7f5b99b8d5af749e1f283af8d936"
+          },
+          {
+            "at": 1793762011927,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 65,
+            "bytes": 143,
+            "sha256": "55ea8b266b8dbafeb03dc9beeb862430924890618b03ff783484e768385ae0aa"
+          },
+          {
+            "at": 1793762011948,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 66,
+            "bytes": 142,
+            "sha256": "701c454328cb4c6f4be93b1bd256c99688e6327e5e3637e05a68f1841ec64b45"
+          },
+          {
+            "at": 1793762011964,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 67,
+            "bytes": 143,
+            "sha256": "ac0dce7a19a62382c22b94171b377163f75ddf703db17cdd7f27d85ab8c68bd0"
+          },
+          {
+            "at": 1793762011985,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 68,
+            "bytes": 143,
+            "sha256": "cf3a2dbb5c42525fae44bccd2148d8153fb235a8224c8ddaf96e8c6d038adec6"
+          },
+          {
+            "at": 1793762012006,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 69,
+            "bytes": 144,
+            "sha256": "ef5c377d902950ff976ece6243fcd732a87065726c9f8bfd8a36c1b17f97898c"
+          },
+          {
+            "at": 1793762012028,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 70,
+            "bytes": 144,
+            "sha256": "73c0e5333766f9375eec796c2aff48f0d999a725602907bba2f13535a95b2222"
+          },
+          {
+            "at": 1793762012044,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 71,
+            "bytes": 144,
+            "sha256": "7a14e7a7b81f75a546382bb08efde7582374f645d1c21a64beb49031b650f2a9"
+          },
+          {
+            "at": 1793762012065,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 72,
+            "bytes": 145,
+            "sha256": "3b0454dd07c2d362a2616db0440d6bbb050527dc8346df244ea60ef866317e85"
+          },
+          {
+            "at": 1793762012086,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 73,
+            "bytes": 146,
+            "sha256": "62b3a7b46e4dcda3e40fd7bb2422a0178b0f5cf6e3783f2c1984b51b3426f0ad"
+          },
+          {
+            "at": 1793762012109,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 74,
+            "bytes": 146,
+            "sha256": "6e30ddf3d54d66a814b2d5ec5e8f956a0492ff6e68c30fad8c14217d2836b042"
+          },
+          {
+            "at": 1793762012124,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 75,
+            "bytes": 146,
+            "sha256": "3f9faaffced78e278e15e06939bc835cad3cf34d78372e14202b1953223ed0aa"
+          },
+          {
+            "at": 1793762012146,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 76,
+            "bytes": 145,
+            "sha256": "ef81ffd48413ae7af695176ef68ee3509c5139c46a5594dc3f0b141d58ab0818"
+          },
+          {
+            "at": 1793762012168,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 77,
+            "bytes": 146,
+            "sha256": "134dd42af34d2d8329cda92387a7887e617540ea7281aecee5ba1bf71e08271a"
+          },
+          {
+            "at": 1793762012188,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 78,
+            "bytes": 145,
+            "sha256": "3b1ca23c174470f1244503ce7c16e7536f29aa78dbea9dccf12740b3f44abdb3"
+          },
+          {
+            "at": 1793762012204,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 79,
+            "bytes": 145,
+            "sha256": "d0340b1026dc9ed065ea57d2bcb0664a4b31bda9af9768c74ca8034cb74e7561"
+          },
+          {
+            "at": 1793762012227,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 80,
+            "bytes": 144,
+            "sha256": "a5334d2605f9e0a53c8c9007cea6523a561c94aafdaefd90fb95600387053952"
+          },
+          {
+            "at": 1793762012246,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 81,
+            "bytes": 144,
+            "sha256": "217402d6225104efd7338b3f465b671b39e18d830b1859136ada9cfc1f7c9daf"
+          },
+          {
+            "at": 1793762012268,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 82,
+            "bytes": 143,
+            "sha256": "0dc6f4239f38f0ca0fa07b6113d4b3770ea2df2a60cf49dc0945d34c272471a3"
+          },
+          {
+            "at": 1793762012285,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 83,
+            "bytes": 143,
+            "sha256": "e40265a6a9b7ed07c9ea452dcb6a426b01a7d6f117ae3c140b9a9a96a63ed59f"
+          },
+          {
+            "at": 1793762012305,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 84,
+            "bytes": 142,
+            "sha256": "cd4fc5e94cee63db4807d32217966b1156ad394b0895bf61800158a2248a8b0a"
+          },
+          {
+            "at": 1793762012327,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 85,
+            "bytes": 141,
+            "sha256": "122275ca671d3da6d3e7c645446c04374fe2d2c4384e1382998ca709c8cfb00a"
+          },
+          {
+            "at": 1793762012348,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 86,
+            "bytes": 142,
+            "sha256": "5fab65994b9f1277d514123ee87f75eeebc97e22843f9bf786ce56e9a38fec90"
+          },
+          {
+            "at": 1793762012364,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 87,
+            "bytes": 141,
+            "sha256": "4b906a9931635dd90fde629c3d005b2e96ccfbd934c0401a58a09c8067bc3c3b"
+          },
+          {
+            "at": 1793762012385,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 88,
+            "bytes": 142,
+            "sha256": "aae9349a846d2b5e4317da1662baccde0a19f4f923ecb1837b5c3b2246731e81"
+          },
+          {
+            "at": 1793762012406,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 89,
+            "bytes": 142,
+            "sha256": "85e5113d339e18a3fdca89c6ed7b360092eaffd0dc442e5accc4143490705b5b"
+          },
+          {
+            "at": 1793762012428,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 90,
+            "bytes": 143,
+            "sha256": "f22d792506b39e33157d4ff7e6c345b7f87bce46e602806d05636c0409edee73"
+          },
+          {
+            "at": 1793762012444,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 91,
+            "bytes": 142,
+            "sha256": "ee6dcff304b37a2fde62656ce088d652e6992544e24bf3cf380edaa64c36a0fc"
+          },
+          {
+            "at": 1793762012465,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 92,
+            "bytes": 143,
+            "sha256": "a344124fdb73a2d5fd701704fa3f85d1b043f95541dea186289cdb306f62765c"
+          },
+          {
+            "at": 1793762012486,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 93,
+            "bytes": 143,
+            "sha256": "d99a42764340a6472dad10c56e3af4ba73f54be65988886415b2429d0a3f4b62"
+          },
+          {
+            "at": 1793762012509,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 94,
+            "bytes": 144,
+            "sha256": "e1e2af74a53546fe21a9209a726c800f06d239574a5d9ae387cc13072aeb539a"
+          },
+          {
+            "at": 1793762012524,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 95,
+            "bytes": 144,
+            "sha256": "79c3f4f4a3c98036911cbf11ffe8d50323d18f6edbb38468eb83464d4e1ca08f"
+          },
+          {
+            "at": 1793762012545,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 96,
+            "bytes": 144,
+            "sha256": "f44bb58150c9723e82a69410a31e438fedda134050a1cb86e89649542255fb27"
+          },
+          {
+            "at": 1793762012568,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 97,
+            "bytes": 145,
+            "sha256": "df289d267ef06e87b96131ab7a1a0b1f9402f7457748413853f11a9d0c7ad2b7"
+          },
+          {
+            "at": 1793762012588,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 98,
+            "bytes": 146,
+            "sha256": "a5fef0c05a09aa8a9fdff760822e1abcda797f0ba8f156821d66e972725defa1"
+          },
+          {
+            "at": 1793762012604,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 99,
+            "bytes": 146,
+            "sha256": "054987b352f7b5844a9c70848f0dd6f89a6c3747e12eadd32498ae6adb895367"
+          },
+          {
+            "at": 1793762012625,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 100,
+            "bytes": 146,
+            "sha256": "f32d851f14f6d1a04bf8d40430e943230d8d9e7e68b4ffb52ce6371db85f64d7"
+          },
+          {
+            "at": 1793762012646,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 101,
+            "bytes": 145,
+            "sha256": "7d3c142f2bd9d961d7b02443502e45ab1bd26019a1cc85cfe645f933180ec3d9"
+          },
+          {
+            "at": 1793762012668,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 102,
+            "bytes": 145,
+            "sha256": "2abfc01f4e0242e22928fbc7717b3c37838cd660eb66270bae597d2745b7dbf6"
+          },
+          {
+            "at": 1793762012684,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 103,
+            "bytes": 145,
+            "sha256": "0ef30c2a1a9f1f91ab804082f8d9fb899691859fe75efbbfaef6df45e48e7e29"
+          },
+          {
+            "at": 1793762012705,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 104,
+            "bytes": 145,
+            "sha256": "82c81e39ee87ac606685d11fd4d3ec365cd7aec3f64d8e542aebb99a744cbb04"
+          },
+          {
+            "at": 1793762012727,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 105,
+            "bytes": 144,
+            "sha256": "6b74e16079529f02474acbafb47b9a834236c898f44fb4b431c7d33bd29681c0"
+          },
+          {
+            "at": 1793762012748,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 106,
+            "bytes": 144,
+            "sha256": "62b6dca1004a3116099c956649bbc0eaefd744df7b1094f7bb915bb2c8a3de2b"
+          },
+          {
+            "at": 1793762012764,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 107,
+            "bytes": 143,
+            "sha256": "63591a408dfc9729e861037b3c2305d696932b71f3a1153a5b7708f338db463b"
+          },
+          {
+            "at": 1793762012786,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 108,
+            "bytes": 143,
+            "sha256": "27bfed050e64578c74b28a1d733f7a7d5a6631b95bd0c6b42fce80153eed7891"
+          },
+          {
+            "at": 1793762012806,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 109,
+            "bytes": 142,
+            "sha256": "34bd85a0e82000143a554b83894559babc43b955bbac2e81d43cf8f6572665c4"
+          },
+          {
+            "at": 1793762012829,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 110,
+            "bytes": 141,
+            "sha256": "e19726a5cd1926eee6d7d1c09ea85a504fe8732828318657ede4acf75697c6d1"
+          },
+          {
+            "at": 1793762012844,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 111,
+            "bytes": 142,
+            "sha256": "40e9b2a40ce5562334711aad4f9fd148054628d678ffdeb7322df321ca37ba53"
+          },
+          {
+            "at": 1793762012865,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 112,
+            "bytes": 141,
+            "sha256": "be049e2bb9d8dfc81b8d80991de632ed69e791b32dbde2037c693f585b04cd96"
+          },
+          {
+            "at": 1793762012887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 113,
+            "bytes": 142,
+            "sha256": "25191a291a6f663825148ca3e05f71b2cf667a9057d9ed9e0cfe2e4c661a58cf"
+          },
+          {
+            "at": 1793762012909,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 114,
+            "bytes": 142,
+            "sha256": "f49784fb1431063a40bfbf1df555734bd04d9d702368cc43948e43bf9877a970"
+          },
+          {
+            "at": 1793762012924,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 115,
+            "bytes": 143,
+            "sha256": "c861b0068b013368723045ebca2bdb2f3149065b00d057b4c193dc1d418d3a34"
+          },
+          {
+            "at": 1793762012945,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 116,
+            "bytes": 142,
+            "sha256": "3bc2036c84eb98a1810568bdff598db52134dcb298d6d51b26426129f2d35a8a"
+          },
+          {
+            "at": 1793762012967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 117,
+            "bytes": 143,
+            "sha256": "ac59d2e0c02c951576deba802b51d1216c0ebd17e65df66e0e998ddc091c8823"
+          },
+          {
+            "at": 1793762012990,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 118,
+            "bytes": 143,
+            "sha256": "30f3ad3a766e48a91fd8653f8091c6fea0d9292712fc508f766d38713ebd8218"
+          },
+          {
+            "at": 1793762013004,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 119,
+            "bytes": 144,
+            "sha256": "f7fb50814287b470f8b95dc49a34ab8b611f5db1d5a5a5db93e83a78eee63004"
+          },
+          {
+            "at": 1793762013028,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 120,
+            "bytes": 144,
+            "sha256": "7a45b2ab61ee5b09292304b24e576005447cd588fa3531ca795ab41bd2371ea4"
+          },
+          {
+            "at": 1793762014023,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 102,
+            "sha256": "36c8454f7fad07bd1134c9ad8e43abef86fc1ee4c0778a07de54d322470d2da5"
+          },
+          {
+            "at": 1793762014044,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 96,
+            "sha256": "1a1e4f203e139c8e5bcd63d3caa04af3675d3ae9648363d0a50ffe45fea55bdc"
+          },
+          {
+            "at": 1793762014065,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 96,
+            "sha256": "157cf372bc0b555fae966a27072d64e0286ec951deba8150b72f94a4185e2fea"
+          },
+          {
+            "at": 1793762014081,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 92,
+            "sha256": "b1131037e77ce74b5d250a721489396d51a5b305b0578cb4aa744d6554aa0238"
+          },
+          {
+            "at": 1793762014103,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 91,
+            "sha256": "9d19b8650114d0b0458fc11f55ec7d245f82d067e183dd9859d0de5a0f0a3da8"
+          },
+          {
+            "at": 1793762014124,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 97,
+            "sha256": "3fb171c1417bd745611d9a486dd5a51a20a86551a6f577c733a5fa40137b5d5a"
+          },
+          {
+            "at": 1793762014145,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 94,
+            "sha256": "ee883b11472bc1434254b457c3aa954ff329b3ceeeeec365d89f83552de77ef0"
+          },
+          {
+            "at": 1793762014161,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 91,
+            "sha256": "281baa828e2318d4653164f518fff1b8f9c38e1d50e77c680ca6079c04e0b909"
+          }
+        ],
+        "received": []
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    },
+    "near": {
+      "sockets": 1,
+      "latestSpaceSnapshot": {
+        "seq": 20,
+        "currentRoomId": "studio",
+        "roomKind": "meeting-room",
+        "audioPolicy": "room",
+        "audioRadiusGridUnits": null,
+        "players": [
+          {
+            "displayName": "Near listener",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "displayName": "Far listener",
+            "x": 11,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793762009036,
+          "direction": "sent",
+          "type": "join"
+        },
+        {
+          "at": 1793762009036,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762009036,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "lobby",
+            "name": "Open area",
+            "kind": "open-area",
+            "audioPolicy": "proximity",
+            "audioRadiusGridUnits": 6
+          }
+        },
+        {
+          "at": 1793762009036,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 2,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 2,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009460,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762009463,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 3,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 3,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009596,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 4,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 4,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009830,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 5,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 5,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010044,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 6,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 6,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010434,
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "at": 1793762010434,
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "at": 1793762010604,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762011171,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 7,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 7,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011386,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 8,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 8,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011603,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 9,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 9,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011838,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 10,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 10,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012362,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 11,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 11,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012580,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 12,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 12,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012796,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 13,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 13,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013033,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "publisher_stopped"
+        },
+        {
+          "at": 1793762013034,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013034,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 14,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 14,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013071,
+          "direction": "sent",
+          "type": "audio.unsubscribe"
+        },
+        {
+          "at": 1793762013072,
+          "direction": "sent",
+          "type": "room.switch"
+        },
+        {
+          "at": 1793762013073,
+          "direction": "received",
+          "type": "audio.unsubscribed"
+        },
+        {
+          "at": 1793762013073,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013073,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "studio",
+            "name": "Meeting room",
+            "kind": "meeting-room",
+            "audioPolicy": "room",
+            "audioRadiusGridUnits": null
+          }
+        },
+        {
+          "at": 1793762013073,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 15,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 15,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013181,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013181,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 16,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 16,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013256,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 17,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 17,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013470,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 18,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 18,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013686,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 19,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 19,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013940,
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "at": 1793762013940,
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "at": 1793762014002,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762014355,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "publisher_stopped"
+        },
+        {
+          "at": 1793762014356,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762014356,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 20,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 20,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        }
+      ],
+      "droppedControls": 0,
+      "packets": {
+        "sent": [],
+        "received": [
+          {
+            "at": 1793762010627,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 102,
+            "sha256": "8e6da89d5858d601421c3ae51d4349dd453e55f547f398f0117fa3fef23a326b"
+          },
+          {
+            "at": 1793762010647,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 96,
+            "sha256": "fa2326d65bf56509f143d4402532d5f6929e48d08f7b624d7ce7473a2449190c"
+          },
+          {
+            "at": 1793762010753,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 96,
+            "sha256": "e83a90dc929b1b3f7f9296fdc1bcb7c7998fcd56b4da850ded3157bc569b6727"
+          },
+          {
+            "at": 1793762010780,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 92,
+            "sha256": "f0d9bd4f503d8083bc77330015a3b7c217b12ad8386c81eeb773a9a4f316b3b8"
+          },
+          {
+            "at": 1793762010780,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 91,
+            "sha256": "5d52c1d22721407f3fed7241c7f071481aef57b2588fe8c115b80dbf0e90edda"
+          },
+          {
+            "at": 1793762010780,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 97,
+            "sha256": "53dac062301e03036dd9c21d035a31bee6e4cf46f2ed6319798b022d066ee8f0"
+          },
+          {
+            "at": 1793762010780,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 94,
+            "sha256": "7db72272660b72fdc3a20fcd742d20c79919165bdcbd5750b3bbc430c219b862"
+          },
+          {
+            "at": 1793762010780,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 91,
+            "sha256": "c83321523903ec840738109aebdd6e3a14ee0d50883897229dea1c792ce84497"
+          },
+          {
+            "at": 1793762010786,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 8,
+            "bytes": 99,
+            "sha256": "b5a47d8155bcfb243404fd260d6a79bef0933cfb27c6c3f058022b567bad32da"
+          },
+          {
+            "at": 1793762010807,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 9,
+            "bytes": 93,
+            "sha256": "bd40c33ffb53bb72d3c7f58c4fe97037fbd7a9f03275830cdceb74e09315c472"
+          },
+          {
+            "at": 1793762010828,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 10,
+            "bytes": 93,
+            "sha256": "7d0bd1e87f5ac9ff17d81afa14e1903babc1391241fbab0fab795352d43078e3"
+          },
+          {
+            "at": 1793762010844,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 11,
+            "bytes": 89,
+            "sha256": "bcb167910d5ad796d2ca79ea5a27fc1e7d1b2b0a6804dd0fe38e2a579697ab03"
+          },
+          {
+            "at": 1793762010865,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 12,
+            "bytes": 95,
+            "sha256": "e0f0caeb20bf7f1bbc10961da0fc17a6ae90f853f3d04f621637bb5b47d51778"
+          },
+          {
+            "at": 1793762010887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 13,
+            "bytes": 93,
+            "sha256": "45640347899e10c11b2b545722bfb2cf735fe93c5667cc79334784078f3d4405"
+          },
+          {
+            "at": 1793762010909,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 14,
+            "bytes": 90,
+            "sha256": "15cb32c27191484eabe872b6b27551f78c06ac1e7a1b52daf9486e27ce65a23e"
+          },
+          {
+            "at": 1793762010924,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 15,
+            "bytes": 99,
+            "sha256": "55447de27effbc2cef9da47242f1debc37d9ab8ffb773e61088841274770a4b4"
+          },
+          {
+            "at": 1793762010947,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 16,
+            "bytes": 95,
+            "sha256": "7703448c91f0155422a508d37116466994afe6cd4027ad23a78a39fdbbf134fe"
+          },
+          {
+            "at": 1793762010967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 17,
+            "bytes": 133,
+            "sha256": "2e662e6e4f2db6d556dfac9f3d327abf518170a6cb9d63151a0e562121c0a64f"
+          },
+          {
+            "at": 1793762010988,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 18,
+            "bytes": 124,
+            "sha256": "79df65bd55aa494acda4eed6fa0601c17a7b3dfeef42d5f3d09f8a472ae3ba29"
+          },
+          {
+            "at": 1793762011004,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 19,
+            "bytes": 124,
+            "sha256": "c79cd02b69448873ad6ece81295b8dea8c28d0e9381a87fb9fe8e437a7c32f4d"
+          },
+          {
+            "at": 1793762011025,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 20,
+            "bytes": 124,
+            "sha256": "d8053a7c7db4e0101880948b844cbd2b610ea1fa75c935d3bb1d5318832f9b32"
+          },
+          {
+            "at": 1793762011047,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 21,
+            "bytes": 125,
+            "sha256": "d700ba188363562dcc166ec0e0d56b13224c040d6566b8d19bcd9c6f247fbfac"
+          },
+          {
+            "at": 1793762011069,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 22,
+            "bytes": 125,
+            "sha256": "6cdda6f8e4e215d0a2158b980916d64b6d0fdf154f66e596dfc952becbd9277f"
+          },
+          {
+            "at": 1793762011086,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 23,
+            "bytes": 127,
+            "sha256": "dbc8739d2a80ca74070c372388f23d9c8a57fb63906ed6cb01fd9542b07895e6"
+          },
+          {
+            "at": 1793762011105,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 24,
+            "bytes": 127,
+            "sha256": "4038325951e5d477195483a9a103a9d3eaf6b059efc4f0425d6ea1609aa3c9d0"
+          },
+          {
+            "at": 1793762011127,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 25,
+            "bytes": 129,
+            "sha256": "bf41c84216e3437aba011eaad04322f5f1f029fdf2d3911997448cfb301cf149"
+          },
+          {
+            "at": 1793762011148,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 26,
+            "bytes": 128,
+            "sha256": "28766904ee1b6caf92830973cab0616d0b1f3e0950619c78e5526f6f907c5986"
+          },
+          {
+            "at": 1793762011164,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 27,
+            "bytes": 130,
+            "sha256": "be043f2c7f56f5c4f1792d8931758ce09bf09c1870630788d3cdee72aa069008"
+          },
+          {
+            "at": 1793762011186,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 28,
+            "bytes": 130,
+            "sha256": "4fbfa1e1fd81c1508df4b07d0295793bef5cdbd7b2d57167f748c86acf357934"
+          },
+          {
+            "at": 1793762011207,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 29,
+            "bytes": 132,
+            "sha256": "3127c4d0d7b4f2d2dc4cb87a1e79f7aeab8258f4b048f0fa37646ce4d4f00b5c"
+          },
+          {
+            "at": 1793762011229,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 30,
+            "bytes": 134,
+            "sha256": "ac22fcfe42be08eec3c5508ebf1c313603569174fefe1feea2cdafef870a7993"
+          },
+          {
+            "at": 1793762011245,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 31,
+            "bytes": 135,
+            "sha256": "fb53587e5bf5a062abd8b10f65b49c5da71ced22a0b93933849cc51fc879fc9a"
+          },
+          {
+            "at": 1793762011265,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 32,
+            "bytes": 137,
+            "sha256": "c60e5d3ac1fe5266c7c1cc5b5d728ce1cf72ac40829e858835a2e426da02f103"
+          },
+          {
+            "at": 1793762011287,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 33,
+            "bytes": 139,
+            "sha256": "9982407566be79783bf9ead9de9a4599e2843979a3acd65fe0090975f9d6f5b2"
+          },
+          {
+            "at": 1793762011309,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 34,
+            "bytes": 142,
+            "sha256": "b3108a047cce6977c7f26d7ef4cd063fed18acb8f62e78fa7b302e0d493f9bb2"
+          },
+          {
+            "at": 1793762011324,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 35,
+            "bytes": 142,
+            "sha256": "1501f58fc51bcc387b0bdb68c9e734b6d7c1a7181f2c6c56871c9d989b802a4d"
+          },
+          {
+            "at": 1793762011345,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 36,
+            "bytes": 142,
+            "sha256": "1a551b3ffde1d9f2b845a54d5b6d4c82873400820f1360a37f4d103fe9869e21"
+          },
+          {
+            "at": 1793762011367,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 37,
+            "bytes": 141,
+            "sha256": "1d907a9413aa2a0172b24505c83a531e6004021f43ad5db53a3b021885c8fcc1"
+          },
+          {
+            "at": 1793762011388,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 38,
+            "bytes": 142,
+            "sha256": "e064bec655b3a7bde33fa5eee1ab218f81b2918a346a4e97407e63b51b8a766c"
+          },
+          {
+            "at": 1793762011404,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 39,
+            "bytes": 142,
+            "sha256": "46cb3a21ee4d4c09ee4424dddf242746a0b9db53eb56154bae07240924c7cedc"
+          },
+          {
+            "at": 1793762011426,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 40,
+            "bytes": 143,
+            "sha256": "65405fd452b81aa657e30e09006a321f8f99b12bd0ac707d86cc658e07b30ae4"
+          },
+          {
+            "at": 1793762011447,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 41,
+            "bytes": 142,
+            "sha256": "1426dd8f143efa0c46b26c589a7c2d7ce1512f0bb7ee561cf13bedc61052fdf1"
+          },
+          {
+            "at": 1793762011469,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 42,
+            "bytes": 143,
+            "sha256": "dc514fc50198e31ee06bc52a47cbbf42e2f8143aa38c9825a493e09fa31c5d54"
+          },
+          {
+            "at": 1793762011485,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 43,
+            "bytes": 143,
+            "sha256": "ecbea672739aa435951bf25541909331607a98b4ea5653a2540db5141fdcd19f"
+          },
+          {
+            "at": 1793762011505,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 44,
+            "bytes": 144,
+            "sha256": "efcd92f63ca11944a3581899b201265eb6e517caa1b1d26be677eadb5fc41d92"
+          },
+          {
+            "at": 1793762011527,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 45,
+            "bytes": 144,
+            "sha256": "27a784050c31a0bc65ab5f36a5783910eb42186ab34f10683d27ec300f54a1f8"
+          },
+          {
+            "at": 1793762011548,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 46,
+            "bytes": 144,
+            "sha256": "678382fdf132190f1921348e456b26356d1662348f3f2c689171c001f902ea99"
+          },
+          {
+            "at": 1793762011564,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 47,
+            "bytes": 145,
+            "sha256": "eea77f697754018cbcb37fd12520c51ce81525e433d0ec5217e2b779bdd6f8a1"
+          },
+          {
+            "at": 1793762011587,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 48,
+            "bytes": 146,
+            "sha256": "1f0b284b3c3e013b344888d9a4bc5b3af77f64715a989899f937a783e3e21d23"
+          },
+          {
+            "at": 1793762011607,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 49,
+            "bytes": 146,
+            "sha256": "35c9cac41701008924c928ce2bec5775cf94926c3bfb3c381e25e52c3cc5c2df"
+          },
+          {
+            "at": 1793762011628,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 50,
+            "bytes": 146,
+            "sha256": "062cb7c53313f76353f3c2a1f61b0bd689345c21bd51d85cf9147956aaf812f8"
+          },
+          {
+            "at": 1793762011644,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 51,
+            "bytes": 145,
+            "sha256": "ac5c14f336f089c9b9973e5e2d0505a806b03d24b3d0150b5e8b9245e1d2a9ec"
+          },
+          {
+            "at": 1793762011665,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 52,
+            "bytes": 145,
+            "sha256": "6ca39127d7b5019c3965265d27b8ef4521f36880db8d2cce37f3a90bf6b91dc4"
+          },
+          {
+            "at": 1793762011687,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 53,
+            "bytes": 145,
+            "sha256": "8ec6cc2d1b8a7b3b163c29013d47f5c250030008e43ee724061bf3273e77ca14"
+          },
+          {
+            "at": 1793762011708,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 54,
+            "bytes": 145,
+            "sha256": "1867efde94807ca07b1b4d9341be2fcea585f231456c1cfdfbabc3d25f9d8a7d"
+          },
+          {
+            "at": 1793762011724,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 55,
+            "bytes": 144,
+            "sha256": "f8537b6be389cb479b9002a37ef11d525177b6eb153da52163cc8ea6a52dcf30"
+          },
+          {
+            "at": 1793762011746,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 56,
+            "bytes": 144,
+            "sha256": "7e4a087d114cff1f90b2ed7aa605c6b712aeef074784ca150aedaa8e80835c6e"
+          },
+          {
+            "at": 1793762011768,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 57,
+            "bytes": 143,
+            "sha256": "5de85e2ae0541e283fe8c30fd0116b7d020e31536e979ca33dc4c8eb01242cd5"
+          },
+          {
+            "at": 1793762011788,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 58,
+            "bytes": 143,
+            "sha256": "20805573c627f6c10c3840a810c8b168ae25e5dd868ec28ff61ff7a03b788136"
+          },
+          {
+            "at": 1793762011804,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 59,
+            "bytes": 142,
+            "sha256": "5832f99b00295d3f654e81f5d90cbd07bc557bbca20f9741583b6fa2ebfb7f81"
+          },
+          {
+            "at": 1793762011826,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 60,
+            "bytes": 142,
+            "sha256": "bf92c9210a02920816762b15ec3f75a6ec65624a55946be21fab995df72bfb59"
+          },
+          {
+            "at": 1793762011847,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 61,
+            "bytes": 142,
+            "sha256": "be672faa17c08f7e5ab57b1f572dacf12201eff140d12d954882505b6969cd28"
+          },
+          {
+            "at": 1793762011869,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 62,
+            "bytes": 141,
+            "sha256": "4d42f6b6cc5cddb05daddfeb133c360a31f1abba1596066641793ae9653e82e1"
+          },
+          {
+            "at": 1793762011885,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 63,
+            "bytes": 142,
+            "sha256": "2ebda2baae0f74d287d5cff8afaeabf5c0c4bdb87342776efddba14c5bc3a652"
+          },
+          {
+            "at": 1793762011905,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 64,
+            "bytes": 142,
+            "sha256": "2cb8cb28550c3962e632de6962399e80a32b7f5b99b8d5af749e1f283af8d936"
+          },
+          {
+            "at": 1793762011928,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 65,
+            "bytes": 143,
+            "sha256": "55ea8b266b8dbafeb03dc9beeb862430924890618b03ff783484e768385ae0aa"
+          },
+          {
+            "at": 1793762011948,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 66,
+            "bytes": 142,
+            "sha256": "701c454328cb4c6f4be93b1bd256c99688e6327e5e3637e05a68f1841ec64b45"
+          },
+          {
+            "at": 1793762011964,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 67,
+            "bytes": 143,
+            "sha256": "ac0dce7a19a62382c22b94171b377163f75ddf703db17cdd7f27d85ab8c68bd0"
+          },
+          {
+            "at": 1793762011986,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 68,
+            "bytes": 143,
+            "sha256": "cf3a2dbb5c42525fae44bccd2148d8153fb235a8224c8ddaf96e8c6d038adec6"
+          },
+          {
+            "at": 1793762012006,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 69,
+            "bytes": 144,
+            "sha256": "ef5c377d902950ff976ece6243fcd732a87065726c9f8bfd8a36c1b17f97898c"
+          },
+          {
+            "at": 1793762012028,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 70,
+            "bytes": 144,
+            "sha256": "73c0e5333766f9375eec796c2aff48f0d999a725602907bba2f13535a95b2222"
+          },
+          {
+            "at": 1793762012044,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 71,
+            "bytes": 144,
+            "sha256": "7a14e7a7b81f75a546382bb08efde7582374f645d1c21a64beb49031b650f2a9"
+          },
+          {
+            "at": 1793762012065,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 72,
+            "bytes": 145,
+            "sha256": "3b0454dd07c2d362a2616db0440d6bbb050527dc8346df244ea60ef866317e85"
+          },
+          {
+            "at": 1793762012087,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 73,
+            "bytes": 146,
+            "sha256": "62b3a7b46e4dcda3e40fd7bb2422a0178b0f5cf6e3783f2c1984b51b3426f0ad"
+          },
+          {
+            "at": 1793762012109,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 74,
+            "bytes": 146,
+            "sha256": "6e30ddf3d54d66a814b2d5ec5e8f956a0492ff6e68c30fad8c14217d2836b042"
+          },
+          {
+            "at": 1793762012124,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 75,
+            "bytes": 146,
+            "sha256": "3f9faaffced78e278e15e06939bc835cad3cf34d78372e14202b1953223ed0aa"
+          },
+          {
+            "at": 1793762012146,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 76,
+            "bytes": 145,
+            "sha256": "ef81ffd48413ae7af695176ef68ee3509c5139c46a5594dc3f0b141d58ab0818"
+          },
+          {
+            "at": 1793762012168,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 77,
+            "bytes": 146,
+            "sha256": "134dd42af34d2d8329cda92387a7887e617540ea7281aecee5ba1bf71e08271a"
+          },
+          {
+            "at": 1793762012188,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 78,
+            "bytes": 145,
+            "sha256": "3b1ca23c174470f1244503ce7c16e7536f29aa78dbea9dccf12740b3f44abdb3"
+          },
+          {
+            "at": 1793762012204,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 79,
+            "bytes": 145,
+            "sha256": "d0340b1026dc9ed065ea57d2bcb0664a4b31bda9af9768c74ca8034cb74e7561"
+          },
+          {
+            "at": 1793762012228,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 80,
+            "bytes": 144,
+            "sha256": "a5334d2605f9e0a53c8c9007cea6523a561c94aafdaefd90fb95600387053952"
+          },
+          {
+            "at": 1793762012246,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 81,
+            "bytes": 144,
+            "sha256": "217402d6225104efd7338b3f465b671b39e18d830b1859136ada9cfc1f7c9daf"
+          },
+          {
+            "at": 1793762012269,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 82,
+            "bytes": 143,
+            "sha256": "0dc6f4239f38f0ca0fa07b6113d4b3770ea2df2a60cf49dc0945d34c272471a3"
+          },
+          {
+            "at": 1793762012285,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 83,
+            "bytes": 143,
+            "sha256": "e40265a6a9b7ed07c9ea452dcb6a426b01a7d6f117ae3c140b9a9a96a63ed59f"
+          },
+          {
+            "at": 1793762012305,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 84,
+            "bytes": 142,
+            "sha256": "cd4fc5e94cee63db4807d32217966b1156ad394b0895bf61800158a2248a8b0a"
+          },
+          {
+            "at": 1793762012327,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 85,
+            "bytes": 141,
+            "sha256": "122275ca671d3da6d3e7c645446c04374fe2d2c4384e1382998ca709c8cfb00a"
+          },
+          {
+            "at": 1793762012348,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 86,
+            "bytes": 142,
+            "sha256": "5fab65994b9f1277d514123ee87f75eeebc97e22843f9bf786ce56e9a38fec90"
+          },
+          {
+            "at": 1793762012364,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 87,
+            "bytes": 141,
+            "sha256": "4b906a9931635dd90fde629c3d005b2e96ccfbd934c0401a58a09c8067bc3c3b"
+          },
+          {
+            "at": 1793762012385,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 88,
+            "bytes": 142,
+            "sha256": "aae9349a846d2b5e4317da1662baccde0a19f4f923ecb1837b5c3b2246731e81"
+          },
+          {
+            "at": 1793762012406,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 89,
+            "bytes": 142,
+            "sha256": "85e5113d339e18a3fdca89c6ed7b360092eaffd0dc442e5accc4143490705b5b"
+          },
+          {
+            "at": 1793762012428,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 90,
+            "bytes": 143,
+            "sha256": "f22d792506b39e33157d4ff7e6c345b7f87bce46e602806d05636c0409edee73"
+          },
+          {
+            "at": 1793762012444,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 91,
+            "bytes": 142,
+            "sha256": "ee6dcff304b37a2fde62656ce088d652e6992544e24bf3cf380edaa64c36a0fc"
+          },
+          {
+            "at": 1793762012467,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 92,
+            "bytes": 143,
+            "sha256": "a344124fdb73a2d5fd701704fa3f85d1b043f95541dea186289cdb306f62765c"
+          },
+          {
+            "at": 1793762012487,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 93,
+            "bytes": 143,
+            "sha256": "d99a42764340a6472dad10c56e3af4ba73f54be65988886415b2429d0a3f4b62"
+          },
+          {
+            "at": 1793762012509,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 94,
+            "bytes": 144,
+            "sha256": "e1e2af74a53546fe21a9209a726c800f06d239574a5d9ae387cc13072aeb539a"
+          },
+          {
+            "at": 1793762012524,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 95,
+            "bytes": 144,
+            "sha256": "79c3f4f4a3c98036911cbf11ffe8d50323d18f6edbb38468eb83464d4e1ca08f"
+          },
+          {
+            "at": 1793762012545,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 96,
+            "bytes": 144,
+            "sha256": "f44bb58150c9723e82a69410a31e438fedda134050a1cb86e89649542255fb27"
+          },
+          {
+            "at": 1793762012569,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 97,
+            "bytes": 145,
+            "sha256": "df289d267ef06e87b96131ab7a1a0b1f9402f7457748413853f11a9d0c7ad2b7"
+          },
+          {
+            "at": 1793762012588,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 98,
+            "bytes": 146,
+            "sha256": "a5fef0c05a09aa8a9fdff760822e1abcda797f0ba8f156821d66e972725defa1"
+          },
+          {
+            "at": 1793762012604,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 99,
+            "bytes": 146,
+            "sha256": "054987b352f7b5844a9c70848f0dd6f89a6c3747e12eadd32498ae6adb895367"
+          },
+          {
+            "at": 1793762012625,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 100,
+            "bytes": 146,
+            "sha256": "f32d851f14f6d1a04bf8d40430e943230d8d9e7e68b4ffb52ce6371db85f64d7"
+          },
+          {
+            "at": 1793762012647,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 101,
+            "bytes": 145,
+            "sha256": "7d3c142f2bd9d961d7b02443502e45ab1bd26019a1cc85cfe645f933180ec3d9"
+          },
+          {
+            "at": 1793762012668,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 102,
+            "bytes": 145,
+            "sha256": "2abfc01f4e0242e22928fbc7717b3c37838cd660eb66270bae597d2745b7dbf6"
+          },
+          {
+            "at": 1793762012684,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 103,
+            "bytes": 145,
+            "sha256": "0ef30c2a1a9f1f91ab804082f8d9fb899691859fe75efbbfaef6df45e48e7e29"
+          },
+          {
+            "at": 1793762012705,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 104,
+            "bytes": 145,
+            "sha256": "82c81e39ee87ac606685d11fd4d3ec365cd7aec3f64d8e542aebb99a744cbb04"
+          },
+          {
+            "at": 1793762012727,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 105,
+            "bytes": 144,
+            "sha256": "6b74e16079529f02474acbafb47b9a834236c898f44fb4b431c7d33bd29681c0"
+          },
+          {
+            "at": 1793762012748,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 106,
+            "bytes": 144,
+            "sha256": "62b6dca1004a3116099c956649bbc0eaefd744df7b1094f7bb915bb2c8a3de2b"
+          },
+          {
+            "at": 1793762012764,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 107,
+            "bytes": 143,
+            "sha256": "63591a408dfc9729e861037b3c2305d696932b71f3a1153a5b7708f338db463b"
+          },
+          {
+            "at": 1793762012785,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 108,
+            "bytes": 143,
+            "sha256": "27bfed050e64578c74b28a1d733f7a7d5a6631b95bd0c6b42fce80153eed7891"
+          },
+          {
+            "at": 1793762012806,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 109,
+            "bytes": 142,
+            "sha256": "34bd85a0e82000143a554b83894559babc43b955bbac2e81d43cf8f6572665c4"
+          },
+          {
+            "at": 1793762012829,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 110,
+            "bytes": 141,
+            "sha256": "e19726a5cd1926eee6d7d1c09ea85a504fe8732828318657ede4acf75697c6d1"
+          },
+          {
+            "at": 1793762012844,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 111,
+            "bytes": 142,
+            "sha256": "40e9b2a40ce5562334711aad4f9fd148054628d678ffdeb7322df321ca37ba53"
+          },
+          {
+            "at": 1793762012865,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 112,
+            "bytes": 141,
+            "sha256": "be049e2bb9d8dfc81b8d80991de632ed69e791b32dbde2037c693f585b04cd96"
+          },
+          {
+            "at": 1793762012887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 113,
+            "bytes": 142,
+            "sha256": "25191a291a6f663825148ca3e05f71b2cf667a9057d9ed9e0cfe2e4c661a58cf"
+          },
+          {
+            "at": 1793762012909,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 114,
+            "bytes": 142,
+            "sha256": "f49784fb1431063a40bfbf1df555734bd04d9d702368cc43948e43bf9877a970"
+          },
+          {
+            "at": 1793762012924,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 115,
+            "bytes": 143,
+            "sha256": "c861b0068b013368723045ebca2bdb2f3149065b00d057b4c193dc1d418d3a34"
+          },
+          {
+            "at": 1793762012946,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 116,
+            "bytes": 142,
+            "sha256": "3bc2036c84eb98a1810568bdff598db52134dcb298d6d51b26426129f2d35a8a"
+          },
+          {
+            "at": 1793762012967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 117,
+            "bytes": 143,
+            "sha256": "ac59d2e0c02c951576deba802b51d1216c0ebd17e65df66e0e998ddc091c8823"
+          },
+          {
+            "at": 1793762012990,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 118,
+            "bytes": 143,
+            "sha256": "30f3ad3a766e48a91fd8653f8091c6fea0d9292712fc508f766d38713ebd8218"
+          },
+          {
+            "at": 1793762013004,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 119,
+            "bytes": 144,
+            "sha256": "f7fb50814287b470f8b95dc49a34ab8b611f5db1d5a5a5db93e83a78eee63004"
+          },
+          {
+            "at": 1793762013026,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 120,
+            "bytes": 144,
+            "sha256": "7a45b2ab61ee5b09292304b24e576005447cd588fa3531ca795ab41bd2371ea4"
+          },
+          {
+            "at": 1793762014023,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 102,
+            "sha256": "36c8454f7fad07bd1134c9ad8e43abef86fc1ee4c0778a07de54d322470d2da5"
+          },
+          {
+            "at": 1793762014044,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 96,
+            "sha256": "1a1e4f203e139c8e5bcd63d3caa04af3675d3ae9648363d0a50ffe45fea55bdc"
+          },
+          {
+            "at": 1793762014065,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 96,
+            "sha256": "157cf372bc0b555fae966a27072d64e0286ec951deba8150b72f94a4185e2fea"
+          },
+          {
+            "at": 1793762014081,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 92,
+            "sha256": "b1131037e77ce74b5d250a721489396d51a5b305b0578cb4aa744d6554aa0238"
+          },
+          {
+            "at": 1793762014103,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 91,
+            "sha256": "9d19b8650114d0b0458fc11f55ec7d245f82d067e183dd9859d0de5a0f0a3da8"
+          },
+          {
+            "at": 1793762014124,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 97,
+            "sha256": "3fb171c1417bd745611d9a486dd5a51a20a86551a6f577c733a5fa40137b5d5a"
+          },
+          {
+            "at": 1793762014145,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 94,
+            "sha256": "ee883b11472bc1434254b457c3aa954ff329b3ceeeeec365d89f83552de77ef0"
+          },
+          {
+            "at": 1793762014161,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 91,
+            "sha256": "281baa828e2318d4653164f518fff1b8f9c38e1d50e77c680ca6079c04e0b909"
+          },
+          {
+            "at": 1793762014322,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 8,
+            "bytes": 99,
+            "sha256": "b81966fa72e787fbe4df97312f9c21f6b8f16628f8add9c30b5d7b6453ad8400"
+          },
+          {
+            "at": 1793762014322,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 9,
+            "bytes": 93,
+            "sha256": "f312dd46f90a2d949ea5b509ee6b7594605a109783694c3b6c7a1a90ba11ce1c"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 10,
+            "bytes": 93,
+            "sha256": "5c2e9a7e6d0d259f8c77553ec2aaab7f0602cd30545545048a223b7d39913773"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 11,
+            "bytes": 89,
+            "sha256": "a1c227feac17d598809df4843e49500c13b29d04a80826b7b281cb698a1cc9f5"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 12,
+            "bytes": 95,
+            "sha256": "d6ae8ecdbdb408f3d35b4428e43ea3a56ef57983df793d0967d428519f49b931"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 13,
+            "bytes": 93,
+            "sha256": "0a0366d5ced002f77f776d3a2ea5a56ed19499b8e13e3aa9360717c07fa4a23f"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 14,
+            "bytes": 90,
+            "sha256": "3e01fcbd26015762b826d59ff1e2e827e842033c79de2b584a8908bbfc954d8e"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 15,
+            "bytes": 99,
+            "sha256": "9f70c9d8e2a9bf4c63a890ebbd68f55abe190d76bae7186721a08eea589d16d4"
+          }
+        ]
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    },
+    "far": {
+      "sockets": 1,
+      "latestSpaceSnapshot": {
+        "seq": 21,
+        "currentRoomId": "studio",
+        "roomKind": "meeting-room",
+        "audioPolicy": "room",
+        "audioRadiusGridUnits": null,
+        "players": [
+          {
+            "displayName": "Far listener",
+            "x": 11,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793762009460,
+          "direction": "sent",
+          "type": "join"
+        },
+        {
+          "at": 1793762009461,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762009461,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "lobby",
+            "name": "Open area",
+            "kind": "open-area",
+            "audioPolicy": "proximity",
+            "audioRadiusGridUnits": 6
+          }
+        },
+        {
+          "at": 1793762009461,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 3,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 3,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009595,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762009596,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 4,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 4,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762009829,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762009830,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 5,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 5,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010044,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762010044,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 6,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 6,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762010434,
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "at": 1793762010434,
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "at": 1793762010604,
+          "direction": "received",
+          "type": "audio.unavailable",
+          "reason": "out_of_range"
+        },
+        {
+          "at": 1793762011170,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762011171,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 7,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 7,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011386,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762011387,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 8,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 8,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011602,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762011603,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762011604,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 9,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 9,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762011838,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762011838,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "out_of_range"
+        },
+        {
+          "at": 1793762011838,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 10,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 10,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012361,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762012362,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762012363,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 11,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 11,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012580,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "out_of_range"
+        },
+        {
+          "at": 1793762012580,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 12,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 12,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762012795,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762012796,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 13,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 13,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "lobby",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013033,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "publisher_stopped"
+        },
+        {
+          "at": 1793762013033,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013039,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 14,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 14,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "lobby",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013072,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013073,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 15,
+          "currentRoomId": "lobby",
+          "space": {
+            "currentRoomId": "lobby",
+            "seq": 15,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "lobby",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013180,
+          "direction": "sent",
+          "type": "audio.unsubscribe"
+        },
+        {
+          "at": 1793762013180,
+          "direction": "sent",
+          "type": "room.switch"
+        },
+        {
+          "at": 1793762013180,
+          "direction": "received",
+          "type": "audio.unsubscribed"
+        },
+        {
+          "at": 1793762013181,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762013181,
+          "direction": "received",
+          "type": "room.snapshot",
+          "room": {
+            "id": "studio",
+            "name": "Meeting room",
+            "kind": "meeting-room",
+            "audioPolicy": "room",
+            "audioRadiusGridUnits": null
+          }
+        },
+        {
+          "at": 1793762013181,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 16,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 16,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013255,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762013256,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 17,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 17,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 9,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013469,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762013470,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 18,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 18,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 10,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013686,
+          "direction": "sent",
+          "type": "space.move"
+        },
+        {
+          "at": 1793762013686,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 19,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 19,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "354f08fd-b604-4ba6-9f36-6dfbac4a922b",
+                "displayName": "Policy speaker",
+                "roomId": "studio",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762013940,
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "at": 1793762013940,
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "at": 1793762014002,
+          "direction": "received",
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "at": 1793762014353,
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "generation": 1,
+          "reason": "publisher_stopped"
+        },
+        {
+          "at": 1793762014356,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762014356,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 20,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 20,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "8fd777f8-3717-40dc-a9b1-efd7d3b08871",
+                "displayName": "Near listener",
+                "roomId": "studio",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "at": 1793762014565,
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "at": 1793762014566,
+          "direction": "received",
+          "type": "space.snapshot",
+          "seq": 21,
+          "currentRoomId": "studio",
+          "space": {
+            "currentRoomId": "studio",
+            "seq": 21,
+            "rooms": [
+              {
+                "id": "lobby",
+                "kind": "open-area",
+                "audioPolicy": "proximity",
+                "audioRadiusGridUnits": 6
+              },
+              {
+                "id": "studio",
+                "kind": "meeting-room",
+                "audioPolicy": "room",
+                "audioRadiusGridUnits": null
+              }
+            ],
+            "players": [
+              {
+                "id": "afd1e5a6-9f98-4f00-a20f-14a03bb25663",
+                "displayName": "Far listener",
+                "roomId": "studio",
+                "x": 11,
+                "y": 2
+              }
+            ]
+          }
+        }
+      ],
+      "droppedControls": 0,
+      "packets": {
+        "sent": [],
+        "received": [
+          {
+            "at": 1793762011607,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 49,
+            "bytes": 146,
+            "sha256": "35c9cac41701008924c928ce2bec5775cf94926c3bfb3c381e25e52c3cc5c2df"
+          },
+          {
+            "at": 1793762011628,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 50,
+            "bytes": 146,
+            "sha256": "062cb7c53313f76353f3c2a1f61b0bd689345c21bd51d85cf9147956aaf812f8"
+          },
+          {
+            "at": 1793762011644,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 51,
+            "bytes": 145,
+            "sha256": "ac5c14f336f089c9b9973e5e2d0505a806b03d24b3d0150b5e8b9245e1d2a9ec"
+          },
+          {
+            "at": 1793762011665,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 52,
+            "bytes": 145,
+            "sha256": "6ca39127d7b5019c3965265d27b8ef4521f36880db8d2cce37f3a90bf6b91dc4"
+          },
+          {
+            "at": 1793762011687,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 53,
+            "bytes": 145,
+            "sha256": "8ec6cc2d1b8a7b3b163c29013d47f5c250030008e43ee724061bf3273e77ca14"
+          },
+          {
+            "at": 1793762011710,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 54,
+            "bytes": 145,
+            "sha256": "1867efde94807ca07b1b4d9341be2fcea585f231456c1cfdfbabc3d25f9d8a7d"
+          },
+          {
+            "at": 1793762011724,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 55,
+            "bytes": 144,
+            "sha256": "f8537b6be389cb479b9002a37ef11d525177b6eb153da52163cc8ea6a52dcf30"
+          },
+          {
+            "at": 1793762011745,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 56,
+            "bytes": 144,
+            "sha256": "7e4a087d114cff1f90b2ed7aa605c6b712aeef074784ca150aedaa8e80835c6e"
+          },
+          {
+            "at": 1793762011768,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 57,
+            "bytes": 143,
+            "sha256": "5de85e2ae0541e283fe8c30fd0116b7d020e31536e979ca33dc4c8eb01242cd5"
+          },
+          {
+            "at": 1793762011789,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 58,
+            "bytes": 143,
+            "sha256": "20805573c627f6c10c3840a810c8b168ae25e5dd868ec28ff61ff7a03b788136"
+          },
+          {
+            "at": 1793762011804,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 59,
+            "bytes": 142,
+            "sha256": "5832f99b00295d3f654e81f5d90cbd07bc557bbca20f9741583b6fa2ebfb7f81"
+          },
+          {
+            "at": 1793762011826,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 60,
+            "bytes": 142,
+            "sha256": "bf92c9210a02920816762b15ec3f75a6ec65624a55946be21fab995df72bfb59"
+          },
+          {
+            "at": 1793762012364,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 87,
+            "bytes": 141,
+            "sha256": "4b906a9931635dd90fde629c3d005b2e96ccfbd934c0401a58a09c8067bc3c3b"
+          },
+          {
+            "at": 1793762012385,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 88,
+            "bytes": 142,
+            "sha256": "aae9349a846d2b5e4317da1662baccde0a19f4f923ecb1837b5c3b2246731e81"
+          },
+          {
+            "at": 1793762012407,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 89,
+            "bytes": 142,
+            "sha256": "85e5113d339e18a3fdca89c6ed7b360092eaffd0dc442e5accc4143490705b5b"
+          },
+          {
+            "at": 1793762012428,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 90,
+            "bytes": 143,
+            "sha256": "f22d792506b39e33157d4ff7e6c345b7f87bce46e602806d05636c0409edee73"
+          },
+          {
+            "at": 1793762012444,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 91,
+            "bytes": 142,
+            "sha256": "ee6dcff304b37a2fde62656ce088d652e6992544e24bf3cf380edaa64c36a0fc"
+          },
+          {
+            "at": 1793762012465,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 92,
+            "bytes": 143,
+            "sha256": "a344124fdb73a2d5fd701704fa3f85d1b043f95541dea186289cdb306f62765c"
+          },
+          {
+            "at": 1793762012488,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 93,
+            "bytes": 143,
+            "sha256": "d99a42764340a6472dad10c56e3af4ba73f54be65988886415b2429d0a3f4b62"
+          },
+          {
+            "at": 1793762012509,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 94,
+            "bytes": 144,
+            "sha256": "e1e2af74a53546fe21a9209a726c800f06d239574a5d9ae387cc13072aeb539a"
+          },
+          {
+            "at": 1793762012524,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 95,
+            "bytes": 144,
+            "sha256": "79c3f4f4a3c98036911cbf11ffe8d50323d18f6edbb38468eb83464d4e1ca08f"
+          },
+          {
+            "at": 1793762012545,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 96,
+            "bytes": 144,
+            "sha256": "f44bb58150c9723e82a69410a31e438fedda134050a1cb86e89649542255fb27"
+          },
+          {
+            "at": 1793762012568,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 97,
+            "bytes": 145,
+            "sha256": "df289d267ef06e87b96131ab7a1a0b1f9402f7457748413853f11a9d0c7ad2b7"
+          },
+          {
+            "at": 1793762012809,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 109,
+            "bytes": 142,
+            "sha256": "34bd85a0e82000143a554b83894559babc43b955bbac2e81d43cf8f6572665c4"
+          },
+          {
+            "at": 1793762012829,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 110,
+            "bytes": 141,
+            "sha256": "e19726a5cd1926eee6d7d1c09ea85a504fe8732828318657ede4acf75697c6d1"
+          },
+          {
+            "at": 1793762012844,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 111,
+            "bytes": 142,
+            "sha256": "40e9b2a40ce5562334711aad4f9fd148054628d678ffdeb7322df321ca37ba53"
+          },
+          {
+            "at": 1793762012865,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 112,
+            "bytes": 141,
+            "sha256": "be049e2bb9d8dfc81b8d80991de632ed69e791b32dbde2037c693f585b04cd96"
+          },
+          {
+            "at": 1793762012887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 113,
+            "bytes": 142,
+            "sha256": "25191a291a6f663825148ca3e05f71b2cf667a9057d9ed9e0cfe2e4c661a58cf"
+          },
+          {
+            "at": 1793762012911,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 114,
+            "bytes": 142,
+            "sha256": "f49784fb1431063a40bfbf1df555734bd04d9d702368cc43948e43bf9877a970"
+          },
+          {
+            "at": 1793762012927,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 115,
+            "bytes": 143,
+            "sha256": "c861b0068b013368723045ebca2bdb2f3149065b00d057b4c193dc1d418d3a34"
+          },
+          {
+            "at": 1793762012946,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 116,
+            "bytes": 142,
+            "sha256": "3bc2036c84eb98a1810568bdff598db52134dcb298d6d51b26426129f2d35a8a"
+          },
+          {
+            "at": 1793762012967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 117,
+            "bytes": 143,
+            "sha256": "ac59d2e0c02c951576deba802b51d1216c0ebd17e65df66e0e998ddc091c8823"
+          },
+          {
+            "at": 1793762012993,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 118,
+            "bytes": 143,
+            "sha256": "30f3ad3a766e48a91fd8653f8091c6fea0d9292712fc508f766d38713ebd8218"
+          },
+          {
+            "at": 1793762013007,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 119,
+            "bytes": 144,
+            "sha256": "f7fb50814287b470f8b95dc49a34ab8b611f5db1d5a5a5db93e83a78eee63004"
+          },
+          {
+            "at": 1793762013026,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 120,
+            "bytes": 144,
+            "sha256": "7a45b2ab61ee5b09292304b24e576005447cd588fa3531ca795ab41bd2371ea4"
+          },
+          {
+            "at": 1793762014023,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 102,
+            "sha256": "36c8454f7fad07bd1134c9ad8e43abef86fc1ee4c0778a07de54d322470d2da5"
+          },
+          {
+            "at": 1793762014044,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 96,
+            "sha256": "1a1e4f203e139c8e5bcd63d3caa04af3675d3ae9648363d0a50ffe45fea55bdc"
+          },
+          {
+            "at": 1793762014142,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 96,
+            "sha256": "157cf372bc0b555fae966a27072d64e0286ec951deba8150b72f94a4185e2fea"
+          },
+          {
+            "at": 1793762014170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 92,
+            "sha256": "b1131037e77ce74b5d250a721489396d51a5b305b0578cb4aa744d6554aa0238"
+          },
+          {
+            "at": 1793762014170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 91,
+            "sha256": "9d19b8650114d0b0458fc11f55ec7d245f82d067e183dd9859d0de5a0f0a3da8"
+          },
+          {
+            "at": 1793762014170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 97,
+            "sha256": "3fb171c1417bd745611d9a486dd5a51a20a86551a6f577c733a5fa40137b5d5a"
+          },
+          {
+            "at": 1793762014170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 94,
+            "sha256": "ee883b11472bc1434254b457c3aa954ff329b3ceeeeec365d89f83552de77ef0"
+          },
+          {
+            "at": 1793762014170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 91,
+            "sha256": "281baa828e2318d4653164f518fff1b8f9c38e1d50e77c680ca6079c04e0b909"
+          },
+          {
+            "at": 1793762014322,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 8,
+            "bytes": 99,
+            "sha256": "b81966fa72e787fbe4df97312f9c21f6b8f16628f8add9c30b5d7b6453ad8400"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 9,
+            "bytes": 93,
+            "sha256": "f312dd46f90a2d949ea5b509ee6b7594605a109783694c3b6c7a1a90ba11ce1c"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 10,
+            "bytes": 93,
+            "sha256": "5c2e9a7e6d0d259f8c77553ec2aaab7f0602cd30545545048a223b7d39913773"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 11,
+            "bytes": 89,
+            "sha256": "a1c227feac17d598809df4843e49500c13b29d04a80826b7b281cb698a1cc9f5"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 12,
+            "bytes": 95,
+            "sha256": "d6ae8ecdbdb408f3d35b4428e43ea3a56ef57983df793d0967d428519f49b931"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 13,
+            "bytes": 93,
+            "sha256": "0a0366d5ced002f77f776d3a2ea5a56ed19499b8e13e3aa9360717c07fa4a23f"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 14,
+            "bytes": 90,
+            "sha256": "3e01fcbd26015762b826d59ff1e2e827e842033c79de2b584a8908bbfc954d8e"
+          },
+          {
+            "at": 1793762014323,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 15,
+            "bytes": 99,
+            "sha256": "9f70c9d8e2a9bf4c63a890ebbd68f55abe190d76bae7186721a08eea589d16d4"
+          }
+        ]
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    }
+  },
+  "phases": [
+    {
+      "name": "open-area-near-renders-far-is-silent",
+      "at": "2026-11-04T03:13:31.138Z",
+      "publisherGeneration": 1,
+      "near": {
+        "listenerState": "ready",
+        "receivedPackets": 2,
+        "decodedFrames": 2,
+        "renderedSamples": 960,
+        "queuedSamples": 0,
+        "renderRms": 0.11236726785296379
+      },
+      "farReceivedPackets": 0,
+      "farRawPackets": 0
+    },
+    {
+      "name": "open-area-reentry-and-clear",
+      "at": "2026-11-04T03:13:32.333Z",
+      "nearRender": {
+        "listenerState": "ready",
+        "receivedPackets": 2,
+        "decodedFrames": 2,
+        "renderedSamples": 960,
+        "queuedSamples": 0,
+        "renderRms": 0.11236726785296379
+      },
+      "farRender": {
+        "listenerState": "ready",
+        "receivedPackets": 10,
+        "decodedFrames": 10,
+        "renderedSamples": 8896,
+        "queuedSamples": 704,
+        "renderRms": 0.15525099768072334
+      },
+      "endedReason": "out_of_range",
+      "farRawPacketsAfterBoundary": 12
+    },
+    {
+      "name": "publisher-movement-reconciles-distance",
+      "at": "2026-11-04T03:13:32.983Z",
+      "receiverEndedReason": "out_of_range",
+      "restoredSameGeneration": true
+    },
+    {
+      "name": "meeting-room-distant-member-renders",
+      "at": "2026-11-04T03:13:34.051Z",
+      "publisherGeneration": 1,
+      "near": {
+        "listenerState": "ready",
+        "receivedPackets": 2,
+        "decodedFrames": 2,
+        "renderedSamples": 960,
+        "queuedSamples": 0,
+        "renderRms": 0.11236726785296379
+      },
+      "far": {
+        "listenerState": "ready",
+        "receivedPackets": 2,
+        "decodedFrames": 2,
+        "renderedSamples": 960,
+        "queuedSamples": 0,
+        "renderRms": 0.11236726785296379
+      }
+    },
+    {
+      "name": "bounded-traces-and-errors-checked",
+      "at": "2026-11-04T03:13:34.171Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "phase": "open-area-out-of-range",
+      "client": "far",
+      "seq": 6,
+      "players": [
+        {
+          "displayName": "Policy speaker",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "displayName": "Near listener",
+          "x": 5,
+          "y": 2
+        },
+        {
+          "displayName": "Far listener",
+          "x": 11,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "phase": "open-area-at-inclusive-boundary",
+      "client": "far",
+      "seq": 9,
+      "players": [
+        {
+          "displayName": "Policy speaker",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "displayName": "Near listener",
+          "x": 5,
+          "y": 2
+        },
+        {
+          "displayName": "Far listener",
+          "x": 8,
+          "y": 2
+        }
+      ]
+    },
+    {
+      "phase": "open-area-out-after-listening",
+      "client": "far",
+      "seq": 10,
+      "queuedSamples": 0,
+      "renderRms": 0,
+      "receiverGeneration": "",
+      "playbackClockId": "",
+      "noNewPacketWindowMs": 300
+    },
+    {
+      "phase": "meeting-room-distant-member",
+      "client": "far",
+      "seq": 19,
+      "players": [
+        {
+          "displayName": "Policy speaker",
+          "x": 2,
+          "y": 2
+        },
+        {
+          "displayName": "Near listener",
+          "x": 5,
+          "y": 2
+        },
+        {
+          "displayName": "Far listener",
+          "x": 11,
+          "y": 2
+        }
+      ]
+    }
+  ],
+  "packetSourceMappings": [
+    {
+      "receiver": "near",
+      "receivedPacketHashes": 129,
+      "unmatchedSourceHashes": 0,
+      "source": "publisher page's synthetic oscillator; frame payloads not retained"
+    },
+    {
+      "receiver": "far",
+      "receivedPacketHashes": 43,
+      "unmatchedSourceHashes": 0,
+      "source": "publisher page's synthetic oscillator; frame payloads not retained"
+    }
+  ],
+  "screenshots": [
+    "open-area-near.png",
+    "meeting-room-distant.png"
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": null
+  },
+  "limits": {
+    "controlsPerClient": 600,
+    "packetHashesPerDirectionAndClient": 2000,
+    "packetHashTruncation": "run fails if a collection reaches its cap; only opaque source-match hashes and headers are recorded, never media payload bytes",
+    "humanHearing": "not-tested",
+    "physicalMicrophone": "not-tested",
+    "mobile": "not-tested",
+    "authenticationAndPrivateEntry": "not-tested; connection UUID is not a verified person identity",
+    "doorsAndPasswords": "not-tested; intentionally outside this slice",
+    "endToEndLatency": "not-measured",
+    "rawPacketHashTruncation": "not-truncated"
+  },
+  "finishedAt": "2026-11-04T03:13:35.007Z"
+}

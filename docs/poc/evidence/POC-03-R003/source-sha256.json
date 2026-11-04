@@ -1,0 +1,18 @@
+{
+  "package.json": "07c29d5dd1892b528c42f764cf08ec3e1051a08654d0c00523e0fbc1d6733cf4",
+  "package-lock.json": "95b73be9df876b1af457d5b8c9c2b26e3f92a3e7f0a433ecc8c56aa2d7594148",
+  "README.md": "8916234fe8747d08bce8d3600a1d357634081453402c09b35bc0b9335f27f6d4",
+  "docs/laitse-prd.md": "c545ed2d34a040187580629e4ffa84acc77462c6bcfe2b8f55d349973cbf5117",
+  "docs/laitse-ai-handoff.md": "312f70797deced7406313f8765c9175a1ad9b4c518a71fedc169fe6a93c91d2a",
+  "src/server/app.ts": "36c293e445695ecafb9daa3f559495a4fc6bc27eb2fad88848c67f3e576f3508",
+  "src/server/space.ts": "d67c8ec1649df23b4b72a904744ff752590985cd916dcc9701412863ef8dc1a6",
+  "src/server/audio-relay.ts": "47e3b633ead16bbc2a9dcfc74c4cc090814943cfa1e4bbd4422e120dafffb508",
+  "src/client/App.tsx": "62fc4b3b501f00d030a363b42457b9cd041644206aa64d31372272f1198866e7",
+  "src/client/SpacePanel.tsx": "1659d6c1bc2a9bf56f7643b2181d54ab7a0c837dbef97c17b09931b81368af8e",
+  "src/client/pixel-space.ts": "e4cab144947a81bb447fd1936020fc73302dbe03569d9a9764977bd4d1ac2ca7",
+  "src/client/audio.ts": "ef3b359df17ed05cde3fb0155f789bc3cd138f7b94dc7a331125d83215541ecc",
+  "tests/server.integration.test.mjs": "e1e091583860cc0c465c2641173abc652c37713f09cfda7c7608323a824491f9",
+  "tests/space.integration.test.mjs": "3f4e4ad220d5d372ee00583d8ab34c00c9862b22129a904e16fbdfb51c9776b9",
+  "tests/space-policy.integration.test.mjs": "804e1d4a7f1e8dbb20382fb50fb8bea44d453c2e41479cd9f7f46684c26dce04",
+  "scripts/space-policy-smoke.mjs": "aac89200c3ed7fc65aa437fc465b5aae7ca5368b79f490ec79cf24bb56327e93"
+}

@@ -1,6 +1,6 @@
 # 專案 brief
 
-**狀態：T08跨房影音隔離桌面核心已完成；裝置與影音品質待補；2026-11-04 更新。**
+**狀態：T08與DEC011-A兩類空間收聽桌面核心已交付；門/密碼與裝置品質待補；2026-11-04 更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。
@@ -8,7 +8,7 @@
 - 目前技術與相關路徑：自研，不採用 WorkAdventure；人物像素圖。已有 Git 儲存庫與需求文件，T01程式基線已建置及本機雙瀏覽器驗收；核心功能須可獨立部署、不強制綁供應商 SaaS；部署限定所有元件一個 Cloud Run；Node.js 26 LTS已指定為專案標準，React/Vite/Fastify/ws在T01作本機候選驗證，影音傳輸與耐久資料仍未定。POC僅本機開發測試、不部署CloudRun；後續部署目標維持。原交接的「尚無 repo」為歷史狀態。
 - 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T08本機成果見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
 - POC權威入口：`docs/poc/plan.md`；執行紀錄 `docs/poc/execution-log.md`；MVP可用方案 `docs/poc/mvp-handoff.md`；Issue為計畫發布鏡像，不建平行PRD；發布入口 https://github.com/samzhu/LaiTse/issues/1 。
-- 權威需求／決策來源：`docs/laitse-prd.md` v0.7、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
+- 權威需求／決策來源：`docs/laitse-prd.md` v0.8、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
 - 穩定項目 ID：TECH-001／TECH-001-MEDIA 為初輪研究；TECH-002／TECH-002-LICENSE 為維護與授權查核；TECH-003／TECH-003-ALT 為獨立部署影音研究；TECH-004／TECH-004-RUN 為單一 Cloud Run 研究；TECH-005／TECH-005-CODEC 為整合框架與瀏覽器影音研究；TECH-006／TECH-006-PROTOCOL 為成熟度及協議比較；DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009 為人類決策；後續項目沿用既有 ID，退役不重用。未為 PRD 功能補造人類確認 ID。
 - 委派偏好（2026-11-03人類指示）：大量爬蟲／程式開發等耗token工作可交給Luna xhigh；主代理負責思考、範圍與驗收。本輪依此以gpt-6-luna／xhigh實作及診斷，主代理獨占紀錄並負責檢視／瀏覽器驗收；雙方writer均已交接。
 - 可用工具／能力與限制：Markdown／GitHub CLI及本機瀏覽器工具；桌面Firefox可信HTTPS/WSS與合成影音原生編解碼已驗，T05另有Chrome原生分頁擷取。無手機/真人品質、容量或CloudRun證據；本輪server/Firefox已停止，沒有共用UI留用。
@@ -42,3 +42,13 @@
 - 本輪T08（#9）：兩房各有發布/接收、切房清理、server拒絕偽造room/identity及成員事件隔離；輕量本機合成影音驗測與程式+紀錄commit。帳號驗證/私密入房與後續主持權限不預填通過，T09不啟動。
 
 - T08交付：27核心/build及四Firefox合成雙房影音、切房舊房0新增/手動新訂閱、六外部client拒絕通過；R002與SOL-002/003/008已讀回、代表圖已查看，首輪測試fixture失敗保留。server連線身份不等帳號/私密准入，完整T08/POC-03待補；本機commit程式+紀錄、不push/T09/部署，writer/server/browser釋出。
+
+- DEC-011：人類確認開放空間依人物距離收聽、會議室所有成員收聽；會議室有門，未鎖直接入房，上鎖需密碼。PRD/handoff v0.8、POC-PLAN v1.2與票面差異已保存；距離/多源/密碼有效期待設計。T08不是新規則完成證據，本輪僅同步需求，未改程式/新run/遠端票或啟動T09。
+
+- 人類2026-11-04要求「分析完先暫停 稍後再繼續」：DEC-011分析/文件同步後暫停，未改程式、未開始新POC或T09；本輪文件尚未commit，既有T08 commit d83433b不變。
+
+- 恢復（2026-11-04）：人類「繼續」後先恢復DEC-011補充POC規劃，plan/ticket-breakdown已列A距離/B未鎖門與會議室/C密碼門禁草案與相依；本輪實作範圍正在釐清，未動程式/新票/服務，需求與草案尚未commit。
+
+- 本輪DEC011-A：人類範圍答覆「會議室跟開放空間」，開始兩類空間收聽規則POC，會議室全房/開放距離；單來源與暫定示範6格，非商品參數定案。R003配發，Luna實作/root驗收；門與密碼另一步，T09/遠端票不啟動。
+
+- DEC011-A交付：30核心/build、三Firefox合成距離路由/6格邊界/超界清理/發布者移動/會議室9格播放可行，R003保存首輪收尾來源trace缺尾與root窄修，最終完整hash讀回通過。6格示範非產品設定，無新依賴，門/密碼/多人/手機/真人未補；程式+歷次未commit需求+紀錄本機commit，不push/下一項，資源釋出。

@@ -1,0 +1,11 @@
+{
+  "method": "Root rechecked complete saved final LTA1 sender/receiver hash sets after explicit publisher stop and stable 300ms trace window; no unmatched source records or capped trace.",
+  "sourceSentFrames": 127,
+  "receiverReceivedFrames": {
+    "near": 127,
+    "far": 43
+  },
+  "unmatchedSourceFrames": 0,
+  "traceCapsReached": false,
+  "result": "passed"
+}
