@@ -1,0 +1,7 @@
+{
+  "osVersion": "27.2",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "baselineCommit": "366415b066caf07cbc63f73a0bfc9dc3e8563df7",
+  "topology": "single local app; desktop browsers; phone deferred; no media-source capture required"
+}

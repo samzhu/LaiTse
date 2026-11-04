@@ -5,6 +5,7 @@ import { createApp } from "../src/server/app.ts";
 
 let app;
 let baseUrl;
+const MESSAGE_TIMEOUT_MS = 5_000;
 
 before(async () => {
   app = await createApp({ serveClient: false });
@@ -20,14 +21,30 @@ after(async () => {
 function connect(origin = baseUrl) {
   const socket = new WebSocket(`${baseUrl.replace(/^http/, "ws")}/ws`, { origin });
   return new Promise((resolve, reject) => {
-    socket.once("open", () => resolve(socket));
-    socket.once("error", reject);
+    const timer = setTimeout(() => {
+      socket.terminate();
+      reject(new Error(`WebSocket did not open within ${MESSAGE_TIMEOUT_MS} ms.`));
+    }, MESSAGE_TIMEOUT_MS);
+    socket.once("open", () => {
+      clearTimeout(timer);
+      resolve(socket);
+    });
+    socket.once("error", (error) => {
+      clearTimeout(timer);
+      reject(error);
+    });
   });
 }
 
 function nextMessage(socket, predicate = () => true) {
   return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      socket.off("message", onMessage);
+      socket.off("error", onError);
+      reject(new Error(`Expected WebSocket message did not arrive within ${MESSAGE_TIMEOUT_MS} ms.`));
+    }, MESSAGE_TIMEOUT_MS);
     const onError = (error) => {
+      clearTimeout(timer);
       socket.off("message", onMessage);
       reject(error);
     };
@@ -36,11 +53,14 @@ function nextMessage(socket, predicate = () => true) {
       try {
         message = JSON.parse(raw.toString());
       } catch (error) {
+        clearTimeout(timer);
         socket.off("error", onError);
+        socket.off("message", onMessage);
         reject(error);
         return;
       }
       if (!predicate(message)) return;
+      clearTimeout(timer);
       socket.off("message", onMessage);
       socket.off("error", onError);
       resolve(message);
@@ -55,7 +75,17 @@ function send(socket, value) {
 }
 
 function waitForClose(socket) {
-  return new Promise((resolve) => socket.once("close", (code, reason) => resolve({ code, reason: reason.toString() })));
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      socket.off("close", onClose);
+      reject(new Error(`WebSocket did not close within ${MESSAGE_TIMEOUT_MS} ms.`));
+    }, MESSAGE_TIMEOUT_MS);
+    const onClose = (code, reason) => {
+      clearTimeout(timer);
+      resolve({ code, reason: reason.toString() });
+    };
+    socket.once("close", onClose);
+  });
 }
 
 test("the application serves health and a built-in room catalogue", async () => {
@@ -65,7 +95,10 @@ test("the application serves health and a built-in room catalogue", async () => 
 
   const rooms = await fetch(`${baseUrl}/api/rooms`);
   assert.equal(rooms.status, 200);
-  assert.deepEqual(await rooms.json(), [{ id: "lobby", name: "Local test room" }]);
+  assert.deepEqual(await rooms.json(), [
+    { id: "lobby", name: "Local test room" },
+    { id: "studio", name: "Studio" },
+  ]);
 });
 
 test("two clients receive the same authoritative members and sequenced reaction", async () => {

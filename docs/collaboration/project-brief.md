@@ -1,12 +1,12 @@
 # 專案 brief
 
-**狀態：T06桌面晚加入／同步排程核心完成；裝置與品質待補；2026-11-04 更新。**
+**狀態：T07像素人物與兩房移動桌面核心已完成；裝置與影音品質待補；2026-11-04 更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。
-- 目前工作範圍：19票已發布並讀回；本機POC逐票實作至T06，桌面核心與用法已有證據。完整階段／手機／真人／品質仍依執行紀錄判定，尚未啟動MVP或部署。
+- 目前工作範圍：19票已發布並讀回；本機POC逐票實作至T07，桌面核心與用法已有證據。完整階段／手機／真人／品質仍依執行紀錄判定，尚未啟動MVP或部署。
 - 目前技術與相關路徑：自研，不採用 WorkAdventure；人物像素圖。已有 Git 儲存庫與需求文件，T01程式基線已建置及本機雙瀏覽器驗收；核心功能須可獨立部署、不強制綁供應商 SaaS；部署限定所有元件一個 Cloud Run；Node.js 26 LTS已指定為專案標準，React/Vite/Fastify/ws在T01作本機候選驗證，影音傳輸與耐久資料仍未定。POC僅本機開發測試、不部署CloudRun；後續部署目標維持。原交接的「尚無 repo」為歷史狀態。
-- 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T06本機成果見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
+- 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T07本機成果見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
 - POC權威入口：`docs/poc/plan.md`；執行紀錄 `docs/poc/execution-log.md`；MVP可用方案 `docs/poc/mvp-handoff.md`；Issue為計畫發布鏡像，不建平行PRD；發布入口 https://github.com/samzhu/LaiTse/issues/1 。
 - 權威需求／決策來源：`docs/laitse-prd.md` v0.7、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
 - 穩定項目 ID：TECH-001／TECH-001-MEDIA 為初輪研究；TECH-002／TECH-002-LICENSE 為維護與授權查核；TECH-003／TECH-003-ALT 為獨立部署影音研究；TECH-004／TECH-004-RUN 為單一 Cloud Run 研究；TECH-005／TECH-005-CODEC 為整合框架與瀏覽器影音研究；TECH-006／TECH-006-PROTOCOL 為成熟度及協議比較；DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009 為人類決策；後續項目沿用既有 ID，退役不重用。未為 PRD 功能補造人類確認 ID。
@@ -34,3 +34,7 @@
 - 本輪T06（#7）：人類明確指定晚加入/同步核心可行及用法、輕量驗測、程式+紀錄commit；root負責思考/驗收、Luna xhigh實作。先以共同publisher時基與接收播放主時鐘驗晚加入/世代重建/同端marker；不做T07、部署或推送，原手機/真人待測不變。
 
 - T06交付（2026-11-04）：共同publisher時基/接收音訊主時鐘選幀、晚加入keyframe gate、來源generation/尺寸重建與重新觀看可行；23核心、build/typecheck及最終三Firefox合成短流程通過。R002保存三輪失敗/診斷/修正及最終觀測，聲光64.77/151.71/129.35ms為未校準graph/render值，未宣稱原品質門檻通過；手機/真人與完整POC-02待補。SOL-002/008、操作與協作紀錄同步，本機commit程式+紀錄、不push/T07/部署；writer/服務/browser釋出。
+
+- 本輪T07（#8）：人類指定桌面像素人物/位置同步/兩房操作、輕量驗測及程式+紀錄commit。Phaser4.2.1候選、單一現有WS/server；切房先停止舊媒體，第二房此步只驗空間入口，跨房影音留T08。手機稍後，T08不啟動。
+
+- T07交付：26核心/build、雙Firefox真WebGL像素人物/兩房移動/離開重入/減少動態通過，POC-03-R001與SOL-004/008已保存讀回。手機、完整房間影音/權限與完整POC-03仍待測；本機commit程式+紀錄，不push/T08/部署，writer/server/browser已釋出。

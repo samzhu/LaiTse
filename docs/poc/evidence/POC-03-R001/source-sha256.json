@@ -1,0 +1,15 @@
+{
+  "package.json": "07c29d5dd1892b528c42f764cf08ec3e1051a08654d0c00523e0fbc1d6733cf4",
+  "package-lock.json": "95b73be9df876b1af457d5b8c9c2b26e3f92a3e7f0a433ecc8c56aa2d7594148",
+  "src/client/App.tsx": "e1ab86881e246231a105223403350da3873d548c003ad6e6cbd5438486dd880a",
+  "src/client/SpacePanel.tsx": "ffa2f5174c6e449f59c154eecba39c0f6fa987d49ff10b803e85e91d69800246",
+  "src/client/pixel-space.ts": "d1ea7009a06788ed5c73eccb982b7242c428649dcede54df90ddaedc311d3889",
+  "src/client/styles.css": "16fc80228179aa85a04a88d909135b2ed66977c739ad469dd3e451195e12525f",
+  "src/server/app.ts": "2294e6ffdd1ce14ddb27121d23113c79daa8c61b89e2cdb11ddae71fb690e6e2",
+  "src/server/space.ts": "697487e47c0f42562ed6a399903ac7e4eff8004f9ad60067f63147b5ee432fc3",
+  "tests/server.integration.test.mjs": "e90eab3ebadcb5d738de633dc06fb72d5fc00176c8bcffb6be4e6f86e6ba6d41",
+  "tests/space.integration.test.mjs": "07cfb4a54783edfdc0dd892ec34eb8fb66562160c6cf75c315fc271da1efc231",
+  "scripts/t07-smoke.mjs": "ba16eb504e200bad86fb34ac520714d0d67a23866652d71644446104bcf11bfd",
+  "public/vendor-notices.txt": "6444ec1760dab7ff2a3cb161743f48efd4f244285476d4ed6a1fcf5070794037",
+  "README.md": "0a5d035eadbff2371c73afec395d355f5e3a3b1e821f07f9055d485d2968b099"
+}

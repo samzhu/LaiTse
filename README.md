@@ -1,6 +1,6 @@
-# LaiTse local POC baseline
+# LaiTse local POC
 
-This is the T01/T02/T03 local POC baseline. One Fastify process serves the built React page, the health and room APIs, and a WebSocket endpoint. The room flow is deliberately small: participants can join one local room and observe the same member list and bounded control events. T03 adds a native Opus publish path through that same socket for members who explicitly start listening.
+One Fastify process serves the React page, health and room APIs, and one WebSocket endpoint. The local POC now has two rooms, server-backed pixel avatars, bounded room controls, Opus audio, and VP8 screen sharing.
 
 This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Its state is volatile process memory.
 
@@ -24,7 +24,7 @@ npm ci --cache "$PWD/.cache/npm"
 
 The implementation environment is macOS arm64. On another operating system or CPU architecture, use the matching archive name and verify its entry in the same official checksum file. The package lock keeps direct and transitive package versions, registry URLs, and integrity hashes fixed. `npm run licenses` writes an ignored inventory with the installed package versions and package-declared licenses to `.scratch/t01/dependency-inventory.json`.
 
-Direct runtime packages are `fastify@5.12.8`, `@fastify/websocket@11.3.6`, `@fastify/static@10.1.8`, `react@19.3.1`, and `react-dom@19.3.1`. The client build, type checking, integration harness, and Playwright browser script use pinned development packages in `package.json`. Project metadata declares Apache-2.0 to match the existing `LICENSE` file.
+Direct runtime packages are `fastify@5.12.8`, `@fastify/websocket@11.3.6`, `@fastify/static@10.1.8`, `react@19.3.1`, `react-dom@19.3.1`, and `phaser@4.2.1` (MIT). The client build, type checking, integration harness, and Playwright browser script use pinned development packages in `package.json`. Project metadata declares Apache-2.0 to match the existing `LICENSE` file.
 
 ## Build and run
 
@@ -155,12 +155,22 @@ The **下載畫面觀測** JSON now includes sync mode, same-clock status, the l
 
 For the synthetic desktop smoke, keep the trusted HTTPS/WSS server running and run `node scripts/t06-smoke.mjs` with Node 26.13.0 and `certutil` on `PATH`. It uses three isolated Firefox processes; an AudioContext oscillator provides the synthetic Opus input, and an animated canvas provides synthetic VP8 video. The publisher starts both streams before viewer B joins. The run checks late join/keyframe delivery, matching clock IDs, actual audio-master scheduling, 1280×720 target and replacement dimensions/generation, unsubscribe/re-subscribe, independent stop behavior, and a handful of same-receiver marker cycles. Reports, downloaded observation JSON and screenshots stay under ignored `.scratch/t06/`. It does not use hardware microphone or native display capture and does not run the original p95/two-run quality acceptance.
 
+## T07 pixel characters and two rooms
+
+The room picker lists the backward-compatible `lobby` room and the `studio` room. Join either from the visible room buttons. The single WebSocket returns the existing room snapshot plus an authoritative `space.snapshot` containing both room zones, each active character ID/name/room/grid position, the local participant ID, and a space sequence. Each room retains its own accurate member roster and stays listed while empty.
+
+Focus the map and press the arrow keys or W/A/S/D to request one grid step at a time. The server chooses the participant from the connection, enforces the 16×10 room bounds and movement rate, and broadcasts the accepted position. The direction pad offers the same operation without precise canvas input. The Phaser scene draws two distinct room zones and original 16×20 pixel character textures from an authored palette; it downloads no art. `Phaser.AUTO` uses WebGL when available and falls back to Canvas, and the page reports Phaser's actual renderer. Render diagnostics are written after Phaser's `POST_RENDER` event and include the current Phaser object coordinates and texture key.
+
+The **Reduce motion** checkbox starts from the operating system preference and can be changed manually. When enabled, position updates snap to their server destination without movement tweens. On a room change, the audio and screen panels unmount first so their controllers stop capture, unsubscribe and stop publishing before the room-switch message is sent. The server clears the old relay participation on every switch. During T07 the studio is spatial-only: audio/screen controls and binary frames are rejected outside the lobby, and returning to the lobby creates fresh relay participation. Full room media isolation remains T08 work.
+
+For the short desktop flow, build and start the trusted HTTPS/WSS app, then run `node scripts/t07-smoke.mjs` with Node 26.13.0, Firefox, and `certutil` on `PATH`. It uses two isolated Firefox profiles without requesting microphone or screen permissions. It checks real key input on a focused map, server-acknowledged position matching the other client's actual Phaser render, explicit room changes, leave/rejoin, empty-room visibility, and reduced-motion settling. JSON, raw WebSocket controls, Phaser render diagnostics, and screenshots are written under ignored `.scratch/t07/desktop-smoke/`. This is desktop evidence only; phone/browser support remains untested.
+
 ## Data classification and limitations
 
-- **Fixed, versioned setup:** the one-room catalogue and its display name are source constants in `src/server/app.ts`; a build from the same source reconstructs them.
-- **Execution-time data:** current members, connection membership, the event sequence, active audio and screen publisher generations, and explicit audio and screen subscriptions exist in server process memory. A disconnect removes that participant and stops its streams. These values clear when the server process stops or is replaced. Visible recent events, playback counters, screen frame counters, and screen preview pixels exist only in the page and clear when the page reloads or the participant leaves.
+- **Fixed, versioned setup:** the lobby/studio catalogue and room names are source constants in `src/server/space.ts`; a build from the same source reconstructs them.
+- **Execution-time data:** current room members, avatar room/grid positions, connection membership, event/space sequences, active audio and screen publisher generations, and explicit subscriptions exist in server process memory. A disconnect removes that participant and stops their streams. These values clear when the server process stops or is replaced. Visible recent events, the Phaser render report, playback counters, screen frame counters, and screen preview pixels exist only in the page and clear when the page reloads or the participant leaves.
 - **Not durable:** there is no database, file persistence, identity system, authorization/role model, event history, or cross-process coordination. A future multi-instance Cloud Run deployment would give instances separate memory and can lose all current state on replacement. This local result does not establish a persistence or Cloud Run recovery design.
-- **Not implemented in this ticket:** avatar movement, authentication, room management, production capacity, and phone verification. T06 adds a local keyframe-gated late join and same-publisher browser-clock scheduling POC; it does not establish physical A/V quality, mobile support, multi-instance media routing, or durable media storage.
+- **Not implemented in this POC:** authentication, formal room management, production capacity, phone verification, or cross-room media. T07 adds basic local avatar movement and explicit room entry; it does not establish physical A/V quality, mobile support, multi-instance media routing, or durable media storage.
 
 ## Focused commands
 
@@ -172,13 +182,13 @@ npm run build
 npm run licenses
 ```
 
-The focused integration suite exercises the API and real WebSocket connections from Node clients, including room membership, shared sequenced events, invalid origins, invalid messages, and payload bounds. The Playwright script separately uses actual Firefox browser processes for the two-client page flow. It does not replace later real-device media or capacity experiments.
+For focused T07 contracts, run `node --test tests/server.integration.test.mjs tests/space.integration.test.mjs`. The integration suites exercise the API and real WebSocket connections from Node clients, including room membership, shared sequenced events, movement bounds, room changes, and lobby media cleanup. The Playwright scripts separately use actual Firefox browser processes for client flows. They do not replace later real-device media or capacity experiments.
 
 ## Recorded verification
 
 [POC-00-R001](docs/poc/evidence/POC-00-R001/README.md) preserves the original Firefox launch failure. R002 records the final two-browser acceptance with private application-data directories; the authoritative status and remaining stage requirements are in [the execution log](docs/poc/execution-log.md). On macOS an automation sandbox may prevent Firefox from launching; run the test from a normal local terminal. Do not substitute certificate-ignore flags. Runtime dependencies remain stable releases; the diagnostic prerelease browser was rejected and is unused.
 
-[T03 POC-01-R001](docs/poc/evidence/POC-01-R001/README.md) records synthetic Opus encode/relay/decode/render, simulated denial, stop, and the first-run cleanup failure and correction. Real microphone and human listening remain pending. `npm run test:integration` retains the original T01 subset; `node --test tests/*.test.mjs` covers all current T01–T06 core integration and clock cases.
+[T03 POC-01-R001](docs/poc/evidence/POC-01-R001/README.md) records synthetic Opus encode/relay/decode/render, simulated denial, stop, and the first-run cleanup failure and correction. Real microphone and human listening remain pending. `npm run test:integration` retains the original T01 subset; `node --test tests/*.test.mjs` covers all current local POC integration and clock cases.
 
 [T04 POC-01-R002](docs/poc/evidence/POC-01-R002/README.md) records actual dual-receiver synthetic playback, late join, isolated unsubscribe/re-subscribe, stop, and downloaded observations. Physical phone and human-listening evidence remain pending.
 
@@ -187,3 +197,5 @@ T05 local evidence: [POC-02-R001](docs/poc/evidence/POC-02-R001/README.md) recor
 
 
 [T06 POC-02-R002](docs/poc/evidence/POC-02-R002/README.md) records the current synthetic desktop late-join/source-replacement/same-publisher audio-master flow. The final short browser run passes core operations; three same-receiver marker offsets were 64.77, 151.71, and 129.35 ms with uncalibrated mapping error. This does not establish the original 150 ms/p95 quality gate or physical-device support. Earlier failed runs and buffer/initialization fixes are preserved alongside the result.
+
+[T07 POC-03-R001](docs/poc/evidence/POC-03-R001/README.md) records the two-Firefox WebGL avatar/room flow, focused keyboard movement, leave/rejoin and reduced motion. Phone and full cross-room media remain pending.

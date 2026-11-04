@@ -81,3 +81,11 @@ Luna已明確釋出writer，root接手驗收及窄修。23核心案例通過，c
 R002保留三個失敗版本：先有換來源render0，時鐘歷史修正未單獨解決；獨立模型確認4幀不足以配合500ms PCM，改16幀；另late-join明確被2筆decoder門檻退訂，改有界8筆後完整流程成功。32筆clock history避免未來樣本遮蔽due樣本，5個clock回歸通過；沒有將所有根因推論說成已直接量到。
 
 原始下載schema2含同clock/master、5個pulse、待呈現5/16frame。三個同端marker64.77/151.71/129.35ms，actual21.33ms窗口／RAF最大50.08ms、mappingErrorBound null；高於150ms的一筆未略過、不宣稱p95/實體品質。JSON/hash已讀回、代表圖實際查看，README／SOL／execution-log／brief/交付索引同步。server與隔離Firefox finally關閉、writer釋出；程式與紀錄本機commit，不push/寫GitHub/T07/部署。原AGENTS/.scratch未追蹤內容保留。
+
+## T07啟動（2026-11-04）
+
+人類明確指定像素人物/兩房移動、輕量核心可行及使用方式，程式+紀錄一起commit。#8原票與#9邊界已讀回：T07是空間/控制，跨房影音與成員隔離完整驗證留T08；真手機沿用稍後安排。root負責設計/驗收/文件/Git，Luna xhigh負責派定程式及manifest唯一writer；R001已配發，未做MVP/部署/推送。
+
+### T07完成（2026-11-04）
+
+人類指定的像素人物/兩房移動桌面核心已實作與輕量驗證，26核心/build及雙Firefox實際WebGL流程通過。R001原始JSON/圖/來源hash已讀回，主代理查看代表圖；初期測試卡住缺陷與逾時修正已記錄。SOL-004/008、README/brief/交付索引同步。未新增人類接受或發布宣稱，實體手機/完整跨房影音仍待後續；本機commit程式+紀錄、不push/T08/部署，測試服務/browser與writer停止釋出。

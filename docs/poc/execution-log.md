@@ -158,3 +158,15 @@ build/typecheck、14個新舊核心整合、script syntax及三Firefox流程皆e
 同接收端三色碼週期graph/render偏移64.77/151.71/129.35ms，audio窗口21.33ms、RAF最大50.08ms，mapping error bound null、E2E null；非人耳／螢幕或p95品質通過，151.71高於原150ms參考。未為湊兩次而另做固定長測，手機/真mic/真人與其他codec/弱網/容量/CloudRun仍未驗。
 
 原始失敗分別保存[R002](evidence/POC-02-R002/README.md)的first/second/third-attempt；root修有界時鐘歷史、PCM/畫面緩衝配合及原生decode初始化burst容許量，保留未直接量測根因的推論界線。下載schema2 JSON、代表圖及source hash讀回，圖已查看；SOL-002/008、操作與協作紀錄同步。writer已釋出，server/Firefox finally停止；程式+紀錄一起本機commit、不push或修改GitHub，不啟動T07。
+
+## POC-03-R001／T07像素人物與兩房移動
+
+- 配發日期：2026-11-04（Asia/Taipei）；執行狀態：完成本輪桌面核心；完整T07／POC-03仍Inconclusive。
+- 假設：Phaser穩定4.2.1與既有單一WS/server可呈現原創像素人物，兩個真實桌面瀏覽器看到server權威位置/房間同步；鍵盤/明確選房及減少動態可用。
+- 範圍：DEC-010輕量，不宣稱手機實機、完整房間影音隔離/權限或完整POC-03通過；T08不在本輪。
+
+### T07完成與保存讀回（2026-11-04）
+
+Phaser4.2.1實際WebGL／原創16×20像素人物、server權威16×10位置、同一WS兩房同步與操作入口完成。root production build/typecheck、26核心整合與一次短雙Firefox157可信HTTPS/WSS流程通過；鍵盤移動跨端實際POST_RENDER座標吻合、兩房進出/空房、離開重入及減少動態無tween可行，page/socket errors空。實際查看代表截圖，來源/JSON讀回，證據見[POC-03-R001](evidence/POC-03-R001/README.md)。
+
+初期測試等待已離線端／關閉socket後繼續動作導致卡住，已終止舊程序、修正測試順序/觀察端並補逾時，focused12/12後root26/26通過；保留診斷界線。新增Phaser/eventemitter3 MIT notices及111套件inventory；既存3 moderate audit未在本票處理。桌面核心Pass；實體手機、完整跨房影音隔離/正式權限及完整T07/POC-03仍Inconclusive。共享地圖公開顯示兩房人物、People here當前房名單；Studio暫不提供影音，切房清理lobby relay，Node契約不代替T08實播。無媒體權限/硬體擷取，本機程式+紀錄commit、不push/部署/T08；writer及server/browser已釋出。

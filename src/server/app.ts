@@ -12,21 +12,29 @@ import {
 } from "./capabilities.ts";
 import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
+import {
+  createSpaceModel,
+  isKnownRoom,
+  isMoveDirection,
+  MAX_MOVES_PER_SECOND,
+  MAX_SPACE_MEMBERS,
+  MOVE_WINDOW_MS,
+  SPACE_ROOMS,
+  type RoomId,
+  type SpaceMember,
+} from "./space.ts";
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
-export const MAX_ROOM_MEMBERS = 8;
+export const MAX_ROOM_MEMBERS = MAX_SPACE_MEMBERS;
 export const MAX_SOCKET_BUFFERED_BYTES = MAX_SCREEN_SOCKET_BUFFERED_BYTES;
 
-const ROOM = { id: "lobby", name: "Local test room" } as const;
+const ROOM = SPACE_ROOMS[0];
 const REACTIONS = new Set(["wave", "clap", "heart"]);
 const MAX_DISPLAY_NAME_CODE_POINTS = 32;
 const MAX_EVENTS_PER_SECOND = 10;
 const EVENT_WINDOW_MS = 1_000;
 
-type Member = {
-  id: string;
-  displayName: string;
-};
+type Member = SpaceMember;
 
 type ControlEvent = {
   seq: number;
@@ -41,7 +49,9 @@ type ControlEvent = {
 type ClientConnection = {
   id: string;
   member?: Member;
+  currentRoomId?: RoomId;
   eventTimes: number[];
+  moveTimes: number[];
 };
 
 type CapabilityObservation = {
@@ -83,9 +93,11 @@ export async function createApp(options: CreateAppOptions = {}) {
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
+  const space = createSpaceModel();
   const audioRelay = createAudioRelay();
   const screenRelay = createScreenRelay();
   let sequence = 0;
+  let spaceSequence = 0;
 
   await app.register(fastifyWebsocket, {
     options: { maxPayload: MAX_SCREEN_FRAME_BYTES },
@@ -106,7 +118,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     persistence: "process-memory",
   }));
 
-  app.get("/api/rooms", async () => [ROOM]);
+  app.get("/api/rooms", async () => SPACE_ROOMS.map(({ id, name }) => ({ id, name })));
 
   app.get<{ Params: { observationId: string } }>("/api/observations/:observationId", async (request, reply) => {
     const observation = observations.get(request.params.observationId);
@@ -125,7 +137,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       },
     },
     (socket) => {
-      const connection: ClientConnection = { id: randomUUID(), eventTimes: [] };
+      const connection: ClientConnection = { id: randomUUID(), eventTimes: [], moveTimes: [] };
       clients.set(socket, connection);
 
       const send = (message: unknown) => {
@@ -168,27 +180,56 @@ export async function createApp(options: CreateAppOptions = {}) {
         socket.close(closeCode, "Invalid control message");
       };
 
-      audioRelay.register(connection.id, {
-        sendControl: send,
-        sendBinary,
-        reject: rejectControl,
-        readyState: () => socket.readyState,
-        openState: socket.OPEN,
-      });
-      screenRelay.register(connection.id, {
-        sendControl: send,
-        sendBinary,
-        sendScreenBinary,
-        reject: rejectControl,
-        readyState: () => socket.readyState,
-        openState: socket.OPEN,
-      });
+      const sendProtocolError = (code: string, message: string) => {
+        send({ type: "protocol.error", code, message });
+      };
 
-      const emit = (kind: ControlEvent["kind"], member: Member, reaction?: string) => {
+      const registerMediaConnection = () => {
+        audioRelay.register(connection.id, {
+          sendControl: send,
+          sendBinary,
+          reject: rejectControl,
+          readyState: () => socket.readyState,
+          openState: socket.OPEN,
+        });
+        screenRelay.register(connection.id, {
+          sendControl: send,
+          sendBinary,
+          sendScreenBinary,
+          reject: rejectControl,
+          readyState: () => socket.readyState,
+          openState: socket.OPEN,
+        });
+      };
+      registerMediaConnection();
+
+      const broadcastSpaceState = () => {
+        const seq = ++spaceSequence;
+        for (const [target, targetConnection] of clients) {
+          if (!targetConnection.member || !targetConnection.currentRoomId || target.readyState !== target.OPEN) continue;
+          const payload = JSON.stringify({
+            type: "space.snapshot",
+            ...space.snapshot({
+              seq,
+              participantId: targetConnection.member.id,
+              currentRoomId: targetConnection.currentRoomId,
+            }),
+          });
+          if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
+            target.close(1013, "Receiver is too slow");
+          } else {
+            target.send(payload, (error) => {
+              if (error) target.terminate();
+            });
+          }
+        }
+      };
+
+      const emit = (kind: ControlEvent["kind"], member: Member, roomId: RoomId, reaction?: string) => {
         const event: ControlEvent = {
           seq: ++sequence,
           kind,
-          roomId: ROOM.id,
+          roomId,
           participantId: member.id,
           displayName: member.displayName,
           at: Date.now(),
@@ -196,7 +237,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         };
         const message = { type: "control.event", event };
         for (const [target, targetConnection] of clients) {
-          if (targetConnection.member && target.readyState === target.OPEN) {
+          if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
             const payload = JSON.stringify(message);
             if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
               target.close(1013, "Receiver is too slow");
@@ -214,6 +255,10 @@ export async function createApp(options: CreateAppOptions = {}) {
         if (socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
         if (isBinary) {
+          if (connection.currentRoomId !== ROOM.id) {
+            sendProtocolError("media_unavailable_in_room", "Audio and screen relay are available only in the lobby during this step.");
+            return;
+          }
           if (screenRelay.handleBinary(connection.id, bytes)) return;
           audioRelay.handleBinary(connection.id, bytes);
           return;
@@ -260,8 +305,8 @@ export async function createApp(options: CreateAppOptions = {}) {
             observationId: randomUUID(),
             observedAtServer: new Date().toISOString(),
             connectionId: connection.id,
-            roomId: ROOM.id,
-            member: connection.member,
+            roomId: connection.currentRoomId ?? ROOM.id,
+            member: { ...connection.member },
             report,
           };
           observations.set(observation.observationId, observation);
@@ -286,6 +331,15 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
+        if (
+          connection.currentRoomId !== ROOM.id &&
+          typeof message.type === "string" &&
+          (message.type.startsWith("audio.") || message.type.startsWith("screen."))
+        ) {
+          sendProtocolError("media_unavailable_in_room", "Audio and screen relay are available only in the lobby during this step.");
+          return;
+        }
+
         if (audioRelay.handleControl(connection.id, message)) return;
         if (screenRelay.handleControl(connection.id, message)) return;
 
@@ -293,10 +347,10 @@ export async function createApp(options: CreateAppOptions = {}) {
           if (
             !hasOnlyKeys(message, ["type", "roomId", "displayName"]) ||
             message.type !== "join" ||
-            message.roomId !== ROOM.id ||
+            !isKnownRoom(message.roomId) ||
             typeof message.displayName !== "string"
           ) {
-            rejectControl("invalid_join", "Join the available local room with a short display name.");
+            rejectControl("invalid_join", "Choose an available room and join with a short display name.");
             return;
           }
 
@@ -312,22 +366,85 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
 
           if (members.size >= MAX_ROOM_MEMBERS) {
-            rejectControl("room_full", "The local test room is full.");
+            rejectControl("room_full", "The local space has reached its eight participant limit.");
             return;
           }
 
+          const roomId = message.roomId;
           const member = { id: randomUUID(), displayName };
           connection.member = member;
-          audioRelay.markJoined(connection.id);
-          screenRelay.markJoined(connection.id);
+          connection.currentRoomId = roomId;
+          space.add(member, roomId);
+          if (roomId === ROOM.id) {
+            audioRelay.markJoined(connection.id);
+            screenRelay.markJoined(connection.id);
+          }
           members.set(member.id, member);
-          const event = emit("member.joined", member);
+          const event = emit("member.joined", member, roomId);
+          const room = SPACE_ROOMS.find((candidate) => candidate.id === roomId)!;
           send({
             type: "room.snapshot",
-            room: ROOM,
-            members: [...members.values()],
+            room: { id: room.id, name: room.name },
+            members: space.roomMembers(roomId),
             lastSeq: event.seq,
           });
+          broadcastSpaceState();
+          return;
+        }
+
+        if (message.type === "space.move") {
+          if (!hasOnlyKeys(message, ["type", "direction"]) || !isMoveDirection(message.direction)) {
+            rejectControl("invalid_space_move", "Move one bounded step using up, down, left, or right.");
+            return;
+          }
+          const now = Date.now();
+          connection.moveTimes = connection.moveTimes.filter((moveAt) => now - moveAt < MOVE_WINDOW_MS);
+          if (connection.moveTimes.length >= MAX_MOVES_PER_SECOND) {
+            sendProtocolError("movement_rate_limited", "Movement is arriving too quickly; pause briefly and try again.");
+            return;
+          }
+          connection.moveTimes.push(now);
+          const result = space.move(connection.member.id, message.direction);
+          if (!result.changed) {
+            sendProtocolError("movement_out_of_bounds", "That step is outside this room. Your position was not changed.");
+            return;
+          }
+          broadcastSpaceState();
+          return;
+        }
+
+        if (message.type === "room.switch") {
+          if (!hasOnlyKeys(message, ["type", "roomId"])) {
+            rejectControl("invalid_room_switch", "Room switching accepts only an available room ID.");
+            return;
+          }
+          if (!isKnownRoom(message.roomId)) {
+            sendProtocolError("unknown_room", "That room is not available.");
+            return;
+          }
+          const previousRoomId = connection.currentRoomId!;
+          const nextRoomId = message.roomId;
+          if (previousRoomId !== nextRoomId) {
+            audioRelay.disconnect(connection.id);
+            screenRelay.disconnect(connection.id);
+            registerMediaConnection();
+            emit("member.left", connection.member, previousRoomId);
+            connection.currentRoomId = nextRoomId;
+            space.switchRoom(connection.member.id, nextRoomId);
+            if (nextRoomId === ROOM.id) {
+              audioRelay.markJoined(connection.id);
+              screenRelay.markJoined(connection.id);
+            }
+            emit("member.joined", connection.member, nextRoomId);
+          }
+          const room = SPACE_ROOMS.find((candidate) => candidate.id === nextRoomId)!;
+          send({
+            type: "room.snapshot",
+            room: { id: room.id, name: room.name },
+            members: space.roomMembers(nextRoomId),
+            lastSeq: sequence,
+          });
+          broadcastSpaceState();
           return;
         }
 
@@ -348,7 +465,7 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
         connection.eventTimes.push(now);
-        emit("reaction", connection.member, message.reaction);
+        emit("reaction", connection.member, connection.currentRoomId!, message.reaction);
       });
 
       socket.on("close", () => {
@@ -357,7 +474,9 @@ export async function createApp(options: CreateAppOptions = {}) {
         screenRelay.disconnect(connection.id);
         if (!connection.member) return;
         members.delete(connection.member.id);
-        emit("member.left", connection.member);
+        space.remove(connection.member.id);
+        emit("member.left", connection.member, connection.currentRoomId!);
+        broadcastSpaceState();
       });
 
       socket.on("error", () => {

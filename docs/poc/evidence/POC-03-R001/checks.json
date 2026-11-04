@@ -1,0 +1,50 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T01:26:18.858897+00:00",
+    "finishedAt": "2026-11-04T01:26:20.606121+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T01:26:20.607023+00:00",
+    "finishedAt": "2026-11-04T01:26:21.375106+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t07-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T01:26:21.375558+00:00",
+    "finishedAt": "2026-11-04T01:26:21.451637+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "space-smoke",
+    "command": [
+      "node",
+      "scripts/t07-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T01:26:21.689809+00:00",
+    "finishedAt": "2026-11-04T01:26:28.480898+00:00",
+    "exitCode": 0
+  }
+]

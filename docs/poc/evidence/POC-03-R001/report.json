@@ -1,0 +1,2974 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T07 desktop flow for server-backed Phaser pixel avatars, two-room movement, roster updates, and reduced motion.",
+  "startedAt": "2026-11-04T01:26:21.930Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "topology": {
+    "participants": 2,
+    "browserProcesses": 2,
+    "websocketConnections": 2,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "headless": true,
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "phaserDependency": "4.2.1",
+    "firefoxA": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+    "firefoxB": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "artwork": {
+    "source": "original 16×20 avatar pixel patterns authored in src/client/pixel-space.ts and drawn into Phaser CanvasTextures from a fixed palette",
+    "externalAssetsDownloaded": false,
+    "imageGenerationUsed": false
+  },
+  "clients": {
+    "A": {
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+      "spaceSnapshots": [
+        {
+          "type": "space.snapshot",
+          "seq": 1,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 2,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 3,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 3,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 4,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 5,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": []
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 6,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 7,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 8,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 9,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 10,
+          "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 3
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sentControls": [
+        {
+          "at": "2026-11-04T01:26:26.182Z",
+          "client": "A",
+          "direction": "sent",
+          "rawText": "{\"type\":\"join\",\"roomId\":\"lobby\",\"displayName\":\"Ada\"}",
+          "message": {
+            "type": "join",
+            "roomId": "lobby",
+            "displayName": "Ada"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.488Z",
+          "client": "A",
+          "direction": "sent",
+          "rawText": "{\"type\":\"space.move\",\"direction\":\"right\"}",
+          "message": {
+            "type": "space.move",
+            "direction": "right"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.731Z",
+          "client": "A",
+          "direction": "sent",
+          "rawText": "{\"type\":\"room.switch\",\"roomId\":\"studio\"}",
+          "message": {
+            "type": "room.switch",
+            "roomId": "studio"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.013Z",
+          "client": "A",
+          "direction": "sent",
+          "rawText": "{\"type\":\"room.switch\",\"roomId\":\"lobby\"}",
+          "message": {
+            "type": "room.switch",
+            "roomId": "lobby"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.671Z",
+          "client": "A",
+          "direction": "sent",
+          "rawText": "{\"type\":\"space.move\",\"direction\":\"down\"}",
+          "message": {
+            "type": "space.move",
+            "direction": "down"
+          }
+        }
+      ],
+      "receivedControls": [
+        {
+          "at": "2026-11-04T01:26:26.183Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":1,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755586181}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 1,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755586181
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.183Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"lobby\",\"name\":\"Local test room\"},\"members\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\"}],\"lastSeq\":1}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                "displayName": "Ada"
+              }
+            ],
+            "lastSeq": 1
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.183Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":1,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":2,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 1,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.281Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":2,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586278}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 2,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586278
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.281Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":2,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":2,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 2,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.489Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":3,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":3,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 3,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.731Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":3,\"kind\":\"member.left\",\"roomId\":\"lobby\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755586730}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 3,
+              "kind": "member.left",
+              "roomId": "lobby",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755586730
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.732Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":4,\"kind\":\"member.joined\",\"roomId\":\"studio\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755586731}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 4,
+              "kind": "member.joined",
+              "roomId": "studio",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755586731
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.732Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"studio\",\"name\":\"Studio\"},\"members\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\"}],\"lastSeq\":4}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "studio",
+              "name": "Studio"
+            },
+            "members": [
+              {
+                "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                "displayName": "Ada"
+              }
+            ],
+            "lastSeq": 4
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.732Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":4,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 4,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.825Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":6,\"kind\":\"member.joined\",\"roomId\":\"studio\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586824}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 6,
+              "kind": "member.joined",
+              "roomId": "studio",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586824
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.826Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":5,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":5,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 5,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": []
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.956Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":7,\"kind\":\"member.left\",\"roomId\":\"studio\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586956}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 7,
+              "kind": "member.left",
+              "roomId": "studio",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586956
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.957Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":6,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":2,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 6,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":9,\"kind\":\"member.left\",\"roomId\":\"studio\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755587013}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 9,
+              "kind": "member.left",
+              "roomId": "studio",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755587013
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":10,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755587013}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 10,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755587013
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"lobby\",\"name\":\"Local test room\"},\"members\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\"},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\"}],\"lastSeq\":10}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                "displayName": "Ada"
+              },
+              {
+                "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                "displayName": "Grace"
+              }
+            ],
+            "lastSeq": 10
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":7,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":2,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 7,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.175Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":11,\"kind\":\"member.left\",\"roomId\":\"lobby\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755587174}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 11,
+              "kind": "member.left",
+              "roomId": "lobby",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755587174
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.176Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":8,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 8,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.517Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":9,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 9,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.672Z",
+          "client": "A",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":10,\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":3}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 10,
+            "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 5,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 22,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "finalRender": {
+        "ready": true,
+        "phaserVersion": "4.2.1",
+        "renderer": "WebGL",
+        "renderCount": 135,
+        "renderedAt": "2026-11-04T01:26:27.898Z",
+        "snapshotSeq": 10,
+        "players": [
+          {
+            "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "displayName": "Ada",
+            "roomId": "lobby",
+            "gridX": 5,
+            "gridY": 3,
+            "x": 182.5,
+            "y": 196.5,
+            "targetX": 182.5,
+            "targetY": 196.5,
+            "tweenActive": false,
+            "texture": "t07-avatar-7"
+          },
+          {
+            "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+            "displayName": "Grace",
+            "roomId": "studio",
+            "gridX": 2,
+            "gridY": 2,
+            "x": 625.5,
+            "y": 173.5,
+            "targetX": 625.5,
+            "targetY": 173.5,
+            "tweenActive": false,
+            "texture": "t07-avatar-0"
+          }
+        ]
+      },
+      "finalDom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 10,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 135,
+          "renderedAt": "2026-11-04T01:26:27.898Z",
+          "snapshotSeq": 10,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 3,
+              "x": 182.5,
+              "y": 196.5,
+              "targetX": 182.5,
+              "targetY": 196.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    },
+    "B": {
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0",
+      "spaceSnapshots": [
+        {
+          "type": "space.snapshot",
+          "seq": 2,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 3,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 3,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 4,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 5,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": []
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 6,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 7,
+          "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+          "currentRoomId": "lobby",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                },
+                {
+                  "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                  "displayName": "Grace",
+                  "roomId": "lobby",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": []
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 9,
+          "participantId": "f239e070-2616-47b3-ad80-38127c0762c8",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 2
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "space.snapshot",
+          "seq": 10,
+          "participantId": "f239e070-2616-47b3-ad80-38127c0762c8",
+          "currentRoomId": "studio",
+          "grid": {
+            "width": 16,
+            "height": 10
+          },
+          "rooms": [
+            {
+              "id": "lobby",
+              "name": "Local test room",
+              "style": "sunroom",
+              "players": [
+                {
+                  "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                  "displayName": "Ada",
+                  "roomId": "lobby",
+                  "x": 5,
+                  "y": 3
+                }
+              ]
+            },
+            {
+              "id": "studio",
+              "name": "Studio",
+              "style": "blueprint",
+              "players": [
+                {
+                  "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                  "displayName": "Grace",
+                  "roomId": "studio",
+                  "x": 2,
+                  "y": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sentControls": [
+        {
+          "at": "2026-11-04T01:26:26.280Z",
+          "client": "B",
+          "direction": "sent",
+          "rawText": "{\"type\":\"join\",\"roomId\":\"lobby\",\"displayName\":\"Grace\"}",
+          "message": {
+            "type": "join",
+            "roomId": "lobby",
+            "displayName": "Grace"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.824Z",
+          "client": "B",
+          "direction": "sent",
+          "rawText": "{\"type\":\"room.switch\",\"roomId\":\"studio\"}",
+          "message": {
+            "type": "room.switch",
+            "roomId": "studio"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.956Z",
+          "client": "B",
+          "direction": "sent",
+          "rawText": "{\"type\":\"room.switch\",\"roomId\":\"lobby\"}",
+          "message": {
+            "type": "room.switch",
+            "roomId": "lobby"
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.518Z",
+          "client": "B",
+          "direction": "sent",
+          "rawText": "{\"type\":\"join\",\"roomId\":\"studio\",\"displayName\":\"Grace\"}",
+          "message": {
+            "type": "join",
+            "roomId": "studio",
+            "displayName": "Grace"
+          }
+        }
+      ],
+      "receivedControls": [
+        {
+          "at": "2026-11-04T01:26:26.280Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":2,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586278}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 2,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586278
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.280Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"lobby\",\"name\":\"Local test room\"},\"members\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\"},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\"}],\"lastSeq\":2}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                "displayName": "Ada"
+              },
+              {
+                "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                "displayName": "Grace"
+              }
+            ],
+            "lastSeq": 2
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.281Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":2,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":2,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 2,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.491Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":3,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":3,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 3,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.732Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":3,\"kind\":\"member.left\",\"roomId\":\"lobby\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755586730}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 3,
+              "kind": "member.left",
+              "roomId": "lobby",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755586730
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.734Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":4,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 4,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.825Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":5,\"kind\":\"member.left\",\"roomId\":\"lobby\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586824}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 5,
+              "kind": "member.left",
+              "roomId": "lobby",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586824
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.825Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":6,\"kind\":\"member.joined\",\"roomId\":\"studio\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586824}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 6,
+              "kind": "member.joined",
+              "roomId": "studio",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586824
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.826Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"studio\",\"name\":\"Studio\"},\"members\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\"},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\"}],\"lastSeq\":6}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "studio",
+              "name": "Studio"
+            },
+            "members": [
+              {
+                "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                "displayName": "Ada"
+              },
+              {
+                "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                "displayName": "Grace"
+              }
+            ],
+            "lastSeq": 6
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.826Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":5,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":5,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 5,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": []
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.956Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":7,\"kind\":\"member.left\",\"roomId\":\"studio\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586956}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 7,
+              "kind": "member.left",
+              "roomId": "studio",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586956
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.957Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":8,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"at\":1793755586956}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 8,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "at": 1793755586956
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.957Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"lobby\",\"name\":\"Local test room\"},\"members\":[{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\"}],\"lastSeq\":8}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "lobby",
+              "name": "Local test room"
+            },
+            "members": [
+              {
+                "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                "displayName": "Grace"
+              }
+            ],
+            "lastSeq": 8
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:26.957Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":6,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":2,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 6,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":10,\"kind\":\"member.joined\",\"roomId\":\"lobby\",\"participantId\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"at\":1793755587013}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 10,
+              "kind": "member.joined",
+              "roomId": "lobby",
+              "participantId": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "at": 1793755587013
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.014Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":7,\"participantId\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"currentRoomId\":\"lobby\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":2},{\"id\":\"87245089-fdbd-4352-ae7c-d811c63ffd5f\",\"displayName\":\"Grace\",\"roomId\":\"lobby\",\"x\":2,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 7,
+            "participantId": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+            "currentRoomId": "lobby",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+                    "displayName": "Grace",
+                    "roomId": "lobby",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": []
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.518Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"control.event\",\"event\":{\"seq\":12,\"kind\":\"member.joined\",\"roomId\":\"studio\",\"participantId\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\",\"at\":1793755587516}}",
+          "message": {
+            "type": "control.event",
+            "event": {
+              "seq": 12,
+              "kind": "member.joined",
+              "roomId": "studio",
+              "participantId": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "at": 1793755587516
+            }
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.518Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"room.snapshot\",\"room\":{\"id\":\"studio\",\"name\":\"Studio\"},\"members\":[{\"id\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\"}],\"lastSeq\":12}",
+          "message": {
+            "type": "room.snapshot",
+            "room": {
+              "id": "studio",
+              "name": "Studio"
+            },
+            "members": [
+              {
+                "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                "displayName": "Grace"
+              }
+            ],
+            "lastSeq": 12
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.518Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":9,\"participantId\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":2}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 9,
+            "participantId": "f239e070-2616-47b3-ad80-38127c0762c8",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "at": "2026-11-04T01:26:27.672Z",
+          "client": "B",
+          "direction": "received",
+          "rawText": "{\"type\":\"space.snapshot\",\"seq\":10,\"participantId\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"currentRoomId\":\"studio\",\"grid\":{\"width\":16,\"height\":10},\"rooms\":[{\"id\":\"lobby\",\"name\":\"Local test room\",\"style\":\"sunroom\",\"players\":[{\"id\":\"91a672c0-d181-44ea-80e3-4edbff5865f7\",\"displayName\":\"Ada\",\"roomId\":\"lobby\",\"x\":5,\"y\":3}]},{\"id\":\"studio\",\"name\":\"Studio\",\"style\":\"blueprint\",\"players\":[{\"id\":\"f239e070-2616-47b3-ad80-38127c0762c8\",\"displayName\":\"Grace\",\"roomId\":\"studio\",\"x\":2,\"y\":2}]}]}",
+          "message": {
+            "type": "space.snapshot",
+            "seq": 10,
+            "participantId": "f239e070-2616-47b3-ad80-38127c0762c8",
+            "currentRoomId": "studio",
+            "grid": {
+              "width": 16,
+              "height": 10
+            },
+            "rooms": [
+              {
+                "id": "lobby",
+                "name": "Local test room",
+                "style": "sunroom",
+                "players": [
+                  {
+                    "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+                    "displayName": "Ada",
+                    "roomId": "lobby",
+                    "x": 5,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "studio",
+                "name": "Studio",
+                "style": "blueprint",
+                "players": [
+                  {
+                    "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+                    "displayName": "Grace",
+                    "roomId": "studio",
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "sockets": [
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 3,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 16,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        },
+        {
+          "url": "wss://localhost:4173/ws",
+          "sentTextFrames": 1,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 4,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "finalRender": {
+        "ready": true,
+        "phaserVersion": "4.2.1",
+        "renderer": "WebGL",
+        "renderCount": 31,
+        "renderedAt": "2026-11-04T01:26:27.899Z",
+        "snapshotSeq": 10,
+        "players": [
+          {
+            "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+            "displayName": "Ada",
+            "roomId": "lobby",
+            "gridX": 5,
+            "gridY": 3,
+            "x": 182.5,
+            "y": 196.5,
+            "targetX": 182.5,
+            "targetY": 196.5,
+            "tweenActive": false,
+            "texture": "t07-avatar-7"
+          },
+          {
+            "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+            "displayName": "Grace",
+            "roomId": "studio",
+            "gridX": 2,
+            "gridY": 2,
+            "x": 625.5,
+            "y": 173.5,
+            "targetX": 625.5,
+            "targetY": 173.5,
+            "tweenActive": false,
+            "texture": "t07-avatar-0"
+          }
+        ]
+      },
+      "finalDom": {
+        "connectionStatus": "Connected to Studio",
+        "currentRoom": "studio",
+        "snapshotSeq": 10,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "studio",
+        "roster": [
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 31,
+          "renderedAt": "2026-11-04T01:26:27.899Z",
+          "snapshotSeq": 10,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 3,
+              "x": 182.5,
+              "y": 196.5,
+              "targetX": 182.5,
+              "targetY": 196.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "at": "2026-11-04T01:26:26.383Z",
+      "client": "A",
+      "stage": "both-in-lobby",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 2,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 20,
+          "renderedAt": "2026-11-04T01:26:26.375Z",
+          "snapshotSeq": 2,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 113.5,
+              "y": 173.5,
+              "targetX": 113.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:26.386Z",
+      "client": "B",
+      "stage": "both-in-lobby",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 2,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 12,
+          "renderedAt": "2026-11-04T01:26:26.374Z",
+          "snapshotSeq": 2,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 113.5,
+              "y": 173.5,
+              "targetX": 113.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:26.618Z",
+      "client": "A",
+      "stage": "keyboard-move-acknowledged",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 3,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 34,
+          "renderedAt": "2026-11-04T01:26:26.618Z",
+          "snapshotSeq": 3,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 3,
+              "gridY": 2,
+              "x": 136.5,
+              "y": 173.5,
+              "targetX": 136.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:26.620Z",
+      "client": "B",
+      "stage": "keyboard-move-rendered-on-peer",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 3,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 34,
+          "renderedAt": "2026-11-04T01:26:26.613Z",
+          "snapshotSeq": 3,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 3,
+              "gridY": 2,
+              "x": 136.5,
+              "y": 173.5,
+              "targetX": 136.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:26.859Z",
+      "client": "A",
+      "stage": "both-in-studio",
+      "dom": {
+        "connectionStatus": "Connected to Studio",
+        "currentRoom": "studio",
+        "snapshotSeq": 5,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "studio",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 47,
+          "renderedAt": "2026-11-04T01:26:26.833Z",
+          "snapshotSeq": 5,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 694.5,
+              "y": 173.5,
+              "targetX": 694.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:26.860Z",
+      "client": "B",
+      "stage": "both-in-studio",
+      "dom": {
+        "connectionStatus": "Connected to Studio",
+        "currentRoom": "studio",
+        "snapshotSeq": 5,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "studio",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 51,
+          "renderedAt": "2026-11-04T01:26:26.847Z",
+          "snapshotSeq": 5,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 694.5,
+              "y": 173.5,
+              "targetX": 694.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.039Z",
+      "client": "A",
+      "stage": "studio-empty-and-still-listed",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 7,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada",
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 61,
+          "renderedAt": "2026-11-04T01:26:27.038Z",
+          "snapshotSeq": 7,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "87245089-fdbd-4352-ae7c-d811c63ffd5f",
+              "displayName": "Grace",
+              "roomId": "lobby",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 113.5,
+              "y": 173.5,
+              "targetX": 113.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.210Z",
+      "client": "A",
+      "stage": "grace-left",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 8,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 71,
+          "renderedAt": "2026-11-04T01:26:27.200Z",
+          "snapshotSeq": 8,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.549Z",
+      "client": "B",
+      "stage": "grace-rejoined-studio",
+      "dom": {
+        "connectionStatus": "Connected to Studio",
+        "currentRoom": "studio",
+        "snapshotSeq": 9,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "studio",
+        "roster": [
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 6,
+          "renderedAt": "2026-11-04T01:26:27.545Z",
+          "snapshotSeq": 9,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 2,
+              "x": 182.5,
+              "y": 173.5,
+              "targetX": 182.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.840Z",
+      "client": "A",
+      "stage": "reduced-motion-settled",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 10,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 128,
+          "renderedAt": "2026-11-04T01:26:27.836Z",
+          "snapshotSeq": 10,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 3,
+              "x": 182.5,
+              "y": 196.5,
+              "targetX": 182.5,
+              "targetY": 196.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.904Z",
+      "client": "A",
+      "stage": "final",
+      "dom": {
+        "connectionStatus": "Connected to Local test room",
+        "currentRoom": "lobby",
+        "snapshotSeq": 10,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "lobby",
+        "roster": [
+          "Ada"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 135,
+          "renderedAt": "2026-11-04T01:26:27.898Z",
+          "snapshotSeq": 10,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 3,
+              "x": 182.5,
+              "y": 196.5,
+              "targetX": 182.5,
+              "targetY": 196.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-11-04T01:26:27.911Z",
+      "client": "B",
+      "stage": "final",
+      "dom": {
+        "connectionStatus": "Connected to Studio",
+        "currentRoom": "studio",
+        "snapshotSeq": 10,
+        "renderReady": true,
+        "canvasWidth": 1040,
+        "canvasHeight": 414,
+        "canvasClientWidth": 1028,
+        "canvasClientHeight": 409,
+        "currentRoomButton": "studio",
+        "roster": [
+          "Grace"
+        ],
+        "renderState": {
+          "ready": true,
+          "phaserVersion": "4.2.1",
+          "renderer": "WebGL",
+          "renderCount": 31,
+          "renderedAt": "2026-11-04T01:26:27.899Z",
+          "snapshotSeq": 10,
+          "players": [
+            {
+              "id": "91a672c0-d181-44ea-80e3-4edbff5865f7",
+              "displayName": "Ada",
+              "roomId": "lobby",
+              "gridX": 5,
+              "gridY": 3,
+              "x": 182.5,
+              "y": 196.5,
+              "targetX": 182.5,
+              "targetY": 196.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-7"
+            },
+            {
+              "id": "f239e070-2616-47b3-ad80-38127c0762c8",
+              "displayName": "Grace",
+              "roomId": "studio",
+              "gridX": 2,
+              "gridY": 2,
+              "x": 625.5,
+              "y": 173.5,
+              "targetX": 625.5,
+              "targetY": 173.5,
+              "tweenActive": false,
+              "texture": "t07-avatar-0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    "both-in-lobby.png",
+    "movement-synchronized.png",
+    "both-in-studio.png",
+    "studio-empty.png",
+    "member-left.png",
+    "grace-rejoined.png",
+    "reduced-motion.png"
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": []
+  },
+  "limitations": {
+    "physicalPhone": "not-tested; the real phone check remains deferred",
+    "mobileViewport": "not-tested by this desktop flow",
+    "mediaCaptureOrPlayback": "not-tested; no microphone, screen, audio, or video source was requested",
+    "screenReaderOrKeyboardCompatibility": "not-tested beyond the focused map key and its visible direction buttons",
+    "persistence": "room membership and positions remain process-memory state",
+    "capacityAndLatency": "not-claimed; two local desktop browsers only"
+  },
+  "renderer": {
+    "phaserVersion": "4.2.1",
+    "actualRenderer": "WebGL",
+    "fallbackRule": "Phaser.AUTO chooses WebGL when available and falls back to Canvas; the report records Phaser's actual renderer type.",
+    "diagnostics": "window.__t07SpaceRender and the canvas host dataset are written only by Phaser POST_RENDER after its scene objects render."
+  },
+  "finishedAt": "2026-11-04T01:26:27.911Z"
+}

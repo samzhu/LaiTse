@@ -1,0 +1,34 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (195.49325ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (167.111875ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (105.2905ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (81.717416ms)
+✔ invalid capability reports are rejected and not stored (5.269541ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (1.02175ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.138791ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.332292ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.340209ms)
+✔ new future output samples do not hide a due audio-master sample (0.133375ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (117.590875ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (170.413917ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (3.336792ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (86.62025ms)
+✔ the application serves health and a built-in room catalogue (48.002417ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.544875ms)
+✔ the websocket rejects cross-origin clients before joining (1.815042ms)
+✔ malformed or oversized control frames close without being broadcast (3.759709ms)
+✔ clients cannot select arbitrary rooms (1.749958ms)
+✔ display names longer than the server limit are rejected (1.349792ms)
+✔ control events reject client-supplied fields outside the protocol (1.670875ms)
+✔ the room has a fixed member limit (10.393125ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.901666ms)
+✔ two rooms retain members and server positions synchronize over the same space snapshot (37.978959ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (65.331291ms)
+✔ switching rooms ends lobby media and rejects media controls and bytes outside the lobby (5.089875ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 682.512333

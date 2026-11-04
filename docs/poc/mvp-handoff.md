@@ -99,3 +99,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 緩衝候選：現有PCM500ms；decoded video最多16幀，decoder pending最多8筆，總WS1.5MiB／VP8每packet512KiB不變。前兩輪換來源有decoded卻render0、第三輪晚加入被2筆decode門檻退訂；修正及policy模型/原始反例保存在[R002](evidence/POC-02-R002/README.md)。門檻仍需依MVP裝置/尺寸/網路實測，不是容量或穩定性保證。
 - 最終一服務三Firefox合成閉環可行；同接收端3個聲光週期64.77/151.71/129.35ms只是graph/render觀測，mapping誤差未校準，不宣稱原150ms品質或p95通過。只有軟體pipeline，硬體輸入/喇叭/螢幕/真人/手機/跨裝置時鐘待測，完整POC-02 Inconclusive。
 - SOL-008：可延續`media-timeline.ts`的純時基/選幀seam與5個clock回歸、late-join gating契約、`t06-smoke.mjs`色碼marker/世代/重新訂閱及schema2下載。實際窗口/取樣條件與null mappingErrorBound/E2E均保留，不把排程差當實測偏移。測試注入只在script；正式商品需整理診斷欄位、固定codec/房間及同步/背壓/恢復策略。SOL-006的恢復仍由後續POC驗證，時基部分可參考本輪候選。
+
+## T07／POC-03-R001：SOL-004、SOL-008（2026-11-04）
+
+- SOL-004候選：Phaser4.2.1／MIT、原創程式像素材質、SpacePanel與pixel-space renderer adapter；現有WS加server權威space model／snapshot／move／room.switch，兩房各16×10、最多8人、24move/sec上限，非容量驗收。兩真Firefox實際WebGL與跨端物件位置吻合；鍵盤focus、明確房按鈕、減少動態可行，手機仍待測。獨立renderer與space model可供MVP重用，非直接整包商品化。
+- SOL-008：可沿用tests/space.integration.test.mjs、scripts/t07-smoke.mjs、POST_RENDER診斷及[證據](evidence/POC-03-R001/README.md)。26核心/build通過；初期測試等待離線端等缺陷修正並補逾時。render資料是軟體物件座標，不是裝置效能/觸控/網路品質證據。
+- 單一連線身份及room權威、切房先unmount影音／server清理舊relay可參考；此步Studio只做空間，拒絕影音。共享地圖含兩房人物，People here僅當前房間，不構成私密成員權限；正式角色、可見性及跨房影音須T08/後續設計驗證。
+- MVP前重整：固定房間/出生點、process-memory身份與位置、公開snapshot策略、debug與POC英文操作；補商品美術、碰撞/門口等產品需求、持久化/恢復、必要裝置與無障礙、資源卸載/版本升級。Phaser.AUTO實測WebGL，Canvas未測且v4deprecated；不假設其他裝置相容。保留MIT notices及精確lock，新增依賴不綁SaaS，inventory非完整授權/弱點稽核。
