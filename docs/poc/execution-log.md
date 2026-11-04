@@ -246,3 +246,15 @@ root production build/typecheck、完整47/47與首次三Firefox157流程08:47:2
 新增5契約含remove舊proof失效/假token/1KiB、clock seam的離線10min TTL/512cap；active不因prune到期，未過期record不提前淘汰。root source檢視收斂gate revision/同房及mode不刷新、只處理自身leave、offline cancel可達、舊events清理與StrictMode retry arm；script檢視收斂新socket/ACK相關性與有界hold forwarding、當前密碼。這些是執行前修正，本輪沒有虛構failed run；首次完整/browser皆通。
 
 保存為斷言摘要/代表圖，未保留raw身份/逐包控制trace；root實際看圖/讀回source-match，無獨立逐包重放宣稱。程序內短期bearer不是帳號/耐久；offline cancel只清本頁且server等TTL，control恢復不auto媒體，8次耗盡/半開/手機/弱網/耐久/容量/CloudRun/完整POC-04未驗。SOL-003/005/006/008及README/需求狀態/計畫/票面/協作同步，全部writer與runtime停止釋出，程式+紀錄本機commit，不push/遠端票/T13/部署。
+
+## T13／POC-04-R002：影音解碼/接收恢復（2026-11-04）
+
+人類指定同頁影音斷線後恢復訂閱/播放、輕量與程式+紀錄commit，基線0ade7c9；#14已讀回，R002配發。兩Luna xhigh分source/tests/README與smoke，root設計/驗收/權威紀錄/Git。原接收意圖綁room、最新快照後恢復，manual stop/interaction/switch/Leave不復活；來源/舊權限不auto，Audio手勢例外分列。實作中，未判結果；20次/p95/手機/弱網/完整POC-04及T14/雲不在本輪核心。
+
+### T13桌面核心與分段驗收完成
+
+production build/typecheck、完整54/54一次通過，7新恢復＋5既有timeline聚焦12/12。client保存同頁room-bound接收意圖，fresh本socket room/participation後一次訂閱；新controller/timeline取當前config/clock/keyframe，manual stop/interaction/換房/leave清意圖、refresh仍手動媒體，來源/舊權限不auto。
+
+[R002](evidence/POC-04-R002/README.md)保留三次full腳本失敗（初次keyframe等待順序、Continue locator、最後sender同類等待順序）及停止整套後publisher-only窄驗Pass。third接收段已實證connection2 authority後audio/screen subscribe，samples0→4672／frames0→1、display3→4、audio-master同clock；手動停止再close connection3無subscribe，sender tracks ended/無auto capture/start/host。窄驗正常claim/手動新來源generation1→2/新clock，participant13568samples/2frames、display7frames。核心分段可行，不宣稱最終full腳本整段通過。
+
+root由白名單control序列獨立讀回9～10ms authority、單次163/325/533ms觀測render（非p95/E2E）；看中斷/恢復/新來源三圖，指紋一致。這次Firefox自動恢復無需gesture，手勢分支/第二輪locator瞬間原因未獨立驗證；20次/5s門檻、手機/真人/弱網/耐久/完整POC-04仍Inconclusive。應用source未latepatch，server/relay/協定/依賴/Phaser未改。SOL-002/006/008與README/需求狀態/計畫/票面/協作同步，runtime/writer停止釋出，程式+紀錄本機commit，不push/遠端票/T14/部署。

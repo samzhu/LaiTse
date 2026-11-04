@@ -1,0 +1,9 @@
+# T13 smoke authoring record
+
+Scope: `scripts/media-recovery-smoke.mjs` and this directory only. The script follows the T13 / POC-04-R002 dispatch and reuses the trusted-CA isolated Firefox route pattern from T12 plus synthetic A/V source and real receiver counter checks from T06.
+
+The short flow uses three isolated Firefox profiles: a managed host with test-created oscillator audio and animated canvas video, a participant who manually starts both receive channels, and a read-only display that auto-watches video on its existing page. Two receivers are held during one controlled close/reconnect cycle; after the new session, room snapshot, and participation snapshot, the script checks the new connection's subscribe ACKs/config, keyframe evidence, clock mapping, and actual AudioWorklet/VP8 counter increases. A second participant close checks that manual stop remains off. A final host close checks ended synthetic tracks and no restored host claim/capture/start; a normal re-claim and explicit source restart must use new generations/clock and decode/render again.
+
+The WebSocket trace keeps only bounded, per-connection control summaries and binary-frame counts. The held route buffers bounded volatile payloads and forwards each original payload once, without reading binary media. Credentials and resume tokens are summarized as presence only; no storage dump or media payload is kept. Reconnect and recovered screenshots are written before profiles close. TLS uses a local CA in isolated Firefox profiles; no certificate bypass or autoplay preference is set.
+
+Validation is source-only. The exact pinned Node v26.13.0 binary passed `node --check`; see `syntax-check.log`. The smoke itself, server, and browser were not run. Root owns all browser/runtime evidence after this script is saved and explicitly released.

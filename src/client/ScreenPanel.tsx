@@ -6,17 +6,20 @@ import type { ParticipationMode } from "./entry";
 type ScreenPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
+  roomId?: string;
   publishAllowed?: boolean;
   hostControlsEnabled?: boolean;
   participationMode?: ParticipationMode;
   pendingModeTarget?: ParticipationMode | null;
   onModeQuiesced?: () => void;
+  onReceiveIntentChange?: (enabled: boolean) => void;
   readOnly?: boolean;
   autoWatch?: boolean;
 };
 
-export function ScreenPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, onModeQuiesced, readOnly = false, autoWatch = false }: ScreenPanelProps) {
+export function ScreenPanel({ socket, timeline, roomId = "", publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, onModeQuiesced, onReceiveIntentChange, readOnly = false, autoWatch = false }: ScreenPanelProps) {
   const [state, setState] = useState<ScreenSnapshot>({ ...INITIAL_SCREEN_STATE });
+  const [receiveIntent, setReceiveIntent] = useState(false);
   const controllerRef = useRef<ScreenController | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -25,26 +28,46 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
     if (!socket || !canvas) return;
     const controller = new ScreenController(socket, canvas, timeline, setState);
     controllerRef.current = controller;
-    if (autoWatch) controller.startWatching();
     return () => {
       controller.dispose();
       if (controllerRef.current === controller) controllerRef.current = null;
     };
-  }, [socket, timeline, autoWatch]);
+  }, [socket, timeline]);
+
+  useEffect(() => {
+    if (!autoWatch) return;
+    setReceiveIntent(true);
+    onReceiveIntentChange?.(true);
+    controllerRef.current?.startWatching();
+  }, [socket, timeline, autoWatch, onReceiveIntentChange]);
 
   useEffect(() => {
     if (pendingModeTarget !== "interaction") return;
     controllerRef.current?.stopShare("已切換為只互動；本機分享來源已停止。", true);
     controllerRef.current?.stopWatching(true);
+    setReceiveIntent(false);
+    onReceiveIntentChange?.(false);
     onModeQuiesced?.();
-  }, [pendingModeTarget, onModeQuiesced]);
+  }, [pendingModeTarget, onModeQuiesced, onReceiveIntentChange]);
 
   if (!socket) return null;
 
   const isSharing = state.publisherState === "sharing";
   const isStartingShare = state.publisherState === "starting";
-  const isWatching = state.receiverState === "subscribing" || state.receiverState === "waiting" || state.receiverState === "rendering";
+  const isWatching = state.receiverSubscribed || state.receiverState === "subscribing" || state.receiverState === "waiting" || state.receiverState === "rendering";
   const settings = state.trackSettings;
+
+  function startWatching() {
+    setReceiveIntent(true);
+    onReceiveIntentChange?.(true);
+    controllerRef.current?.startWatching();
+  }
+
+  function stopWatching() {
+    setReceiveIntent(false);
+    onReceiveIntentChange?.(false);
+    controllerRef.current?.stopWatching();
+  }
 
   return (
     <section
@@ -54,8 +77,11 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
       hidden={participationMode === "interaction" || pendingModeTarget === "interaction"}
       style={participationMode === "interaction" || pendingModeTarget === "interaction" ? { display: "none" } : undefined}
       data-read-only={readOnly}
+      data-room-id={roomId}
+      data-receive-intent={receiveIntent}
       data-publisher-state={state.publisherState}
       data-receiver-state={state.receiverState}
+      data-receiver-subscribed={state.receiverSubscribed}
       data-sent-frames={state.sentFrames}
       data-received-frames={state.receivedFrames}
       data-decoded-frames={state.decodedFrames}
@@ -78,7 +104,7 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
         </div>
         <span className="screen-profile">{readOnly ? "唯讀接收 · VP8" : "VP8 · WebCodecs"}</span>
       </div>
-        <p className="screen-intro">
+      <p className="screen-intro">
         分享者由按鈕呼叫瀏覽器來源選擇器；畫面和麥克風各自啟停。晚加入會取得目前設定並等待下一個關鍵影格。
       </p>
 
@@ -103,12 +129,12 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
         <div className="screen-control-group">
           <div>
             <h3>接收畫面</h3>
-            <p className={`screen-state ${state.receiverState === "error" ? "is-error" : ""}`} role="status" data-screen-status="receiver">{state.receiverMessage}</p>
+            <p className={`screen-state ${state.receiverState === "error" ? "is-error" : ""}`} role="status" data-testid="screen-recovery-status" data-screen-status="receiver" data-receive-intent={receiveIntent} data-room-id={roomId} data-receiver-state={state.receiverState} data-subscribed={state.receiverSubscribed} data-sync-clock-id={state.syncClockId ?? ""}>{state.receiverMessage}</p>
           </div>
           {isWatching ? (
-            <button className="quiet-button" onClick={() => controllerRef.current?.stopWatching()}>停止觀看並清除</button>
+            <button className="quiet-button" data-testid="screen-stop-watching" onClick={stopWatching}>停止觀看並清除</button>
           ) : (
-            <button className="primary-button" onClick={() => controllerRef.current?.startWatching()}>開始觀看分享</button>
+            <button className="primary-button" data-testid="screen-start-watching" onClick={startWatching}>開始觀看分享</button>
           )}
         </div>
       </div>

@@ -1,0 +1,22 @@
+{
+  "node": "v26.13.0",
+  "observedCommands": [
+    {
+      "command": [
+        ".tools/node-v26.13.0-darwin-arm64/bin/node",
+        "--check",
+        "scripts/media-recovery-smoke.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        ".tools/node-v26.13.0-darwin-arm64/bin/node",
+        "--check",
+        "scripts/control-reconnect-smoke.mjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "note": "Saved readback of root tool results after final script patches; no additional runtime flow implied."
+}

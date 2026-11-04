@@ -1,0 +1,15 @@
+{
+  "src/client/App.tsx": "54d00978e247600d37f487e607feb63df51c451b8b82124ef329ba46c89948c6",
+  "src/client/DisplayApp.tsx": "d5f26400dbdfdef81a8028b60ad52f2e25233c898a3947c3ef8176d2f4424174",
+  "src/client/AudioPanel.tsx": "12d9d23f2021acd31e5f91782b1938497ae8f19a054305e32544cc31ecd69e02",
+  "src/client/ScreenPanel.tsx": "7221fffe46af04262071add2961f411347ee8f599bc3f911dbcae4f0b11b822e",
+  "src/client/audio.ts": "0099e7613e0f5b4cde4981e683721cb2e42091c141d8e3db1fdfd775ff45d7c2",
+  "src/client/screen.ts": "1a30a51ed43e381d20bc7af74e75bb34b93065c43bb6f77e4c17c9bd8146ac8e",
+  "src/client/media-recovery.ts": "f89e2707070c6038cfec2f1c8298563c5407992d030819a90c47eb07a4060932",
+  "tests/media-recovery.integration.test.mjs": "0476814249c91692fb0ef23dac61aadff81fdcb73a33bce77ecd019cd4a12522",
+  "package.json": "4c3838eb5b32fb54216449a4cceb55b49aa9b889be58ea4484b9a90fb67f3542",
+  "package-lock.json": "ea1e69322427ed0addf4f45252a69de119b58e8726faf46c3724ca67600cef1d",
+  "src/server/app.ts": "a91f9400a0a6a3cd3f8b405f5fb4b3a9b219ae4645b00fc5797acb375ca58e11",
+  "src/server/audio-relay.ts": "7454687f49492c0bcfd700d5a5a289efee856d53630493af2ea6c4b6c61a3b9d",
+  "src/server/screen-relay.ts": "6e3111d696626375cdd9d3df39c1aefe539048fe68ec99d93e559c88b9f900e5"
+}

@@ -177,3 +177,13 @@ R007桌面核心驗收完成：42核心/build/typecheck與三Firefox成功，直
 基線133684b；人類「繼續下一個」已完成T12控制核心。source與兩位Luna分別明確STOP交接後root build/typecheck/完整47與首次三Firefox21秒流程通過；原身份/房間/最新gate與權限/去重8,696ms過期/active Leave成功。root已實際看兩圖、核對去識別摘要與build指紋，沒有raw逐包重放證據宣稱。R001/README/SOL-003/005/006/008、需求狀態/計畫/票面/協作索引已同步。
 
 root為最後唯一writer，server/Firefox/profiles已停止清理，cleanup讀回4173無listener、自有profile無process。程式與驗測紀錄同一本機commit，既有AGENTS.md/.scratch保留未stage，不push/遠端票/T13/部署。媒體恢復、實體弱網/半開、手機、耐久/容量/完整POC-04仍待。下一票須人類指示，不自行接續。
+
+## T13啟動checkpoint（2026-11-04）
+
+人類要求T13輕量核心/用法、程式+紀錄commit，基線0ade7c9、R002票面/host已保存。完整writer與設計scope在dispatch，T13-IMPL／T13-SMOKE兩Luna xhigh已啟動；root獨占docs/Git/runtime，不搶source/script writer。source預設client+新tests，server/manifest/lock/Phaser/互動唯讀；不改捕捉權限語意/不auto發布。待saved/readback/STOP才能rootbuild/接管，尚未runtime。AGENTS/.scratch原有未追蹤保留不stage。
+
+## T13最終checkpoint（2026-11-04）
+
+人類T13輕量core/用法+程式紀錄commit已完成分段驗收，基線0ade7c9，R002。54核心/typecheck/build一次通過，交接source指紋未變；third接收恢復實播/stop不復活/sender無auto已證明，最後publisher-only正常claim與generation2/新clock實播通過。3次full腳本失敗與窄修保留，停止整套後不重做receiver，最終full僅syntax未整段再跑。root seq/config/clock/render讀回/3圖實看完成。
+
+兩Luna都STOP釋出，root完成SOL/需求/計畫/票面/README/協作同步，server/Firefox/profile已清理，4173無listener。程式+紀錄同一本機commit，既有AGENTS/.scratch未stage，不push/遠端票/T14/部署；gesture/手機/真人/20次p95/弱網/耐久/完整POC-04待補。下一項仍由人類指定。

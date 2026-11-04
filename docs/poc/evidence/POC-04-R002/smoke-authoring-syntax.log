@@ -1,0 +1,5 @@
+Node: /Users/samzhu/workspace_herdr/LaiTse/.tools/node-v26.13.0-darwin-arm64/bin/node
+Version: v26.13.0
+Command: /Users/samzhu/workspace_herdr/LaiTse/.tools/node-v26.13.0-darwin-arm64/bin/node --check scripts/media-recovery-smoke.mjs
+Result: PASS (exit 0)
+Scope: syntax only; no server or browser runtime was started.

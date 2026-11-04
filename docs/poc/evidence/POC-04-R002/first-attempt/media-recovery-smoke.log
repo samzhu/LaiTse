@@ -1,0 +1,3 @@
+[T13] trusted-local-catalogue-confirms-locked-managed-studio {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T13] host-participant-and-readonly-display-joined-through-normal-room-controls {"roomId":"studio","participantRole":"participant","displayRole":"display"}
+[T13] failed Timed out waiting for host received screen.keyframeRequest on connection 1.

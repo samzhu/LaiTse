@@ -1,0 +1,85 @@
+{
+  "status": "core-pass-from-separate-legs",
+  "reviewer": "root",
+  "productionSourceMatchesBuild": true,
+  "receiverEvidence": "third-attempt/desktop/media-recovery-report.json (overall script failed later at publisher test ordering; receiver assertions passed)",
+  "receiverFreshAuthorityAndRender": [
+    {
+      "client": "participant",
+      "connectionIndex": 2,
+      "channel": "audio",
+      "authoritySequence": 6,
+      "subscribeSequence": 12,
+      "streamSequence": 14,
+      "codec": "opus",
+      "generation": 1,
+      "clockId": "0be59a1a-4c2c-4b70-8ea3-4d05f381c41a",
+      "baseline": 0,
+      "renderAfter": 4672,
+      "authorityToSubscribeMs": 26,
+      "routeReleaseToAuthorityMs": 10,
+      "routeReleaseToObservedRenderMs": 163
+    },
+    {
+      "client": "participant",
+      "connectionIndex": 2,
+      "channel": "screen",
+      "authoritySequence": 6,
+      "subscribeSequence": 9,
+      "streamSequence": 11,
+      "codec": "vp8",
+      "generation": 1,
+      "clockId": "0be59a1a-4c2c-4b70-8ea3-4d05f381c41a",
+      "baseline": 0,
+      "renderAfter": 1,
+      "authorityToSubscribeMs": 11,
+      "routeReleaseToAuthorityMs": 10,
+      "routeReleaseToObservedRenderMs": 325
+    },
+    {
+      "client": "display",
+      "connectionIndex": 2,
+      "channel": "screen",
+      "authoritySequence": 6,
+      "subscribeSequence": 11,
+      "streamSequence": 13,
+      "codec": "vp8",
+      "generation": 1,
+      "clockId": "0be59a1a-4c2c-4b70-8ea3-4d05f381c41a",
+      "baseline": 3,
+      "renderAfter": 4,
+      "authorityToSubscribeMs": 16,
+      "routeReleaseToAuthorityMs": 9,
+      "routeReleaseToObservedRenderMs": 533
+    }
+  ],
+  "stoppedParticipantConnection": 3,
+  "stoppedSubscribeCount": 0,
+  "publisherEvidence": "publisher-desktop/media-recovery-report.json (publisher-only passed)",
+  "publisherRestart": {
+    "name": "normal-claim-and-manual-source-restart-renders-new-generation-clock",
+    "atMs": 8077,
+    "audioGeneration": 2,
+    "screenGeneration": 2,
+    "oldClockId": "46d8c903-294f-402c-bb6f-db32f073754c",
+    "newClockId": "69a394b0-8101-4ffc-b8ff-18198d77c6b3",
+    "participantAudioRenderedSamples": 13568,
+    "participantScreenRenderedFrames": 2,
+    "displayScreenRenderedFrames": 7
+  },
+  "audioGestureEvidence": [
+    {
+      "phase": "participant-recovered-audio",
+      "result": "automatic-playback",
+      "stateBefore": "ready",
+      "clickedOrdinaryContinue": false,
+      "renderedAtMs": 6952
+    }
+  ],
+  "fullCombinedFinalScript": "syntax checked, not rerun after narrowing to publisher leg",
+  "imagesActuallyViewed": [
+    "third-attempt/desktop/participant-media-reconnecting.png",
+    "third-attempt/desktop/participant-media-recovered.png",
+    "publisher-desktop/display-manual-restart.png"
+  ]
+}

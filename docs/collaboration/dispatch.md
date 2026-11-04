@@ -162,3 +162,32 @@ T12-SMOKE已saved/readback/STOP釋出script/smoke-authoring，語法通過且未
 root production build/typecheck、完整47/47及首次三Firefox21秒流程通過，source交接指紋未變，script只補成功回復起始密碼。participant/host/display受控close同身份恢復、切房refresh/新gate/去重TTL與active Leave成功；root實際看中斷/恢復圖、摘要/指紋讀回。保存非raw逐包trace，不作超出摘要的重放宣稱。47核心另覆remove/假proof/size/clock邊界。
 
 全部agent已明確STOP釋出，root唯一writer完成文件/SOL/需求/票面/README同步、runtime cleanup讀回4173與自有profiles無process。程式+R001紀錄本機commit後writer釋出；保留既有AGENTS/.scratch未追蹤，不stage/push/遠端票/T13/部署。T12桌面控制核心Pass，媒體/弱網/手機/耐久/完整POC-04仍未驗。
+
+## T13／POC-04-R002（2026-11-04）
+
+人類明確要求T13影音斷線恢復訂閱/播放核心與用法、輕量、程式+紀錄本機commit；#14「媒體解碼與發布權恢復」已讀回，基線0ade7c9。原20次/p95/手機品質不是本輪前置，不修改門檻或把單點當穩定；本步只判桌面合成核心，完整票面/POC-04待補。沿用product-collaboration-workflow與implement，root設計/驗收/Git。
+
+- **資源/唯一writer**：T13-IMPL／Luna xhigh唯一可寫client App.tsx、DisplayApp.tsx、AudioPanel.tsx、ScreenPanel.tsx、audio.ts、screen.ts、media-timeline.ts（僅有具體恢復缺陷才窄修）、新增media-recovery.ts（如需）、tests/media-recovery.integration.test.mjs及必要同主題unit seam、README.md、.scratch/t13/implementation-checks/。server app/audio-relay/screen-relay預設唯讀，既有subscribe會回最新config/keyframe gate，若確有缺陷先回root窄patch建議/交接再擴寫。manifest/lock/vendor、control-resume/reconnect/room-access、Phaser/互動Store不變，無新依賴/協議大改。T13-SMOKE／另一Luna xhigh唯一可寫scripts/media-recovery-smoke.mjs及.scratch/t13/smoke-authoring/，唯讀上述source/既有scripts，不跑runtime、不改source/docs/README。root獨占docs/poc、docs/collaboration/需求狀態/.gitignore、server/browser、Git；兩位禁止commit/push/遠端票/T14/部署與AGENTS/.agents改動。
+- **接收恢復設計/不變條件**：本步同頁意外WS close/resume恢復使用者原本開啟的audio/screen接收意圖，連同room綁定；初次join/使用者明確stop/interaction模式/明確切房/Leave不得自動開媒體。receiver controller dispose與手動stop要分開，dispose不可把想恢復的意圖誤清；模式/房間變更則清意圖，ACK遺失恢復到不同server房時不能將舊房意圖搬過去。full reload仍T12控制恢復、媒體需手動開始，跨刷新意圖不持久化，不存password/token/發布權或sources。display第一次T11 autoWatch可保留同頁video意圖，操作stop可清；恢復不加audio/發布能力。
+- **權威時點/時基**：T12 session.resumed只是辨識，需等本socket新的room.snapshot與participation.self確認room/role/mode，再對目前允許且曾開啟的channel一次subscribe。host/grants仍close撤銷，cannot auto audio.start/screen.start/getUserMedia/getDisplayMedia；拒絕/room gate未過前不得subscribe。只互動、移除/失效、不同房時保持off。新socket/controller/timeline清舊decoder/queue/畫布/clock，只用當前relay最新Opus/VP8 config、clockId/generation及下一keyframe，不重播舊packet，不用舊累積render counter當恢復。
+- **瀏覽器手勢**：自動恢復AudioContext只嘗試可行行為，不設autoplay強制allow/prefs、不得繞瀏覽器政策；若suspended/blocked顯示「繼續收聽」正常手勢，分列control可用、自動subscribe、需手勢到實播時間。若resume() promise在suspended掛住需有明確可操作狀態，不假稱ready。volume可在同頁斷線保留，不能自動抓mic/display。來源ended/已停止與發布端斷線都不auto restart，需最新claim/grant及真人按開始（測試合成來源只注入script）。
+- **驗收/證據/停止**：T13-IMPL聚焦少量外部WS契約：receiver原socket斷線→新resume身份最新權限→subscribe新config/keyframe gate、發布者持續活動；sender斷線/撤權不復活舊start/binary，重啟來源新generation/clock。可選純intent seam驗stop/interaction/room clears，不鏡照implementation。pinnedNode26.13 typecheck/聚焦/語法，root production build與完整Node一次。T13-SMOKE短3Firefox（host持續合成Opus+VP8、觀看participant、readonly display）正常UI先手動播放→受控close4000/暫hold→放行→auto訂閱/實際AudioWorklet samples與VP8 render正增，逐channel新連線config/keyframe/clock/renders與時間；若音訊需手勢，記自動狀態後按正常continue完成。再驗manual stop→close不恢復，sender close後sources ended/無auto capture/start且host權限不復活，正常再claim/手動重開可新世代實播。核心少量2～3次足夠，不跑20次/p95/手機/品質/真mic/原生擷取/弱網/65min/雲。
+- **有界/敏感紀錄**：延用T12可信CA隔離profiles，Playwright route需await註冊、held route需即時有界暫存再forward一次、不能mock成功快照；正常media binary完整轉送。script report保存每次relative timing/connection index與控制白名單、generation/clock/config與實render前後數值，可保留合成ID/hash作關聯，絕不raw token/password/host憑證/媒體payload/storage dump；token用存在boolean。bounded trace/cap/errors、中斷/恢復代表圖與清理，首次失敗保留/窄診斷，不無限全量retry。
+- **交接**：source/tests可先saved/readback/STOP精確交root，同時保留README/checks；釋出後不得late patch，只送建議。smoke獨立writer依穩定testids/controller契約，碰source問題回root，不互相代寫。兩位STOP後root獨占runtime/readback/看圖/文件/cleanup，本機commit。無Skill工具tdd/code-review則root以具體seam測試/手動source檢視替代，不宣稱工具已用。
+- **狀態**：完整scope已保存，待啟動兩位agent，尚未runtime/判結果。
+
+T13 optional unit seam資源精確化：若需要pure receive-intent seam，`tests/media-recovery.test.mjs`唯一writer為T13-IMPL；不強制新增、不可寫鏡照實作測試。其他writer/範圍不變。
+
+### T13 source/tests交接
+
+T13-IMPL已saved/readback/STOP釋出client App/DisplayApp/AudioPanel/ScreenPanel/audio/screen/media-recovery與tests/media-recovery.integration；未建另一份unit檔，7新case與5timeline聚焦12/12及pinned26.13型別通過。root接管這些source/test唯一writer，交接指紋保存R002，開始production build/完整Node。第一位只保留README/checks，第二位仍保留script/smoke-authoring，禁止late source patch。
+
+T13其餘交接：T13-IMPL README/checks與T13-SMOKE script/smoke-authoring均saved/readback/STOP釋出，root為本輪唯一writer/runtime操作者。build/typecheck與完整54/54一次通過，指紋與交接一致；script exact26.13語法通過。smoke作者曾未找到pinned binary/暫以26.1檢查且下載嘗試停住，root讀回實際repo絕對路徑26.13，作者後續已成功用正確版本；無toolchain/dependency變更。root開始可信HTTPS三Firefox驗收，無late patch。
+
+### T13最終分段驗收/資源釋出
+
+root build/typecheck/完整54一次通過，source交接後無變。script三次full分別keyframe順序/Continue locator/最後publisher同類順序失敗，均保存snapshot/report/log/可用圖；相同類問題重現後停止整套重跑，僅publisher-only窄診斷新世代手動實播通過。third接收段/stop/source不auto已證明，root獨立control seq/config/clock/render讀回及3圖實看；core分段Pass、最終full僅syntax未整段再跑，不假稱整套/品質通過。只修script參數/等待順序/有界gesture讀回/timestamp來源及secret輸出mask。
+
+全部agent明確STOP，root最後唯一writer，SOL-002/006/008與README/需求/計畫/票面/協作同步。server/browser/profile已清理且cleanup讀回4173/自有process無殘留；本機commit程式+紀錄後writer釋出，AGENTS/.scratch原未追蹤保留不stage，不push/遠端票/T14/部署。手勢分支/手機/真人/20次p95/弱網/耐久/完整POC-04待補。
+
+T13 regression腳本相依：root為唯一writer追加`scripts/control-reconnect-smoke.mjs`窄修，原T12 smoke斷言display重連不subscribe已被本步同頁video意圖恢復取代；改只驗fresh新socket恢復一次screen.subscribe，仍不宣稱T12媒體decode。Node契約/server不變。T13 third的display sequence/實render已覆新行為，舊smoke僅語法檢查，不額外重跑完整T12流程；既有R001歷史證據不改。

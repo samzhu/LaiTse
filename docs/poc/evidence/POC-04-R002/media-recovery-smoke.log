@@ -1,0 +1,8 @@
+[T13] trusted-local-catalogue-confirms-locked-managed-studio {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T13] host-participant-and-readonly-display-joined-through-normal-room-controls {"roomId":"studio","participantRole":"participant","displayRole":"display"}
+[T13] synthetic-opus-and-vp8-are-actually-decoded-and-rendered {"audioGeneration":1,"screenGeneration":1,"clockId":"46d8c903-294f-402c-bb6f-db32f073754c","audioRenderedSamples":6528,"audioDecodedFrames":8,"screenRenderedFrames":1,"screenDecodedFrames":1,"displayRenderedFrames":5}
+[T13] focused-publisher-diagnostic-skips-already-proven-receiver-reconnects {"scope":"publisher"}
+[T13] publisher-close-ends-synthetic-tracks-and-does-not-restore-publish-permission {"connectionIndex":2,"hostClaimedAfterResume":false,"publishAllowedAfterResume":false,"oldPublisherGrantEventsAfterResume":0,"oldAudioTrackEnded":true,"oldScreenTrackEnded":true,"autoAudioCaptureCount":0,"autoScreenCaptureCount":0,"autoAudioStartCount":0,"autoScreenStartCount":0,"oldAudioGeneration":1,"oldScreenGeneration":1,"oldClockId":"46d8c903-294f-402c-bb6f-db32f073754c"}
+[T13] normal-claim-and-manual-source-restart-renders-new-generation-clock {"audioGeneration":2,"screenGeneration":2,"oldClockId":"46d8c903-294f-402c-bb6f-db32f073754c","newClockId":"69a394b0-8101-4ffc-b8ff-18198d77c6b3","participantAudioRenderedSamples":13568,"participantScreenRenderedFrames":2,"displayScreenRenderedFrames":7}
+[T13] bounded-secret-safe-control-summary-and-final-assertions {"connectionCount":4,"controlSummaryCount":89,"binaryFrameCountsOnly":true,"secretsRetained":false}
+[T13] report /Users/samzhu/workspace_herdr/LaiTse/.scratch/t13/acceptance/media-recovery-report.json

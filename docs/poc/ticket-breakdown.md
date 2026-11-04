@@ -172,3 +172,5 @@ T10房內互動/公開留言桌面核心已於[POC-03-R006](evidence/POC-03-R006
 T11直接入房/只互動/展示端桌面核心已於[POC-03-R007](evidence/POC-03-R007/README.md)保存：42核心/build/typecheck及三Firefox正常門禁/模式切換server+raw0/草稿音量/實播公開與QR真pixel解碼成功，9外部唯讀越權拒絕。手機相機/真人/耐久/品質/完整POC-03仍未驗；本輪僅輕量核心，不改遠端票、不push、不啟動T12。
 
 T12控制通道重連桌面核心已於[POC-04-R001](evidence/POC-04-R001/README.md)保存：47核心/build/typecheck與首次三Firefox受控中斷/refresh/原房身份/最新gate與權限/去重TTL可行。程式與紀錄本機commit；媒體恢復、手機/實體弱網/耐久及完整POC-04未驗，不改遠端票/不push、不自動啟動T13。
+
+T13同頁影音恢復桌面核心已有[POC-04-R002](evidence/POC-04-R002/README.md)分段證據：54核心/build、receiver/display fresh config/clock實播、manual stop/來源權限不auto，publisher-only新世代手動重開成功。原full腳本3次失敗保留，停止整套後窄驗、最終full未再整段跑；20次/p95/手機/完整POC-04未驗，不改遠端票、不push/T14。

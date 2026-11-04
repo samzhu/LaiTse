@@ -17,12 +17,6 @@ const PUBLISH_CONFIG: Record<string, unknown> = {
   opus: { format: "opus" },
 };
 
-const DECODE_CONFIG: Record<string, unknown> = {
-  codec: "opus",
-  sampleRate: AUDIO_SAMPLE_RATE,
-  numberOfChannels: AUDIO_CHANNELS,
-};
-
 type EncodedChunk = {
   readonly type: "key" | "delta";
   readonly timestamp: number;
@@ -103,11 +97,13 @@ type AudioWindow = Window & {
 
 type ListenerState = "off" | "starting" | "ready" | "suspended" | "error";
 type PublisherState = "idle" | "starting" | "broadcasting" | "denied" | "blocked" | "no-device" | "unsupported" | "error";
+type AudioStreamConfig = { codec: "opus"; sampleRate: number; channels: number; bitrate: number; frameDurationUs: number };
 
 export type AudioSnapshot = {
   listenerState: ListenerState;
   publisherState: PublisherState;
   listenerMessage: string;
+  receiverSubscribed: boolean;
   publisherMessage: string;
   sentPackets: number;
   receivedPackets: number;
@@ -189,6 +185,7 @@ const INITIAL_STATE: AudioSnapshot = {
   listenerState: "off",
   publisherState: "idle",
   listenerMessage: "尚未收聽。接收者先按「開始收聽」啟動播放。",
+  receiverSubscribed: false,
   publisherMessage: "麥克風尚未啟動。按下開始後，瀏覽器才會詢問麥克風權限。",
   sentPackets: 0,
   receivedPackets: 0,
@@ -214,6 +211,23 @@ function parseAudioFrame(data: ArrayBuffer): ParsedAudioFrame | null {
     timestampUs,
     durationUs,
     packet: new Uint8Array(data, AUDIO_FRAME_HEADER_BYTES),
+  };
+}
+
+function parseAudioStreamConfig(value: unknown): AudioStreamConfig | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const config = value as Record<string, unknown>;
+  if (
+    config.codec !== "opus" || config.sampleRate !== AUDIO_SAMPLE_RATE || config.channels !== AUDIO_CHANNELS ||
+    !Number.isInteger(config.bitrate) || Number(config.bitrate) <= 0 ||
+    !Number.isInteger(config.frameDurationUs) || Number(config.frameDurationUs) <= 0
+  ) return null;
+  return {
+    codec: "opus",
+    sampleRate: AUDIO_SAMPLE_RATE,
+    channels: AUDIO_CHANNELS,
+    bitrate: Number(config.bitrate),
+    frameDurationUs: Number(config.frameDurationUs),
   };
 }
 
@@ -259,6 +273,7 @@ export class AudioController {
   private playbackVolume = 1;
   private listenerActive = false;
   private listenerToken = 0;
+  private listenerSetupPromise: Promise<void> | null = null;
   private captureAttempt: CaptureAttempt | null = null;
   private captureToken = 0;
   private pendingStart: CaptureAttempt | null = null;
@@ -273,6 +288,7 @@ export class AudioController {
   private decoderRequestId = 0;
   private announcedStreamGeneration: number | null = null;
   private announcedStreamClockId: string | null = null;
+  private announcedStreamConfig: AudioStreamConfig | null = null;
   private activeAudioClockId: string | null = null;
   private playbackEpoch = 0;
   private lastOverflowResets = 0;
@@ -364,97 +380,144 @@ export class AudioController {
   }
 
   startListening(): void {
-    if (this.listenerStateIsActive()) {
+    if (this.listenerActive) {
       if (this.listenerContext?.state === "suspended") this.resumeListening();
+      return;
+    }
+    if (this.listenerSetupPromise) {
+      if (this.listenerContext?.state === "suspended") this.requestListenerResume(this.listenerContext, this.listenerToken);
       return;
     }
     const token = ++this.listenerToken;
     let context: AudioContext;
-    let resumePromise: Promise<void>;
     try {
       context = createAudioContext();
       this.listenerContext = context;
-      resumePromise = context.resume();
     } catch (error) {
       this.set({ listenerState: "error", listenerMessage: `無法啟動播放：${errorMessage(error)}` });
       return;
     }
     this.set({ listenerState: "starting", listenerMessage: "正在啟動播放裝置…" });
+    context.onstatechange = () => this.handleListenerContextState(context, token);
 
-    void (async () => {
-      try {
-        await resumePromise;
-        if (token !== this.listenerToken || this.listenerContext !== context) return;
-        if (context.sampleRate !== AUDIO_SAMPLE_RATE) throw new Error(`瀏覽器建立了 ${context.sampleRate} Hz 音訊時鐘；本輪需要 48000 Hz。`);
-        await context.audioWorklet.addModule("/audio-playback-worklet.js");
-        if (token !== this.listenerToken || this.listenerContext !== context) return;
-        const worklet = new AudioWorkletNode(context, "laitse-playback", {
-          numberOfInputs: 0,
-          numberOfOutputs: 1,
-          outputChannelCount: [AUDIO_CHANNELS],
-        });
-        worklet.port.onmessage = (event: MessageEvent) => this.handlePlaybackStats(event.data);
-        const gain = context.createGain();
-        gain.gain.value = this.playbackVolume;
-        worklet.connect(gain);
-        gain.connect(context.destination);
-        this.playbackWorklet = worklet;
-        this.playbackGainNode = gain;
-        context.onstatechange = () => {
-          if (this.listenerContext !== context || !this.listenerActive) return;
-          if (context.state === "running") {
-            this.set({ listenerState: "ready", listenerMessage: "播放已啟動；尚未收到發布者音訊。" });
-          } else if (context.state === "suspended") {
-            this.stopDecoder();
-            this.set({ listenerState: "suspended", listenerMessage: "播放目前暫停。按「繼續收聽」恢復播放。" });
-          }
-        };
-        if (!isOpen(this.socket)) throw new Error("房間連線已關閉。");
-        this.listenerActive = true;
-        this.socket.send(JSON.stringify({ type: "audio.subscribe" }));
+    const setup = this.prepareListener(context, token);
+    this.listenerSetupPromise = setup;
+    this.requestListenerResume(context, token);
+    void setup.then(() => {
+      if (token !== this.listenerToken || this.listenerContext !== context) return;
+      if (!isOpen(this.socket)) throw new Error("房間連線已關閉。");
+      this.listenerActive = true;
+      this.set({ receiverSubscribed: false });
+      this.socket.send(JSON.stringify({ type: "audio.subscribe" }));
+      if (context.state === "running") {
         this.set({ listenerState: "ready", listenerMessage: "播放已啟動；正在等待發布者音訊。" });
-      } catch (error) {
-        if (token !== this.listenerToken) return;
-        this.listenerActive = false;
-        this.stopListenerResources();
-        this.set({ listenerState: "error", listenerMessage: `無法啟動播放：${errorMessage(error)}` });
+      } else {
+        this.set({ listenerState: "suspended", listenerMessage: "已送出接收訂閱；播放暫停，按「繼續收聽」啟動音訊。" });
       }
-    })();
+    }).catch((error: unknown) => {
+      if (token !== this.listenerToken || this.listenerContext !== context) return;
+      this.listenerActive = false;
+      this.set({ receiverSubscribed: false });
+      this.stopListenerResources();
+      this.set({ listenerState: "error", listenerMessage: `無法啟動播放：${errorMessage(error)}` });
+    }).finally(() => {
+      if (this.listenerSetupPromise === setup) this.listenerSetupPromise = null;
+    });
   }
 
   resumeListening(): void {
     const context = this.listenerContext;
     if (!context || !this.listenerActive) {
+      if (context && this.listenerSetupPromise) {
+        this.requestListenerResume(context, this.listenerToken);
+        return;
+      }
       this.startListening();
       return;
     }
-    const resumePromise = context.resume();
-    this.set({ listenerState: "starting", listenerMessage: "正在恢復播放…" });
+    this.requestListenerResume(context, this.listenerToken);
+  }
+
+  restoreListening(): void {
+    this.startListening();
+  }
+
+  private prepareListener(context: AudioContext, token: number): Promise<void> {
+    return (async () => {
+      if (context.sampleRate !== AUDIO_SAMPLE_RATE) throw new Error(`瀏覽器建立了 ${context.sampleRate} Hz 音訊時鐘；本輪需要 48000 Hz。`);
+      await context.audioWorklet.addModule("/audio-playback-worklet.js");
+      if (token !== this.listenerToken || this.listenerContext !== context) return;
+      const worklet = new AudioWorkletNode(context, "laitse-playback", {
+        numberOfInputs: 0,
+        numberOfOutputs: 1,
+        outputChannelCount: [AUDIO_CHANNELS],
+      });
+      worklet.port.onmessage = (event: MessageEvent) => this.handlePlaybackStats(event.data);
+      const gain = context.createGain();
+      gain.gain.value = this.playbackVolume;
+      worklet.connect(gain);
+      gain.connect(context.destination);
+      this.playbackWorklet = worklet;
+      this.playbackGainNode = gain;
+    })();
+  }
+
+  private requestListenerResume(context: AudioContext, token: number): void {
+    let resumePromise: Promise<void>;
+    try {
+      resumePromise = context.resume();
+    } catch {
+      if (this.listenerContext === context && this.listenerActive) {
+        this.set({ listenerState: "suspended", listenerMessage: "播放仍暫停；按「繼續收聽」重試瀏覽器播放手勢。" });
+      }
+      return;
+    }
+    // Do not await this promise: browsers can leave resume() pending until a
+    // normal user gesture. The receiver subscription is independent of that
+    // policy and can still restore while the UI offers Continue.
     void resumePromise.then(() => {
-      if (this.listenerContext !== context || !this.listenerActive) return;
-      if (this.announcedStreamGeneration !== null && this.announcedStreamClockId !== null) {
-        void this.startDecoder(this.announcedStreamGeneration, this.announcedStreamClockId);
+      if (token !== this.listenerToken || this.listenerContext !== context || !this.listenerActive || context.state !== "running") return;
+      if (this.announcedStreamGeneration !== null && this.announcedStreamClockId !== null && this.announcedStreamConfig) {
+        void this.startDecoder(this.announcedStreamGeneration, this.announcedStreamClockId, this.announcedStreamConfig);
       }
       this.set({ listenerState: "ready", listenerMessage: this.streamGeneration === null
         ? "播放已啟動；正在等待發布者音訊。"
         : "播放已恢復，正在接收 Opus 音訊。" });
-    }).catch((error: unknown) => {
-      if (this.listenerContext !== context) return;
-      this.set({ listenerState: "error", listenerMessage: `無法恢復播放：${errorMessage(error)}` });
+    }).catch(() => {
+      if (token !== this.listenerToken || this.listenerContext !== context || !this.listenerActive) return;
+      this.set({ listenerState: "suspended", listenerMessage: "接收訂閱仍有效；瀏覽器暫停了音訊。按「繼續收聽」重試。" });
     });
+  }
+
+  private handleListenerContextState(context: AudioContext, token: number): void {
+    if (token !== this.listenerToken || this.listenerContext !== context || !this.listenerActive) return;
+    if (context.state === "running") {
+      if (this.announcedStreamGeneration !== null && this.announcedStreamClockId !== null && this.announcedStreamConfig) {
+        void this.startDecoder(this.announcedStreamGeneration, this.announcedStreamClockId, this.announcedStreamConfig);
+      }
+      this.set({ listenerState: "ready", listenerMessage: this.streamGeneration === null
+        ? "播放已啟動；正在等待發布者音訊。"
+        : "播放已恢復，正在接收 Opus 音訊。" });
+    } else if (context.state === "suspended") {
+      this.stopDecoder();
+      this.set({ listenerState: "suspended", listenerMessage: "接收訂閱仍有效；播放目前暫停。按「繼續收聽」恢復音訊。" });
+    }
   }
 
   stopListening(notifyServer = true): void {
     this.listenerToken += 1;
     if (notifyServer && this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
     this.listenerActive = false;
+    this.listenerSetupPromise = null;
     this.announcedStreamGeneration = null;
     this.announcedStreamClockId = null;
+    this.announcedStreamConfig = null;
     this.stopDecoder();
     this.stopListenerResources();
     this.set({
       listenerState: "off",
       listenerMessage: "已停止收聽。再次開始時，需要重新按播放手勢。",
+      receiverSubscribed: false,
       receivedPackets: 0,
       decodedFrames: 0,
       renderedSamples: 0,
@@ -624,8 +687,10 @@ export class AudioController {
     if (generation !== null && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.stop", generation }));
     if (this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
     this.listenerActive = false;
+    this.listenerSetupPromise = null;
     this.announcedStreamGeneration = null;
     this.announcedStreamClockId = null;
+    this.announcedStreamConfig = null;
     this.captureToken += 1;
     this.listenerToken += 1;
     if (this.captureAttempt) this.captureAttempt.cancelled = true;
@@ -683,11 +748,15 @@ export class AudioController {
     if (message.type === "audio.stream") {
       const generation = Number(message.generation);
       const clockId = typeof message.clockId === "string" ? message.clockId : "";
-      if (Number.isInteger(generation) && generation > 0 && clockId.length > 0 && this.listenerActive) {
-        if (generation !== this.announcedStreamGeneration || clockId !== this.announcedStreamClockId) this.stopDecoder();
+      const config = parseAudioStreamConfig(message.config);
+      if (Number.isInteger(generation) && generation > 0 && clockId.length > 0 && config && this.listenerActive) {
+        if (generation !== this.announcedStreamGeneration || clockId !== this.announcedStreamClockId || !this.sameStreamConfig(config, this.announcedStreamConfig)) this.stopDecoder();
         this.announcedStreamGeneration = generation;
         this.announcedStreamClockId = clockId;
-        void this.startDecoder(generation, clockId);
+        this.announcedStreamConfig = config;
+        void this.startDecoder(generation, clockId, config);
+      } else if (this.listenerActive && (!config || !Number.isInteger(generation) || generation < 1 || clockId.length === 0)) {
+        this.set({ listenerState: "error", listenerMessage: "伺服器提供的 Opus 設定或播放時基無效。" });
       }
       return;
     }
@@ -701,6 +770,7 @@ export class AudioController {
       if (Number(message.generation) === this.announcedStreamGeneration) {
         this.announcedStreamGeneration = null;
         this.announcedStreamClockId = null;
+        this.announcedStreamConfig = null;
         this.stopDecoder();
         this.set({
           listenerMessage: message.reason === "out_of_range"
@@ -717,10 +787,11 @@ export class AudioController {
       return;
     }
     if (message.type === "audio.subscribed") {
-      if (this.listenerActive) this.set({ listenerMessage: "已加入接收訂閱；正在等待發布者音訊。" });
+      if (this.listenerActive) this.set({ receiverSubscribed: true, listenerMessage: "已加入接收訂閱；正在等待發布者音訊。" });
       return;
     }
     if (message.type === "audio.unsubscribed") {
+      this.set({ receiverSubscribed: false });
       if (message.reason === "mode_changed") this.stopListening(false);
       return;
     }
@@ -738,6 +809,7 @@ export class AudioController {
       publisherMessage: "房間連線已關閉，麥克風發布已停止。",
       queuedSamples: 0,
       renderRms: 0,
+      receiverSubscribed: false,
     });
   };
 
@@ -856,7 +928,7 @@ export class AudioController {
     }
   }
 
-  private async startDecoder(generation: number, clockId: string): Promise<void> {
+  private async startDecoder(generation: number, clockId: string, streamConfig: AudioStreamConfig): Promise<void> {
     if (!this.listenerActive || this.listenerContext?.state !== "running") return;
     if (this.streamGeneration === generation && this.decoder) return;
     const Decoder = (window as unknown as AudioWindow).AudioDecoder;
@@ -864,14 +936,20 @@ export class AudioController {
       this.set({ listenerState: "error", listenerMessage: "此瀏覽器缺少 WebCodecs AudioDecoder 或播放 AudioWorklet。" });
       return;
     }
+    const decodeConfig = {
+      codec: streamConfig.codec,
+      sampleRate: streamConfig.sampleRate,
+      numberOfChannels: streamConfig.channels,
+    };
     const requestId = ++this.decoderRequestId;
     try {
-      const support = await Decoder.isConfigSupported?.(DECODE_CONFIG);
+      const support = await Decoder.isConfigSupported?.(decodeConfig);
       if (!support?.supported) throw new UnsupportedAudioError("此瀏覽器不支援指定的原生 Opus 解碼設定。" );
       if (
         requestId !== this.decoderRequestId ||
         this.announcedStreamGeneration !== generation ||
         this.announcedStreamClockId !== clockId ||
+        !this.sameStreamConfig(streamConfig, this.announcedStreamConfig) ||
         !this.listenerActive ||
         this.listenerContext?.state !== "running"
       ) return;
@@ -886,7 +964,7 @@ export class AudioController {
           this.set({ listenerState: "error", listenerMessage: `Opus 解碼失敗：${error.message}` });
         },
       });
-      decoder.configure(DECODE_CONFIG);
+      decoder.configure(decodeConfig);
       this.decoder = decoder;
       this.streamGeneration = generation;
       this.activeAudioClockId = clockId;
@@ -1059,6 +1137,11 @@ export class AudioController {
     this.playbackWorklet?.port.postMessage({ type: "clear", epoch: this.playbackEpoch, generation: null, clockId: null });
   }
 
+  private sameStreamConfig(left: AudioStreamConfig, right: AudioStreamConfig | null): boolean {
+    return Boolean(right && left.codec === right.codec && left.sampleRate === right.sampleRate && left.channels === right.channels &&
+      left.bitrate === right.bitrate && left.frameDurationUs === right.frameDurationUs);
+  }
+
   private stopListenerResources(): void {
     const worklet = this.playbackWorklet;
     this.playbackWorklet = null;
@@ -1072,6 +1155,7 @@ export class AudioController {
     }
     const context = this.listenerContext;
     this.listenerContext = null;
+    if (context) context.onstatechange = null;
     if (context && context.state !== "closed") void context.close().catch(() => {});
   }
 
@@ -1092,10 +1176,6 @@ export class AudioController {
       return { state: "unsupported", message: "麥克風無法提供本輪所需的音訊格式。" };
     }
     return { state: "error", message: `麥克風啟動失敗：${errorMessage(error)}` };
-  }
-
-  private listenerStateIsActive(): boolean {
-    return this.listenerContext !== null || this.state.listenerState === "starting";
   }
 
   private set(patch: Partial<AudioSnapshot>): void {

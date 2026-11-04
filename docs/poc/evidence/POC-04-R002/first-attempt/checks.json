@@ -1,0 +1,48 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T09:23:19.514378+00:00",
+    "finishedAt": "2026-11-04T09:23:21.037519+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T09:23:21.038253+00:00",
+    "finishedAt": "2026-11-04T09:23:30.668052+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "media-recovery-smoke",
+    "command": [
+      "node",
+      "scripts/media-recovery-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T09:24:29.360150+00:00",
+    "finishedAt": "2026-11-04T09:24:46.822319+00:00",
+    "exitCode": 1
+  }
+]

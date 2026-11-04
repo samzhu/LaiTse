@@ -1,0 +1,4 @@
+LaiTse local POC listening at https://127.0.0.1:4173
+Room state and control events are held in process memory only.
+Meeting room access is locked by startup configuration.
+Host controls are enabled by startup configuration.

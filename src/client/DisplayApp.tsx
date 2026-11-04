@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DoorEntryDialog } from "./DoorEntryDialog";
 import { readParticipantEntry } from "./entry";
 import { emptyInteractionSnapshot, type InteractionSnapshot } from "./interactions";
@@ -7,6 +7,8 @@ import { MediaTimeline } from "./media-timeline";
 import { PublicInteractionView } from "./PublicInteractionView";
 import { ScreenPanel } from "./ScreenPanel";
 import type { AudioPolicy, SpaceKind } from "./pixel-space";
+import { MediaRecoveryIntent } from "./media-recovery";
+import type { ParticipationSnapshot } from "./participation";
 import {
   BoundedReconnectLoop,
   clearResumeCandidate,
@@ -31,6 +33,7 @@ type DisplayMessage =
   | { type: "session.resumed"; participantId: string; roomId: string; role: "participant" | "display"; mode: "watch" | "interaction" }
   | { type: "session.left" }
   | { type: "room.snapshot"; room: DisplayRoom; members: Array<{ id: string; displayName: string }>; lastSeq: number }
+  | ({ type: "participation.self" } & ParticipationSnapshot)
   | ({ type: "interaction.snapshot" | "interaction.state" } & InteractionSnapshot)
   | {
       type: "interaction.event";
@@ -53,6 +56,7 @@ export function DisplayApp() {
   const [canManuallyRetry, setCanManuallyRetry] = useState(false);
   const [resumeStoragePersistent, setResumeStoragePersistent] = useState(true);
   const [wasResumed, setWasResumed] = useState(false);
+  const [restoreScreenIntent, setRestoreScreenIntent] = useState<{ socket: WebSocket; roomId: string } | null>(null);
   const [error, setError] = useState("");
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordError, setPasswordError] = useState("");
@@ -67,6 +71,13 @@ export function DisplayApp() {
   const terminalResumeRef = useRef(false);
   const retryLoopRef = useRef<BoundedReconnectLoop | null>(null);
   const resumePasswordPendingRef = useRef(false);
+  const mediaRecoveryIntentRef = useRef(new MediaRecoveryIntent());
+  const resumeSnapshotsRef = useRef<{
+    socket: WebSocket;
+    resumedRoomId: string;
+    roomSnapshotId: string | null;
+    participation: ParticipationSnapshot | null;
+  } | null>(null);
   if (!retryLoopRef.current) {
     retryLoopRef.current = new BoundedReconnectLoop(
       () => retryAttemptRef.current?.(),
@@ -77,6 +88,32 @@ export function DisplayApp() {
     );
   }
   const timeline = useMemo(() => new MediaTimeline(), [socket]);
+
+  const tryRestoreScreenAfterResume = (target: WebSocket) => {
+    const pending = resumeSnapshotsRef.current;
+    if (!pending || pending.socket !== target || !pending.roomSnapshotId || !pending.participation) return;
+    const authority = pending.participation;
+    const sameFreshRoom = pending.resumedRoomId === pending.roomSnapshotId && authority.roomId === pending.roomSnapshotId;
+    if (!sameFreshRoom || authority.role !== "display") {
+      mediaRecoveryIntentRef.current.clear();
+      resumeSnapshotsRef.current = null;
+      setRestoreScreenIntent(null);
+      return;
+    }
+    const intent = mediaRecoveryIntentRef.current.restoreFor({
+      roomId: pending.roomSnapshotId,
+      role: authority.role,
+      mode: authority.mode,
+    });
+    resumeSnapshotsRef.current = null;
+    setRestoreScreenIntent(intent.screen ? { socket: target, roomId: pending.roomSnapshotId } : null);
+  };
+
+  const updateScreenReceiveIntent = useCallback((enabled: boolean) => {
+    const roomId = activeRoomIdRef.current ?? mediaRecoveryIntentRef.current.snapshot().roomId ?? "";
+    mediaRecoveryIntentRef.current.set("screen", enabled, roomId);
+    if (!enabled) setRestoreScreenIntent(null);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -137,6 +174,9 @@ export function DisplayApp() {
   const openConnection = (intent: DisplayConnectionIntent) => {
     intentRef.current = intent;
     terminalResumeRef.current = false;
+    resumeSnapshotsRef.current = null;
+    setRestoreScreenIntent(null);
+    if (intent.type === "join") mediaRecoveryIntentRef.current.clear();
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
     const target = new WebSocket(`${scheme}//${window.location.host}/ws`);
     target.binaryType = "arraybuffer";
@@ -176,6 +216,12 @@ export function DisplayApp() {
         return;
       }
       if (message.type === "session.resumed") {
+        resumeSnapshotsRef.current = {
+          socket: target,
+          resumedRoomId: message.roomId,
+          roomSnapshotId: null,
+          participation: null,
+        };
         const current = candidateRef.current;
         if (current) {
           const candidate = { ...current, roomId: message.roomId, entryRoomId: message.roomId };
@@ -211,6 +257,9 @@ export function DisplayApp() {
           retryLoopRef.current?.stop();
           clearResumeCandidate("display");
           candidateRef.current = null;
+          mediaRecoveryIntentRef.current.clear();
+          resumeSnapshotsRef.current = null;
+          setRestoreScreenIntent(null);
           setCanManuallyRetry(false);
           setError(message.message);
           setStatus("展示恢復工作階段已過期；請重新加入。");
@@ -223,6 +272,11 @@ export function DisplayApp() {
         return;
       }
       if (message.type === "room.snapshot") {
+        const recovery = resumeSnapshotsRef.current;
+        if (recovery?.socket === target) {
+          recovery.roomSnapshotId = message.room.id;
+          tryRestoreScreenAfterResume(target);
+        }
         if (intentRef.current?.type === "join" && message.room.id !== selectedRoomId) {
           setError("伺服器回報的房間與連結指定房間不一致。");
           target.close(1008, "Room mismatch");
@@ -236,6 +290,15 @@ export function DisplayApp() {
         setPasswordDialogOpen(false);
         resumePasswordPendingRef.current = false;
         setStatus(`唯讀展示已連線 · ${message.room.name}`);
+        return;
+      }
+      if (message.type === "participation.self") {
+        if (message.roomId !== activeRoomIdRef.current) return;
+        const recovery = resumeSnapshotsRef.current;
+        if (recovery?.socket === target) {
+          recovery.participation = message;
+          tryRestoreScreenAfterResume(target);
+        }
         return;
       }
       if (message.type === "interaction.snapshot" || message.type === "interaction.state") {
@@ -252,6 +315,8 @@ export function DisplayApp() {
       if (socketRef.current !== target) return;
       socketRef.current = null;
       setSocket(null);
+      resumeSnapshotsRef.current = null;
+      setRestoreScreenIntent(null);
       setRoom(null);
       activeRoomIdRef.current = null;
       setInteractionState(emptyInteractionSnapshot(candidateRef.current?.roomId ?? selectedRoomId));
@@ -290,6 +355,9 @@ export function DisplayApp() {
 
   const leave = () => {
     retryLoopRef.current?.stop();
+    mediaRecoveryIntentRef.current.clear();
+    resumeSnapshotsRef.current = null;
+    setRestoreScreenIntent(null);
     terminalResumeRef.current = true;
     const target = socketRef.current;
     if (target?.readyState === WebSocket.OPEN) {
@@ -386,7 +454,14 @@ export function DisplayApp() {
             <button className="quiet-button" type="button" data-testid="display-leave" onClick={leave}>離開展示</button>
           </section>
           <div className="display-layout">
-            {socket ? <ScreenPanel socket={socket} timeline={timeline} readOnly autoWatch={!wasResumed} /> : null}
+            {socket ? <ScreenPanel
+              socket={socket}
+              timeline={timeline}
+              roomId={room?.id ?? ""}
+              readOnly
+              autoWatch={!wasResumed || restoreScreenIntent?.socket === socket && restoreScreenIntent.roomId === room?.id}
+              onReceiveIntentChange={updateScreenReceiveIntent}
+            /> : null}
             <div className="display-side-column">
               <PublicInteractionView state={interactionState} />
               {room ? <JoinQr roomId={room.id} mode="interaction" /> : null}

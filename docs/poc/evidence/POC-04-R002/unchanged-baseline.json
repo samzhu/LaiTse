@@ -1,0 +1,18 @@
+{
+  "baseline": "0ade7c9",
+  "unchanged": [
+    "package.json",
+    "package-lock.json",
+    "public/vendor-notices.txt",
+    "src/server/app.ts",
+    "src/server/audio-relay.ts",
+    "src/server/screen-relay.ts",
+    "src/server/control-resume.ts",
+    "src/server/room-access.ts",
+    "src/server/interactions.ts",
+    "src/client/control-reconnect.ts",
+    "src/client/media-timeline.ts",
+    "src/client/pixel-space.ts",
+    "public/audio-playback-worklet.js"
+  ]
+}

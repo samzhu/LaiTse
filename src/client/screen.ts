@@ -87,6 +87,7 @@ export type ScreenTrackSettings = {
 export type ScreenSnapshot = {
   publisherState: PublisherState;
   receiverState: ReceiverState;
+  receiverSubscribed: boolean;
   publisherMessage: string;
   receiverMessage: string;
   trackSettings: ScreenTrackSettings | null;
@@ -173,8 +174,9 @@ export type ScreenObservation = {
 export const INITIAL_SCREEN_STATE: ScreenSnapshot = {
   publisherState: "idle",
   receiverState: "off",
+  receiverSubscribed: false,
   publisherMessage: "尚未分享畫面。按開始後，瀏覽器會顯示擷取來源選擇器。",
-  receiverMessage: "尚未加入畫面接收。請在分享開始前加入；晚加入同步尚未實作。",
+  receiverMessage: "尚未加入畫面接收。按「開始觀看分享」訂閱；晚加入會等待下一個關鍵影格。",
   trackSettings: null,
   encodedWidth: null,
   encodedHeight: null,
@@ -381,6 +383,7 @@ export class ScreenController {
     this.renderedAt.length = 0;
     this.set({
       receiverState: "subscribing",
+      receiverSubscribed: false,
       receiverMessage: "正在加入畫面接收；若分享已進行，會等待下一個可解碼關鍵影格。",
       receivedFrames: 0,
       decodedFrames: 0,
@@ -405,6 +408,7 @@ export class ScreenController {
     this.renderedAt.length = 0;
     this.set({
       receiverState: "off",
+      receiverSubscribed: false,
       receiverMessage: "已停止接收並清除畫面。",
       renderedWidth: null,
       renderedHeight: null,
@@ -781,12 +785,13 @@ export class ScreenController {
       return;
     }
     if (message.type === "screen.subscribed") {
-      if (this.state.receiverState === "subscribing") {
-        this.set({ receiverState: "waiting", receiverMessage: "已加入接收；等待發布者開始分享。" });
-      }
+      this.set({ receiverSubscribed: true, ...(this.state.receiverState === "subscribing"
+        ? { receiverState: "waiting" as const, receiverMessage: "已加入接收；等待發布者開始分享。" }
+        : {}) });
       return;
     }
     if (message.type === "screen.unsubscribed") {
+      this.set({ receiverSubscribed: false });
       if (message.reason === "mode_changed") this.stopWatching(false);
       return;
     }
@@ -1061,6 +1066,7 @@ export class ScreenController {
     this.renderedAt.length = 0;
     this.set({
       receiverState: "off",
+      receiverSubscribed: false,
       receiverMessage: "房間連線已關閉，畫面接收已停止並清除。",
       renderedWidth: null,
       renderedHeight: null,

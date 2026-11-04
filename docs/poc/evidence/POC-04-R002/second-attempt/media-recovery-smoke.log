@@ -1,0 +1,9 @@
+[T13] trusted-local-catalogue-confirms-locked-managed-studio {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T13] host-participant-and-readonly-display-joined-through-normal-room-controls {"roomId":"studio","participantRole":"participant","displayRole":"display"}
+[T13] synthetic-opus-and-vp8-are-actually-decoded-and-rendered {"audioGeneration":1,"screenGeneration":1,"clockId":"c80147e4-bbeb-4707-8758-a73af0fe19b0","audioRenderedSamples":5632,"audioDecodedFrames":6,"screenRenderedFrames":1,"screenDecodedFrames":1,"displayRenderedFrames":5}
+[T13] failed locator.click: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('audio-continue-listening')[22m
+[2m    - locator resolved to <button class="primary-button" data-testid="audio-continue-listening">繼續收聽</button>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, ena

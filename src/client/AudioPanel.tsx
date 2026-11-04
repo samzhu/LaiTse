@@ -6,16 +6,21 @@ import type { ParticipationMode } from "./entry";
 type AudioPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
+  roomId?: string;
   publishAllowed?: boolean;
   hostControlsEnabled?: boolean;
   participationMode?: ParticipationMode;
   pendingModeTarget?: ParticipationMode | null;
+  autoRestoreReceive?: boolean;
+  volume?: number;
+  onVolumeChange?: (volume: number) => void;
+  onReceiveIntentChange?: (enabled: boolean) => void;
   onModeQuiesced?: () => void;
 };
 
-export function AudioPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, onModeQuiesced }: AudioPanelProps) {
+export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, autoRestoreReceive = false, volume = 1, onVolumeChange, onReceiveIntentChange, onModeQuiesced }: AudioPanelProps) {
   const [state, setState] = useState<AudioSnapshot | null>(null);
-  const [volume, setVolume] = useState(1);
+  const [receiveIntent, setReceiveIntent] = useState(false);
   const controllerRef = useRef<AudioController | null>(null);
 
   useEffect(() => {
@@ -32,15 +37,27 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
   }, [socket, timeline]);
 
   useEffect(() => {
+    controllerRef.current?.setVolume(volume);
+  }, [volume, socket, timeline]);
+
+  useEffect(() => {
+    if (!autoRestoreReceive) return;
+    setReceiveIntent(true);
+    controllerRef.current?.restoreListening();
+  }, [autoRestoreReceive, socket, timeline]);
+
+  useEffect(() => {
     if (pendingModeTarget !== "interaction") return;
     controllerRef.current?.stopMicrophone();
     controllerRef.current?.stopListening();
+    setReceiveIntent(false);
+    onReceiveIntentChange?.(false);
     onModeQuiesced?.();
-  }, [pendingModeTarget, onModeQuiesced]);
+  }, [pendingModeTarget, onModeQuiesced, onReceiveIntentChange]);
 
   if (!socket || !state) return null;
 
-  const listenerRunning = state.listenerState === "ready" || state.listenerState === "suspended";
+  const listenerRunning = state.listenerState === "ready" || state.listenerState === "suspended" || state.receiverSubscribed;
   const startListeningLabel = state.listenerState === "suspended"
     ? "繼續收聽"
     : state.listenerState === "error"
@@ -54,6 +71,18 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
       ? "重新要求麥克風權限"
       : "開始麥克風";
   const currentObservation = controllerRef.current?.getObservation();
+
+  function startReceiving() {
+    setReceiveIntent(true);
+    onReceiveIntentChange?.(true);
+    controllerRef.current?.startListening();
+  }
+
+  function stopReceiving() {
+    setReceiveIntent(false);
+    onReceiveIntentChange?.(false);
+    controllerRef.current?.stopListening();
+  }
 
   function downloadObservation() {
     const observation = controllerRef.current?.getObservation();
@@ -76,7 +105,10 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
       data-testid="audio-panel"
       hidden={participationMode === "interaction" || pendingModeTarget === "interaction"}
       style={participationMode === "interaction" || pendingModeTarget === "interaction" ? { display: "none" } : undefined}
+      data-room-id={roomId}
+      data-receive-intent={receiveIntent}
       data-listener-state={state.listenerState}
+      data-receiver-subscribed={state.receiverSubscribed}
       data-publisher-state={state.publisherState}
       data-sent-packets={state.sentPackets}
       data-received-packets={state.receivedPackets}
@@ -107,19 +139,20 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
         <div className="audio-control-group">
           <div>
             <h3>接收語音</h3>
-            <p className="audio-state" role="status" data-audio-status="listener">{state.listenerMessage}</p>
+            <p className="audio-state" role="status" data-testid="audio-recovery-status" data-audio-status="listener" data-receive-intent={receiveIntent} data-room-id={roomId} data-listener-state={state.listenerState} data-subscribed={state.receiverSubscribed}>{state.listenerMessage}</p>
           </div>
           {listenerRunning ? (
             <div className="audio-button-row">
               {state.listenerState === "suspended" ? (
-                <button className="primary-button" onClick={() => controllerRef.current?.resumeListening()}>繼續收聽</button>
+                <button className="primary-button" data-testid="audio-continue-listening" onClick={() => controllerRef.current?.resumeListening()}>繼續收聽</button>
               ) : null}
-              <button className="quiet-button" onClick={() => controllerRef.current?.stopListening()}>停止收聽</button>
+              <button className="quiet-button" data-testid="audio-stop-listening" onClick={stopReceiving}>停止收聽</button>
             </div>
           ) : (
             <button
               className="primary-button"
-              onClick={() => controllerRef.current?.startListening()}
+              data-testid="audio-start-listening"
+              onClick={startReceiving}
               disabled={state.listenerState === "starting"}
             >
               {state.listenerState === "starting" ? "啟動播放中…" : startListeningLabel}
@@ -154,7 +187,7 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
           data-testid="audio-volume"
           onChange={(event) => {
             const nextVolume = Number(event.target.value);
-            setVolume(nextVolume);
+            onVolumeChange?.(nextVolume);
             controllerRef.current?.setVolume(nextVolume);
           }}
           aria-valuetext={`${Math.round(volume * 100)}%`}

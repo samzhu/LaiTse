@@ -1,0 +1,6 @@
+{
+  "listener4173": "",
+  "listenerExitCode": 1,
+  "matchingRuntimeProcesses": [],
+  "note": "Owned server stopped in runner finally; smoke closes contexts/deletes profiles. No unrelated process killed."
+}

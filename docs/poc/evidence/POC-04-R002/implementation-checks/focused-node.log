@@ -1,0 +1,20 @@
+✔ same-page receive intent stays scoped to its room until an explicit clear (0.863542ms)
+✔ manual stop clears one channel and clears the room binding when none remain (0.106292ms)
+✔ interaction mode and a different resumed room cannot carry prior receive intent (0.09575ms)
+✔ a receive intent never crosses an explicit room selection (0.072333ms)
+✔ display recovery preserves its screen view but never restores audio receive intent (0.11975ms)
+✔ resumed receiver uses fresh subscription metadata and waits for the next VP8 keyframe (440.212166ms)
+✔ publisher disconnect ends old streams; resuming control does not restart them until a new start (241.713291ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.677542ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.103291ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.193917ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.181583ms)
+✔ new future output samples do not hide a due audio-master sample (0.092375ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 831.776958

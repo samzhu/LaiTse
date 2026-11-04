@@ -13,7 +13,7 @@
 | SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T09臨時主持/主講及即時門禁核心，正式帳號/耐久待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 驗證中（T11桌面核心可行） | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
-| SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12桌面控制恢復核心可行，媒體/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
+| SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12控制＋T13桌面接收恢復核心可行，品質/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
 | SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（盤點完成） | T01／R002盤點；恢復待POC-06 | 本機結果與後續部署耐久性分清，未解限制不能默認忽略 |
 | SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
 
@@ -167,3 +167,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-005：`control-reconnect.ts`同tab sessionStorage+同頁memory fallback，role分key、URL不含token，新的不同房link走正常join；成功switch更新公開room URL。participant/display close先清權限/內容/media，有限退避8次/取消與手動retry；unmount不當explicit leave。回復控制不auto任何媒體，display初次T11 autoWatch保留、resume需手動觀看。草稿/音量跨disconnect或refresh不在本輪保留承諾。
 - SOL-008：[R001](evidence/POC-04-R001/README.md)含47核心/build、三Firefox正常UI+受控transport close/refresh/門禁/去重TTL、兩代表圖/摘要/指紋/cleanup，首次通過。可沿用control-reconnect.integration與control-reconnect-smoke，source及script執行前root修正紀錄保留。摘要無原始token/身份/逐包trace，非獨立封包重放資產；無新依賴或codec/Phaser改動。
 - 整合限制：offline cancel只清本頁、server離線record等TTL；process restart清store，需手動正常join，不能當CloudRun耐久已驗。新tab/token被清除不是舊身份。controller disposal與no-auto有source/控制斷言，沒有活動影音來源/解碼恢復證據；T13/弱網半開/手機/容量/長測/正式認證/完整POC-04仍待。可接續控制候選方案，不能整包當可交付商品。
+
+## T13／POC-04-R002：SOL-002／006／008（2026-11-04）
+
+- SOL-006：`MediaRecoveryIntent`僅同頁room-bound audio/screen意圖，不存token/socket/publish權；新session.resumed後仍等本socket room.snapshot+participation.self一致才套用。controller dispose不當作user stop；manual stop/interaction/明確換房/Leave/恢復到不同房清意圖，display只video。full reload不保存媒體意圖。App保存同頁音量，不自動捕捉來源或重建主持/grant。
+- SOL-002：AudioPanel/ScreenPanel新建controller/timeline及訂閱，AudioController以當前stream config/generation/clock初始化decoder；worklet準備與resume promise分離，suspended提供Continue不遞迴/不掛住、不改autoplay政策。Screen沿既有relay keyframe gate，新時鐘/尺寸重建；sender持續時generation/clock可相同，不能要求每次receiver重連都換source。sender斷線tracks結束，需正常權限與手動來源，新的generation/clock才能再次實播。
+- SOL-008：[R002](evidence/POC-04-R002/README.md)含54核心/build、third接收段actual4672samples/VP8及display、manual stop不重訂閱、sender不auto；最後publisher-only窄驗generation2/新clock/實播通過。原3 full腳本失敗/窄修保留，最終full未再整段跑；core以分段證據判定。root-readback從保留的connection白名單control/seq/clock/config與render數據核對，3圖實際看過，不只以WS open算播放。
+- 復用限制：測試用合成oscillator/canvas，Node payload為fixture，非真mic/畫面/人耳/手機證據；此次Firefox自動播放，gesture分支仍待實測。單次route-release觀測非校準E2E/p95，原20次/≤5s不改判。T14弱網/慢端、長測、耐久/CloudRun/完整POC-04仍待；server/relay/時基module/互動/Phaser/依賴未變，不把POC診斷與test route/provider帶入商品。

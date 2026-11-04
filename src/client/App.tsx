@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
+import { MediaRecoveryIntent } from "./media-recovery";
 import { SpacePanel } from "./SpacePanel";
 import { HostPanel } from "./HostPanel";
 import { InteractionPanel } from "./InteractionPanel";
@@ -181,6 +182,8 @@ export function App() {
   const [entryDialogError, setEntryDialogError] = useState("");
   const [entrySubmitting, setEntrySubmitting] = useState(false);
   const [mediaSessionEpoch, setMediaSessionEpoch] = useState(0);
+  const [audioVolume, setAudioVolume] = useState(1);
+  const [mediaRecoveryRestore, setMediaRecoveryRestore] = useState<{ socket: WebSocket; roomId: string; audio: boolean; screen: boolean } | null>(null);
   const [hostClaimed, setHostClaimed] = useState(false);
   const [currentParticipantId, setCurrentParticipantId] = useState("");
   const [hostControlsEnabled, setHostControlsEnabled] = useState(false);
@@ -209,6 +212,14 @@ export function App() {
   const connectionIntentRef = useRef<ConnectionIntent | null>(null);
   const terminalResumeRef = useRef(false);
   const explicitLeaveRef = useRef(false);
+  const mediaRecoveryIntentRef = useRef(new MediaRecoveryIntent());
+  const mediaResumeSnapshotsRef = useRef<{
+    socket: WebSocket;
+    resumedRoomId: string;
+    resumedRole: "participant" | "display";
+    roomSnapshotId: string | null;
+    participation: ParticipationSnapshot | null;
+  } | null>(null);
   const reconnectLoopRef = useRef<BoundedReconnectLoop | null>(null);
   if (!reconnectLoopRef.current) {
     reconnectLoopRef.current = new BoundedReconnectLoop(
@@ -219,6 +230,41 @@ export function App() {
       },
     );
   }
+
+  const tryRestoreMediaAfterResume = (socket: WebSocket) => {
+    const pending = mediaResumeSnapshotsRef.current;
+    if (!pending || pending.socket !== socket || !pending.roomSnapshotId || !pending.participation) return;
+    const authority = pending.participation;
+    const sameFreshRoom = pending.resumedRoomId === pending.roomSnapshotId && authority.roomId === pending.roomSnapshotId;
+    const sameRole = authority.role === pending.resumedRole;
+    if (!sameFreshRoom || !sameRole) {
+      mediaRecoveryIntentRef.current.clear();
+      mediaResumeSnapshotsRef.current = null;
+      setMediaRecoveryRestore(null);
+      return;
+    }
+    const intent = mediaRecoveryIntentRef.current.restoreFor({
+      roomId: pending.roomSnapshotId,
+      role: authority.role,
+      mode: authority.mode,
+    });
+    mediaResumeSnapshotsRef.current = null;
+    setMediaRecoveryRestore(intent.audio || intent.screen
+      ? { socket, roomId: pending.roomSnapshotId, audio: intent.audio, screen: intent.screen }
+      : null);
+  };
+
+  const updateAudioReceiveIntent = useCallback((enabled: boolean) => {
+    const roomId = currentRoomIdRef.current || mediaRecoveryIntentRef.current.snapshot().roomId || "";
+    mediaRecoveryIntentRef.current.set("audio", enabled, roomId);
+    setMediaRecoveryRestore((current) => current ? { ...current, audio: enabled } : current);
+  }, []);
+
+  const updateScreenReceiveIntent = useCallback((enabled: boolean) => {
+    const roomId = currentRoomIdRef.current || mediaRecoveryIntentRef.current.snapshot().roomId || "";
+    mediaRecoveryIntentRef.current.set("screen", enabled, roomId);
+    setMediaRecoveryRestore((current) => current ? { ...current, screen: enabled } : current);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -267,6 +313,9 @@ export function App() {
   const openConnection = (intent: ConnectionIntent) => {
     connectionIntentRef.current = intent;
     explicitLeaveRef.current = false;
+    mediaResumeSnapshotsRef.current = null;
+    setMediaRecoveryRestore(null);
+    if (intent.type === "join") mediaRecoveryIntentRef.current.clear();
     if (intent.type === "resume") setConnectionStatus("Reconnecting…");
     else setConnectionStatus("Connecting…");
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -320,6 +369,13 @@ export function App() {
       }
 
       if (message.type === "session.resumed") {
+        mediaResumeSnapshotsRef.current = {
+          socket,
+          resumedRoomId: message.roomId,
+          resumedRole: message.role,
+          roomSnapshotId: null,
+          participation: null,
+        };
         const current = resumeCandidateRef.current;
         if (current) {
           const candidate = { ...current, roomId: message.roomId, entryRoomId: message.roomId };
@@ -338,6 +394,7 @@ export function App() {
         setHostActionError("");
         setProtocolError("");
         setConnectionStatus("Refreshing restored room state…");
+        if (message.mode === "interaction") mediaRecoveryIntentRef.current.clear();
         const url = new URL(window.location.href);
         url.searchParams.set("room", message.roomId);
         window.history.replaceState(window.history.state, "", url);
@@ -352,6 +409,11 @@ export function App() {
       }
 
       if (message.type === "room.snapshot") {
+        const recovery = mediaResumeSnapshotsRef.current;
+        if (recovery?.socket === socket) {
+          recovery.roomSnapshotId = message.room.id;
+          tryRestoreMediaAfterResume(socket);
+        }
         lastSequenceRef.current = message.lastSeq;
         const didSwitchRoom = Boolean(currentRoomIdRef.current && currentRoomIdRef.current !== message.room.id);
         if (didSwitchRoom) {
@@ -399,6 +461,10 @@ export function App() {
         setPendingModeTarget(null);
         pendingModeTargetRef.current = null;
         setQuiescedMedia({ audio: false, screen: false });
+        if (message.mode === "interaction") {
+          mediaRecoveryIntentRef.current.clear();
+          setMediaRecoveryRestore(null);
+        }
         modeChangeSentRef.current = false;
         if (message.mode === "interaction" && (message.media.audioSubscribed || message.media.screenSubscribed)) {
           setProtocolError("伺服器回報仍有影音訂閱；請重新檢查只互動狀態。");
@@ -412,6 +478,11 @@ export function App() {
         if (message.roomId !== currentRoomIdRef.current) return;
         setParticipationSelf(message);
         setParticipationMode(message.mode);
+        const recovery = mediaResumeSnapshotsRef.current;
+        if (recovery?.socket === socket) {
+          recovery.participation = message;
+          tryRestoreMediaAfterResume(socket);
+        }
         return;
       }
 
@@ -560,6 +631,9 @@ export function App() {
           reconnectLoopRef.current?.stop();
           clearResumeCandidate("participant");
           resumeCandidateRef.current = null;
+          mediaRecoveryIntentRef.current.clear();
+          mediaResumeSnapshotsRef.current = null;
+          setMediaRecoveryRestore(null);
           setCanManuallyRetry(false);
           setConnectionStatus("Saved session expired or unavailable. Join the room again.");
         } else if (message.code === "resume_busy" || message.code === "room_full") {
@@ -666,6 +740,8 @@ export function App() {
       if (socketRef.current !== socket) return;
       socketRef.current = null;
       setCurrentSocket(null);
+      mediaResumeSnapshotsRef.current = null;
+      setMediaRecoveryRestore(null);
       setMembers([]);
       setEvents([]);
       setSpaceSnapshot(null);
@@ -799,6 +875,10 @@ export function App() {
   const changeParticipationMode = (mode: ParticipationMode) => {
     const socket = socketRef.current;
     if (!socket || socket.readyState !== WebSocket.OPEN || !connected || modeSwitchPending || mode === participationMode) return;
+    if (mode === "interaction") {
+      mediaRecoveryIntentRef.current.clear();
+      setMediaRecoveryRestore(null);
+    }
     setProtocolError("");
     setModeSwitchPending(true);
     setPendingModeTarget(mode);
@@ -836,6 +916,9 @@ export function App() {
     explicitLeaveRef.current = true;
     terminalResumeRef.current = true;
     reconnectLoopRef.current?.stop();
+    mediaRecoveryIntentRef.current.clear();
+    mediaResumeSnapshotsRef.current = null;
+    setMediaRecoveryRestore(null);
     const socket = socketRef.current;
     if (socket?.readyState === WebSocket.OPEN) {
       try { socket.send(JSON.stringify({ type: "session.leave" })); } catch {}
@@ -884,10 +967,17 @@ export function App() {
 
   const selectRoom = (roomId: string) => {
     if (!connectionStatus.startsWith("Connected to ")) {
+      if (roomId !== mediaRecoveryIntentRef.current.snapshot().roomId) {
+        mediaRecoveryIntentRef.current.clear();
+        setMediaRecoveryRestore(null);
+      }
       setSelectedRoomId(roomId);
       return;
     }
     if (roomId === currentRoomIdRef.current || pendingRoomId) return;
+    mediaRecoveryIntentRef.current.clear();
+    mediaResumeSnapshotsRef.current = null;
+    setMediaRecoveryRestore(null);
     setProtocolError("");
     entryAttemptRef.current = { type: "switch", roomId };
     if (rooms.find((room) => room.id === roomId)?.isLocked) {
@@ -1234,8 +1324,32 @@ export function App() {
         ) : null}
       </section>
 
-      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} participationMode={participationMode} pendingModeTarget={pendingModeTarget} onModeQuiesced={markAudioQuiesced} /> : null}
-      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} participationMode={participationMode} pendingModeTarget={pendingModeTarget} onModeQuiesced={markScreenQuiesced} /> : null}
+      {connected && !pendingRoomId ? <AudioPanel
+        socket={currentSocket}
+        timeline={mediaTimeline}
+        roomId={currentRoomId}
+        publishAllowed={publishAllowed}
+        hostControlsEnabled={hostControlsEnabled}
+        participationMode={participationMode}
+        pendingModeTarget={pendingModeTarget}
+        autoRestoreReceive={mediaRecoveryRestore?.socket === currentSocket && mediaRecoveryRestore.roomId === currentRoomId && mediaRecoveryRestore.audio}
+        volume={audioVolume}
+        onVolumeChange={setAudioVolume}
+        onReceiveIntentChange={updateAudioReceiveIntent}
+        onModeQuiesced={markAudioQuiesced}
+      /> : null}
+      {connected && !pendingRoomId ? <ScreenPanel
+        socket={currentSocket}
+        timeline={mediaTimeline}
+        roomId={currentRoomId}
+        publishAllowed={publishAllowed}
+        hostControlsEnabled={hostControlsEnabled}
+        participationMode={participationMode}
+        pendingModeTarget={pendingModeTarget}
+        autoWatch={mediaRecoveryRestore?.socket === currentSocket && mediaRecoveryRestore.roomId === currentRoomId && mediaRecoveryRestore.screen}
+        onReceiveIntentChange={updateScreenReceiveIntent}
+        onModeQuiesced={markScreenQuiesced}
+      /> : null}
 
       <DoorEntryDialog
         open={entryDialogOpen}

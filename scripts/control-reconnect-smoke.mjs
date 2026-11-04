@@ -500,7 +500,7 @@ async function waitReconnectRoute(client) {
   return waitFor(() => client.wire.heldRoute, `${client.name} blocked reconnect WebSocket`, reconnectingTimeoutMs);
 }
 
-async function controlledReconnect(client, { screenshotPrefix = null, expectedIdentity, expectedRoomId, expectHostReset = false, expectDisplayNoAutoSubscribe = false } = {}) {
+async function controlledReconnect(client, { screenshotPrefix = null, expectedIdentity, expectedRoomId, expectHostReset = false, expectDisplayRestoreSubscribe = false } = {}) {
   const current = client.wire.activeConnection;
   assert.ok(current?.serverRoute, `${client.name} should have an active routed WebSocket before disconnect.`);
   client.wire.blockNextConnection = true;
@@ -545,9 +545,9 @@ async function controlledReconnect(client, { screenshotPrefix = null, expectedId
     await client.page.getByTestId("host-state").filter({ hasText: "MANAGED" }).waitFor();
     assert.equal(sentControls(client, "host.claim").length, 1, "host must not automatically reclaim the previous host permission.");
   }
-  if (expectDisplayNoAutoSubscribe) {
-    await new Promise((resolveWait) => setTimeout(resolveWait, 300));
-    assert.equal(sentControls(client, "screen.subscribe").length, screenSubscribeBefore, "display must not auto-subscribe media after control resume.");
+  if (expectDisplayRestoreSubscribe) {
+    await waitFor(() => sentControls(client, "screen.subscribe").length === screenSubscribeBefore + 1, "display restores its same-page screen intent after fresh control state");
+    assert.equal(sentControls(client, "screen.subscribe").length, screenSubscribeBefore + 1, "T13 restores the display's prior same-page video subscription once.");
   }
 
   assert.ok(newConnection, `${client.name} should have a new active WebSocket after recovery.`);
@@ -997,7 +997,7 @@ async function main() {
     await controlledReconnect(display, {
       expectedIdentity: displayIdentity,
       expectedRoomId: "studio",
-      expectDisplayNoAutoSubscribe: true,
+      expectDisplayRestoreSubscribe: true,
     });
   }
 
