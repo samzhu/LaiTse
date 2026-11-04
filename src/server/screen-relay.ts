@@ -7,6 +7,8 @@ export const MAX_SCREEN_HEIGHT = 720;
 export const MAX_SCREEN_PIXELS = MAX_SCREEN_WIDTH * MAX_SCREEN_HEIGHT;
 export const MAX_SCREEN_FRAME_RATE = 15;
 
+export type ScreenPublisherStopReason = "permission_revoked" | "session_ended";
+
 const SCREEN_MAGIC = Buffer.from("LTS1", "ascii");
 const SCREEN_CONFIG = Object.freeze({ codec: "vp8" });
 
@@ -263,10 +265,25 @@ export function createScreenRelay() {
     if (connection) connection.subscribed = false;
   }
 
+  function stopPublishing(connectionId: string, reason: ScreenPublisherStopReason): boolean {
+    if (publisher?.connectionId !== connectionId) return false;
+    const active = publisher;
+    publisher = null;
+    for (const subscriber of connections.values()) {
+      if (subscriber.waitingForKeyframeGeneration === active.generation) subscriber.waitingForKeyframeGeneration = null;
+    }
+    const source = connections.get(connectionId);
+    if (source?.joined && source.peer.readyState() === source.peer.openState) {
+      source.peer.sendControl({ type: "screen.publishRevoked", generation: active.generation, reason });
+    }
+    tellSubscribers({ type: "screen.streamEnded", generation: active.generation, reason }, active.connectionId);
+    return true;
+  }
+
   function close(): void {
     connections.clear();
     publisher = null;
   }
 
-  return { register, markJoined, handleControl, handleBinary, disconnect, close };
+  return { register, markJoined, handleControl, handleBinary, stopPublishing, disconnect, close };
 }

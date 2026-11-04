@@ -544,7 +544,7 @@ export class ScreenController {
     void this.startShare();
   }
 
-  stopShare(message = "已停止畫面分享並釋放擷取與編碼資源。"): void {
+  stopShare(message = "已停止畫面分享並釋放擷取與編碼資源。", notifyServer = true): void {
     this.publisherToken += 1;
     const waiter = this.pendingStart;
     if (waiter) {
@@ -554,7 +554,7 @@ export class ScreenController {
     }
     const generation = this.publisherGeneration;
     this.publisherGeneration = null;
-    if (generation !== null && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "screen.stop", generation }));
+    if (notifyServer && generation !== null && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "screen.stop", generation }));
     this.cleanupPublisherResources();
     this.set({ publisherState: "idle", publisherMessage: message });
   }
@@ -746,6 +746,12 @@ export class ScreenController {
       waiter.resolve(generation);
       return;
     }
+    if (message.type === "screen.publishRevoked" || message.type === "host.publishRevoked") {
+      this.stopShare(message.reason === "session_ended"
+        ? "目前活動已結束；畫面擷取已停止。"
+        : "主持人已撤銷發布權；畫面擷取已停止。", false);
+      return;
+    }
     if (message.type === "screen.keyframeRequest") {
       if (Number(message.generation) === this.publisherGeneration && this.state.publisherState === "sharing") {
         this.forceKeyframe = true;
@@ -784,7 +790,11 @@ export class ScreenController {
         this.renderedAt.length = 0;
         this.set({
           receiverState: this.state.receiverState === "off" ? "off" : "waiting",
-          receiverMessage: "發布者已停止；畫面已清除，正在等待下一次分享。",
+          receiverMessage: message.reason === "permission_revoked"
+            ? "主持人已撤銷發布權；畫面已清除，正在等待下一次分享。"
+            : message.reason === "session_ended"
+              ? "活動已結束；畫面已清除，正在等待新的活動。"
+              : "發布者已停止；畫面已清除，正在等待下一次分享。",
           renderedWidth: null,
           renderedHeight: null,
           renderFps: 0,

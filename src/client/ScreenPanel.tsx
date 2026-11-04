@@ -5,9 +5,11 @@ import { MediaTimeline } from "./media-timeline";
 type ScreenPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
+  publishAllowed?: boolean;
+  hostControlsEnabled?: boolean;
 };
 
-export function ScreenPanel({ socket, timeline }: ScreenPanelProps) {
+export function ScreenPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false }: ScreenPanelProps) {
   const [state, setState] = useState<ScreenSnapshot>({ ...INITIAL_SCREEN_STATE });
   const controllerRef = useRef<ScreenController | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -67,7 +69,7 @@ export function ScreenPanel({ socket, timeline }: ScreenPanelProps) {
         <div className="screen-control-group">
           <div>
             <h3>發布畫面</h3>
-            <p className={`screen-state ${["denied", "blocked", "unsupported", "error"].includes(state.publisherState) ? "is-error" : ""}`} role="status" data-screen-status="publisher">{state.publisherMessage}</p>
+            <p className={`screen-state ${["denied", "blocked", "unsupported", "error"].includes(state.publisherState) ? "is-error" : ""}`} role="status" data-screen-status="publisher">{hostControlsEnabled && !publishAllowed && !isSharing && !isStartingShare ? "主持人尚未授予目前房間的發布權。" : state.publisherMessage}</p>
           </div>
           {isSharing ? (
             <div className="audio-button-row">
@@ -75,7 +77,7 @@ export function ScreenPanel({ socket, timeline }: ScreenPanelProps) {
               <button className="quiet-button" onClick={() => controllerRef.current?.stopShare()}>停止分享</button>
             </div>
           ) : (
-            <button className="primary-button" onClick={() => void controllerRef.current?.startShare()} disabled={isStartingShare}>
+            <button className="primary-button" onClick={() => void controllerRef.current?.startShare()} disabled={isStartingShare || hostControlsEnabled && !publishAllowed}>
               {isStartingShare ? "等待來源選擇…" : state.publisherState === "denied" ? "重新要求分享權限" : "開始分享畫面"}
             </button>
           )}

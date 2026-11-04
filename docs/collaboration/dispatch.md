@@ -49,3 +49,34 @@
 | TECH-001／主代理 | 唯一寫入 `docs/research/technology-landscape.md`、`docs/collaboration/{dispatch,project-brief,checkpoint,delivery-index}.md`；唯讀其餘文件及官方來源 | 依 PRD v0.2 與影音研究；不改 PRD、不寫程式、不定案、不部署 | 研究成熟前端、2D 場景、多人同步、資料與測試框架；整理候選與適用條件 | 官方來源、需求映射、方案比較、待驗證問題及已同步協作紀錄；保存並讀回 | 研究交付完成即停止；新的產品決策留待後續 | 已完成、保存並讀回；主代理停止寫入並釋出 |
 
 重新派工前須取得明確交接，核實保存／讀回證據及原 writer 已停止修改。沉默不代表釋出資源。
+
+## T09／POC-03-R005（2026-11-04）
+
+人類要求：繼續T09、輕量確認主持權限/即時鎖房及用法，完成程式+紀錄本機commit。已讀回GitHub #10「主持權限與 Session 控制」。
+
+- **T09-IMPL／Luna xhigh唯一writer**：`src/server/{app,index,room-access}.ts`、新增`src/server/host-control.ts`（需要時）、`src/client/{App,SpacePanel,DoorEntryDialog,AudioPanel,ScreenPanel}.tsx`、`src/client/{pixel-space,audio,screen}.ts`、`src/client/styles.css`、新增`src/client/HostPanel.tsx`、`tests/host-control.integration.test.mjs`、`scripts/host-control-smoke.mjs`、README與`.scratch/t09/`。唯讀其餘；不要寫manifest/lock、其他測試或docs/Git。若需relay改動先向root明確交接範圍。
+- **root唯一writer**：`docs/poc/{execution-log,mvp-handoff,plan,ticket-breakdown}.md`、`docs/poc/evidence/POC-03-R005/`、`docs/collaboration/{dispatch,project-brief,checkpoint,delivery-index}.md`、PRD/handoff狀態、`.gitignore`、Git與驗收runtime/獨立scratch runner；child未交接前不改其檔案。
+- **已授權實作選擇**：最小server啟動管理secret（HOST_CONTROL_TOKEN）只走WSS claim、不進URL/public/log/報告，不以房間密碼/先入房者自動成主持；role限定當前房間，切房失效。配置token啟用managed POC並要求發布授權；無配置保留既有匿名技術POC模式且管理不可用/界線明示，不冒充正式權限。主持可grant/revoke publisher、remove、動態鎖/解鎖及更換密碼、結束活動；不授予別人host角色。鎖只影響新准入、不踢既有；結束清媒體/授權但保留Room/member。尚無真帳號，移除只對當前連線身份有效，新匿名連線限制如實交接。
+- **不變條件/依賴**：8a19ebf基線、單一既有WS/app、門與join/switch同gate、嚴格schema/跨房target拒絕、secret不下送、revoke即時停兩媒體且阻擋後續publish及binary；舊媒體清理/空間音訊規則不可破壞。無SaaS/新依賴/部署/push/遠端票寫入/下一票。
+- **驗收/交付**：typecheck/build、既有全Node一次+新授權契約；短真Firefox host/participant門/claim/動態鎖/錯正密碼/grant/revoke/結束或移除可見狀態，外部WS越權五種控制與重放發布拒絕；合成媒體可用，不做手機/真人/長測。保留失敗與新證據修正，root獨立讀回/代表圖。child保存/讀回、停止寫入明確交接後root驗收/窄修/紀錄/commit。
+- **目前狀態**：範圍已保存並委派，Luna xhigh實作中；root設計/驗收規劃中。
+
+### T09-IMPL relay範圍補充（2026-11-04）
+
+Luna提出現有disconnect會刪訂閱，無法僅在app保留接收者並停發布。root核對既有relay API後授權Luna唯一寫入`src/server/audio-relay.ts`、`src/server/screen-relay.ts`，窄加stopPublishing(connectionId, reason)，保留peer/subscription與單調generation，不變更wire codec/frame格式、距離接收資格與背壓。新增停止原因須相容既有client清理，測試仍只寫host-control.integration。root未寫這兩檔，無交接衝突；其餘範圍/停止條件不變。
+
+T09 root驗收範圍補充：root唯一寫入`tests/server.integration.test.mjs`及`tests/space.integration.test.mjs`，只更新新增public hostControlsEnabled/publishAllowed欄位的精確schema預期，不放寬既有驗證；Luna無這兩檔writer，不衝突。
+
+### T09 source交接
+
+Luna明確回報source已保存、focused server/space/host契約通過，停止寫入並釋出src/server、src/client及tests/host-control.integration.test.mjs的派定檔案。root接手source/test檢視與窄修、production build/完整Node一次；Luna僅保留README、scripts/host-control-smoke.mjs及implementation-checks紀錄writer，未交接前root不改。
+
+root首次完整Node結果33/34，唯一失敗為`tests/space-policy.integration.test.mjs`另一份精確room.snapshot預期未納新欄位（實際距離路由無失敗證據）。root追加唯一writer該檔，僅加入hostControlsEnabled:false/publishAllowed:true，保留首次log/預期窄修後檢查；不改程式以遷就測試。
+
+T09交接異常：Luna在釋出src/tests後回報又加「主持token不可兼作startup/live入房密碼」窄patch，違反writer交接；root已要求立即停止已釋出檔案寫入。root讀回確認兩項guard與契約均仍在，自己加入的host切房往返負例亦保存，沒有互相覆寫證據。dist/server/app.js已含兩項guard，對照保存時序屬root build所涵蓋；首次完整33/34及修正預期後34/34、T09補充3/3均已保存。後續以root唯一source/test writer為準，Luna只保留script/README/log至明確釋出。
+
+Luna已明確停止並釋出README、smoke-script及implementation-checks紀錄，且未啟動runtime/browser。root目前為全部本輪檔案唯一writer/驗收操作者；先保留source檢查結果，啟動managed browser短流程。
+
+T09圖像讀回新差異：browser核心pass後root查看圖發現門圖仍OPEN而metadata已locked。root唯一writer追加`src/client/pixel-space.ts`窄修門圖隨當前rooms更新（不動命中區/位置/指標修正），現有script增加實際POST_RENDER門狀態斷言；保留before-door-visual-fix原圖/報告，重build與受影響browser。source已全交接無衝突。
+
+T09最終驗收：完整34/34、主持切房往返補充後T09檔3/3、兩次build/typecheck與最終三Firefox157通過。兩selector失敗與門圖真實不一致/窄修證據保留R005，最終POST_RENDER LOCKED/OPEN三頁及實際鎖門截圖由root讀回查看。文件/SOL/使用方式已同步，source/code writer全部交接後root完成窄修並停止，待本機commit後資源釋出；不push/遠端票/T10/部署。

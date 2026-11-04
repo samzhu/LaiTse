@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-04",
+  "localPocServerProcesses": 0,
+  "localPocRunnerProcesses": 0,
+  "localPocBrowserContexts": "closed in finally; matching process readback empty",
+  "port4173Listeners": 0,
+  "method": "runner finally + narrow ps + lsof readback",
+  "deployed": false,
+  "pushed": false,
+  "remoteTicketModified": false
+}

@@ -1,0 +1,1 @@
+首次browser流程在已完成grant/實際Opus+VP8 render/revoke後，等待活動結束的通用getByText選到五處相同文案而strict-mode失敗。raw report顯示host.actionResult(endSession)與source停送；這不是已完成整輪。root保留資料後僅將selector收斂至host-management-status，未改應用或權限程式。server/browser已由finally停止，修正後重跑受影響browser流程。

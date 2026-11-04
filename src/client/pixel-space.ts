@@ -54,6 +54,7 @@ export type SpaceRenderDiagnostics = {
   renderedAt: string;
   snapshotSeq: number | null;
   players: SpaceRenderPlayer[];
+  doorState?: { isLocked: boolean; label: string };
   doorInput?: {
     activations: number;
     sceneEnabled: boolean;
@@ -160,6 +161,9 @@ export async function createPixelSpaceRenderer(
     private gameRenderCount = 0;
     private initialStateDrawn = false;
     private doorActivations = 0;
+    private doorFrame: Phaser.GameObjects.Graphics | null = null;
+    private doorLabel: Phaser.GameObjects.Text | null = null;
+    private renderedDoorLocked: boolean | null = null;
     private lastSceneDown: { x: number; y: number; over: string[] } | null = null;
 
     constructor() {
@@ -181,6 +185,7 @@ export async function createPixelSpaceRenderer(
     }
 
     applySpaceState(): void {
+      this.refreshDoorLock();
       const activePlayers = new Map<string, SpacePlayer>();
       for (const room of rooms) {
         for (const player of room.players) activePlayers.set(player.id, player);
@@ -286,22 +291,15 @@ export async function createPixelSpaceRenderer(
     }
 
     private drawMeetingRoomDoor(): void {
-      const locked = rooms.find((room) => room.id === "studio")?.isLocked ?? false;
-      const frame = this.add.graphics();
-      frame.fillStyle(0x56453a, 1).fillRoundedRect(DOOR_CENTER_X - 15, DOOR_TOP, 30, 78, 5);
-      frame.fillStyle(locked ? 0x8c5b55 : 0x71916e, 1).fillRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
-      frame.lineStyle(2, 0xf4e5c4, 1).strokeRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
-      frame.fillStyle(0xe9d1a3, 1).fillCircle(DOOR_CENTER_X + 5, DOOR_TOP + 40, 2);
-      frame.fillStyle(0xb68c57, 1).fillRect(DOOR_CENTER_X - 18, DOOR_TOP + 74, 36, 4);
-      this.add.text(DOOR_CENTER_X, DOOR_TOP - 12, locked ? "LOCKED" : "OPEN", {
+      this.doorFrame = this.add.graphics();
+      this.doorLabel = this.add.text(DOOR_CENTER_X, DOOR_TOP - 12, "", {
         fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
         fontSize: "8px",
         fontStyle: "bold",
-        color: locked ? "#874e47" : "#557452",
         backgroundColor: "#fffdf5",
         padding: { left: 4, right: 4, top: 2, bottom: 2 },
       }).setOrigin(0.5, 0.5);
-
+      this.refreshDoorLock();
       this.add.zone(DOOR_CENTER_X, DOOR_TOP + 39, 38, 82)
         .setInteractive({ cursor: "pointer" })
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
@@ -309,6 +307,22 @@ export async function createPixelSpaceRenderer(
           const currentRoomId = snapshot?.currentRoomId;
           options.onEnterRoom(currentRoomId === "studio" ? "lobby" : "studio");
         });
+    }
+
+    private refreshDoorLock(): void {
+      const locked = rooms.find((room) => room.id === "studio")?.isLocked ?? false;
+      const frame = this.doorFrame;
+      const label = this.doorLabel;
+      if (!frame || !label || locked === this.renderedDoorLocked) return;
+      frame.clear();
+      frame.fillStyle(0x56453a, 1).fillRoundedRect(DOOR_CENTER_X - 15, DOOR_TOP, 30, 78, 5);
+      frame.fillStyle(locked ? 0x8c5b55 : 0x71916e, 1).fillRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
+      frame.lineStyle(2, 0xf4e5c4, 1).strokeRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
+      frame.fillStyle(0xe9d1a3, 1).fillCircle(DOOR_CENTER_X + 5, DOOR_TOP + 40, 2);
+      frame.fillStyle(0xb68c57, 1).fillRect(DOOR_CENTER_X - 18, DOOR_TOP + 74, 36, 4);
+      label.setText(locked ? "LOCKED" : "OPEN");
+      label.setColor(locked ? "#874e47" : "#557452");
+      this.renderedDoorLocked = locked;
     }
 
     private drawGrid(graphics: Phaser.GameObjects.Graphics, originX: number, colors: ReturnType<typeof roomColors>): void {
@@ -386,6 +400,7 @@ export async function createPixelSpaceRenderer(
         renderedAt: new Date().toISOString(),
         snapshotSeq: snapshot?.seq ?? null,
         players,
+        doorState: { isLocked: this.renderedDoorLocked === true, label: this.doorLabel?.text ?? "" },
         doorInput: {
           activations: this.doorActivations,
           sceneEnabled: this.input.enabled,

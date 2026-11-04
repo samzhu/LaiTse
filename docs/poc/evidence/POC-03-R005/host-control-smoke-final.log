@@ -1,0 +1,8 @@
+[T09] host-claimed-over-current-room-connection
+[T09] five-unauthorized-host-operations-and-publish-replays-rejected {"deniedAudioStart":true,"deniedScreenStart":true,"deniedAudioBinary":true,"deniedScreenBinary":true}
+[T09] publisher-grant-visible-on-member-page
+[T09] authorized-synthetic-audio-and-screen-reached-host {"audioRenderedSamples":11008,"screenRenderedFrames":3}
+[T09] revoke-stopped-source-tracks-and-cleared-receiver-decoder {"sourceTrackCount":2,"tracksStopped":true,"afterCleanup":{"audio":15,"screen":4},"after350ms":{"audio":15,"screen":4}}
+[T09] end-session-stopped-publishing-and-retained-room-members {"tracksStopped":true,"afterCleanup":{"audio":19,"screen":5},"after350ms":{"audio":19,"screen":5}}
+[T09] live-lock-rejected-wrong-password-accepted-correct-password-and-rejected-room-password-as-host-token
+[T09] live-unlock-updated-catalogue-and-allowed-direct-reentry

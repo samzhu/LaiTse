@@ -1,0 +1,23 @@
+[T09] host-claimed-over-current-room-connection
+[T09] five-unauthorized-host-operations-and-publish-replays-rejected {"deniedAudioStart":true,"deniedScreenStart":true,"deniedAudioBinary":true,"deniedScreenBinary":true}
+[T09] publisher-grant-visible-on-member-page
+[T09] authorized-synthetic-audio-and-screen-reached-host {"audioRenderedSamples":11136,"screenRenderedFrames":3}
+[T09] revoke-stopped-source-tracks-and-cleared-receiver-decoder {"sourceTrackCount":2,"tracksStopped":true,"afterCleanup":{"audio":15,"screen":5},"after350ms":{"audio":15,"screen":5}}
+[T09] end-session-stopped-publishing-and-retained-room-members {"tracksStopped":true,"afterCleanup":{"audio":19,"screen":6},"after350ms":{"audio":19,"screen":6}}
+[T09] live-lock-rejected-wrong-password-accepted-correct-password-and-rejected-room-password-as-host-token
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'Enter Meeting room through door', exact: true })[22m
+
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/host-control-smoke.mjs:494:100 {
+  log: [
+    "  - waiting for getByRole('button', { name: 'Enter Meeting room through door', exact: true })"
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.13.0

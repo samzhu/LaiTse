@@ -1,0 +1,1 @@
+第二次已完成grant/音畫render/revoke/end/live lock錯正密碼/解鎖，root補的解鎖後再入房選取器漏了既有按鈕名稱尾綴「 · open」，因此exact文字找不到。讀回SpacePanel.tsx第229-230行及visitor最後lobby snapshot確認，未見應用錯誤。root改用既有data-door-entry="studio"穩定入口，不改應用；兩次失敗不同原因且均先保存診斷，未盲重跑。

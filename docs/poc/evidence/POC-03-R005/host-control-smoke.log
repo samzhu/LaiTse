@@ -1,0 +1,22 @@
+[T09] host-claimed-over-current-room-connection
+[T09] five-unauthorized-host-operations-and-publish-replays-rejected {"deniedAudioStart":true,"deniedScreenStart":true,"deniedAudioBinary":true,"deniedScreenBinary":true}
+[T09] publisher-grant-visible-on-member-page
+[T09] authorized-synthetic-audio-and-screen-reached-host {"audioRenderedSamples":10112,"screenRenderedFrames":3}
+[T09] revoke-stopped-source-tracks-and-cleared-receiver-decoder {"sourceTrackCount":2,"tracksStopped":true,"afterCleanup":{"audio":14,"screen":5},"after350ms":{"audio":14,"screen":5}}
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Error: strict mode violation: getByText(/活動已結束/u) resolved to 5 elements:
+    1) <p role="status" class="host-status" data-testid="host-management-status">活動已結束；房間與成員保留，主持人可開始新的活動。</p> aka getByTestId('host-management-status')
+    2) <p role="status" class="audio-state" data-audio-status="listener">活動已結束；播放仍保持啟動並等待新的活動。</p> aka getByText('活動已結束；播放仍保持啟動並等待新的活動。')
+    ...
+
+Call log:
+[2m  - waiting for getByText(/活動已結束/u) to be visible[22m
+
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/host-control-smoke.mjs:460:39 {
+  log: [ '  - waiting for getByText(/活動已結束/u) to be visible' ]
+}
+
+Node.js v26.13.0

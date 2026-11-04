@@ -40,6 +40,8 @@ type AudioRelayOptions = {
   isRecipientEligible?: (publisherConnectionId: string, recipientConnectionId: string) => boolean;
 };
 
+export type PublisherStopReason = "permission_revoked" | "session_ended";
+
 function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: readonly string[]): boolean {
   return Object.keys(value).every((key) => allowedKeys.includes(key));
 }
@@ -74,7 +76,7 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     connectionId: string,
     connection: RelayConnection,
     active: Publisher,
-    reason: "publisher_stopped" | "out_of_range",
+    reason: "publisher_stopped" | "out_of_range" | PublisherStopReason,
   ) => {
     if (connectionId === active.connectionId || connection.announcedGeneration !== active.generation) return;
     sendToOpenSubscriber(connection, { type: "audio.streamEnded", generation: active.generation, reason });
@@ -82,7 +84,7 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     if (reason === "out_of_range") connection.outOfRangeGeneration = active.generation;
   };
 
-  const endAnnouncedSubscribers = (active: Publisher, reason: "publisher_stopped" | "out_of_range") => {
+  const endAnnouncedSubscribers = (active: Publisher, reason: "publisher_stopped" | "out_of_range" | PublisherStopReason) => {
     for (const [connectionId, connection] of connections) endSubscriber(connectionId, connection, active, reason);
   };
 
@@ -270,10 +272,23 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     if (connection) connection.subscribed = false;
   }
 
+  function stopPublishing(connectionId: string, reason: PublisherStopReason): boolean {
+    if (publisher?.connectionId !== connectionId) return false;
+    const active = publisher;
+    publisher = null;
+    const source = connections.get(connectionId);
+    if (source?.joined && source.peer.readyState() === source.peer.openState) {
+      source.peer.sendControl({ type: "audio.publishRevoked", generation: active.generation, reason });
+    }
+    endAnnouncedSubscribers(active, reason);
+    clearUnavailableGeneration(active);
+    return true;
+  }
+
   function close(): void {
     connections.clear();
     publisher = null;
   }
 
-  return { register, markJoined, handleControl, handleBinary, reconcileRecipients, disconnect, close };
+  return { register, markJoined, handleControl, handleBinary, reconcileRecipients, stopPublishing, disconnect, close };
 }

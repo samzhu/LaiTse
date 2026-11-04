@@ -190,6 +190,8 @@ test("open-area audio follows authoritative distance, including the six-unit edg
       audioPolicy: "proximity",
       audioRadiusGridUnits: 6,
       isLocked: false,
+      hostControlsEnabled: false,
+      publishAllowed: true,
     });
     assert.deepEqual(
       ["Speaker", "Near listener", "Boundary listener", "Far listener"].map((name) => {

@@ -134,6 +134,8 @@ test("space snapshots expose member positions only for the recipient's current r
       audioPolicy: "proximity",
       audioRadiusGridUnits: 6,
       isLocked: false,
+      hostControlsEnabled: false,
+      publishAllowed: true,
     });
     assert.deepEqual(adaJoined.room.members.map((member) => member.displayName), ["Ada"]);
     assert.deepEqual(adaJoined.space.rooms.map((room) => room.id), ["lobby", "studio"]);

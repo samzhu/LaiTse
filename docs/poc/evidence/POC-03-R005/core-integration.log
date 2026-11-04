@@ -1,0 +1,72 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (193.500458ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (166.139666ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (86.189291ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (107.946791ms)
+✔ invalid capability reports are rejected and not stored (5.312209ms)
+✔ managed host claims are separate from room passwords; revoke stops both relays and blocks later frames (458.366584ms)
+✔ host token startup bounds are enforced without copying the configured value to errors (4.694916ms)
+✔ host claims have a per-connection rolling attempt limit (3.74475ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.801875ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.115542ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.212083ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.185041ms)
+✔ new future output samples do not hide a due audio-master sample (0.106875ms)
+✔ room door policy shares one locked server gate for join, switch, and room media (927.266708ms)
+✔ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (465.804167ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (108.687167ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (169.712875ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.741ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (85.175084ms)
+✔ the application serves health and a built-in room catalogue (41.819208ms)
+✔ two clients receive the same authoritative members and sequenced reaction (10.176417ms)
+✔ the websocket rejects cross-origin clients before joining (2.383917ms)
+✔ malformed or oversized control frames close without being broadcast (3.744584ms)
+✔ clients cannot select arbitrary rooms (1.797ms)
+✔ display names longer than the server limit are rejected (1.742ms)
+✔ control events reject client-supplied fields outside the protocol (1.663167ms)
+✔ the room has a fixed member limit (11.850209ms)
+✔ the server closes a client that exceeds the reaction rate limit (3.497291ms)
+✖ open-area audio follows authoritative distance, including the six-unit edge (26.803166ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (192.464459ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (7.509583ms)
+✔ space snapshots expose member positions only for the recipient's current room (24.704834ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (65.604916ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (108.582042ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 33
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1170.745042
+
+✖ failing tests:
+
+test at tests/space-policy.integration.test.mjs:173:1
+✖ open-area audio follows authoritative distance, including the six-unit edge (26.803166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      audioPolicy: 'proximity',
+      audioRadiusGridUnits: 6,
+  +   hostControlsEnabled: false,
+      id: 'lobby',
+      isLocked: false,
+      kind: 'open-area',
+      name: 'Open area',
+  +   publishAllowed: true
+    }
+  
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/space-policy.integration.test.mjs:186:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'lobby', name: 'Open area', kind: 'open-area', audioPolicy: 'proximity', audioRadiusGridUnits: 6, isLocked: false, hostControlsEnabled: false, publishAllowed: true },
+    expected: { id: 'lobby', name: 'Open area', kind: 'open-area', audioPolicy: 'proximity', audioRadiusGridUnits: 6, isLocked: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

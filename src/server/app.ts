@@ -12,7 +12,8 @@ import {
 } from "./capabilities.ts";
 import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
-import { createRoomAccessPolicy } from "./room-access.ts";
+import { createHostControlPolicy } from "./host-control.ts";
+import { createRoomAccessPolicy, isValidRoomPassword } from "./room-access.ts";
 import {
   createSpaceModel,
   isKnownRoom,
@@ -51,6 +52,8 @@ type ClientConnection = {
   id: string;
   member?: Member;
   currentRoomId?: RoomId;
+  hostActive: boolean;
+  removed: boolean;
   eventTimes: number[];
   moveTimes: number[];
 };
@@ -69,6 +72,7 @@ type CreateAppOptions = {
   serveClient?: boolean;
   https?: HttpsServerOptions;
   meetingRoomPassword?: string;
+  hostControlToken?: string;
 };
 
 type MediaMetricCounter = {
@@ -145,13 +149,30 @@ function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: readonly strin
   return Object.keys(value).every((key) => allowedKeys.includes(key));
 }
 
+function publicRooms(roomAccess: ReturnType<typeof createRoomAccessPolicy>, hostControlsEnabled: boolean) {
+  return SPACE_ROOMS.map(({ id, name, kind, audioPolicy, audioRadiusGridUnits }) => ({
+    id,
+    name,
+    kind,
+    audioPolicy,
+    audioRadiusGridUnits,
+    isLocked: roomAccess.isMeetingRoomLocked(id),
+    hostControlsEnabled,
+  }));
+}
+
 export async function createApp(options: CreateAppOptions = {}) {
+  if (options.hostControlToken && options.meetingRoomPassword && options.hostControlToken === options.meetingRoomPassword) {
+    throw new Error("HOST_CONTROL_TOKEN must be different from MEETING_ROOM_PASSWORD.");
+  }
   const app = Fastify({ logger: false, https: options.https ?? null });
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
   const roomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
+  const hostControl = createHostControlPolicy(options.hostControlToken);
+  const publisherGrants = new Map<RoomId, Set<string>>(SPACE_ROOMS.map(({ id }) => [id, new Set()]));
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
     audio: createAudioRelay({
       isRecipientEligible: (publisherConnectionId, recipientConnectionId) => {
@@ -200,14 +221,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     persistence: "process-memory",
   }));
 
-  app.get("/api/rooms", async () => SPACE_ROOMS.map(({ id, name, kind, audioPolicy, audioRadiusGridUnits }) => ({
-    id,
-    name,
-    kind,
-    audioPolicy,
-    audioRadiusGridUnits,
-    isLocked: roomAccess.isMeetingRoomLocked(id),
-  })));
+  app.get("/api/rooms", async () => publicRooms(roomAccess, hostControl.enabled));
 
   app.get("/api/media-diagnostics", async () => ({
     rooms: SPACE_ROOMS.map(({ id }) => ({
@@ -234,7 +248,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       },
     },
     (socket) => {
-      const connection: ClientConnection = { id: randomUUID(), eventTimes: [], moveTimes: [] };
+      const connection: ClientConnection = { id: randomUUID(), hostActive: false, removed: false, eventTimes: [], moveTimes: [] };
       clients.set(socket, connection);
 
       const send = (message: unknown): boolean => {
@@ -286,6 +300,37 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       const sendProtocolError = (code: string, message: string) => {
         send({ type: "protocol.error", code, message });
+      };
+
+      const canPublish = (targetConnection: ClientConnection): boolean => {
+        if (!hostControl.enabled) return true;
+        const member = targetConnection.member;
+        const roomId = targetConnection.currentRoomId;
+        if (!member || !roomId) return false;
+        return targetConnection.hostActive || publisherGrants.get(roomId)!.has(member.id);
+      };
+
+      const sendPublishPermission = (target: import("ws").WebSocket, targetConnection: ClientConnection) => {
+        if (!hostControl.enabled || !targetConnection.member || !targetConnection.currentRoomId) return;
+        const payload = JSON.stringify({
+          type: "host.publishPermission",
+          enabled: hostControl.enabled,
+          allowed: canPublish(targetConnection),
+        });
+        if (target.readyState !== target.OPEN || target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) return;
+        target.send(payload, (error) => {
+          if (error) target.terminate();
+        });
+      };
+
+      const broadcastRoomCatalogue = () => {
+        const message = JSON.stringify({ type: "room.catalogue", rooms: publicRooms(roomAccess, hostControl.enabled) });
+        for (const target of clients.keys()) {
+          if (target.readyState !== target.OPEN || target.bufferedAmount + Buffer.byteLength(message) > MAX_SOCKET_BUFFERED_BYTES) continue;
+          target.send(message, (error) => {
+            if (error) target.terminate();
+          });
+        }
       };
 
       const registerMediaConnection = (roomId: RoomId) => {
@@ -372,6 +417,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             rooms: snapshot.rooms.map((room) => ({
               ...room,
               isLocked: roomAccess.isMeetingRoomLocked(room.id),
+              hostControlsEnabled: hostControl.enabled,
             })),
           }, "spaceSnapshotsSent");
         }
@@ -396,13 +442,49 @@ export async function createApp(options: CreateAppOptions = {}) {
         return event;
       };
 
+      const sendHostError = (code: string, explanation: string) => {
+        if (connection.currentRoomId) roomMetrics.get(connection.currentRoomId)!.control.rejected += 1;
+        else unassignedControlRejections += 1;
+        send({ type: "host.error", code, message: explanation });
+      };
+
+      const sendHostResult = (action: string, details: Record<string, unknown> = {}) => {
+        send({ type: "host.actionResult", action, ...details });
+      };
+
+      const findRoomMember = (roomId: RoomId, memberId: string) => {
+        for (const [candidateSocket, candidateConnection] of clients) {
+          if (!candidateConnection.removed && candidateConnection.currentRoomId === roomId && candidateConnection.member?.id === memberId) {
+            return { socket: candidateSocket, connection: candidateConnection };
+          }
+        }
+        return null;
+      };
+
+      const broadcastHostPublisherGrants = (roomId: RoomId) => {
+        const payload = JSON.stringify({ type: "host.publisherGrants", participantIds: [...publisherGrants.get(roomId)!] });
+        for (const [targetSocket, targetConnection] of clients) {
+          if (!targetConnection.hostActive || targetConnection.currentRoomId !== roomId || targetSocket.readyState !== targetSocket.OPEN) continue;
+          if (targetSocket.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) continue;
+          targetSocket.send(payload, (error) => {
+            if (error) targetSocket.terminate();
+          });
+        }
+      };
+
       socket.on("message", (raw, isBinary) => {
-        if (socket.readyState !== socket.OPEN) return;
+        if (connection.removed || socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
         if (isBinary) {
           if (!connection.currentRoomId || !connection.member) {
             unassignedControlRejections += 1;
             sendProtocolError("media_not_joined", "Join a room before publishing or receiving media.");
+            return;
+          }
+          if (hostControl.enabled && !canPublish(connection)) {
+            const channel = bytes.subarray(0, 4).toString("ascii") === "LTS1" ? "screen" : "audio";
+            roomMetrics.get(connection.currentRoomId)![channel].rejected += 1;
+            send({ type: "host.publishDenied", message: "A host must grant publishing permission before media can be sent." });
             return;
           }
           const relays = mediaRooms.get(connection.currentRoomId)!;
@@ -478,11 +560,186 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
+        if (message.type === "host.claim") {
+          if (!hasOnlyKeys(message, ["type", "token"])) {
+            sendHostError("invalid_host_claim", "Host claim accepts only the room connection and a host token.");
+            return;
+          }
+          if (!hostControl.enabled || !connection.member || !connection.currentRoomId) {
+            sendHostError("host_claim_unavailable", "Join a room on a server with host controls enabled before claiming host access.");
+            return;
+          }
+          if (connection.hostActive) {
+            sendHostError("host_already_claimed", "This room connection already has host access.");
+            return;
+          }
+          const denial = hostControl.claim(message.token, connection);
+          if (denial) {
+            sendHostError(denial, denial === "host_claim_rate_limited"
+              ? "Too many host claims. Wait a minute before trying again."
+              : "That host token was not accepted.");
+            return;
+          }
+          connection.hostActive = true;
+          send({
+            type: "host.claimed",
+            roomId: connection.currentRoomId,
+            participantId: connection.member.id,
+            publisherGrants: [...publisherGrants.get(connection.currentRoomId)!],
+          });
+          sendPublishPermission(socket, connection);
+          return;
+        }
+
+        if (typeof message.type === "string" && message.type.startsWith("host.")) {
+          if (!hostControl.enabled || !connection.member || !connection.currentRoomId || !connection.hostActive) {
+            sendHostError("host_unauthorized", "Claim host access on this room connection before using host controls.");
+            return;
+          }
+
+          const roomId = connection.currentRoomId;
+          const targetMemberId = message.participantId;
+          if (message.type === "host.grantPublisher" || message.type === "host.revokePublisher" || message.type === "host.removeParticipant") {
+            if (!hasOnlyKeys(message, ["type", "participantId"]) || typeof targetMemberId !== "string" || targetMemberId.length < 1 || targetMemberId.length > 128) {
+              sendHostError("invalid_host_target", "Choose a current room member using only their server-assigned participant ID.");
+              return;
+            }
+            const target = findRoomMember(roomId, targetMemberId);
+            if (!target) {
+              sendHostError("host_target_not_in_room", "That participant is not currently in your room.");
+              return;
+            }
+            if (target.connection === connection) {
+              sendHostError("host_cannot_target_self", "Host publishing is already enabled for your own room connection.");
+              return;
+            }
+            if (message.type !== "host.removeParticipant" && target.connection.hostActive) {
+              sendHostError("host_target_is_host", "Publisher grants and revocation cannot change another host connection's built-in publish access.");
+              return;
+            }
+
+            if (message.type === "host.grantPublisher") {
+              publisherGrants.get(roomId)!.add(targetMemberId);
+              broadcastHostPublisherGrants(roomId);
+              sendPublishPermission(target.socket, target.connection);
+              sendHostResult("grantPublisher", { participantId: targetMemberId, allowed: true });
+              return;
+            }
+
+            if (message.type === "host.revokePublisher") {
+              publisherGrants.get(roomId)!.delete(targetMemberId);
+              broadcastHostPublisherGrants(roomId);
+              const relays = mediaRooms.get(roomId)!;
+              relays.audio.stopPublishing(target.connection.id, "permission_revoked");
+              relays.screen.stopPublishing(target.connection.id, "permission_revoked");
+              if (target.socket.readyState === target.socket.OPEN && target.socket.bufferedAmount + 96 < MAX_SOCKET_BUFFERED_BYTES) {
+                target.socket.send(JSON.stringify({ type: "host.publishRevoked", reason: "permission_revoked" }));
+              }
+              sendPublishPermission(target.socket, target.connection);
+              sendHostResult("revokePublisher", { participantId: targetMemberId, allowed: false });
+              return;
+            }
+
+            const removedMember = target.connection.member!;
+            target.connection.removed = true;
+            target.connection.hostActive = false;
+            publisherGrants.get(roomId)!.delete(targetMemberId);
+            broadcastHostPublisherGrants(roomId);
+            members.delete(targetMemberId);
+            space.remove(targetMemberId);
+            for (const relays of mediaRooms.values()) {
+              relays.audio.disconnect(target.connection.id);
+              relays.screen.disconnect(target.connection.id);
+            }
+            target.connection.member = undefined;
+            target.connection.currentRoomId = undefined;
+            sendHostResult("removeParticipant", { participantId: targetMemberId });
+            emit("member.left", removedMember, roomId);
+            broadcastSpaceState();
+            target.socket.close(4001, "Removed by host");
+            return;
+          }
+
+          if (message.type === "host.setMeetingRoomPassword") {
+            if (!hasOnlyKeys(message, ["type", "password"])) {
+              sendHostError("invalid_room_password", "Set a new meeting room password using the supported password field only.");
+              return;
+            }
+            if (roomId !== "studio") {
+              sendHostError("host_wrong_room", "Meeting room lock controls are available only while you are in the meeting room.");
+              return;
+            }
+            if (typeof message.password !== "string" || message.password.length === 0 || !isValidRoomPassword(message.password)) {
+              sendHostError("invalid_room_password", "Use a meeting room password of 1 to 128 characters and at most 512 UTF-8 bytes.");
+              return;
+            }
+            if (message.password === options.hostControlToken) {
+              sendHostError("invalid_room_password", "The meeting room password must be different from the host token.");
+              return;
+            }
+            roomAccess.setMeetingRoomPassword(message.password);
+            broadcastRoomCatalogue();
+            broadcastSpaceState();
+            sendHostResult("setMeetingRoomPassword", { roomId, isLocked: true });
+            return;
+          }
+
+          if (message.type === "host.unlockMeetingRoom") {
+            if (!hasOnlyKeys(message, ["type"])) {
+              sendHostError("invalid_host_control", "Unlock accepts no password or additional fields.");
+              return;
+            }
+            if (roomId !== "studio") {
+              sendHostError("host_wrong_room", "Meeting room lock controls are available only while you are in the meeting room.");
+              return;
+            }
+            roomAccess.setMeetingRoomPassword(null);
+            broadcastRoomCatalogue();
+            broadcastSpaceState();
+            sendHostResult("unlockMeetingRoom", { roomId, isLocked: false });
+            return;
+          }
+
+          if (message.type === "host.endSession") {
+            if (!hasOnlyKeys(message, ["type"])) {
+              sendHostError("invalid_host_control", "End session accepts no additional fields.");
+              return;
+            }
+            publisherGrants.get(roomId)!.clear();
+            broadcastHostPublisherGrants(roomId);
+            const relays = mediaRooms.get(roomId)!;
+            for (const [targetSocket, targetConnection] of clients) {
+              if (!targetConnection.member || targetConnection.currentRoomId !== roomId || targetConnection.removed) continue;
+              relays.audio.stopPublishing(targetConnection.id, "session_ended");
+              relays.screen.stopPublishing(targetConnection.id, "session_ended");
+              if (targetSocket.readyState === targetSocket.OPEN && targetSocket.bufferedAmount + 96 < MAX_SOCKET_BUFFERED_BYTES) {
+                targetSocket.send(JSON.stringify({ type: "host.publishRevoked", reason: "session_ended" }));
+                targetSocket.send(JSON.stringify({ type: "host.sessionEnded", roomId }));
+              }
+              sendPublishPermission(targetSocket, targetConnection);
+            }
+            sendHostResult("endSession", { roomId, membersRetained: true, grantsCleared: true });
+            return;
+          }
+
+          sendHostError("invalid_host_control", "This host control is not supported.");
+          return;
+        }
+
         const audioControl = typeof message.type === "string" && message.type.startsWith("audio.");
         const screenControl = typeof message.type === "string" && message.type.startsWith("screen.");
         if ((audioControl || screenControl) && (!connection.currentRoomId || !connection.member)) {
           unassignedControlRejections += 1;
           sendProtocolError("media_not_joined", "Join a room before publishing or receiving media.");
+          return;
+        }
+
+        if (hostControl.enabled && message.type === "audio.start" && !canPublish(connection)) {
+          send({ type: "audio.error", code: "publish_not_authorized", message: "A host must grant publishing permission before microphone audio can start." });
+          return;
+        }
+        if (hostControl.enabled && message.type === "screen.start" && !canPublish(connection)) {
+          send({ type: "screen.error", code: "publish_not_authorized", message: "A host must grant publishing permission before screen sharing can start." });
           return;
         }
 
@@ -545,11 +802,14 @@ export async function createApp(options: CreateAppOptions = {}) {
               audioPolicy: room.audioPolicy,
               audioRadiusGridUnits: room.audioRadiusGridUnits,
               isLocked: roomAccess.isMeetingRoomLocked(roomId),
+              hostControlsEnabled: hostControl.enabled,
+              publishAllowed: canPublish(connection),
             },
             members: space.roomMembers(roomId),
             lastSeq: event.seq,
           }, "roomSnapshotsSent");
           broadcastSpaceState();
+          sendPublishPermission(socket, connection);
           return;
         }
 
@@ -594,6 +854,9 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
           }
           if (previousRoomId !== nextRoomId) {
+            publisherGrants.get(previousRoomId)!.delete(connection.member.id);
+            broadcastHostPublisherGrants(previousRoomId);
+            connection.hostActive = false;
             mediaRooms.get(previousRoomId)!.audio.disconnect(connection.id);
             mediaRooms.get(previousRoomId)!.screen.disconnect(connection.id);
             connection.currentRoomId = nextRoomId;
@@ -614,11 +877,14 @@ export async function createApp(options: CreateAppOptions = {}) {
               audioPolicy: room.audioPolicy,
               audioRadiusGridUnits: room.audioRadiusGridUnits,
               isLocked: roomAccess.isMeetingRoomLocked(nextRoomId),
+              hostControlsEnabled: hostControl.enabled,
+              publishAllowed: canPublish(connection),
             },
             members: space.roomMembers(nextRoomId),
             lastSeq: sequence,
           }, "roomSnapshotsSent");
           broadcastSpaceState();
+          sendPublishPermission(socket, connection);
           return;
         }
 
@@ -649,6 +915,10 @@ export async function createApp(options: CreateAppOptions = {}) {
           relays.screen.disconnect(connection.id);
         }
         if (!connection.member) return;
+        if (connection.currentRoomId) {
+          publisherGrants.get(connection.currentRoomId)!.delete(connection.member.id);
+          broadcastHostPublisherGrants(connection.currentRoomId);
+        }
         members.delete(connection.member.id);
         space.remove(connection.member.id);
         emit("member.left", connection.member, connection.currentRoomId!);
@@ -664,6 +934,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   app.addHook("onClose", async () => {
     clients.clear();
     members.clear();
+    for (const grants of publisherGrants.values()) grants.clear();
     observations.clear();
     for (const relays of mediaRooms.values()) {
       relays.audio.close();

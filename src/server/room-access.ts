@@ -20,7 +20,7 @@ export function isValidRoomPassword(value: string): boolean {
 
 function createVerifier(password: string): { salt: Buffer; verifier: Buffer } {
   if (!isValidRoomPassword(password)) {
-    throw new Error(`MEETING_ROOM_PASSWORD must be at most ${MAX_ROOM_PASSWORD_CODE_POINTS} characters and ${MAX_ROOM_PASSWORD_BYTES} UTF-8 bytes.`);
+    throw new Error(`Meeting room password must be at most ${MAX_ROOM_PASSWORD_CODE_POINTS} characters and ${MAX_ROOM_PASSWORD_BYTES} UTF-8 bytes.`);
   }
   const salt = randomBytes(PASSWORD_SALT_BYTES);
   const verifier = scryptSync(password, salt, PASSWORD_VERIFIER_BYTES);
@@ -28,7 +28,7 @@ function createVerifier(password: string): { salt: Buffer; verifier: Buffer } {
 }
 
 export function createRoomAccessPolicy(meetingRoomPassword?: string) {
-  const stored = meetingRoomPassword ? createVerifier(meetingRoomPassword) : null;
+  let stored = meetingRoomPassword ? createVerifier(meetingRoomPassword) : null;
   const attemptsByConnection = new WeakMap<object, number[]>();
 
   return {
@@ -66,6 +66,10 @@ export function createRoomAccessPolicy(meetingRoomPassword?: string) {
         return { code: "room_password_incorrect", message: "That meeting room password is incorrect. Try again." };
       }
       return null;
+    },
+
+    setMeetingRoomPassword(password: string | null): void {
+      stored = password === null ? null : createVerifier(password);
     },
   };
 }

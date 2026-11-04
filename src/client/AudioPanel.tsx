@@ -5,9 +5,11 @@ import { MediaTimeline } from "./media-timeline";
 type AudioPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
+  publishAllowed?: boolean;
+  hostControlsEnabled?: boolean;
 };
 
-export function AudioPanel({ socket, timeline }: AudioPanelProps) {
+export function AudioPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false }: AudioPanelProps) {
   const [state, setState] = useState<AudioSnapshot | null>(null);
   const controllerRef = useRef<AudioController | null>(null);
 
@@ -114,14 +116,14 @@ export function AudioPanel({ socket, timeline }: AudioPanelProps) {
         <div className="audio-control-group">
           <div>
             <h3>發布麥克風</h3>
-            <p className={`audio-state ${state.publisherState === "denied" || state.publisherState === "blocked" || state.publisherState === "no-device" || state.publisherState === "error" ? "is-error" : ""}`} role="status" data-audio-status="publisher">{state.publisherMessage}</p>
+            <p className={`audio-state ${state.publisherState === "denied" || state.publisherState === "blocked" || state.publisherState === "no-device" || state.publisherState === "error" ? "is-error" : ""}`} role="status" data-audio-status="publisher">{hostControlsEnabled && !publishAllowed && !publisherRunning && !publisherStarting ? "主持人尚未授予目前房間的發布權。" : state.publisherMessage}</p>
           </div>
           {publisherRunning ? (
             <button className="quiet-button" onClick={() => controllerRef.current?.stopMicrophone()}>停止麥克風</button>
           ) : publisherStarting ? (
             <button className="quiet-button" onClick={() => controllerRef.current?.stopMicrophone()}>{startPublisherLabel}</button>
           ) : (
-            <button className="primary-button" onClick={() => controllerRef.current?.startMicrophone()}> {startPublisherLabel} </button>
+            <button className="primary-button" onClick={() => controllerRef.current?.startMicrophone()} disabled={hostControlsEnabled && !publishAllowed}> {startPublisherLabel} </button>
           )}
         </div>
       </div>

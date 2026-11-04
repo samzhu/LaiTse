@@ -1,0 +1,1 @@
+此輪script核心通過，但root實際查看圖發現密碼鎖房資料正確而Phaser門仍標OPEN。drawMeetingRoomDoor只在create呼叫，未隨renderer.update更新。這是實際UI顯示不一致，不能僅當測試問題；保留原pass報告及截圖後窄修renderer動態更新，補POST_RENDER門圖狀態與鎖/解鎖browser斷言，再重build/驗受影響browser，不重跑無關server全量。

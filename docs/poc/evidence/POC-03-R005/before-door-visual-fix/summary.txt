@@ -1,0 +1,7 @@
+Status: passed
+Started: 2026-11-04T06:04:08.103Z
+Finished: 2026-11-04T06:04:16.454Z
+Clients: host, participant, visitor
+Checks: host-claimed-over-current-room-connection, five-unauthorized-host-operations-and-publish-replays-rejected, publisher-grant-visible-on-member-page, authorized-synthetic-audio-and-screen-reached-host, revoke-stopped-source-tracks-and-cleared-receiver-decoder, end-session-stopped-publishing-and-retained-room-members, live-lock-rejected-wrong-password-accepted-correct-password-and-rejected-room-password-as-host-token, live-unlock-updated-catalogue-and-allowed-direct-reentry
+Screenshots: managed-host-after-end-session.png, meeting-room-live-lock-entry.png
+Synthetic desktop evidence only; the report does not store host or room passwords.

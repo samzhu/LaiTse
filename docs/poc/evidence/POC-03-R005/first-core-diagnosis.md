@@ -1,0 +1,1 @@
+首次完整核心測試33/34；唯一失敗是space-policy契約仍比對舊room.snapshot schema。root先保留core-integration.log，再僅加入新公開欄位hostControlsEnabled:false及publishAllowed:true，未變更距離/relay/權限實作。其餘33測試通過；更新後重驗記錄另保存。

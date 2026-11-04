@@ -206,3 +206,13 @@ Phaser4.2.1實際WebGL／原創16×20像素人物、server權威16×10位置、�
 首次與補scroll後第二次未鎖browser門點擊逾時，已停止整套重跑、保存[R004](evidence/POC-03-R004/README.md)兩輪及單頁輸入診斷：DOM canvas top868.1但Phaser cached797.1，pointer錯落276而非門205。root修原生down capture前同步bounds/displayScale（destroy移除listeners），單頁實測over Zone/activations1與真入房，再恢復兩config最終流程。修正後build/typecheck及兩config各兩Firefox157真WebGL，未鎖點canvas門入/出及HTML再入；上鎖錯誤留lobby原位/0封包、正確入studio，private publisher事前持續合成語音，外部無/錯join與訂閱/偽造皆拒絕。實際AudioWorklet render未鎖2048、上鎖1792samples；stop/ACK/穩定後source33/58、visitor11/9全部hash匹配、cap未達，page/socket errors空。
 
 root已讀回JSON/hash與代表圖，README/SOL-003/004/007/008與協作/需求同步。兩config皆本機同app依序啟動；無真mic/人耳/原生畫面/手機/完整T09角色/即時鎖房或全面資安/容量驗收，完整POC-03未通過。錯誤提交前client會清理舊影音，server原房資格保持但需手動重開本機媒體的限制已明示。無新依賴/AV底層變更，程式+紀錄本機commit、不push/遠端票/T09/部署，writer與runtime停止釋出。
+
+## T09／POC-03-R005：主持權限與即時鎖房（2026-11-04）
+
+人類指定T09輕量核心與用法、程式+驗測紀錄commit；已讀回#10「主持權限與 Session 控制」。在8a19ebf上加入可配置managed模式：HOST_CONTROL_TOKEN在入房後WSS claim當前房主持，與入房密碼分離/禁止重用；主講grant/revoke、remove、live meeting lock/password/unlock、活動結束均由server權威處理。無token保留匿名技術POC，管理不可用；非正式帳號。
+
+34核心/build/typecheck及追加host切房往返3/3通過；三Firefox157最終06:06:18.637～06:06:27.376UTC合成音畫、grant/revoke/end/live lock/錯正密碼/room-password claim被拒/unlock直接再入房通過。實播13,824samples/3frames；撤權source18/4、end22/5在track ended後350ms穩定，host最終收22/5，五種外部越權+後續start/binary拒絕。這是可行性/計數，沒有payload hash、真人或品質門檻結論；移除成功以Node4001契約驗。
+
+初全量33/34只是第三處精確snapshot漏新欄位；兩次browser分別文字strict-mode與root補的門按鈕尾綴選取失敗。其後script pass但root看圖發現門圖OPEN/metadata locked矛盾，窄修renderer每次room更新重畫顏色/標示，補三頁POST_RENDER鎖/解鎖斷言，重build與受影響browser成功。R005保留全部原始結果/圖/診斷，最終report/計數/root讀回與代表圖已保存查看。
+
+SOL-002/003/004/007/008與README、需求狀態/計畫/票面/協作紀錄同步。沒有新依賴、codec格式或距離規則變更。bootstrap主持secret/匿名新身份/記憶體鎖與grant、限次可新socket繞過、未驗手機/真人/耐久/容量/雲部署是MVP限制；完整POC-03仍未通過。source writer交接異常已在dispatch如實記錄/核對，root最後唯一writer。server/browser停止，本機commit、不push/遠端票/T10/部署。

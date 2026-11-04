@@ -584,6 +584,21 @@ export class AudioController {
     this.set({ publisherState: "idle", publisherMessage: "麥克風已停止，新的音訊不再發布。" });
   }
 
+  private stopMicrophoneAfterRevocation(reason: unknown): void {
+    const attempt = this.captureAttempt;
+    if (attempt) attempt.cancelled = true;
+    this.publishGeneration = null;
+    this.publishSequence = 0;
+    this.captureToken += 1;
+    if (this.pendingStart) this.pendingStart.cancelled = true;
+    this.pendingStart = null;
+    this.captureAttempt = null;
+    if (attempt) this.cleanupCapture(attempt);
+    this.set({ publisherState: "idle", publisherMessage: reason === "session_ended"
+      ? "目前活動已結束；麥克風已停止。"
+      : "主持人已撤銷發布權；麥克風已停止。" });
+  }
+
   dispose(): void {
     this.socket.removeEventListener("message", this.handleSocketMessage);
     this.socket.removeEventListener("close", this.handleSocketClose);
@@ -629,6 +644,10 @@ export class AudioController {
       this.handlePublisherStarted(message);
       return;
     }
+    if (message.type === "audio.publishRevoked" || message.type === "host.publishRevoked") {
+      this.stopMicrophoneAfterRevocation(message.reason);
+      return;
+    }
     if (message.type === "audio.error") {
       if (this.captureAttempt) {
         const attempt = this.captureAttempt;
@@ -665,7 +684,11 @@ export class AudioController {
         this.set({
           listenerMessage: message.reason === "out_of_range"
             ? "已超出目前示範收聽範圍；收聽仍保持啟用，靠近後會自動恢復。"
-            : "發布者已停止；播放仍保持啟動並等待下一次發布。",
+            : message.reason === "permission_revoked"
+              ? "主持人已撤銷發布權；播放仍保持啟動並等待下一次發布。"
+              : message.reason === "session_ended"
+                ? "活動已結束；播放仍保持啟動並等待新的活動。"
+                : "發布者已停止；播放仍保持啟動並等待下一次發布。",
           queuedSamples: 0,
           renderRms: 0,
         });

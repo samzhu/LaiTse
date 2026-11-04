@@ -1,0 +1,7 @@
+{
+  "baselineCommit": "8a19ebf5684179905a6063a8072bff53fd94fa07",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "node": "v26.13.0",
+  "scope": "T09 local lightweight host controls POC",
+  "ticket": "https://github.com/samzhu/LaiTse/issues/10"
+}

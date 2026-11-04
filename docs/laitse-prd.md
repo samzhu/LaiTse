@@ -5,7 +5,7 @@
 - 中文品牌：來坐
 - 英文品牌：LaiTse
 - Git repository：本機專案已存在；遠端 slug 建議為 `laitse`，未查核遠端建立狀態。
-- 狀態：產品方向已更新；自研、不採用 WorkAdventure、人物採像素圖已確認。核心功能須可獨立部署，不強制依賴供應商 SaaS；部署限所有元件僅用一個 Cloud Run；已有T01～T08本機POC及桌面核心證據；兩類空間收聽規則已有DEC011-A本機桌面合成POC，場景門與startup密碼准入已有DEC011-BC桌面POC；即時主持管理/帳號權限與完整階段/MVP未完成。
+- 狀態：產品方向已更新；自研、不採用 WorkAdventure、人物採像素圖已確認。核心功能須可獨立部署，不強制依賴供應商 SaaS；部署限所有元件僅用一個 Cloud Run；已有T01～T08本機POC及桌面核心證據；兩類空間收聽規則已有DEC011-A本機桌面合成POC，場景門與startup密碼准入已有DEC011-BC桌面POC；T09臨時主持權限/即時門鎖已有桌面核心POC；正式帳號/耐久授權與完整階段/MVP未完成。
 - 取代文件：原 `roamingle-prd.md`。Roamingle 為歷史名稱，後續對外統一使用「來坐 LaiTse」。
 
 ## 1. 產品定位

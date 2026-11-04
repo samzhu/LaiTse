@@ -85,6 +85,30 @@ button, input { font: inherit; }
 .event-mark { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 6px; background: #f2f1ea; color: #a07c5b; font-size: 12px; }
 .event-row strong { color: #424944; font-weight: 650; }
 .event-row time { color: #a0a59f; font-size: 9px; white-space: nowrap; }
+.host-panel { margin-top: 18px; padding: 24px; }
+.host-panel .panel-heading h2 { font-size: 19px; }
+.host-claimed-tag { border-color: #c6ddcb; background: #edf6ee; color: #477557; }
+.host-panel-copy { margin: 12px 0 0; color: #727a74; font-size: 11px; line-height: 1.6; }
+.host-claim-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: end; max-width: 560px; margin-top: 15px; }
+.host-claim-form .field-label { grid-column: 1 / -1; margin: 0; }
+.host-claim-form .primary-button { min-width: 145px; }
+.host-member-list { display: grid; margin-top: 15px; border-top: 1px solid var(--line); }
+.host-member-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-bottom: 1px solid #f0f1ec; }
+.host-member-name { color: #3c413e; font-size: 11px; font-weight: 650; }
+.host-member-actions, .host-lock-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.host-member-actions .quiet-button, .host-lock-actions .quiet-button, .host-lock-actions .primary-button { min-height: 33px; padding: 0 10px; font-size: 10px; }
+.host-remove-button { border-color: #ead4cf; color: #a65344; }
+.host-remove-button:hover { background: #fff6f3; }
+.host-lock-controls { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 16px; }
+.host-lock-controls h3, .host-session-controls h3 { margin: 0; color: #4b544d; font-size: 11px; font-weight: 700; }
+.host-lock-controls .host-panel-copy { margin-top: 6px; }
+.host-lock-controls .field-label { margin: 12px 0 7px; }
+.host-lock-actions { margin-top: 9px; }
+.host-session-controls { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 18px; border-top: 1px solid var(--line); padding-top: 16px; }
+.host-session-controls .host-panel-copy { max-width: 680px; margin-top: 6px; }
+.host-session-controls .quiet-button { flex: 0 0 auto; }
+.host-status { margin: 12px 0 0; color: #477557; font-size: 10px; }
+.host-error { margin-top: 9px; }
 .capability-panel { margin-top: 18px; padding: 24px; }
 .capability-panel .panel-heading h2 { font-size: 19px; }
 .capability-intro { max-width: 760px; margin: 13px 0 0; color: #747c76; font-size: 11px; line-height: 1.65; }
@@ -220,6 +244,11 @@ button, input { font: inherit; }
 .door-dialog-actions { margin-top: 18px; }
 
 @media (max-width: 760px) {
+  .host-panel { padding: 18px; }
+  .host-claim-form { grid-template-columns: 1fr; }
+  .host-claim-form .field-label { grid-column: auto; }
+  .host-member-row, .host-session-controls { align-items: flex-start; flex-direction: column; padding: 10px 0; }
+  .host-session-controls .quiet-button { align-self: flex-start; }
   .space-panel { padding: 18px; }
   .space-controls-row { align-items: flex-start; flex-direction: column; gap: 9px; }
   .door-entry-button { align-self: stretch; }

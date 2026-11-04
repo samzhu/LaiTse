@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short managed-mode POC for host claim, room-scoped media grants and revocation, live meeting-room lock, and ending activity while retaining members.",
+  "startedAt": "2026-11-04T06:02:31.369Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into isolated Firefox profiles and trusted by local WSS probes",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "mediaSources": {
+    "audio": "synthetic oscillator routed to MediaStreamDestination",
+    "screen": "synthetic canvas captureStream",
+    "hardwareMicrophone": false,
+    "physicalDisplay": false,
+    "mediaPayloads": "not-retained"
+  },
+  "checks": [
+    {
+      "name": "host-claimed-over-current-room-connection",
+      "at": "2026-11-04T06:02:37.021Z"
+    },
+    {
+      "name": "five-unauthorized-host-operations-and-publish-replays-rejected",
+      "at": "2026-11-04T06:02:37.037Z",
+      "deniedAudioStart": true,
+      "deniedScreenStart": true,
+      "deniedAudioBinary": true,
+      "deniedScreenBinary": true
+    },
+    {
+      "name": "publisher-grant-visible-on-member-page",
+      "at": "2026-11-04T06:02:37.140Z"
+    },
+    {
+      "name": "authorized-synthetic-audio-and-screen-reached-host",
+      "at": "2026-11-04T06:02:37.701Z",
+      "audioRenderedSamples": 10112,
+      "screenRenderedFrames": 3
+    },
+    {
+      "name": "revoke-stopped-source-tracks-and-cleared-receiver-decoder",
+      "at": "2026-11-04T06:02:38.113Z",
+      "sourceTrackCount": 2,
+      "tracksStopped": true,
+      "afterCleanup": {
+        "audio": 14,
+        "screen": 5
+      },
+      "after350ms": {
+        "audio": 14,
+        "screen": 5
+      }
+    }
+  ],
+  "clients": {
+    "host": {
+      "controls": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": false
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "sent",
+          "type": "host.claim"
+        },
+        {
+          "direction": "received",
+          "type": "host.claimed",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": true
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 3
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "sent",
+          "type": "host.grantPublisher"
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "action": "grantPublisher",
+          "allowed": true
+        },
+        {
+          "direction": "sent",
+          "type": "screen.subscribe"
+        },
+        {
+          "direction": "received",
+          "type": "screen.subscribed"
+        },
+        {
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "direction": "received",
+          "type": "audio.stream"
+        },
+        {
+          "direction": "received",
+          "type": "screen.stream"
+        },
+        {
+          "direction": "sent",
+          "type": "host.revokePublisher"
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "reason": "permission_revoked"
+        },
+        {
+          "direction": "received",
+          "type": "screen.streamEnded",
+          "reason": "permission_revoked"
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "action": "revokePublisher",
+          "allowed": false
+        },
+        {
+          "direction": "sent",
+          "type": "host.grantPublisher"
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "action": "grantPublisher",
+          "allowed": true
+        },
+        {
+          "direction": "received",
+          "type": "audio.stream"
+        },
+        {
+          "direction": "received",
+          "type": "screen.stream"
+        },
+        {
+          "direction": "sent",
+          "type": "host.endSession"
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishRevoked",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "host.sessionEnded",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": true
+        },
+        {
+          "direction": "received",
+          "type": "audio.streamEnded",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "screen.streamEnded",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "endSession",
+          "membersRetained": true,
+          "grantsCleared": true
+        }
+      ],
+      "packets": {
+        "sent": {
+          "audio": 0,
+          "screen": 0
+        },
+        "received": {
+          "audio": 19,
+          "screen": 6
+        }
+      },
+      "pageErrors": [],
+      "latestSpace": {
+        "currentRoomId": "studio",
+        "memberCount": 2
+      }
+    },
+    "participant": {
+      "controls": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": false
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 3
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": true
+        },
+        {
+          "direction": "sent",
+          "type": "audio.start"
+        },
+        {
+          "direction": "received",
+          "type": "audio.started"
+        },
+        {
+          "direction": "sent",
+          "type": "screen.start"
+        },
+        {
+          "direction": "received",
+          "type": "screen.started"
+        },
+        {
+          "direction": "received",
+          "type": "audio.publishRevoked",
+          "reason": "permission_revoked"
+        },
+        {
+          "direction": "received",
+          "type": "screen.publishRevoked",
+          "reason": "permission_revoked"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishRevoked",
+          "reason": "permission_revoked"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": false
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": true
+        },
+        {
+          "direction": "sent",
+          "type": "audio.start"
+        },
+        {
+          "direction": "received",
+          "type": "audio.started"
+        },
+        {
+          "direction": "sent",
+          "type": "screen.start"
+        },
+        {
+          "direction": "received",
+          "type": "screen.started"
+        },
+        {
+          "direction": "received",
+          "type": "audio.publishRevoked",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "screen.publishRevoked",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishRevoked",
+          "reason": "session_ended"
+        },
+        {
+          "direction": "received",
+          "type": "host.sessionEnded",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": false
+        }
+      ],
+      "packets": {
+        "sent": {
+          "audio": 19,
+          "screen": 6
+        },
+        "received": {
+          "audio": 0,
+          "screen": 0
+        }
+      },
+      "pageErrors": [],
+      "latestSpace": {
+        "currentRoomId": "studio",
+        "memberCount": 2
+      }
+    },
+    "visitor": {
+      "controls": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "lobby",
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true,
+          "allowed": false
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "lobby",
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "currentRoomId": "lobby",
+          "memberCount": 1
+        }
+      ],
+      "packets": {
+        "sent": {
+          "audio": 0,
+          "screen": 0
+        },
+        "received": {
+          "audio": 0,
+          "screen": 0
+        }
+      },
+      "pageErrors": [],
+      "latestSpace": {
+        "currentRoomId": "lobby",
+        "memberCount": 1
+      }
+    }
+  },
+  "maliciousOperations": [
+    {
+      "operation": "host.grantPublisher",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.revokePublisher",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.removeParticipant",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.setMeetingRoomPassword",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.endSession",
+      "code": "host_unauthorized"
+    }
+  ],
+  "screenshots": [],
+  "credentials": {
+    "hostToken": "not-recorded",
+    "meetingPassword": "not-recorded",
+    "wrongPassword": "not-recorded"
+  },
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "locator.waitFor: Error: strict mode violation: getByText(/活動已結束/u) resolved to 5 elements:\n    1) <p role=\"status\" class=\"host-status\" data-testid=\"host-management-status\">活動已結束；房間與成員保留，主持人可開始新的活動。</p> aka getByTestId('host-management-status')\n    2) <p role=\"status\" class=\"audio-state\" data-audio-status=\"listener\">活動已結束；播放仍保持啟動並等待新的活動。</p> aka getByText('活動已結束；播放仍保持啟動並等待新的活動。')\n    ...\n\nCall log:\n\u001b[2m  - waiting for getByText(/活動已結束/u) to be visible\u001b[22m\n\n    at /Users/samzhu/workspace_herdr/LaiTse/scripts/host-control-smoke.mjs:460:39"
+  },
+  "limits": {
+    "accountIdentity": "not-implemented; IDs identify only a current connection",
+    "reconnectAfterRemoval": "a new anonymous connection receives a new temporary ID",
+    "phone": "not-tested",
+    "humanA11yAndPhysicalMedia": "not-tested",
+    "productionSecurityAndRecovery": "not-tested"
+  },
+  "finishedAt": "2026-11-04T06:02:38.991Z"
+}

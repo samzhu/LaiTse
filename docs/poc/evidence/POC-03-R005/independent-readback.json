@@ -1,0 +1,159 @@
+{
+  "status": "passed",
+  "startedAt": "2026-11-04T06:06:18.637Z",
+  "finishedAt": "2026-11-04T06:06:27.376Z",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0"
+  },
+  "checks": [
+    {
+      "name": "host-claimed-over-current-room-connection",
+      "at": "2026-11-04T06:06:24.158Z"
+    },
+    {
+      "name": "five-unauthorized-host-operations-and-publish-replays-rejected",
+      "at": "2026-11-04T06:06:24.174Z",
+      "deniedAudioStart": true,
+      "deniedScreenStart": true,
+      "deniedAudioBinary": true,
+      "deniedScreenBinary": true
+    },
+    {
+      "name": "publisher-grant-visible-on-member-page",
+      "at": "2026-11-04T06:06:24.280Z"
+    },
+    {
+      "name": "authorized-synthetic-audio-and-screen-reached-host",
+      "at": "2026-11-04T06:06:24.939Z",
+      "audioRenderedSamples": 13824,
+      "screenRenderedFrames": 3
+    },
+    {
+      "name": "revoke-stopped-source-tracks-and-cleared-receiver-decoder",
+      "at": "2026-11-04T06:06:25.355Z",
+      "sourceTrackCount": 2,
+      "tracksStopped": true,
+      "afterCleanup": {
+        "audio": 18,
+        "screen": 4
+      },
+      "after350ms": {
+        "audio": 18,
+        "screen": 4
+      }
+    },
+    {
+      "name": "end-session-stopped-publishing-and-retained-room-members",
+      "at": "2026-11-04T06:06:26.027Z",
+      "tracksStopped": true,
+      "afterCleanup": {
+        "audio": 22,
+        "screen": 5
+      },
+      "after350ms": {
+        "audio": 22,
+        "screen": 5
+      }
+    },
+    {
+      "name": "live-lock-updated-rendered-door-for-all-three-pages",
+      "at": "2026-11-04T06:06:26.176Z"
+    },
+    {
+      "name": "live-lock-rejected-wrong-password-accepted-correct-password-and-rejected-room-password-as-host-token",
+      "at": "2026-11-04T06:06:26.738Z"
+    },
+    {
+      "name": "live-unlock-updated-rendered-door-for-all-three-pages",
+      "at": "2026-11-04T06:06:26.935Z"
+    },
+    {
+      "name": "live-unlock-updated-catalogue-and-allowed-direct-reentry",
+      "at": "2026-11-04T06:06:27.068Z"
+    }
+  ],
+  "maliciousOperations": [
+    {
+      "operation": "host.grantPublisher",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.revokePublisher",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.removeParticipant",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.setMeetingRoomPassword",
+      "code": "host_unauthorized"
+    },
+    {
+      "operation": "host.endSession",
+      "code": "host_unauthorized"
+    }
+  ],
+  "clientSummary": {
+    "host": {
+      "controlRecords": 58,
+      "packets": {
+        "sent": {
+          "audio": 0,
+          "screen": 0
+        },
+        "received": {
+          "audio": 22,
+          "screen": 5
+        }
+      },
+      "lastSpace": {
+        "currentRoomId": "studio",
+        "memberCount": 3
+      }
+    },
+    "participant": {
+      "controlRecords": 39,
+      "packets": {
+        "sent": {
+          "audio": 22,
+          "screen": 5
+        },
+        "received": {
+          "audio": 0,
+          "screen": 0
+        }
+      },
+      "lastSpace": {
+        "currentRoomId": "studio",
+        "memberCount": 3
+      }
+    },
+    "visitor": {
+      "controlRecords": 30,
+      "packets": {
+        "sent": {
+          "audio": 0,
+          "screen": 0
+        },
+        "received": {
+          "audio": 0,
+          "screen": 0
+        }
+      },
+      "lastSpace": {
+        "currentRoomId": "studio",
+        "memberCount": 3
+      }
+    }
+  },
+  "controlCapReached": false,
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": null
+  }
+}

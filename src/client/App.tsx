@@ -3,6 +3,7 @@ import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
 import { SpacePanel } from "./SpacePanel";
+import { HostPanel } from "./HostPanel";
 import { DoorEntryDialog } from "./DoorEntryDialog";
 import type { AudioPolicy, MoveDirection, SpaceKind, SpaceSnapshot } from "./pixel-space";
 import {
@@ -42,6 +43,8 @@ type ServerMessage =
         audioPolicy: AudioPolicy;
         audioRadiusGridUnits: number | null;
         isLocked: boolean;
+        hostControlsEnabled?: boolean;
+        publishAllowed?: boolean;
       };
       members: Member[];
       lastSeq: number;
@@ -49,6 +52,15 @@ type ServerMessage =
   | ({ type: "space.snapshot" } & SpaceSnapshot)
   | { type: "control.event"; event: RoomEvent }
   | { type: "protocol.error"; code: string; message: string }
+  | { type: "room.catalogue"; rooms: RoomSummary[] }
+  | { type: "host.claimed"; roomId: string; participantId: string; publisherGrants: string[] }
+  | { type: "host.publishPermission"; enabled: boolean; allowed: boolean }
+  | { type: "host.publisherGrants"; participantIds: string[] }
+  | { type: "host.publishRevoked"; reason: string }
+  | { type: "host.publishDenied"; message: string }
+  | { type: "host.sessionEnded"; roomId: string }
+  | { type: "host.actionResult"; action: string; participantId?: string; allowed?: boolean; roomId?: string; isLocked?: boolean; grantsCleared?: boolean }
+  | { type: "host.error"; code: string; message: string }
   | {
       type: "capability.ack";
       observationId: string;
@@ -74,6 +86,7 @@ type RoomSummary = {
   audioPolicy: AudioPolicy;
   audioRadiusGridUnits: number | null;
   isLocked: boolean;
+  hostControlsEnabled?: boolean;
 };
 
 type EntryAttempt =
@@ -102,6 +115,13 @@ export function App() {
   const [entryDialogError, setEntryDialogError] = useState("");
   const [entrySubmitting, setEntrySubmitting] = useState(false);
   const [mediaSessionEpoch, setMediaSessionEpoch] = useState(0);
+  const [hostClaimed, setHostClaimed] = useState(false);
+  const [currentParticipantId, setCurrentParticipantId] = useState("");
+  const [hostControlsEnabled, setHostControlsEnabled] = useState(false);
+  const [publishAllowed, setPublishAllowed] = useState(true);
+  const [grantedPublisherIds, setGrantedPublisherIds] = useState<string[]>([]);
+  const [hostActionStatus, setHostActionStatus] = useState("");
+  const [hostActionError, setHostActionError] = useState("");
   const mediaTimeline = useMemo(() => new MediaTimeline(), [currentSocket, mediaSessionEpoch]);
   const socketRef = useRef<WebSocket | null>(null);
   const entryAttemptRef = useRef<EntryAttempt | null>(null);
@@ -122,6 +142,7 @@ export function App() {
         const rooms = (await roomsResponse.json()) as RoomSummary[];
         if (active) {
           setRooms(rooms);
+          setHostControlsEnabled(rooms.some((room) => room.hostControlsEnabled));
           setSelectedRoomId((current) => current || rooms[0]?.id || "");
           setApiStatus(health.status === "ok" ? `API ready · ${health.persistence}` : "API unavailable");
         }
@@ -138,6 +159,11 @@ export function App() {
 
   const joinRoom = () => {
     if (!selectedRoomId || socketRef.current || !displayName.trim()) return;
+    setHostClaimed(false);
+    setCurrentParticipantId("");
+    setGrantedPublisherIds([]);
+    setHostActionStatus("");
+    setHostActionError("");
     setProtocolError("");
     setEvents([]);
     setCapabilityReport(null);
@@ -177,12 +203,27 @@ export function App() {
         return;
       }
 
+      if (message.type === "room.catalogue") {
+        setRooms(message.rooms);
+        return;
+      }
+
       if (message.type === "room.snapshot") {
         lastSequenceRef.current = message.lastSeq;
-        if (currentRoomIdRef.current && currentRoomIdRef.current !== message.room.id) setEvents([]);
+        const didSwitchRoom = Boolean(currentRoomIdRef.current && currentRoomIdRef.current !== message.room.id);
+        if (didSwitchRoom) {
+          setEvents([]);
+          setHostClaimed(false);
+          setGrantedPublisherIds([]);
+          setHostActionStatus("");
+          setHostActionError("");
+        }
         currentRoomIdRef.current = message.room.id;
         setCurrentRoomId(message.room.id);
         setSelectedRoomId(message.room.id);
+        setHostControlsEnabled(message.room.hostControlsEnabled ?? false);
+        setPublishAllowed(message.room.publishAllowed ?? true);
+        setRooms((current) => current.map((room) => room.id === message.room.id ? { ...room, isLocked: message.room.isLocked, hostControlsEnabled: message.room.hostControlsEnabled ?? false } : room));
         setPendingRoomId(null);
         entryAttemptRef.current = null;
         pendingSwitchPasswordRef.current = null;
@@ -196,6 +237,64 @@ export function App() {
         return;
       }
 
+      if (message.type === "host.claimed") {
+        setHostClaimed(true);
+        setCurrentParticipantId(message.participantId);
+        setGrantedPublisherIds(message.publisherGrants);
+        setHostActionError("");
+        setHostActionStatus(`已認領 ${message.roomId} 的主持權限。`);
+        return;
+      }
+
+      if (message.type === "host.publishPermission") {
+        setHostControlsEnabled(message.enabled);
+        setPublishAllowed(message.allowed);
+        return;
+      }
+
+      if (message.type === "host.publisherGrants") {
+        setGrantedPublisherIds(message.participantIds);
+        return;
+      }
+
+      if (message.type === "host.actionResult") {
+        setHostActionError("");
+        if (message.action === "grantPublisher" && message.participantId) {
+          setGrantedPublisherIds((current) => current.includes(message.participantId!) ? current : [...current, message.participantId!]);
+          setHostActionStatus("已授予此成員目前房間的發布權。" );
+        } else if (message.action === "revokePublisher" && message.participantId) {
+          setGrantedPublisherIds((current) => current.filter((id) => id !== message.participantId));
+          setHostActionStatus("已撤銷發布權並停止此成員的影音發布。" );
+        } else if (message.action === "removeParticipant") {
+          if (message.participantId) setGrantedPublisherIds((current) => current.filter((id) => id !== message.participantId));
+          setHostActionStatus("已移除此連線；新的匿名連線會取得新的臨時身份。" );
+        } else if (message.action === "setMeetingRoomPassword" || message.action === "unlockMeetingRoom") {
+          setRooms((current) => current.map((room) => room.id === "studio" ? { ...room, isLocked: message.isLocked === true } : room));
+          setHostActionStatus(message.isLocked ? "會議室已上鎖；目前在房內的成員仍可留下。" : "會議室已解鎖，新加入者不需要密碼。" );
+        } else if (message.action === "endSession") {
+          setGrantedPublisherIds([]);
+          setHostActionStatus("活動已結束；房間與成員保留，主持人可開始新的活動。" );
+        }
+        return;
+      }
+
+      if (message.type === "host.error") {
+        setHostActionError(message.message);
+        setHostActionStatus("");
+        return;
+      }
+
+      if (message.type === "host.publishDenied") {
+        setProtocolError(message.message);
+        return;
+      }
+
+      if (message.type === "host.sessionEnded") {
+        setGrantedPublisherIds([]);
+        setHostActionStatus("主持人結束了此房間活動；房間與成員仍在。" );
+        return;
+      }
+
       if (message.type === "space.snapshot") {
         if (message.seq < lastSpaceSequenceRef.current) return;
         lastSpaceSequenceRef.current = message.seq;
@@ -203,6 +302,7 @@ export function App() {
         setCurrentRoomId(message.currentRoomId);
         setSelectedRoomId(message.currentRoomId);
         setSpaceSnapshot(message);
+        setCurrentParticipantId(message.participantId);
         return;
       }
 
@@ -293,6 +393,9 @@ export function App() {
         if (event.seq <= lastSequenceRef.current) return;
         lastSequenceRef.current = event.seq;
         setEvents((current) => [event, ...current].slice(0, 20));
+        if (event.kind === "member.left") {
+          setGrantedPublisherIds((grants) => grants.filter((id) => id !== event.participantId));
+        }
         setMembers((current) => {
           if (event.kind === "member.joined") {
             return current.some((member) => member.id === event.participantId)
@@ -323,6 +426,12 @@ export function App() {
       setEntryDialogError("");
       setEntrySubmitting(false);
       setConnectionStatus("Not connected");
+      setHostClaimed(false);
+      setCurrentParticipantId("");
+      setGrantedPublisherIds([]);
+      setHostActionStatus("");
+      setHostActionError("");
+      setPublishAllowed(true);
       pendingReportRef.current = null;
       setIsSendingObservation(false);
     });
@@ -358,6 +467,13 @@ export function App() {
     }
   };
 
+  const sendHostControl = (message: Record<string, unknown>) => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !connected) return;
+    setHostActionError("");
+    socket.send(JSON.stringify(message));
+  };
+
   const leaveRoom = () => {
     socketRef.current?.close(1000, "Participant left");
     socketRef.current = null;
@@ -381,6 +497,12 @@ export function App() {
     lastSequenceRef.current = 0;
     lastSpaceSequenceRef.current = 0;
     setConnectionStatus("Not connected");
+    setHostClaimed(false);
+    setCurrentParticipantId("");
+    setGrantedPublisherIds([]);
+    setHostActionStatus("");
+    setHostActionError("");
+    setPublishAllowed(true);
   };
 
   const selectRoom = (roomId: string) => {
@@ -601,6 +723,20 @@ export function App() {
         />
       ) : <section className="panel-card space-panel" role="status">Loading the room map…</section>}
 
+      <HostPanel
+        connected={connected}
+        hostControlsEnabled={room?.hostControlsEnabled ?? hostControlsEnabled}
+        hostClaimed={hostClaimed}
+        currentRoomId={visibleRoomId}
+        currentParticipantId={currentParticipantId}
+        members={members}
+        grantedPublisherIds={grantedPublisherIds}
+        isLocked={room?.isLocked ?? false}
+        statusMessage={hostActionStatus}
+        errorMessage={hostActionError}
+        onSend={sendHostControl}
+      />
+
       <section className="panel-card capability-panel" aria-labelledby="capability-title">
         <div className="panel-heading">
           <div>
@@ -681,8 +817,8 @@ export function App() {
         ) : null}
       </section>
 
-      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
-      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
+      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} /> : null}
+      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} /> : null}
 
       <DoorEntryDialog
         open={entryDialogOpen}

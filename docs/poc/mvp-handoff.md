@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
 | SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面晚加入與同步排程核心可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
-| SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T08連線房間隔離核心，帳號/角色待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
+| SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T09臨時主持/主講及即時門禁核心，正式帳號/耐久待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
 | SOL-006 | 重連、時基、快照與解碼恢復 | 待實驗 | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
@@ -137,3 +137,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-007：鎖/密碼由每次server啟動環境提供，不寫產品儲存；room/成員/嘗試budget仍process memory。換密碼需restart且中斷當前狀態，不等於已驗恢復或接受資料遺失；角色/即時鎖房/邀請與有效期仍T09/後續。同步scrypt及per-connection budget非生產抗濫用/容量方案，新連線可繞限次需重構。
 - SOL-008：[R004](evidence/POC-03-R004/README.md)保留兩次門點擊失敗、before/after輸入診斷、最終兩config/可信CA/外部WS拒絕、private音源已活動時0下送、入房後實際render/全raw hash讀回與31核心/build。密碼frame只留hasPassword不留內容，runtime測試key不保存；browser只語音，screen拒絕是Node gate契約非活動VP8實播。
 - client密碼送出前仍有序dispose舊影音再switch；錯誤時server原房/relay不變，但local已停影音須手動重開，MVP改善失敗入房體驗前不能移除順序而讓舊幀打到新房。更完整角色/安全與a11y/touch/手機/真mic/恢復/容量都待補。無新套件、影音relay/controller/worklet不改，不把本步當完整私密會議商品驗收。
+
+## T09／POC-03-R005：SOL-002／003／004／007／008（2026-11-04）
+
+- SOL-003：`host-control.ts`配置shared bootstrap token、SHA256定長digest比對/單連線claim限次，房內WSS claim、hostActive不接受client自證；current-room target/strict schema，grant與host資格於成功切房失效、close清grant。live meeting password/unlock共用原join/switch gate，public只送鎖態/模式；管理token不可兼作room password。remove先解除member/space/relay再4001 close；新匿名連線不是同一帳號封鎖。end只停止發布/清主講grant、保留Room/member/lock，無耐久Session歷史。
+- SOL-002：relay新增stopPublishing(connectionId, reason)，撤權/結束保留訂閱與peer、清publisher、廣播streamEnded並通知source停止tracks/encoder；app對managed未授權start/binary都拒絕。三Firefox合成實播與350ms停止窗口通過，非真mic/display/品質；原codec與距離規則保留。
+- SOL-004/007：HostPanel正常claim/grant/revoke/lock/password/unlock/end可操作；密碼/host input提交清空、room切換清空，catalogue即時更新。root視覺驗收發現Phaser門圖只初始化，已窄修更新現有graphics/text而保留命中區。MVP需整理匿名模式/管理credential、角色展示/帳號、診斷UI與視覺長名字重疊。
+- SOL-008：[R005](evidence/POC-03-R005/README.md)保存34核心/補充3、短三Firefox、五外部越權、stop計數/track ended、失敗與動態門圖修正/最終代表圖。可復用`host-control.integration.test.mjs`及`host-control-smoke.mjs`；此輪計數不做payload hash。沒有新依賴/手機/真人/長測/容量/雲證據，完整POC-03/MVP仍需整合驗證。

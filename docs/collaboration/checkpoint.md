@@ -129,3 +129,13 @@ Luna已明確停止writer交接，root窄修/驗收結束，server/browser停止
 本輪門/密碼核心完成：31核心/build，最終未鎖/上鎖兩config各兩Firefox157真門進出/錯密碼拒絕/正確入房與合成Opus render、外部WS門禁通過。首次及補scroll仍未命中的兩輪已保存後停止全流程，單頁診斷證實React排版71px位移/Phaser cached bounds舊座標；root同步down前bounds/scale後，命中Zone與真switch成功，再恢復兩config皆pass。R004原始JSON/圖/指紋/獨立hash讀回已保存，代表圖實際查看。
 
 Luna停止writer交接，root窄修/驗收結束；server/browser已停止。startup密碼不是T09即時主持/角色/帳號，5次每連線每分鐘非完整防暴力；client錯誤提交可能需手動重啟原影音。手機/真人/原生畫面/完整POC-03仍待。README/需求狀態/計畫/SOL及交付索引同步，程式+紀錄一起本機commit，不push/遠端票/T09/部署。下一步依人類指示。
+
+## T09啟動（2026-11-04）
+
+人類要求「繼續做T09，驗測維持輕量，確認主持人權限與即時鎖房的核心功能可行及使用方式，完成後把程式和驗測紀錄一起commit」。已讀回GitHub #10「主持權限與 Session 控制」，在8a19ebf門/密碼基線上接當前房主持claim、發布grant/revoke、remove、live lock/unlock/password與活動結束。R005配發，Luna xhigh實作/root設計驗收與紀錄/Git，完整範圍在dispatch。管理secret不等同入房密碼，沒有client自填角色；無token配置保留舊匿名POC並禁止管理，不能當正式權限模式。無真帳號/耐久狀態，移除對新匿名連線的限制必須交接；不部署/push/遠端票寫入/後續票。
+
+### T09桌面核心交付（2026-11-04）
+
+R005完成：34核心/build/typecheck及host切房往返補充3；三Firefox157合成音畫grant/revoke/end/live lock/錯正密碼/credential分離/unlock直接再入房成功，五外部越權+發布重放拒絕。原33/34是snapshot精確預期，兩個browser selector失敗各已保存；之後script pass但root看圖發現門圖OPEN/locked不一致，窄修renderer動態重畫、補三頁POST_RENDER鎖/解鎖斷言後重build/browser通過。source22/5與host收22/5，停止後350ms穩定；未宣稱payload hash/真人品質。R005原圖/JSON/log/獨立讀回與使用步驟保存。
+
+主持token=process bootstrap、無帳號/耐久Session/永久封鎖；無token是舊匿名POC，非正式授權。remove成功Node4001，瀏覽器未另點移除；手機/真人/容量/弱網/完整階段待補。source交接後late patch已記dispatch，root核對build時序/測試未覆寫；現唯一writer停止後釋出。README/PRD/handoff狀態/計畫/票面/SOL/索引同步，程式+紀錄本機commit、不push/遠端票/T10/部署，server/browser停止。

@@ -42,3 +42,4 @@
 | DEC-011 | 空間類型/距離廣播/會議室密碼門禁 | decisions；PRD/handoff v0.8、POC-PLAN v1.2、ticket-breakdown與SOL影響 | 人類原話/釐清已保存讀回，純文件一致性檢查 | 新規則未實作/未驗，需補POC與票面；未啟動T09或寫GitHub |
 | DEC011-A | 會議室全房/開放空間距離語音 | space/audio relay/UI、space-policy-smoke；POC-03-R003 | 30核心/build、三Firefox實際render/過界/meeting9格，原始收尾trace與窄修/完整hash讀回保存；SOL同步 | 6格暫定、單來源；門/密碼/真人裝置待補，程式/需求/紀錄本機commit不push，資源釋出 |
 | DEC011-BC | 場景門與密碼准入 | room-access/Phaser門/密碼dialog、room-access-smoke；POC-03-R004 | 31核心/build、兩config真canvas門/正確密碼/外部拒絕與合成audio；原始失敗/71px座標診斷與修正保存，SOL同步 | startup鎖/基本budget，T09即時管理/正式身份與實機品質待補；本機commit不push，資源釋出 |
+| T09／POC-03-R005 | 主持權限與即時鎖房桌面核心 | `docs/poc/evidence/POC-03-R005/README.md`、execution-log、mvp-handoff | 已保存讀回；34核心+3補充/build/三Firefox通過，原失敗及門圖修正保留 | 真帳號/耐久/手機/真人/完整POC-03待補；未push/部署/T10 |
