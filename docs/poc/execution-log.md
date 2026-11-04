@@ -226,3 +226,11 @@ root build/typecheck、完整39/39與首次三Firefox157流程06:47:10.243～06:
 開發中typecheck欄位型別缺漏與focused queue2≠1保留在R006，補型別/各案新app/清情境舊queue後5/5；root檢視補容量拒絕保留舊ID、dirty通知、UI時鐘/acceptance、腳本async等待及負例預先監聽。source交接後無late patch，build指紋保持一致，root無需重跑全量。
 
 SOL-003/007/008與README、需求狀態/計畫/票面/協作索引同步。50歷史/5min、20公開/8s、512 feedback/60s、2048去重/10min、10互動/s含feedback1/s皆POC初值，非商品定案。臨時participant不是真人帳號，restart清記憶體、跨重連去重未知；原票100accepted/p95未驗，完整T10品質/POC-03 Inconclusive。資源停止釋出，本機commit程式+紀錄、不push/遠端票/T11/部署。
+
+## T11／POC-03-R007：直接入房、只互動與唯讀展示（2026-11-04）
+
+人類指定輕量核心/用法與程式+紀錄commit，#12已讀回，基線0607576。新增room/mode深連結與獨立display入口，仍共用名字/密碼門禁；qrcode-generator2.0.4本機QR只編公開入房URL，jsqr1.4.0 dev獨立解碼。server固定降權role、media mode資格/退訂/egress守衛與self enqueue計數；client先dispose再切模式，保留同身份/房間/草稿/音量，回watch手動開始。display僅公開projection、自動video不auto audio，越權由server拒絕。
+
+root build/typecheck、42核心與三Firefox157短流程08:04:33～08:04:45UTC成功。5個425～427ms窗口來源audio新增21～22／screen5～6frames，參與端server計數差值/raw media皆0；手動watch實際11,008samples/3frames，切換保留與不auto驗過。展示實播/公開可見、無私聊/圖案raw history，9外部唯讀負例拒絕；270pxQR實解碼→正常密碼門禁新身份。root指紋/JSON讀回及兩代表圖已查看，errors/cap皆無。[R007](evidence/POC-03-R007/README.md)保留證據與操作。
+
+首次完整41/42為舊space共享app時序，隔離每case app後42/42，未改space模型；首次browser錯用參與頁selector逾時，保留first-attempt，只修script再通過。SOL-005/003/008及002/007、README/需求狀態/計畫/票面/協作同步，無late source patch。手機相機/真人/原生擷取/fullscreen/弱網/耐久/容量/雲與完整POC-03未驗；本輪僅桌面核心可行。server/browser/writer停止釋出，程式+紀錄本機commit，不push/遠端票/T12/部署。

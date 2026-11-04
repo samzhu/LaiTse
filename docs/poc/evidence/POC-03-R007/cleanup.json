@@ -1,0 +1,6 @@
+{
+  "listener4173": "",
+  "listenerExitCode": 1,
+  "matchingRuntimeProcesses": [],
+  "note": "runner finally stopped local server; smoke closes all owned contexts. Root narrow process/listener readback; no unrelated processes killed."
+}

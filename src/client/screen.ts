@@ -397,9 +397,9 @@ export class ScreenController {
     this.socket.send(JSON.stringify({ type: "screen.subscribe" }));
   }
 
-  stopWatching(): void {
+  stopWatching(notifyServer = true): void {
     const active = this.state.receiverState !== "off";
-    if (active && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "screen.unsubscribe" }));
+    if (notifyServer && active && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "screen.unsubscribe" }));
     this.stopDecoder();
     this.clearCanvas();
     this.renderedAt.length = 0;
@@ -728,6 +728,12 @@ export class ScreenController {
       return;
     }
 
+    if (message.type === "participation.modeChanged" && message.mode === "interaction") {
+      this.stopShare("已切換為只互動；本機分享來源已停止。", false);
+      this.stopWatching(false);
+      return;
+    }
+
     if (message.type === "screen.started") {
       const generation = Number(message.generation);
       const waiter = this.pendingStart;
@@ -749,7 +755,9 @@ export class ScreenController {
     if (message.type === "screen.publishRevoked" || message.type === "host.publishRevoked") {
       this.stopShare(message.reason === "session_ended"
         ? "目前活動已結束；畫面擷取已停止。"
-        : "主持人已撤銷發布權；畫面擷取已停止。", false);
+        : message.reason === "mode_changed"
+          ? "已切換為只互動；本機畫面來源已停止。"
+          : "主持人已撤銷發布權；畫面擷取已停止。", false);
       return;
     }
     if (message.type === "screen.keyframeRequest") {
@@ -778,7 +786,10 @@ export class ScreenController {
       }
       return;
     }
-    if (message.type === "screen.unsubscribed") return;
+    if (message.type === "screen.unsubscribed") {
+      if (message.reason === "mode_changed") this.stopWatching(false);
+      return;
+    }
     if (message.type === "screen.stream") {
       this.handleStreamStarted(message);
       return;
@@ -792,6 +803,8 @@ export class ScreenController {
           receiverState: this.state.receiverState === "off" ? "off" : "waiting",
           receiverMessage: message.reason === "permission_revoked"
             ? "主持人已撤銷發布權；畫面已清除，正在等待下一次分享。"
+            : message.reason === "mode_changed"
+              ? "已切換為只互動；已停止接收並清除畫面。"
             : message.reason === "session_ended"
               ? "活動已結束；畫面已清除，正在等待新的活動。"
               : "發布者已停止；畫面已清除，正在等待下一次分享。",

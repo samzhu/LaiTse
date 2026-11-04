@@ -255,6 +255,8 @@ export class AudioController {
   private readonly onChange: (state: AudioSnapshot) => void;
   private listenerContext: AudioContext | null = null;
   private playbackWorklet: AudioWorkletNode | null = null;
+  private playbackGainNode: GainNode | null = null;
+  private playbackVolume = 1;
   private listenerActive = false;
   private listenerToken = 0;
   private captureAttempt: CaptureAttempt | null = null;
@@ -290,6 +292,16 @@ export class AudioController {
 
   snapshot(): AudioSnapshot {
     return { ...this.state };
+  }
+
+  getVolume(): number {
+    return this.playbackVolume;
+  }
+
+  setVolume(volume: number): void {
+    if (!Number.isFinite(volume)) return;
+    this.playbackVolume = Math.min(1, Math.max(0, volume));
+    if (this.playbackGainNode) this.playbackGainNode.gain.value = this.playbackVolume;
   }
 
   getObservation(): AudioObservation {
@@ -382,8 +394,12 @@ export class AudioController {
           outputChannelCount: [AUDIO_CHANNELS],
         });
         worklet.port.onmessage = (event: MessageEvent) => this.handlePlaybackStats(event.data);
-        worklet.connect(context.destination);
+        const gain = context.createGain();
+        gain.gain.value = this.playbackVolume;
+        worklet.connect(gain);
+        gain.connect(context.destination);
         this.playbackWorklet = worklet;
+        this.playbackGainNode = gain;
         context.onstatechange = () => {
           if (this.listenerContext !== context || !this.listenerActive) return;
           if (context.state === "running") {
@@ -428,9 +444,9 @@ export class AudioController {
     });
   }
 
-  stopListening(): void {
+  stopListening(notifyServer = true): void {
     this.listenerToken += 1;
-    if (this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
+    if (notifyServer && this.listenerActive && isOpen(this.socket)) this.socket.send(JSON.stringify({ type: "audio.unsubscribe" }));
     this.listenerActive = false;
     this.announcedStreamGeneration = null;
     this.announcedStreamClockId = null;
@@ -567,14 +583,14 @@ export class AudioController {
     })();
   }
 
-  stopMicrophone(): void {
+  stopMicrophone(notifyServer = true): void {
     const attempt = this.captureAttempt;
     if (attempt) attempt.cancelled = true;
     const generation = this.publishGeneration;
     this.publishGeneration = null;
     this.publishSequence = 0;
     this.captureToken += 1;
-    if (generation !== null && isOpen(this.socket)) {
+    if (notifyServer && generation !== null && isOpen(this.socket)) {
       this.socket.send(JSON.stringify({ type: "audio.stop", generation }));
     }
     if (this.pendingStart && !generation) this.pendingStart.cancelled = true;
@@ -648,6 +664,11 @@ export class AudioController {
       this.stopMicrophoneAfterRevocation(message.reason);
       return;
     }
+    if (message.type === "participation.modeChanged" && message.mode === "interaction") {
+      this.stopMicrophone(false);
+      this.stopListening(false);
+      return;
+    }
     if (message.type === "audio.error") {
       if (this.captureAttempt) {
         const attempt = this.captureAttempt;
@@ -700,6 +721,7 @@ export class AudioController {
       return;
     }
     if (message.type === "audio.unsubscribed") {
+      if (message.reason === "mode_changed") this.stopListening(false);
       return;
     }
     if (message.type === "audio.stopped") {
@@ -1040,6 +1062,9 @@ export class AudioController {
   private stopListenerResources(): void {
     const worklet = this.playbackWorklet;
     this.playbackWorklet = null;
+    const gain = this.playbackGainNode;
+    this.playbackGainNode = null;
+    try { gain?.disconnect(); } catch {}
     if (worklet) {
       worklet.port.onmessage = null;
       worklet.port.close();

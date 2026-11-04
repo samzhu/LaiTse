@@ -1,0 +1,69 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T07:43:51.780978+00:00",
+    "finishedAt": "2026-11-04T07:43:53.441267+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T07:43:53.442060+00:00",
+    "finishedAt": "2026-11-04T07:44:02.973070+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "core-integration-confirmed",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T07:45:34.158861+00:00",
+    "finishedAt": "2026-11-04T07:45:43.688851+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "participation-smoke",
+    "command": [
+      "node",
+      "scripts/participation-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T08:03:42.947223+00:00",
+    "finishedAt": "2026-11-04T08:04:00.842077+00:00",
+    "exitCode": 1
+  }
+]

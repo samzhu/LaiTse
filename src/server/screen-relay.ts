@@ -7,7 +7,7 @@ export const MAX_SCREEN_HEIGHT = 720;
 export const MAX_SCREEN_PIXELS = MAX_SCREEN_WIDTH * MAX_SCREEN_HEIGHT;
 export const MAX_SCREEN_FRAME_RATE = 15;
 
-export type ScreenPublisherStopReason = "permission_revoked" | "session_ended";
+export type ScreenPublisherStopReason = "permission_revoked" | "session_ended" | "mode_changed";
 
 const SCREEN_MAGIC = Buffer.from("LTS1", "ascii");
 const SCREEN_CONFIG = Object.freeze({ codec: "vp8" });
@@ -280,10 +280,28 @@ export function createScreenRelay() {
     return true;
   }
 
+  function disableConnection(connectionId: string): void {
+    const connection = connections.get(connectionId);
+    if (!connection) return;
+    stopPublishing(connectionId, "mode_changed");
+    if (connection.subscribed && publisher && connection.peer.readyState() === connection.peer.openState) {
+      connection.peer.sendControl({ type: "screen.streamEnded", generation: publisher.generation, reason: "mode_changed" });
+    }
+    connection.subscribed = false;
+    connection.waitingForKeyframeGeneration = null;
+    if (connection.joined && connection.peer.readyState() === connection.peer.openState) {
+      connection.peer.sendControl({ type: "screen.unsubscribed", reason: "mode_changed" });
+    }
+  }
+
+  function isSubscribed(connectionId: string): boolean {
+    return connections.get(connectionId)?.subscribed ?? false;
+  }
+
   function close(): void {
     connections.clear();
     publisher = null;
   }
 
-  return { register, markJoined, handleControl, handleBinary, stopPublishing, disconnect, close };
+  return { register, markJoined, handleControl, handleBinary, stopPublishing, disableConnection, isSubscribed, disconnect, close };
 }

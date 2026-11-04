@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "reviewer": "root",
+  "sourceMatchesProductionBuild": true,
+  "zeroWindows": [
+    {
+      "label": "initial-direct-interaction-zero-media-with-live-source",
+      "windowMs": 425,
+      "hostAudioFramesAdded": 22,
+      "hostScreenFramesAdded": 6,
+      "rawMediaFramesAfterBoundary": 0,
+      "serverEnqueueDeltaBytes": 0
+    },
+    {
+      "label": "watch-mode-does-not-autosubscribe-before-manual-start",
+      "windowMs": 427,
+      "hostAudioFramesAdded": 21,
+      "hostScreenFramesAdded": 6,
+      "rawMediaFramesAfterBoundary": 0,
+      "serverEnqueueDeltaBytes": 0
+    },
+    {
+      "label": "post-ack-interaction-mode-server-and-raw-media-zero",
+      "windowMs": 427,
+      "hostAudioFramesAdded": 21,
+      "hostScreenFramesAdded": 6,
+      "rawMediaFramesAfterBoundary": 0,
+      "serverEnqueueDeltaBytes": 0
+    },
+    {
+      "label": "return-to-watch-keeps-receivers-off-until-manual-resume",
+      "windowMs": 425,
+      "hostAudioFramesAdded": 22,
+      "hostScreenFramesAdded": 5,
+      "rawMediaFramesAfterBoundary": 0,
+      "serverEnqueueDeltaBytes": 0
+    },
+    {
+      "label": "qr-interaction-entry-also-has-zero-media-with-live-source",
+      "windowMs": 425,
+      "hostAudioFramesAdded": 22,
+      "hostScreenFramesAdded": 6,
+      "rawMediaFramesAfterBoundary": 0,
+      "serverEnqueueDeltaBytes": 0
+    }
+  ],
+  "displayReadOnlyRejectedOperations": 9,
+  "qrDecodedURL": "https://localhost:4173/?room=studio&mode=interaction",
+  "errorsEmpty": true,
+  "imagesActuallyViewed": [
+    "display-live.png",
+    "participant-interaction.png"
+  ],
+  "unchangedFromBaseline": [
+    "src/server/space.ts",
+    "src/server/interactions.ts",
+    "src/client/InteractionPanel.tsx",
+    "public/audio-playback-worklet.js"
+  ],
+  "testFixtureText": "Participant screenshot contains only synthetic T11 chat sentinel/drafts, not user content or credentials."
+}

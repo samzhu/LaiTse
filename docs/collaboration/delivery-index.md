@@ -44,3 +44,5 @@
 | DEC011-BC | 場景門與密碼准入 | room-access/Phaser門/密碼dialog、room-access-smoke；POC-03-R004 | 31核心/build、兩config真canvas門/正確密碼/外部拒絕與合成audio；原始失敗/71px座標診斷與修正保存，SOL同步 | startup鎖/基本budget，T09即時管理/正式身份與實機品質待補；本機commit不push，資源釋出 |
 | T09／POC-03-R005 | 主持權限與即時鎖房桌面核心 | `docs/poc/evidence/POC-03-R005/README.md`、execution-log、mvp-handoff | 已保存讀回；34核心+3補充/build/三Firefox通過，原失敗及門圖修正保留 | 真帳號/耐久/手機/真人/完整POC-03待補；未push/部署/T10 |
 | T10／POC-03-R006 | 房內互動與明確公開文字 | `docs/poc/evidence/POC-03-R006/README.md`、execution-log、mvp-handoff | 39核心/build/三Firefox通過，去重/限流/TTL/主持展示控制及異房可行；失敗/修正保留 | 100accepted/p95品質未驗，完整T10/POC-03 Inconclusive；未push/部署/T11 |
+
+| T11／POC-03-R007 | 直接入房、只互動與唯讀展示 | `docs/poc/evidence/POC-03-R007/README.md`、execution-log、mvp-handoff | 42核心/build/三Firefox通過，活動來源server+raw0、保留狀態、展示實播/公開、QR像素解碼及9唯讀拒絕；失敗/修正保留 | 手機相機/真人/耐久/品質/完整POC-03待補；未push/部署/T12 |

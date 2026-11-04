@@ -100,3 +100,34 @@ Luna明確回報saved/readback/STOP，釋出app.ts、server/interactions.ts、cl
 T10剩餘資源交接：Luna已saved/readback/STOP並釋出README、interaction-smoke與implementation-checks。root讀回final syntax與重要腳本斷言，source/test交接時指紋未變；production build/typecheck、完整39/39通過。root現為本輪唯一writer/runtime操作者，開始三Firefox驗收。
 
 T10最終交付：source交接指紋與root build一致、完整39/39及首次三Firefox短流程通過。script/README/log均已STOP交接，root獨立讀回frame/ID/room並看兩張代表圖；開發中失敗保留。README/需求狀態/計畫/票面/SOL/協作紀錄同步，root唯一writer完成驗收與文件後停止，本機commit後資源釋出；不push/遠端票/T11/部署。100accepted/p95品質與完整POC-03未驗，不宣稱商品交付。
+
+## T11／POC-03-R007（2026-11-04）
+
+人類要求T11直接入房/只互動模式/展示端輕量核心與用法，完成程式+驗測紀錄本機commit；已讀回#12「參與模式與唯讀展示頁」。基線0607576，維持單一本機應用，不push/遠端票/部署/T12。
+
+- **T11-IMPL／Luna xhigh唯一writer**：`src/server/app.ts`、`src/server/audio-relay.ts`、`src/server/screen-relay.ts`；`src/client/App.tsx`、`src/client/main.tsx`、`src/client/AudioPanel.tsx`、`src/client/audio.ts`、`src/client/ScreenPanel.tsx`、`src/client/screen.ts`、`src/client/InteractionPanel.tsx`、`src/client/interactions.ts`、`src/client/styles.css`；新增`src/client/{entry,qr,participation}.ts`、`src/client/{DisplayApp,ParticipationControls,JoinQr,PublicInteractionView}.tsx`按需要使用（避免無用途檔案）；新`tests/participation.integration.test.mjs`、`scripts/participation-smoke.mjs`、README；package.json/lockfile及public/vendor-notices.txt序列唯一writer（僅下列兩個QR依賴）；`.scratch/t11/implementation-checks/`。不改其他source/tests/docs/Git；需要擴寫先回root。root持有runtime/browser，child只跑短focused Node/型別/語法，不啟動持久服務或browser。
+- **root唯一writer**：沿用poc execution-log/mvp-handoff/plan/ticket-breakdown與R007、collaboration dispatch/brief/checkpoint/index、PRD/handoff現況、.gitignore、驗收runner/runtime/Git；child未交接前不寫其檔案。
+- **已授權例行選擇**：同一SPA以query `room=studio`直接目標（仍需名字/正常join、未知房不默默改房）；`mode=interaction|watch`選模式、`view=display`獨立唯讀頁。QR僅編public入房URL（建議`room`+`mode=interaction`防現場回音），不帶密碼/主持token；相機/手機稍後，本輪真QR圖以獨立decoder讀回後入房。qrcode-generator **2.0.4** runtime（MIT）、jsqr **1.4.0** dev解碼（Apache-2.0），root已查官方repo/LICENSE與npm metadata保存R007；鎖精確版本/本機bundled，無CDN/SaaS，不自研QR算法。npm使用repo .cache/npm與pinned Node26.13，不修全域cache。
+- **身份/模式/門禁不變條件**：join新增可選降權role=participant/display（預設participant）、mode=watch/interaction（預設watch以保既有契約）；role固定在該socket，不接受host角色/自填身份，不由URL賦管理權。所有role的初次join與深連結/QR仍同room/password gate；display也不得繞過密碼。mode切換同socket/participant/room，不換房/重join，保留未送chat/danmaku草稿與本機volume(0..1)。切interaction先本地dispose來源/接收；server先改資格，強制停止來源、退訂兩channel，送ACK；after-ACK binary下送必為0，不能只藏播放器。切watch不自動訂閱/捕捉/出聲，需使用者再按開始。
+- **可核對server證據**：新self participation/media snapshot/inspect控制可回role/mode、兩channel subscribed與本socket累積下送bytes/frames（清楚是WS enqueue非對端收到），mode ACK包含自己的零訂閱；relay窄加unsubscribe/inspect API及mode_changed stop原因，保留generation/背壓/距離/codec。peer binary每次再核current room與mode；只有interaction時拒audio/screen subscribe/start/binary，互動控制仍可用；mode不變更host/grant身份，但interaction中不可發布。舊無role/mode join的欄位/行為相容，新增self snapshot在room.snapshot之後，不增加破壞既有精確room schema的欄位。
+- **展示端**：獨立DisplayApp只渲染分享canvas/來源狀態、正式回饋/明確公開彈幕與入房QR（可選本機fullscreen）；自動觀看video可行、預設不播audio，不提供主持/發布/內容輸入。Server display role不是host也不能claim，即便知道token；禁止audio/screen start/stop/binary發布、interaction.submit、legacy reaction、host.*、space.move/room.switch等內容/身份修改，允許只讀媒體訂閱/退訂及self inspect。server對display的互動snapshot/state必去掉chat/sticker history，chat/sticker事件不發display，不因UI藏起來就算隱私。參與者的chat仍只有聊天對象可見，展示只接公開danmaku與feedback；mode與role可選都是降權，不可用偽造欄位升權。
+- **驗收/停止**：少量Node新契約+root完整套件一次、build/typecheck；短3 Firefox（持續合成音畫host、deep participant、display），驗只互動期間自己server subs=false/bytes delta0與連續raw bytes0、control仍成功，切watch實際decode/render，回interaction停止，draft/volume/participant/room不變、再watch不auto聲；display實際分享/反應/公開、無私聊原始資料；decode真QR像素→參與者頁正常gate入指定房，外部display直接嘗試發布/內容/host被拒。以有活動來源驗0，不用空房當0證據；保留fail/診斷/修正/圖與用法，無100樣本/長測/手機相機/真人品質/完整POC-03通過宣稱。source穩定可先明確saved/readback/STOP交接root，同時保留script/README/log完成；釋出後不得late patch，僅提供root建議。全部驗收文件/資源清理後本機commit。
+- **目前狀態**：範圍已保存並委派，Luna xhigh實作中，root規劃/驗收。
+
+### T11 smoke獨立並行資源交接
+
+T11-IMPL已明確回報scripts/participation-smoke.mjs未建立、無草稿，STOP並釋出此單一檔；其餘source/tests/README/implementation-checks持有權不變。為避免串行等待，另派T11-SMOKE／Luna xhigh唯一寫入`scripts/participation-smoke.mjs`及`.scratch/t11/smoke-authoring/`，唯讀T11 source/tests/package/node_modules/既有smoke。禁止src/manifest/README/docs/Git及runtime/browser寫入；新增依賴不得自行處理。
+
+相依為第一位agent提供的role/mode/inspect協議與已存UI testids；root統整差異，第二位只送source patch建議不改source。驗收為pinnedNode語法/有界secret-safe report/少量正常UI+外部探針、server0與raw0、display實播/公開privacy/實際QR decode，詳本節原scope。root最後獨占runtime並讀回/看圖，不宣稱第二位已跑browser。第二位完成saved/readback/STOP明確釋出後root窄修；不部署/push/T12/遠端票。範圍已保存，待啟動第二位。
+
+### T11 source/test/dependency交接
+
+T11-IMPL已明確saved/readback/STOP，釋出全部已寫source、participation.integration、package.json/lock與vendor-notices給root；focused3/3、typecheck/語法/diff通過保存。root現為這些檔案唯一writer並開始build/完整Node；第一位只保留README與implementation-checks，第二位維持script/smoke-authoring唯一writer。禁止late source patch，需改動以建議交root。
+
+T11 root完整Node首次41/42，唯一失敗為既有space.integration的下一case仍用到前case尚未close完成的共享app/出生位置（預期x1實際x4，space模型本輪未改）。root追加唯一writer`tests/space.integration.test.mjs`，改為每case新app/beforeEach-afterEach，保留原有移動/邊界精確斷言，不改應用遷就測試。原完整log保留，修正後重驗；source/依賴build不變。
+
+T11全部資源交接：T11-IMPL已釋出README與implementation-checks；T11-SMOKE明確saved/readback/STOP並釋出script與smoke-authoring，pinned Node語法通過且未執行browser。root已讀回zero-window/QR/privacy/模式保留斷言，現為唯一writer與runtime操作者；build/typecheck及完整42/42通過，開始本機三Firefox實際驗收。
+
+### T11最終驗收與釋出
+
+root完整42/build/typecheck與三Firefox最終通過，source指紋對build一致。首次browser錯用參與頁public-stage selector，保留first-attempt後只修script；其餘source/依賴未再改，未重跑無關全套。5活動來源zero窗口/9唯讀拒絕/真QR/readback/兩圖及cleanup保存。README/需求/計畫/票面/SOL/協作同步，唯一writer完成本機commit後停止釋出；不push/遠端票/T12/部署。全部agent已明確STOP；手機/真人/耐久/完整POC-03待後續。

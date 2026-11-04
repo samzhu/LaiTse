@@ -44,6 +44,8 @@ const MAX_EVENTS_PER_SECOND = 10;
 const EVENT_WINDOW_MS = 1_000;
 
 type Member = SpaceMember;
+type ParticipationRole = "participant" | "display";
+type ParticipationMode = "watch" | "interaction";
 
 type ControlEvent = {
   seq: number;
@@ -60,7 +62,13 @@ type ClientConnection = {
   member?: Member;
   currentRoomId?: RoomId;
   hostActive: boolean;
+  role: ParticipationRole;
+  mode: ParticipationMode;
   removed: boolean;
+  downlink: {
+    audio: { bytes: number; frames: number };
+    screen: { bytes: number; frames: number };
+  };
   eventTimes: number[];
   interactionTimes: number[];
   feedbackTimes: number[];
@@ -170,6 +178,10 @@ function publicRooms(roomAccess: ReturnType<typeof createRoomAccessPolicy>, host
   }));
 }
 
+function displayInteractionProjection(state: ReturnType<InteractionStore["snapshot"]>) {
+  return { ...state, history: [] as typeof state.history, publicQueue: state.publicQueue.filter((event) => event.kind === "danmaku") };
+}
+
 export async function createApp(options: CreateAppOptions = {}) {
   if (options.hostControlToken && options.meetingRoomPassword && options.hostControlToken === options.meetingRoomPassword) {
     throw new Error("HOST_CONTROL_TOKEN must be different from MEETING_ROOM_PASSWORD.");
@@ -210,9 +222,12 @@ export async function createApp(options: CreateAppOptions = {}) {
   const roomMetrics = new Map<RoomId, RoomMetricCounters>(SPACE_ROOMS.map(({ id }) => [id, createRoomMetricCounters()]));
   const broadcastRoomInteractionState = (roomId: RoomId) => {
     const state = interactions.snapshot(roomId);
-    const payload = JSON.stringify({ type: "interaction.state", ...state });
     for (const [target, targetConnection] of clients) {
       if (!targetConnection.member || targetConnection.currentRoomId !== roomId || target.readyState !== target.OPEN) continue;
+      const payload = JSON.stringify({
+        type: "interaction.state",
+        ...(targetConnection.role === "display" ? displayInteractionProjection(state) : state),
+      });
       const counters = roomMetrics.get(roomId)!.control;
       counters.guardedSendChecks += 1;
       if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
@@ -282,6 +297,8 @@ export async function createApp(options: CreateAppOptions = {}) {
     (socket) => {
       const connection: ClientConnection = {
         id: randomUUID(), hostActive: false, removed: false,
+        role: "participant", mode: "watch",
+        downlink: { audio: { bytes: 0, frames: 0 }, screen: { bytes: 0, frames: 0 } },
         eventTimes: [], interactionTimes: [], feedbackTimes: [], moveTimes: [],
       };
       clients.set(socket, connection);
@@ -338,6 +355,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       };
 
       const canPublish = (targetConnection: ClientConnection): boolean => {
+        if (targetConnection.role === "display") return false;
         if (!hostControl.enabled) return true;
         const member = targetConnection.member;
         const roomId = targetConnection.currentRoomId;
@@ -393,11 +411,27 @@ export async function createApp(options: CreateAppOptions = {}) {
             },
             sendBinary: (message: Buffer) => {
               if (!authorizedCurrentRoom()) return;
-              if (sendBinary(message)) metrics.binaryFramesSent += 1;
+              if (connection.mode === "interaction") {
+                metrics.rejected += 1;
+                return;
+              }
+              if (sendBinary(message)) {
+                metrics.binaryFramesSent += 1;
+                connection.downlink[channel].bytes += message.byteLength;
+                connection.downlink[channel].frames += 1;
+              }
             },
             sendScreenBinary: (message: Buffer) => {
               if (!authorizedCurrentRoom()) return;
-              if (sendScreenBinary(message)) metrics.binaryFramesSent += 1;
+              if (connection.mode === "interaction") {
+                metrics.rejected += 1;
+                return;
+              }
+              if (sendScreenBinary(message)) {
+                metrics.binaryFramesSent += 1;
+                connection.downlink.screen.bytes += message.byteLength;
+                connection.downlink.screen.frames += 1;
+              }
             },
             reject: (code: string, explanation: string, closeCode?: number) => {
               metrics.rejected += 1;
@@ -436,10 +470,43 @@ export async function createApp(options: CreateAppOptions = {}) {
         });
       };
 
+      const participationSnapshot = () => {
+        const roomId = connection.currentRoomId;
+        const relays = roomId ? mediaRooms.get(roomId) : undefined;
+        return {
+          type: "participation.self",
+          roomId: roomId ?? null,
+          participantId: connection.member?.id ?? null,
+          role: connection.role,
+          mode: connection.mode,
+          media: {
+            audio: {
+              subscribed: relays?.audio.isSubscribed(connection.id) ?? false,
+              downlinkBytes: connection.downlink.audio.bytes,
+              downlinkFrames: connection.downlink.audio.frames,
+            },
+            screen: {
+              subscribed: relays?.screen.isSubscribed(connection.id) ?? false,
+              downlinkBytes: connection.downlink.screen.bytes,
+              downlinkFrames: connection.downlink.screen.frames,
+            },
+          },
+          downlinkScope: "server WebSocket enqueue counters for this connection lifetime; not peer receipt or decode evidence",
+        };
+      };
+
+      const sendParticipationSnapshot = () => {
+        if (connection.currentRoomId) {
+          sendRoomMessage(socket, connection, connection.currentRoomId, participationSnapshot(), "eventsSent");
+        }
+      };
+
       const sendInteractionSnapshot = (target: import("ws").WebSocket, targetConnection: ClientConnection, roomId: RoomId) => {
         sendRoomMessage(target, targetConnection, roomId, {
           type: "interaction.snapshot",
-          ...interactions.snapshot(roomId),
+          ...(targetConnection.role === "display"
+            ? displayInteractionProjection(interactions.snapshot(roomId))
+            : interactions.snapshot(roomId)),
         }, "eventsSent");
       };
 
@@ -447,7 +514,10 @@ export async function createApp(options: CreateAppOptions = {}) {
         const state = interactions.snapshot(roomId);
         for (const [target, targetConnection] of clients) {
           if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
-            sendRoomMessage(target, targetConnection, roomId, { type: "interaction.state", ...state }, "eventsSent");
+            sendRoomMessage(target, targetConnection, roomId, {
+              type: "interaction.state",
+              ...(targetConnection.role === "display" ? displayInteractionProjection(state) : state),
+            }, "eventsSent");
           }
         }
       };
@@ -456,17 +526,23 @@ export async function createApp(options: CreateAppOptions = {}) {
         const state = interactions.snapshot(roomId);
         for (const [target, targetConnection] of clients) {
           if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
+            if (targetConnection.role === "display" && event.kind !== "danmaku" && event.kind !== "feedback") continue;
             sendRoomMessage(target, targetConnection, roomId, {
               type: "interaction.event",
               roomId,
               event,
-              state: {
-                publicQueue: state.publicQueue,
-                queueCount: state.queueCount,
-                presentation: state.presentation,
-                feedbackStats: state.feedbackStats,
-                serverNow: state.serverNow,
-              },
+              state: targetConnection.role === "display"
+                ? (() => {
+                    const projection = displayInteractionProjection(state);
+                    return { publicQueue: projection.publicQueue, queueCount: projection.queueCount, presentation: projection.presentation, feedbackStats: projection.feedbackStats, serverNow: projection.serverNow };
+                  })()
+                : {
+                    publicQueue: state.publicQueue,
+                    queueCount: state.queueCount,
+                    presentation: state.presentation,
+                    feedbackStats: state.feedbackStats,
+                    serverNow: state.serverNow,
+                  },
             }, "eventsSent");
           }
         }
@@ -517,6 +593,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         };
         const message = { type: "control.event", event };
         for (const [target, targetConnection] of clients) {
+          if (targetConnection.role === "display" && kind === "reaction") continue;
           if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
             sendRoomMessage(target, targetConnection, roomId, message, "eventsSent");
           }
@@ -563,6 +640,13 @@ export async function createApp(options: CreateAppOptions = {}) {
             sendProtocolError("media_not_joined", "Join a room before publishing or receiving media.");
             return;
           }
+          if (connection.role === "display" || connection.mode === "interaction") {
+            const channel = bytes.subarray(0, 4).toString("ascii") === "LTS1" ? "screen" : "audio";
+            roomMetrics.get(connection.currentRoomId)![channel].rejected += 1;
+            sendProtocolError(connection.role === "display" ? "display_read_only" : "interaction_mode_media_denied",
+              "This participation state cannot publish media packets.");
+            return;
+          }
           if (hostControl.enabled && !canPublish(connection)) {
             const channel = bytes.subarray(0, 4).toString("ascii") === "LTS1" ? "screen" : "audio";
             roomMetrics.get(connection.currentRoomId)![channel].rejected += 1;
@@ -593,6 +677,17 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
 
         const message = payload as Record<string, unknown>;
+        if (connection.member && connection.role === "display") {
+          const allowedDisplayControl = message.type === "participation.inspect" ||
+            message.type === "audio.subscribe" || message.type === "audio.unsubscribe" ||
+            message.type === "screen.subscribe" || message.type === "screen.unsubscribe";
+          if (!allowedDisplayControl) {
+            roomMetrics.get(connection.currentRoomId!)!.control.rejected += 1;
+            sendProtocolError("display_read_only", "Display connections can only inspect themselves and subscribe to shared media.");
+            return;
+          }
+        }
+
         if (message.type === "capability.report") {
           if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
             rejectControl("invalid_capability_report", "Capability reports must stay within the 8 KiB limit.", 1009);
@@ -634,6 +729,51 @@ export async function createApp(options: CreateAppOptions = {}) {
             roomId: observation.roomId,
             member: observation.member,
           });
+          return;
+        }
+
+        if (message.type === "participation.inspect") {
+          if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES) {
+            rejectControl("invalid_message", "Participation control frames are limited to 1 KiB.", 1009);
+            return;
+          }
+          if (!hasOnlyKeys(message, ["type"]) || !connection.member || !connection.currentRoomId) {
+            sendProtocolError("invalid_participation_inspect", "Inspect your own participation after joining a room.");
+            return;
+          }
+          sendParticipationSnapshot();
+          return;
+        }
+
+        if (message.type === "participation.setMode") {
+          if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES) {
+            rejectControl("invalid_message", "Participation control frames are limited to 1 KiB.", 1009);
+            return;
+          }
+          if (!hasOnlyKeys(message, ["type", "mode"]) || !connection.member || !connection.currentRoomId ||
+              connection.role !== "participant" || (message.mode !== "watch" && message.mode !== "interaction")) {
+            sendProtocolError(connection.role === "display" ? "display_read_only" : "invalid_participation_mode", "Choose watch or interaction mode on a joined participant connection.");
+            return;
+          }
+          const nextMode = message.mode as ParticipationMode;
+          connection.mode = nextMode;
+          if (nextMode === "interaction") {
+            const relays = mediaRooms.get(connection.currentRoomId)!;
+            relays.audio.disableConnection(connection.id);
+            relays.screen.disableConnection(connection.id);
+          }
+          const relays = mediaRooms.get(connection.currentRoomId)!;
+          send({
+            type: "participation.modeChanged",
+            roomId: connection.currentRoomId,
+            role: connection.role,
+            mode: connection.mode,
+            media: {
+              audioSubscribed: relays.audio.isSubscribed(connection.id),
+              screenSubscribed: relays.screen.isSubscribed(connection.id),
+            },
+          });
+          sendParticipationSnapshot();
           return;
         }
 
@@ -912,6 +1052,12 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
+        if (connection.mode === "interaction" && (audioControl || screenControl) &&
+            message.type !== "audio.unsubscribe" && message.type !== "screen.unsubscribe") {
+          sendProtocolError("interaction_mode_media_denied", "Switch to watch mode before starting or subscribing to media.");
+          return;
+        }
+
         if (hostControl.enabled && message.type === "audio.start" && !canPublish(connection)) {
           send({ type: "audio.error", code: "publish_not_authorized", message: "A host must grant publishing permission before microphone audio can start." });
           return;
@@ -929,10 +1075,12 @@ export async function createApp(options: CreateAppOptions = {}) {
 
         if (!connection.member) {
           if (
-            !hasOnlyKeys(message, ["type", "roomId", "displayName", "password"]) ||
+            !hasOnlyKeys(message, ["type", "roomId", "displayName", "password", "role", "mode"]) ||
             message.type !== "join" ||
             !isKnownRoom(message.roomId) ||
-            typeof message.displayName !== "string"
+            typeof message.displayName !== "string" ||
+            (message.role !== undefined && message.role !== "participant" && message.role !== "display") ||
+            (message.mode !== undefined && message.mode !== "watch" && message.mode !== "interaction")
           ) {
             rejectControl("invalid_join", "Choose an available room and join with a short display name.");
             return;
@@ -962,6 +1110,8 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
 
           const member = { id: randomUUID(), displayName };
+          connection.role = (message.role as ParticipationRole | undefined) ?? "participant";
+          connection.mode = (message.mode as ParticipationMode | undefined) ?? "watch";
           connection.member = member;
           connection.currentRoomId = roomId;
           space.add(member, roomId);
@@ -987,6 +1137,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             lastSeq: event.seq,
           }, "roomSnapshotsSent");
           sendInteractionSnapshot(socket, connection, roomId);
+          sendParticipationSnapshot();
           broadcastSpaceState();
           sendPublishPermission(socket, connection);
           return;
@@ -1063,6 +1214,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             lastSeq: sequence,
           }, "roomSnapshotsSent");
           sendInteractionSnapshot(socket, connection, nextRoomId);
+          sendParticipationSnapshot();
           broadcastSpaceState();
           sendPublishPermission(socket, connection);
           return;

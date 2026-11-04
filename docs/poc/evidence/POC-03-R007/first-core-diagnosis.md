@@ -1,0 +1,1 @@
+首次完整Node41/42，唯一space移動case預期左移至x1，實際x4。既有同檔共用app，前case closeAll只送非同步socket.close即返回，下一case可能在舊Ada尚佔x2時出生x5；space模型未改。root改每case獨立app，保留移動/假身份/邊界原斷言。這是測試隔離修正，不靠改預期或改應用位置規則讓測試過。原log見core-integration.log，重驗另保存。

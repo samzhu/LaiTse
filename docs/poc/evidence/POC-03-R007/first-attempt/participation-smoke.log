@@ -1,0 +1,28 @@
+[T11] managed-runtime-locked-room-and-host-controls {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T11] host-claimed-and-synthetic-audio-screen-active {"claimSequence":11,"sourceSent":{"audioFrames":1,"audioBytes":135,"screenFrames":1,"screenBytes":368},"audioCalls":1,"screenCalls":1}
+[T11] direct-interaction-deep-link-joined-studio-through-normal-password-gate {"roomId":"studio","role":"participant","mode":"interaction","sameRoomSnapshotSequence":5,"selfSnapshotSequence":7,"initialServerMedia":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}}}
+[T11] display-readonly-auto-rendered-real-decoded-screen-no-audio {"renderedFrames":3,"visual":{"width":320,"height":180,"uniqueColors":5},"receivedBinaryFrames":{"audioFrames":0,"audioBytes":0,"screenFrames":4,"screenBytes":608},"audioSubscribeSent":false,"hostPanelCount":0}
+[T11] display-password-gate-and-live-screen-preview
+[T11] external-display-write-and-media-publish-attempts-rejected {"operations":9,"allExplicitDisplayReadOnly":true}
+[T11] initial-direct-interaction-zero-media-with-live-source {"label":"initial-direct-interaction-zero-media-with-live-source","targetWindowMs":425,"actualWindowMs":426,"modeAckSequence":null,"selfBoundarySequence":7,"inspectionSequence":17,"hostSentBefore":{"audioFrames":70,"audioBytes":9117,"screenFrames":20,"screenBytes":2157},"hostSentAfter":{"audioFrames":92,"audioBytes":12278,"screenFrames":26,"screenBytes":2651},"receiverRawBefore":{"audioFrames":0,"audioBytes":0,"screenFrames":0,"screenBytes":0},"receiverRawAfter":{"audioFrames":0,"audioBytes":0,"screenFrames":0,"screenBytes":0},"serverStateBefore":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}},"serverStateAfter":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}},"rawMediaFramesAfterAckOrSelf":0}
+[T11] private-chat-and-formal-feedback-sent-while-only-interaction {"privateChatAcknowledged":true,"stickerAcknowledged":true,"feedbackDisplayed":true,"displayPrivacy":{"displayRawPrivateChatLeak":false,"displayRawHistoryCount":0,"displayNonPublicInteractionEventCount":0,"displayReceivedAudioBinaryFrames":0,"displayPublishedMediaControls":0},"serverMediaAtBoundary":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}}}
+[T11] watch-mode-does-not-autosubscribe-before-manual-start {"label":"watch-mode-does-not-autosubscribe-before-manual-start","targetWindowMs":425,"actualWindowMs":426,"modeAckSequence":28,"selfBoundarySequence":29,"inspectionSequence":31,"hostSentBefore":{"audioFrames":105,"audioBytes":14149,"screenFrames":30,"screenBytes":2951},"hostSentAfter":{"audioFrames":127,"audioBytes":17316,"screenFrames":36,"screenBytes":3381},"receiverRawBefore":{"audioFrames":0,"audioBytes":0,"screenFrames":0,"screenBytes":0},"receiverRawAfter":{"audioFrames":0,"audioBytes":0,"screenFrames":0,"screenBytes":0},"serverStateBefore":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}},"serverStateAfter":{"audio":{"subscribed":false,"bytes":0,"frames":0},"screen":{"subscribed":false,"bytes":0,"frames":0}},"rawMediaFramesAfterAckOrSelf":0}
+[T11] manual-watch-controls-rendered-audio-samples-and-screen-frames {"rendered":{"audioRenderedSamples":10432,"screenRenderedFrames":3,"screenWidth":320,"screenHeight":180},"serverMedia":{"audio":{"subscribed":true,"bytes":1887,"frames":13},"screen":{"subscribed":true,"bytes":608,"frames":4}},"rawReceived":{"audioFrames":13,"audioBytes":1887,"screenFrames":4,"screenBytes":608}}
+[T11] post-ack-interaction-mode-server-and-raw-media-zero {"label":"post-ack-interaction-mode-server-and-raw-media-zero","targetWindowMs":425,"actualWindowMs":426,"modeAckSequence":68,"selfBoundarySequence":69,"inspectionSequence":71,"hostSentBefore":{"audioFrames":155,"audioBytes":21381,"screenFrames":44,"screenBytes":4273},"hostSentAfter":{"audioFrames":176,"audioBytes":24597,"screenFrames":49,"screenBytes":4698},"receiverRawBefore":{"audioFrames":16,"audioBytes":2331,"screenFrames":5,"screenBytes":685},"receiverRawAfter":{"audioFrames":16,"audioBytes":2331,"screenFrames":5,"screenBytes":685},"serverStateBefore":{"audio":{"subscribed":false,"bytes":2331,"frames":16},"screen":{"subscribed":false,"bytes":685,"frames":5}},"serverStateAfter":{"audio":{"subscribed":false,"bytes":2331,"frames":16},"screen":{"subscribed":false,"bytes":685,"frames":5}},"rawMediaFramesAfterAckOrSelf":0}
+[T11] mode-switch-preserved-room-participant-drafts-and-volume {"roomId":"studio","participantIdentityPreserved":true,"chatDraftPreserved":true,"danmakuDraftPreserved":true,"volumePreserved":true}
+[T11] host-synthetic-source-stopped-and-counters-stable {"afterStop":{"audioFrames":591,"audioBytes":93677,"screenFrames":164,"screenBytes":14490},"stableForMs":425}
+file:///Users/samzhu/workspace_herdr/LaiTse/scripts/participation-smoke.mjs:1318
+if (failure) throw new Error(redact(failure?.stack ?? failure.message));
+                   ^
+
+Error: Error: locator.waitFor: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('public-stage') to be visible[22m
+
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/participation-smoke.mjs:1181:50
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/participation-smoke.mjs:1295:13
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processImmediate (node:internal/timers:541:9)
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/participation-smoke.mjs:1318:20
+
+Node.js v26.13.0

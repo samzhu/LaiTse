@@ -1,0 +1,7 @@
+{
+  "baselineCommit": "060757694e90791be76e21f6640513e2ea536aed",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "node": "v26.13.0",
+  "ticket": "https://github.com/samzhu/LaiTse/issues/12",
+  "scope": "T11 lightweight local deep links, QR, participant modes and readonly display"
+}

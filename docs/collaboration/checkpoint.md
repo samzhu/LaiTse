@@ -151,3 +151,19 @@ R006完成；root build/typecheck、完整39/39與首次三Firefox157流程通�
 開發中typecheck漏action欄位與queue2≠1失敗log保存，修正為每test新app/清情境舊queue後focused5/5。root檢視容量拒絕/expiry dirty通知/UI時鐘anchor與acceptance狀態/腳本等待及預先掛負例；source交接後hash保持一致，root無source窄修或額外全量重跑。
 
 只有頁內固定文字公開區，無T11展示頁/模式/QR/保留草稿/飄移動畫。原#11 100accepted/p95品質未驗，完整T10/POC-03 Inconclusive；臨時participant/dedup與全部狀態process-memory，手機/真人/弱網/容量/耐久/部署未知。README/需求狀態/計畫/票面/SOL/索引同步，server/browser停止，本輪writer停止並釋出。本機commit程式+紀錄，不push/遠端票/T11/部署，下一項依人類指示。
+
+## T11啟動（2026-11-04）
+
+人類指定「繼續做T11，驗測維持輕量，確認直接入房、只互動模式與展示端的核心功能可行及使用方式，完成後把程式和驗測紀錄一起commit」。#12「參與模式與唯讀展示頁」已讀回，基線0607576、R007配發。Luna xhigh寫派定程式，root設計/驗收/紀錄/Git；完整scope見dispatch。深連結/QR走同門禁、server權威participant模式切換及只互動零訂閱/bytes，display獨立降權且無私聊/主持/修改內容；草稿/音量保留、watch不自動播放。加入pinned本機QR產生/獨立解碼依賴，manifest唯一writerLuna。驗測少量Node與三Firefox持續合成來源、實際QR像素解碼；手機相機/真人/完整階段不預填，無部署/push/遠端票/T12。
+
+### T11驗收中間狀態（2026-11-04）
+
+source/tests/依賴/README已由T11-IMPL明確saved/readback/STOP全部交root，無late patch；build inputs存R007/build-source-sha256.json。root production build/typecheck通過，首次完整41/42唯一既有space.integration共用app/非同步close造成出生位置期待差異，原log/診斷保留；root僅將該測試改beforeEach/afterEach獨立app、不改移動規則或原斷言，重驗42/42通過（core-integration-confirmed.log）。依賴inventory113個、declared license未知0，兩新QR package版本/來源/notice已讀回。
+
+T11-SMOKE／Luna xhigh仍唯一寫scripts/participation-smoke.mjs與.scratch/t11/smoke-authoring（原作者明確釋出未建立script才重派）。尚未交接、未啟browser/runtime，不推定已驗。root runner為/private/tmp/laitse-t11-accept.py：--browser-only啟單一HTTPS4173、私有隨機HOST_CONTROL_TOKEN+MEETING_ROOM_PASSWORD及同值PARTICIPATION_TEST_*，三Firefox script後finally停止；尚待script STOP後執行。node pinned .tools26.13.0、repo cache、既有.scratch/t01/tls CA/cert/key。R007 manual guide/review仍待browser結果，原始QR metadata／inventory與測試證據已保存。只做本機commit，不push/遠端票/部署/T12；AGENTS.md/.scratch其他未追蹤項不可stage。
+
+## T11最終checkpoint（2026-11-04）
+
+R007桌面核心驗收完成：42核心/build/typecheck與三Firefox成功，直接正常gate/只互動server+raw0/同身份房間草稿音量/觀看手動/唯讀實播公開/真QR像素解碼再入房可行；9外部越權拒絕。root已獨立讀回與實際看圖。首輪舊space共享app時序與browser selector失敗保留，最小修正後通過。SOL-005/003/008與002/007及需求/計畫/票面/README/協作同步。
+
+所有agent已saved/readback/STOP交接，root唯一writer；server/Firefox已停止，cleanup讀回4173無listener/自有profile無process。預先未追蹤AGENTS.md與.scratch/保留不stage，程式+R007紀錄同一本機commit；不push/T12/遠端票/部署。手機相機/真人/耐久/品質與完整POC-03仍待，下一步由人類指定。

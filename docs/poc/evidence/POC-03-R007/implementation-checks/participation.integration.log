@@ -1,0 +1,11 @@
+✔ watch to interaction transition clears subscriptions and retains usable interactions (103.057917ms)
+✔ legacy join defaults to participant watch mode without changing room snapshot fields (3.771666ms)
+✔ display role stays password-gated, receives public projections, and rejects mutations (9068.252416ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9315.737459

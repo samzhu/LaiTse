@@ -1,0 +1,18 @@
+[
+  {
+    "package": "qrcode-generator",
+    "registry": {
+      "version": "2.0.4",
+      "license": "MIT",
+      "repository.url": "git+https://github.com/kazuhikoarase/qrcode-generator.git"
+    }
+  },
+  {
+    "package": "jsqr",
+    "registry": {
+      "version": "1.4.0",
+      "license": "Apache-2.0",
+      "repository.url": "git+https://github.com/cozmo/jsQR.git"
+    }
+  }
+]

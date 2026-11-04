@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { INITIAL_SCREEN_STATE, ScreenController, type ScreenSnapshot } from "./screen";
 import { MediaTimeline } from "./media-timeline";
+import type { ParticipationMode } from "./entry";
 
 type ScreenPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
   publishAllowed?: boolean;
   hostControlsEnabled?: boolean;
+  participationMode?: ParticipationMode;
+  pendingModeTarget?: ParticipationMode | null;
+  onModeQuiesced?: () => void;
+  readOnly?: boolean;
+  autoWatch?: boolean;
 };
 
-export function ScreenPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false }: ScreenPanelProps) {
+export function ScreenPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, onModeQuiesced, readOnly = false, autoWatch = false }: ScreenPanelProps) {
   const [state, setState] = useState<ScreenSnapshot>({ ...INITIAL_SCREEN_STATE });
   const controllerRef = useRef<ScreenController | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -19,11 +25,19 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
     if (!socket || !canvas) return;
     const controller = new ScreenController(socket, canvas, timeline, setState);
     controllerRef.current = controller;
+    if (autoWatch) controller.startWatching();
     return () => {
       controller.dispose();
       if (controllerRef.current === controller) controllerRef.current = null;
     };
-  }, [socket, timeline]);
+  }, [socket, timeline, autoWatch]);
+
+  useEffect(() => {
+    if (pendingModeTarget !== "interaction") return;
+    controllerRef.current?.stopShare("已切換為只互動；本機分享來源已停止。", true);
+    controllerRef.current?.stopWatching(true);
+    onModeQuiesced?.();
+  }, [pendingModeTarget, onModeQuiesced]);
 
   if (!socket) return null;
 
@@ -37,6 +51,9 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
       className="panel-card screen-panel"
       aria-labelledby="screen-title"
       data-testid="screen-panel"
+      hidden={participationMode === "interaction" || pendingModeTarget === "interaction"}
+      style={participationMode === "interaction" || pendingModeTarget === "interaction" ? { display: "none" } : undefined}
+      data-read-only={readOnly}
       data-publisher-state={state.publisherState}
       data-receiver-state={state.receiverState}
       data-sent-frames={state.sentFrames}
@@ -59,14 +76,14 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
           <p className="eyebrow">T06 · SCREEN SHARE</p>
           <h2 id="screen-title">站內畫面分享</h2>
         </div>
-        <span className="screen-profile">VP8 · WebCodecs</span>
+        <span className="screen-profile">{readOnly ? "唯讀接收 · VP8" : "VP8 · WebCodecs"}</span>
       </div>
         <p className="screen-intro">
         分享者由按鈕呼叫瀏覽器來源選擇器；畫面和麥克風各自啟停。晚加入會取得目前設定並等待下一個關鍵影格。
       </p>
 
       <div className="screen-controls">
-        <div className="screen-control-group">
+        {!readOnly ? <div className="screen-control-group">
           <div>
             <h3>發布畫面</h3>
             <p className={`screen-state ${["denied", "blocked", "unsupported", "error"].includes(state.publisherState) ? "is-error" : ""}`} role="status" data-screen-status="publisher">{hostControlsEnabled && !publishAllowed && !isSharing && !isStartingShare ? "主持人尚未授予目前房間的發布權。" : state.publisherMessage}</p>
@@ -81,7 +98,7 @@ export function ScreenPanel({ socket, timeline, publishAllowed = true, hostContr
               {isStartingShare ? "等待來源選擇…" : state.publisherState === "denied" ? "重新要求分享權限" : "開始分享畫面"}
             </button>
           )}
-        </div>
+        </div> : null}
 
         <div className="screen-control-group">
           <div>

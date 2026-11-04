@@ -168,3 +168,5 @@ DEC011-BC門/密碼准入核心已於R004交付（startup設定鎖，31核心/�
 T09本機桌面核心已於[POC-03-R005](evidence/POC-03-R005/README.md)交付：主持claim/主講grant-revoke/remove/end及即時門鎖/密碼更新，34核心+3補充/三Firefox核心通過。DEC011-C的即時管理已有本機證據，正式帳號/逐房管理secret/耐久狀態仍待；不將原票/完整POC-03自動標為全通過。#10遠端狀態未修改、未push，下一項依人類指示。
 
 T10房內互動/公開留言桌面核心已於[POC-03-R006](evidence/POC-03-R006/README.md)保存：39核心/build及三Firefox三feedback/chat/sticker/明確公開、pause/block/remove/clear/TTL/去重/限流/異房隔離成功。原#11至少100accepted/p95品質未驗（本輪人類指定輕量核心），完整票面/POC-03 Inconclusive；不改遠端狀態、不push、不自動啟動T11。
+
+T11直接入房/只互動/展示端桌面核心已於[POC-03-R007](evidence/POC-03-R007/README.md)保存：42核心/build/typecheck及三Firefox正常門禁/模式切換server+raw0/草稿音量/實播公開與QR真pixel解碼成功，9外部唯讀越權拒絕。手機相機/真人/耐久/品質/完整POC-03仍未驗；本輪僅輕量核心，不改遠端票、不push、不啟動T12。

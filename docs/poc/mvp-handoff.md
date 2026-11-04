@@ -151,3 +151,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-007：history50/5min、public20/8s、feedback60s/512及dedup10min/2048為bounded process-memory fixture；統計次數/臨時participant數分開，非真人身份。pause只停展示、block只禁新公開，remove同步歷史+queue、clear僅公開queue。重啟清空，換匿名身份不承接去重；MVP須設計耐久/帳號/大量負載與保留政策。
 - SOL-008：[R006](evidence/POC-03-R006/README.md)首次root39核心/build及三Firefox普通UI/外部probe通過，studio22 IDs相同無重送/異房，11速率10接受1拒；原開發型別/fixture失敗與修正保存。可復用`interactions.integration.test.mjs`及`interaction-smoke.mjs`，含Unicode長度、bounded cache、實際TTL與正常畫面。
 - 可用呈現：InteractionPanel分聊天/固定圖案/明確公開區，常態區分pause/acceptance，serverNow+monotonic elapsed只估期限，非E2E校準。SOL-005的獨立display/模式/QR/保留草稿仍T11，未因公開區可見就宣稱完成。未跑100accepted/p95、手機/真人/弱網/容量/雲或完整POC-03；沒有新依賴/影音或Phaser改動。
+
+## T11／POC-03-R007：SOL-005／003／008／002／007（2026-11-04）
+
+- SOL-005：`entry.ts`解析room/mode/view，未知mode預設watch、未知room不靜默轉房；`qr.ts`/JoinQr使用本機qrcode-generator2.0.4生成公開participant URL，display不帶入QR，password/host token不進URL。DisplayApp獨立readonly頁、ScreenPanel readOnly自動video不auto audio、PublicInteractionView只用權威publicQueue/feedback；不從recent events復活pause/remove/expired文字。以jsqr1.4.0 dev真pixel解碼並重新正常gate入studio，非手機相機證據。
+- SOL-003：join可選participant/display與watch/interaction，預設保持舊契約；role在socket固定，mode不重join。display只允許訂閱/退訂/inspect，server拒發布/修改/主持claim即便token正確；display互動transport projection history空、不轉發chat/sticker事件。不是帳號認證或耐久ACL，不能將一般房內聊天叫作點對點私訊。
+- SOL-002：mode interaction先本地停止來源/接收、server強制stop/unsubscribe並每次binary守衛；同connection generation保留。self inspect回累積enqueue bytes/frames/subscribed，明示非對端receipt。watch不auto來源或訂閱，AudioController音量gain連到播放管線，草稿/音量保留僅同頁。codec/封包/距離規則未換。
+- SOL-008：[R007](evidence/POC-03-R007/README.md)含42核心/build/typecheck、三Firefox合成來源5個活動窗口server0/raw0、11,008samples/3frames手動watch、9外部唯讀負例與真QR；root讀回/兩圖/失敗與窄修保存。復用participation.integration與participation-smoke；舊space測試改每案新app以隔離清理時序，原assertions保留。
+- SOL-007／整合限制：process-memory/匿名身份及原T09 bootstrap授權不等於商品帳號，mode/draft不跨刷新。QR origin需可達/可信LAN才能手機掃，localhost只同機；展示POC診斷UI待商品整合。113項依賴declared license皆已知，兩新套件精確鎖版/notice/readback保存，非完整法務/安全稽核。手機/人耳/原生擷取/fullscreen/弱網/耐久/容量/CloudRun/完整POC-03未驗，T12不自動開工。

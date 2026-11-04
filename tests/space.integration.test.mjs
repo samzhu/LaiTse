@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { after, before, test } from "node:test";
+import { afterEach, beforeEach, test } from "node:test";
 import WebSocket from "ws";
 import { createApp } from "../src/server/app.ts";
 
@@ -8,14 +8,14 @@ let baseUrl;
 const MESSAGE_TIMEOUT_MS = 5_000;
 const TEST_TIMEOUT_MS = 15_000;
 
-before(async () => {
+beforeEach(async () => {
   app = await createApp({ serveClient: false });
   await app.listen({ host: "127.0.0.1", port: 0 });
   const address = app.server.address();
   baseUrl = `http://127.0.0.1:${address.port}`;
 });
 
-after(async () => {
+afterEach(async () => {
   await app?.close();
 });
 

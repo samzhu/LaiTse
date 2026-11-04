@@ -1,0 +1,5924 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T11 local desktop check for deep room entry, interaction-only media gating, read-only display privacy, screen rendering, and QR pixel decoding.",
+  "startedAt": "2026-11-04T08:04:33.523Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0",
+    "room": {
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true
+    },
+    "activeSourceBeforePrivacyChecks": {
+      "audioFrames": 55,
+      "audioBytes": 6958,
+      "screenFrames": 15,
+      "screenBytes": 1788
+    }
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into three isolated Firefox profiles and supplied to Node WSS probes",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "isolatedFirefoxProfiles": 3,
+    "roomId": "studio",
+    "browsers": [
+      "host",
+      "participant",
+      "display"
+    ]
+  },
+  "source": {
+    "audio": "synthetic oscillator routed through AudioContext MediaStreamDestination",
+    "screen": "synthetic animated canvas captureStream",
+    "physicalMicrophone": false,
+    "physicalDisplay": false,
+    "mediaPayloadsRetained": false
+  },
+  "checks": [
+    {
+      "name": "managed-runtime-locked-room-and-host-controls",
+      "at": "2026-11-04T08:04:33.538Z",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true
+    },
+    {
+      "name": "host-claimed-and-synthetic-audio-screen-active",
+      "at": "2026-11-04T08:04:38.461Z",
+      "claimSequence": 11,
+      "sourceSent": {
+        "audioFrames": 1,
+        "audioBytes": 135,
+        "screenFrames": 1,
+        "screenBytes": 368
+      },
+      "audioCalls": 1,
+      "screenCalls": 1
+    },
+    {
+      "name": "direct-interaction-deep-link-joined-studio-through-normal-password-gate",
+      "at": "2026-11-04T08:04:38.970Z",
+      "roomId": "studio",
+      "role": "participant",
+      "mode": "interaction",
+      "sameRoomSnapshotSequence": 5,
+      "selfSnapshotSequence": 7,
+      "initialServerMedia": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      }
+    },
+    {
+      "name": "display-readonly-auto-rendered-real-decoded-screen-no-audio",
+      "at": "2026-11-04T08:04:39.541Z",
+      "renderedFrames": 3,
+      "visual": {
+        "width": 320,
+        "height": 180,
+        "uniqueColors": 5
+      },
+      "receivedBinaryFrames": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 4,
+        "screenBytes": 608
+      },
+      "audioSubscribeSent": false,
+      "hostPanelCount": 0
+    },
+    {
+      "name": "display-password-gate-and-live-screen-preview",
+      "at": "2026-11-04T08:04:39.541Z"
+    },
+    {
+      "name": "external-display-write-and-media-publish-attempts-rejected",
+      "at": "2026-11-04T08:04:39.830Z",
+      "operations": 9,
+      "allExplicitDisplayReadOnly": true
+    },
+    {
+      "name": "initial-direct-interaction-zero-media-with-live-source",
+      "at": "2026-11-04T08:04:40.314Z",
+      "label": "initial-direct-interaction-zero-media-with-live-source",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": null,
+      "selfBoundarySequence": 7,
+      "inspectionSequence": 17,
+      "hostSentBefore": {
+        "audioFrames": 69,
+        "audioBytes": 8974,
+        "screenFrames": 19,
+        "screenBytes": 2088
+      },
+      "hostSentAfter": {
+        "audioFrames": 91,
+        "audioBytes": 12133,
+        "screenFrames": 25,
+        "screenBytes": 2582
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "name": "private-chat-and-formal-feedback-sent-while-only-interaction",
+      "at": "2026-11-04T08:04:40.477Z",
+      "privateChatAcknowledged": true,
+      "stickerAcknowledged": true,
+      "feedbackDisplayed": true,
+      "displayPrivacy": {
+        "displayRawPrivateChatLeak": false,
+        "displayRawHistoryCount": 0,
+        "displayNonPublicInteractionEventCount": 0,
+        "displayReceivedAudioBinaryFrames": 0,
+        "displayPublishedMediaControls": 0
+      },
+      "serverMediaAtBoundary": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      }
+    },
+    {
+      "name": "watch-mode-does-not-autosubscribe-before-manual-start",
+      "at": "2026-11-04T08:04:40.997Z",
+      "label": "watch-mode-does-not-autosubscribe-before-manual-start",
+      "targetWindowMs": 425,
+      "actualWindowMs": 427,
+      "modeAckSequence": 28,
+      "selfBoundarySequence": 29,
+      "inspectionSequence": 31,
+      "hostSentBefore": {
+        "audioFrames": 105,
+        "audioBytes": 14149,
+        "screenFrames": 29,
+        "screenBytes": 2874
+      },
+      "hostSentAfter": {
+        "audioFrames": 126,
+        "audioBytes": 17171,
+        "screenFrames": 35,
+        "screenBytes": 3304
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "name": "manual-watch-controls-rendered-audio-samples-and-screen-frames",
+      "at": "2026-11-04T08:04:41.437Z",
+      "rendered": {
+        "audioRenderedSamples": 11008,
+        "screenRenderedFrames": 3,
+        "screenWidth": 320,
+        "screenHeight": 180
+      },
+      "serverMedia": {
+        "audio": {
+          "subscribed": true,
+          "bytes": 2175,
+          "frames": 15
+        },
+        "screen": {
+          "subscribed": true,
+          "bytes": 609,
+          "frames": 4
+        }
+      },
+      "rawReceived": {
+        "audioFrames": 15,
+        "audioBytes": 2175,
+        "screenFrames": 4,
+        "screenBytes": 609
+      }
+    },
+    {
+      "name": "post-ack-interaction-mode-server-and-raw-media-zero",
+      "at": "2026-11-04T08:04:42.040Z",
+      "label": "post-ack-interaction-mode-server-and-raw-media-zero",
+      "targetWindowMs": 425,
+      "actualWindowMs": 427,
+      "modeAckSequence": 71,
+      "selfBoundarySequence": 72,
+      "inspectionSequence": 74,
+      "hostSentBefore": {
+        "audioFrames": 156,
+        "audioBytes": 21529,
+        "screenFrames": 43,
+        "screenBytes": 4197
+      },
+      "hostSentAfter": {
+        "audioFrames": 177,
+        "audioBytes": 24757,
+        "screenFrames": 49,
+        "screenBytes": 4691
+      },
+      "receiverRawBefore": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "receiverRawAfter": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "name": "mode-switch-preserved-room-participant-drafts-and-volume",
+      "at": "2026-11-04T08:04:42.046Z",
+      "roomId": "studio",
+      "participantIdentityPreserved": true,
+      "chatDraftPreserved": true,
+      "danmakuDraftPreserved": true,
+      "volumePreserved": true
+    },
+    {
+      "name": "explicit-public-danmaku-and-feedback-visible-on-readonly-display",
+      "at": "2026-11-04T08:04:42.112Z",
+      "danmakuVisible": true,
+      "feedbackVisible": true,
+      "displayPrivacy": {
+        "displayRawPrivateChatLeak": false,
+        "displayRawHistoryCount": 0,
+        "displayNonPublicInteractionEventCount": 0,
+        "displayReceivedAudioBinaryFrames": 0,
+        "displayPublishedMediaControls": 0
+      }
+    },
+    {
+      "name": "display-qr-decoded-from-real-canvas-pixels",
+      "at": "2026-11-04T08:04:42.849Z",
+      "decodedPublicJoinUrl": "https://localhost:4173/?room=studio&mode=interaction",
+      "width": 270,
+      "height": 270,
+      "hasPassword": false,
+      "hasHostToken": false
+    },
+    {
+      "name": "representative-display-and-participant-interaction-screenshots-saved",
+      "at": "2026-11-04T08:04:42.982Z",
+      "screenshots": [
+        "display-live.png",
+        "participant-interaction.png"
+      ]
+    },
+    {
+      "name": "return-to-watch-keeps-receivers-off-until-manual-resume",
+      "at": "2026-11-04T08:04:43.523Z",
+      "label": "return-to-watch-keeps-receivers-off-until-manual-resume",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": 79,
+      "selfBoundarySequence": 80,
+      "inspectionSequence": 82,
+      "hostSentBefore": {
+        "audioFrames": 230,
+        "audioBytes": 33352,
+        "screenFrames": 64,
+        "screenBytes": 5774
+      },
+      "hostSentAfter": {
+        "audioFrames": 252,
+        "audioBytes": 36986,
+        "screenFrames": 69,
+        "screenBytes": 6507
+      },
+      "receiverRawBefore": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "receiverRawAfter": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "name": "return-to-watch-preserved-drafts-and-volume-without-auto-media",
+      "at": "2026-11-04T08:04:43.529Z",
+      "audioCalls": 0,
+      "screenCalls": 0,
+      "chatDraftPreserved": true,
+      "danmakuDraftPreserved": true,
+      "volumePreserved": true,
+      "serverMedia": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      }
+    },
+    {
+      "name": "decoded-qr-opened-fresh-participant-through-normal-password-gate",
+      "at": "2026-11-04T08:04:43.923Z",
+      "decodedRoomId": "studio",
+      "decodedMode": "interaction",
+      "displayView": false,
+      "role": "participant",
+      "mode": "interaction",
+      "roomId": "studio",
+      "identityChanged": true,
+      "initialServerMedia": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      }
+    },
+    {
+      "name": "qr-interaction-entry-also-has-zero-media-with-live-source",
+      "at": "2026-11-04T08:04:44.405Z",
+      "label": "qr-interaction-entry-also-has-zero-media-with-live-source",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": null,
+      "selfBoundarySequence": 89,
+      "inspectionSequence": 93,
+      "hostSentBefore": {
+        "audioFrames": 274,
+        "audioBytes": 40640,
+        "screenFrames": 76,
+        "screenBytes": 7022
+      },
+      "hostSentAfter": {
+        "audioFrames": 296,
+        "audioBytes": 44299,
+        "screenFrames": 82,
+        "screenBytes": 7460
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "name": "host-synthetic-source-stopped-and-counters-stable",
+      "at": "2026-11-04T08:04:44.910Z",
+      "afterStop": {
+        "audioFrames": 300,
+        "audioBytes": 44968,
+        "screenFrames": 84,
+        "screenBytes": 7614
+      },
+      "stableForMs": 425
+    }
+  ],
+  "sourceWitness": [
+    {
+      "label": "initial-direct-interaction-zero-media-with-live-source",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": null,
+      "selfBoundarySequence": 7,
+      "inspectionSequence": 17,
+      "hostSentBefore": {
+        "audioFrames": 69,
+        "audioBytes": 8974,
+        "screenFrames": 19,
+        "screenBytes": 2088
+      },
+      "hostSentAfter": {
+        "audioFrames": 91,
+        "audioBytes": 12133,
+        "screenFrames": 25,
+        "screenBytes": 2582
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "label": "watch-mode-does-not-autosubscribe-before-manual-start",
+      "targetWindowMs": 425,
+      "actualWindowMs": 427,
+      "modeAckSequence": 28,
+      "selfBoundarySequence": 29,
+      "inspectionSequence": 31,
+      "hostSentBefore": {
+        "audioFrames": 105,
+        "audioBytes": 14149,
+        "screenFrames": 29,
+        "screenBytes": 2874
+      },
+      "hostSentAfter": {
+        "audioFrames": 126,
+        "audioBytes": 17171,
+        "screenFrames": 35,
+        "screenBytes": 3304
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "label": "post-ack-interaction-mode-server-and-raw-media-zero",
+      "targetWindowMs": 425,
+      "actualWindowMs": 427,
+      "modeAckSequence": 71,
+      "selfBoundarySequence": 72,
+      "inspectionSequence": 74,
+      "hostSentBefore": {
+        "audioFrames": 156,
+        "audioBytes": 21529,
+        "screenFrames": 43,
+        "screenBytes": 4197
+      },
+      "hostSentAfter": {
+        "audioFrames": 177,
+        "audioBytes": 24757,
+        "screenFrames": 49,
+        "screenBytes": 4691
+      },
+      "receiverRawBefore": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "receiverRawAfter": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "label": "return-to-watch-keeps-receivers-off-until-manual-resume",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": 79,
+      "selfBoundarySequence": 80,
+      "inspectionSequence": 82,
+      "hostSentBefore": {
+        "audioFrames": 230,
+        "audioBytes": 33352,
+        "screenFrames": 64,
+        "screenBytes": 5774
+      },
+      "hostSentAfter": {
+        "audioFrames": 252,
+        "audioBytes": 36986,
+        "screenFrames": 69,
+        "screenBytes": 6507
+      },
+      "receiverRawBefore": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "receiverRawAfter": {
+        "audioFrames": 19,
+        "audioBytes": 2767,
+        "screenFrames": 5,
+        "screenBytes": 678
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 2767,
+          "frames": 19
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 678,
+          "frames": 5
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    },
+    {
+      "label": "qr-interaction-entry-also-has-zero-media-with-live-source",
+      "targetWindowMs": 425,
+      "actualWindowMs": 425,
+      "modeAckSequence": null,
+      "selfBoundarySequence": 89,
+      "inspectionSequence": 93,
+      "hostSentBefore": {
+        "audioFrames": 274,
+        "audioBytes": 40640,
+        "screenFrames": 76,
+        "screenBytes": 7022
+      },
+      "hostSentAfter": {
+        "audioFrames": 296,
+        "audioBytes": 44299,
+        "screenFrames": 82,
+        "screenBytes": 7460
+      },
+      "receiverRawBefore": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "receiverRawAfter": {
+        "audioFrames": 0,
+        "audioBytes": 0,
+        "screenFrames": 0,
+        "screenBytes": 0
+      },
+      "serverStateBefore": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "serverStateAfter": {
+        "audio": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        },
+        "screen": {
+          "subscribed": false,
+          "bytes": 0,
+          "frames": 0
+        }
+      },
+      "rawMediaFramesAfterAckOrSelf": 0
+    }
+  ],
+  "clients": {
+    "host": {
+      "connections": [
+        {
+          "id": 1,
+          "controls": [
+            {
+              "direction": "sent",
+              "sequence": 1,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "watch",
+              "afterStartMs": 4441
+            },
+            {
+              "direction": "received",
+              "sequence": 2,
+              "connectionId": 1,
+              "type": "protocol.error",
+              "code": "room_password_required",
+              "afterStartMs": 4442
+            },
+            {
+              "direction": "sent",
+              "sequence": 3,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "watch",
+              "afterStartMs": 4568
+            },
+            {
+              "direction": "received",
+              "sequence": 4,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 4601
+            },
+            {
+              "direction": "received",
+              "sequence": 5,
+              "connectionId": 1,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "isLocked": true,
+              "memberCount": 1,
+              "afterStartMs": 4602
+            },
+            {
+              "direction": "received",
+              "sequence": 6,
+              "connectionId": 1,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyKinds": [],
+              "publicKinds": [],
+              "queueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              },
+              "afterStartMs": 4602
+            },
+            {
+              "direction": "received",
+              "sequence": 7,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 4602
+            },
+            {
+              "direction": "received",
+              "sequence": 8,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 4602
+            },
+            {
+              "direction": "received",
+              "sequence": 9,
+              "connectionId": 1,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "afterStartMs": 4602
+            },
+            {
+              "direction": "sent",
+              "sequence": 10,
+              "connectionId": 1,
+              "type": "host.claim",
+              "afterStartMs": 4736
+            },
+            {
+              "direction": "received",
+              "sequence": 11,
+              "connectionId": 1,
+              "type": "host.claimed",
+              "roomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 4737
+            },
+            {
+              "direction": "received",
+              "sequence": 12,
+              "connectionId": 1,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "afterStartMs": 4738
+            },
+            {
+              "direction": "sent",
+              "sequence": 13,
+              "connectionId": 1,
+              "type": "audio.start",
+              "afterStartMs": 4905
+            },
+            {
+              "direction": "received",
+              "sequence": 14,
+              "connectionId": 1,
+              "type": "audio.started",
+              "afterStartMs": 4906
+            },
+            {
+              "direction": "sent",
+              "sequence": 15,
+              "connectionId": 1,
+              "type": "screen.start",
+              "afterStartMs": 4913
+            },
+            {
+              "direction": "received",
+              "sequence": 16,
+              "connectionId": 1,
+              "type": "screen.started",
+              "afterStartMs": 4914
+            },
+            {
+              "direction": "received",
+              "sequence": 48,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 49,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 5390
+            },
+            {
+              "direction": "received",
+              "sequence": 69,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 5697
+            },
+            {
+              "direction": "received",
+              "sequence": 70,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 5698
+            },
+            {
+              "direction": "received",
+              "sequence": 73,
+              "connectionId": 1,
+              "type": "screen.keyframeRequest",
+              "afterStartMs": 5733
+            },
+            {
+              "direction": "received",
+              "sequence": 95,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6057
+            },
+            {
+              "direction": "received",
+              "sequence": 96,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 6058
+            },
+            {
+              "direction": "received",
+              "sequence": 113,
+              "connectionId": 1,
+              "type": "host.publisherGrants",
+              "afterStartMs": 6309
+            },
+            {
+              "direction": "received",
+              "sequence": 114,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6310
+            },
+            {
+              "direction": "received",
+              "sequence": 115,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 6311
+            },
+            {
+              "direction": "received",
+              "sequence": 149,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "chat",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "935562a5-d808-4196-a414-9421392d4d07",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6836
+            },
+            {
+              "direction": "received",
+              "sequence": 154,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "sticker",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "a3a0cc9d-e08a-4afb-87d5-f43a03b66133",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6893
+            },
+            {
+              "direction": "received",
+              "sequence": 159,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "feedback",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "a0d78219-3e18-4700-959e-3842bc3e5859",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6948
+            },
+            {
+              "direction": "received",
+              "sequence": 203,
+              "connectionId": 1,
+              "type": "screen.keyframeRequest",
+              "afterStartMs": 7627
+            },
+            {
+              "direction": "received",
+              "sequence": 265,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "danmaku",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "7b77a3f9-5aa2-42ef-9f9b-ac01b3b37ef2",
+              "stateHistoryCount": 0,
+              "afterStartMs": 8572
+            },
+            {
+              "direction": "received",
+              "sequence": 357,
+              "connectionId": 1,
+              "type": "host.publisherGrants",
+              "afterStartMs": 10009
+            },
+            {
+              "direction": "received",
+              "sequence": 358,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 10011
+            },
+            {
+              "direction": "received",
+              "sequence": 359,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 10011
+            },
+            {
+              "direction": "received",
+              "sequence": 382,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 10355
+            },
+            {
+              "direction": "received",
+              "sequence": 383,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+              "afterStartMs": 10357
+            },
+            {
+              "direction": "sent",
+              "sequence": 420,
+              "connectionId": 1,
+              "type": "audio.stop",
+              "afterStartMs": 10924
+            },
+            {
+              "direction": "received",
+              "sequence": 421,
+              "connectionId": 1,
+              "type": "audio.stopped",
+              "afterStartMs": 10924
+            },
+            {
+              "direction": "sent",
+              "sequence": 423,
+              "connectionId": 1,
+              "type": "screen.stop",
+              "afterStartMs": 10958
+            },
+            {
+              "direction": "received",
+              "sequence": 424,
+              "connectionId": 1,
+              "type": "screen.stopped",
+              "afterStartMs": 10958
+            }
+          ],
+          "packets": {
+            "sent": {
+              "audio": {
+                "frames": 300,
+                "bytes": 44968
+              },
+              "screen": {
+                "frames": 84,
+                "bytes": 7614
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            },
+            "received": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            }
+          },
+          "packetFrames": [
+            {
+              "sequence": 17,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 135,
+              "afterStartMs": 4926
+            },
+            {
+              "sequence": 18,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 4931
+            },
+            {
+              "sequence": 19,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 89,
+              "afterStartMs": 4947
+            },
+            {
+              "sequence": 20,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 99,
+              "afterStartMs": 4969
+            },
+            {
+              "sequence": 21,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 100,
+              "afterStartMs": 4984
+            },
+            {
+              "sequence": 22,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 98,
+              "afterStartMs": 5006
+            },
+            {
+              "sequence": 23,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 119,
+              "afterStartMs": 5012
+            },
+            {
+              "sequence": 24,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 98,
+              "afterStartMs": 5027
+            },
+            {
+              "sequence": 25,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 101,
+              "afterStartMs": 5050
+            },
+            {
+              "sequence": 26,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 97,
+              "afterStartMs": 5065
+            },
+            {
+              "sequence": 27,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 103,
+              "afterStartMs": 5086
+            },
+            {
+              "sequence": 28,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 5089
+            },
+            {
+              "sequence": 29,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 98,
+              "afterStartMs": 5107
+            },
+            {
+              "sequence": 30,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 101,
+              "afterStartMs": 5129
+            },
+            {
+              "sequence": 31,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 103,
+              "afterStartMs": 5144
+            },
+            {
+              "sequence": 32,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5155
+            },
+            {
+              "sequence": 33,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 102,
+              "afterStartMs": 5166
+            },
+            {
+              "sequence": 34,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 103,
+              "afterStartMs": 5187
+            },
+            {
+              "sequence": 35,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 102,
+              "afterStartMs": 5208
+            },
+            {
+              "sequence": 36,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 96,
+              "afterStartMs": 5225
+            },
+            {
+              "sequence": 37,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5231
+            },
+            {
+              "sequence": 38,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 102,
+              "afterStartMs": 5247
+            },
+            {
+              "sequence": 39,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 140,
+              "afterStartMs": 5267
+            },
+            {
+              "sequence": 40,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 126,
+              "afterStartMs": 5288
+            },
+            {
+              "sequence": 41,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5305
+            },
+            {
+              "sequence": 42,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 126,
+              "afterStartMs": 5305
+            },
+            {
+              "sequence": 43,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 124,
+              "afterStartMs": 5325
+            },
+            {
+              "sequence": 44,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 125,
+              "afterStartMs": 5347
+            },
+            {
+              "sequence": 45,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 126,
+              "afterStartMs": 5368
+            },
+            {
+              "sequence": 46,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5380
+            },
+            {
+              "sequence": 47,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 126,
+              "afterStartMs": 5384
+            },
+            {
+              "sequence": 50,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 126,
+              "afterStartMs": 5406
+            },
+            {
+              "sequence": 51,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 127,
+              "afterStartMs": 5427
+            },
+            {
+              "sequence": 52,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5448
+            },
+            {
+              "sequence": 53,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 128,
+              "afterStartMs": 5448
+            },
+            {
+              "sequence": 54,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 129,
+              "afterStartMs": 5464
+            },
+            {
+              "sequence": 55,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 130,
+              "afterStartMs": 5485
+            },
+            {
+              "sequence": 56,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 132,
+              "afterStartMs": 5507
+            },
+            {
+              "sequence": 57,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5522
+            },
+            {
+              "sequence": 58,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 133,
+              "afterStartMs": 5531
+            },
+            {
+              "sequence": 59,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 136,
+              "afterStartMs": 5546
+            },
+            {
+              "sequence": 60,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 138,
+              "afterStartMs": 5565
+            },
+            {
+              "sequence": 61,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 140,
+              "afterStartMs": 5589
+            },
+            {
+              "sequence": 62,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5597
+            },
+            {
+              "sequence": 63,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5608
+            },
+            {
+              "sequence": 64,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5624
+            },
+            {
+              "sequence": 65,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 5646
+            },
+            {
+              "sequence": 66,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5667
+            },
+            {
+              "sequence": 67,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5672
+            },
+            {
+              "sequence": 68,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5688
+            },
+            {
+              "sequence": 71,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5709
+            },
+            {
+              "sequence": 72,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5726
+            },
+            {
+              "sequence": 74,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 5748
+            },
+            {
+              "sequence": 75,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 5748
+            },
+            {
+              "sequence": 76,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5768
+            },
+            {
+              "sequence": 77,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5784
+            },
+            {
+              "sequence": 78,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5805
+            },
+            {
+              "sequence": 79,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 94,
+              "afterStartMs": 5822
+            },
+            {
+              "sequence": 80,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5827
+            },
+            {
+              "sequence": 81,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 5848
+            },
+            {
+              "sequence": 82,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 5864
+            },
+            {
+              "sequence": 83,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5885
+            },
+            {
+              "sequence": 84,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5897
+            },
+            {
+              "sequence": 85,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5907
+            },
+            {
+              "sequence": 86,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 5929
+            },
+            {
+              "sequence": 87,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 5944
+            },
+            {
+              "sequence": 88,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5965
+            },
+            {
+              "sequence": 89,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5971
+            },
+            {
+              "sequence": 90,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 5988
+            },
+            {
+              "sequence": 91,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6008
+            },
+            {
+              "sequence": 92,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6024
+            },
+            {
+              "sequence": 93,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6038
+            },
+            {
+              "sequence": 94,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6047
+            },
+            {
+              "sequence": 97,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6069
+            },
+            {
+              "sequence": 98,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6088
+            },
+            {
+              "sequence": 99,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6104
+            },
+            {
+              "sequence": 100,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6112
+            },
+            {
+              "sequence": 101,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6125
+            },
+            {
+              "sequence": 102,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6147
+            },
+            {
+              "sequence": 103,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6168
+            },
+            {
+              "sequence": 104,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6180
+            },
+            {
+              "sequence": 105,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6184
+            },
+            {
+              "sequence": 106,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6205
+            },
+            {
+              "sequence": 107,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6227
+            },
+            {
+              "sequence": 108,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6248
+            },
+            {
+              "sequence": 109,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6255
+            },
+            {
+              "sequence": 110,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6264
+            },
+            {
+              "sequence": 111,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6285
+            },
+            {
+              "sequence": 112,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6307
+            },
+            {
+              "sequence": 116,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6330
+            },
+            {
+              "sequence": 117,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6330
+            },
+            {
+              "sequence": 118,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6344
+            },
+            {
+              "sequence": 119,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6365
+            },
+            {
+              "sequence": 120,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6388
+            },
+            {
+              "sequence": 121,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6397
+            },
+            {
+              "sequence": 122,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6408
+            },
+            {
+              "sequence": 123,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6424
+            },
+            {
+              "sequence": 124,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6445
+            },
+            {
+              "sequence": 125,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6467
+            },
+            {
+              "sequence": 126,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6472
+            },
+            {
+              "sequence": 127,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6488
+            },
+            {
+              "sequence": 128,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6504
+            },
+            {
+              "sequence": 129,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6525
+            },
+            {
+              "sequence": 130,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 60,
+              "afterStartMs": 6546
+            },
+            {
+              "sequence": 131,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6547
+            },
+            {
+              "sequence": 132,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6568
+            },
+            {
+              "sequence": 133,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6584
+            },
+            {
+              "sequence": 134,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6605
+            },
+            {
+              "sequence": 135,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 6621
+            },
+            {
+              "sequence": 136,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6627
+            },
+            {
+              "sequence": 137,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6648
+            },
+            {
+              "sequence": 138,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6664
+            },
+            {
+              "sequence": 139,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6685
+            },
+            {
+              "sequence": 140,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 6696
+            },
+            {
+              "sequence": 141,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6707
+            },
+            {
+              "sequence": 142,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6728
+            },
+            {
+              "sequence": 143,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6744
+            },
+            {
+              "sequence": 144,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6765
+            },
+            {
+              "sequence": 145,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6771
+            },
+            {
+              "sequence": 146,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6787
+            },
+            {
+              "sequence": 147,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6808
+            },
+            {
+              "sequence": 148,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6824
+            },
+            {
+              "sequence": 150,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6848
+            },
+            {
+              "sequence": 151,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6848
+            },
+            {
+              "sequence": 152,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6867
+            },
+            {
+              "sequence": 153,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6889
+            },
+            {
+              "sequence": 155,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6904
+            },
+            {
+              "sequence": 156,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6921
+            },
+            {
+              "sequence": 157,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 6925
+            },
+            {
+              "sequence": 158,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6947
+            },
+            {
+              "sequence": 160,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 6968
+            },
+            {
+              "sequence": 161,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 6984
+            },
+            {
+              "sequence": 162,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6996
+            },
+            {
+              "sequence": 163,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7006
+            },
+            {
+              "sequence": 164,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7027
+            },
+            {
+              "sequence": 165,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7048
+            },
+            {
+              "sequence": 166,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7063
+            },
+            {
+              "sequence": 167,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7064
+            },
+            {
+              "sequence": 168,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7085
+            },
+            {
+              "sequence": 169,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7107
+            },
+            {
+              "sequence": 170,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7129
+            },
+            {
+              "sequence": 171,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7138
+            },
+            {
+              "sequence": 172,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7144
+            },
+            {
+              "sequence": 173,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7165
+            },
+            {
+              "sequence": 174,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7188
+            },
+            {
+              "sequence": 175,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7208
+            },
+            {
+              "sequence": 176,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7213
+            },
+            {
+              "sequence": 177,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7224
+            },
+            {
+              "sequence": 178,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7246
+            },
+            {
+              "sequence": 179,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7267
+            },
+            {
+              "sequence": 180,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7288
+            },
+            {
+              "sequence": 181,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7288
+            },
+            {
+              "sequence": 182,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7304
+            },
+            {
+              "sequence": 183,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7325
+            },
+            {
+              "sequence": 184,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7347
+            },
+            {
+              "sequence": 185,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7363
+            },
+            {
+              "sequence": 186,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7368
+            },
+            {
+              "sequence": 187,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7384
+            },
+            {
+              "sequence": 188,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7405
+            },
+            {
+              "sequence": 189,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7427
+            },
+            {
+              "sequence": 190,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7430
+            },
+            {
+              "sequence": 191,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7448
+            },
+            {
+              "sequence": 192,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7464
+            },
+            {
+              "sequence": 193,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7485
+            },
+            {
+              "sequence": 194,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7504
+            },
+            {
+              "sequence": 195,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7507
+            },
+            {
+              "sequence": 196,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7530
+            },
+            {
+              "sequence": 197,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7544
+            },
+            {
+              "sequence": 198,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7566
+            },
+            {
+              "sequence": 199,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7578
+            },
+            {
+              "sequence": 200,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7589
+            },
+            {
+              "sequence": 201,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7608
+            },
+            {
+              "sequence": 202,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7624
+            },
+            {
+              "sequence": 204,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7646
+            },
+            {
+              "sequence": 205,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 7646
+            },
+            {
+              "sequence": 206,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7667
+            },
+            {
+              "sequence": 207,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7688
+            },
+            {
+              "sequence": 208,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7704
+            },
+            {
+              "sequence": 209,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 87,
+              "afterStartMs": 7713
+            },
+            {
+              "sequence": 210,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7725
+            },
+            {
+              "sequence": 211,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7747
+            },
+            {
+              "sequence": 212,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7768
+            },
+            {
+              "sequence": 213,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7784
+            },
+            {
+              "sequence": 214,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7788
+            },
+            {
+              "sequence": 215,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7805
+            },
+            {
+              "sequence": 216,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7827
+            },
+            {
+              "sequence": 217,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 147,
+              "afterStartMs": 7848
+            },
+            {
+              "sequence": 218,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7863
+            },
+            {
+              "sequence": 219,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7864
+            },
+            {
+              "sequence": 220,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7885
+            },
+            {
+              "sequence": 221,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7907
+            },
+            {
+              "sequence": 222,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 147,
+              "afterStartMs": 7928
+            },
+            {
+              "sequence": 223,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7938
+            },
+            {
+              "sequence": 224,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 7944
+            },
+            {
+              "sequence": 225,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 7965
+            },
+            {
+              "sequence": 226,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 7988
+            },
+            {
+              "sequence": 227,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8004
+            },
+            {
+              "sequence": 228,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 8008
+            },
+            {
+              "sequence": 229,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 8024
+            },
+            {
+              "sequence": 230,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 150,
+              "afterStartMs": 8046
+            },
+            {
+              "sequence": 231,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 8067
+            },
+            {
+              "sequence": 232,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8071
+            },
+            {
+              "sequence": 233,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 8088
+            },
+            {
+              "sequence": 234,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 8104
+            },
+            {
+              "sequence": 235,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 8125
+            },
+            {
+              "sequence": 236,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 60,
+              "afterStartMs": 8146
+            },
+            {
+              "sequence": 237,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 151,
+              "afterStartMs": 8146
+            },
+            {
+              "sequence": 238,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 150,
+              "afterStartMs": 8168
+            },
+            {
+              "sequence": 239,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 150,
+              "afterStartMs": 8184
+            },
+            {
+              "sequence": 240,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 150,
+              "afterStartMs": 8205
+            },
+            {
+              "sequence": 241,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 8213
+            },
+            {
+              "sequence": 242,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 150,
+              "afterStartMs": 8227
+            },
+            {
+              "sequence": 243,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 153,
+              "afterStartMs": 8248
+            },
+            {
+              "sequence": 244,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 157,
+              "afterStartMs": 8264
+            },
+            {
+              "sequence": 245,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 8280
+            },
+            {
+              "sequence": 246,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 157,
+              "afterStartMs": 8285
+            },
+            {
+              "sequence": 247,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 156,
+              "afterStartMs": 8307
+            },
+            {
+              "sequence": 248,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 157,
+              "afterStartMs": 8329
+            },
+            {
+              "sequence": 249,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8345
+            },
+            {
+              "sequence": 250,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8355
+            },
+            {
+              "sequence": 251,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 158,
+              "afterStartMs": 8365
+            },
+            {
+              "sequence": 252,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 158,
+              "afterStartMs": 8388
+            },
+            {
+              "sequence": 253,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 157,
+              "afterStartMs": 8408
+            },
+            {
+              "sequence": 254,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8421
+            },
+            {
+              "sequence": 255,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 158,
+              "afterStartMs": 8424
+            },
+            {
+              "sequence": 256,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8446
+            },
+            {
+              "sequence": 257,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 159,
+              "afterStartMs": 8467
+            },
+            {
+              "sequence": 258,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 159,
+              "afterStartMs": 8488
+            },
+            {
+              "sequence": 259,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8497
+            },
+            {
+              "sequence": 260,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 158,
+              "afterStartMs": 8504
+            },
+            {
+              "sequence": 261,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 159,
+              "afterStartMs": 8525
+            },
+            {
+              "sequence": 262,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 8547
+            },
+            {
+              "sequence": 263,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8563
+            },
+            {
+              "sequence": 264,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8568
+            },
+            {
+              "sequence": 266,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8584
+            },
+            {
+              "sequence": 267,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 159,
+              "afterStartMs": 8605
+            },
+            {
+              "sequence": 268,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8628
+            },
+            {
+              "sequence": 269,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8638
+            },
+            {
+              "sequence": 270,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 8648
+            },
+            {
+              "sequence": 271,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 8664
+            },
+            {
+              "sequence": 272,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 273,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 274,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 275,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 276,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 277,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 278,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 279,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 280,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 160,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 281,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 282,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 283,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 284,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 285,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 286,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 287,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 288,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 289,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 290,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 291,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 292,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 293,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 161,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 294,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 295,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 296,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 297,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 298,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 299,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 300,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 301,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 302,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 303,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 304,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 305,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 306,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 162,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 307,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 308,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 309,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 310,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 311,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 312,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 313,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 314,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9346
+            },
+            {
+              "sequence": 315,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9347
+            },
+            {
+              "sequence": 316,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9368
+            },
+            {
+              "sequence": 317,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9384
+            },
+            {
+              "sequence": 318,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9405
+            },
+            {
+              "sequence": 319,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9421
+            },
+            {
+              "sequence": 320,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9427
+            },
+            {
+              "sequence": 321,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9448
+            },
+            {
+              "sequence": 322,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9464
+            },
+            {
+              "sequence": 323,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9485
+            },
+            {
+              "sequence": 324,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9497
+            },
+            {
+              "sequence": 325,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9507
+            },
+            {
+              "sequence": 326,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9528
+            },
+            {
+              "sequence": 327,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9544
+            },
+            {
+              "sequence": 328,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9565
+            },
+            {
+              "sequence": 329,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9572
+            },
+            {
+              "sequence": 330,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9588
+            },
+            {
+              "sequence": 331,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 163,
+              "afterStartMs": 9608
+            },
+            {
+              "sequence": 332,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9624
+            },
+            {
+              "sequence": 333,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 9646
+            },
+            {
+              "sequence": 334,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 9647
+            },
+            {
+              "sequence": 335,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9667
+            },
+            {
+              "sequence": 336,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9688
+            },
+            {
+              "sequence": 337,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9704
+            },
+            {
+              "sequence": 338,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9721
+            },
+            {
+              "sequence": 339,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9725
+            },
+            {
+              "sequence": 340,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 9747
+            },
+            {
+              "sequence": 341,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9768
+            },
+            {
+              "sequence": 342,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9784
+            },
+            {
+              "sequence": 343,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 9796
+            },
+            {
+              "sequence": 344,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9805
+            },
+            {
+              "sequence": 345,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9827
+            },
+            {
+              "sequence": 346,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 9848
+            },
+            {
+              "sequence": 347,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9864
+            },
+            {
+              "sequence": 348,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 9872
+            },
+            {
+              "sequence": 349,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9885
+            },
+            {
+              "sequence": 350,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 9907
+            },
+            {
+              "sequence": 351,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9928
+            },
+            {
+              "sequence": 352,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 9944
+            },
+            {
+              "sequence": 353,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9947
+            },
+            {
+              "sequence": 354,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 9965
+            },
+            {
+              "sequence": 355,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 9988
+            },
+            {
+              "sequence": 356,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 164,
+              "afterStartMs": 10008
+            },
+            {
+              "sequence": 360,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10017
+            },
+            {
+              "sequence": 361,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10024
+            },
+            {
+              "sequence": 362,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10046
+            },
+            {
+              "sequence": 363,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10067
+            },
+            {
+              "sequence": 364,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10089
+            },
+            {
+              "sequence": 365,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10089
+            },
+            {
+              "sequence": 366,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10105
+            },
+            {
+              "sequence": 367,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10125
+            },
+            {
+              "sequence": 368,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10147
+            },
+            {
+              "sequence": 369,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10164
+            },
+            {
+              "sequence": 370,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10168
+            },
+            {
+              "sequence": 371,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10184
+            },
+            {
+              "sequence": 372,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10206
+            },
+            {
+              "sequence": 373,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10227
+            },
+            {
+              "sequence": 374,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10237
+            },
+            {
+              "sequence": 375,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10248
+            },
+            {
+              "sequence": 376,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10264
+            },
+            {
+              "sequence": 377,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10285
+            },
+            {
+              "sequence": 378,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10305
+            },
+            {
+              "sequence": 379,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10307
+            },
+            {
+              "sequence": 380,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10330
+            },
+            {
+              "sequence": 381,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10345
+            },
+            {
+              "sequence": 384,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10365
+            },
+            {
+              "sequence": 385,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10388
+            },
+            {
+              "sequence": 386,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10388
+            },
+            {
+              "sequence": 387,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10408
+            },
+            {
+              "sequence": 388,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10424
+            },
+            {
+              "sequence": 389,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10445
+            },
+            {
+              "sequence": 390,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10455
+            },
+            {
+              "sequence": 391,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10467
+            },
+            {
+              "sequence": 392,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10488
+            },
+            {
+              "sequence": 393,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10504
+            },
+            {
+              "sequence": 394,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10521
+            },
+            {
+              "sequence": 395,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10525
+            },
+            {
+              "sequence": 396,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10547
+            },
+            {
+              "sequence": 397,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10568
+            },
+            {
+              "sequence": 398,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10584
+            },
+            {
+              "sequence": 399,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10596
+            },
+            {
+              "sequence": 400,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10605
+            },
+            {
+              "sequence": 401,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10627
+            },
+            {
+              "sequence": 402,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10648
+            },
+            {
+              "sequence": 403,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10664
+            },
+            {
+              "sequence": 404,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10671
+            },
+            {
+              "sequence": 405,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10685
+            },
+            {
+              "sequence": 406,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 165,
+              "afterStartMs": 10707
+            },
+            {
+              "sequence": 407,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10729
+            },
+            {
+              "sequence": 408,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10738
+            },
+            {
+              "sequence": 409,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 168,
+              "afterStartMs": 10744
+            },
+            {
+              "sequence": 410,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10765
+            },
+            {
+              "sequence": 411,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10787
+            },
+            {
+              "sequence": 412,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10808
+            },
+            {
+              "sequence": 413,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10813
+            },
+            {
+              "sequence": 414,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10824
+            },
+            {
+              "sequence": 415,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 169,
+              "afterStartMs": 10847
+            },
+            {
+              "sequence": 416,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10867
+            },
+            {
+              "sequence": 417,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10880
+            },
+            {
+              "sequence": 418,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 167,
+              "afterStartMs": 10900
+            },
+            {
+              "sequence": 419,
+              "direction": "sent",
+              "channel": "audio",
+              "bytes": 166,
+              "afterStartMs": 10905
+            },
+            {
+              "sequence": 422,
+              "direction": "sent",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10948
+            }
+          ],
+          "latestParticipation": {
+            "direction": "received",
+            "sequence": 7,
+            "connectionId": 1,
+            "type": "participation.self",
+            "roomId": "studio",
+            "participantId": "a641354b-82f1-43f8-a674-b4c121217dda",
+            "role": "participant",
+            "mode": "watch",
+            "media": {
+              "audio": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              },
+              "screen": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              }
+            },
+            "afterStartMs": 4602
+          },
+          "collectionOverflow": false
+        }
+      ],
+      "pageErrors": [],
+      "inboundHostTokenLeak": false,
+      "inboundRoomPasswordLeak": false
+    },
+    "participant": {
+      "connections": [
+        {
+          "id": 1,
+          "controls": [
+            {
+              "direction": "sent",
+              "sequence": 1,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "interaction",
+              "afterStartMs": 5230
+            },
+            {
+              "direction": "received",
+              "sequence": 2,
+              "connectionId": 1,
+              "type": "protocol.error",
+              "code": "room_password_required",
+              "afterStartMs": 5230
+            },
+            {
+              "direction": "sent",
+              "sequence": 3,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "interaction",
+              "afterStartMs": 5356
+            },
+            {
+              "direction": "received",
+              "sequence": 4,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 5,
+              "connectionId": 1,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "isLocked": true,
+              "memberCount": 2,
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 6,
+              "connectionId": 1,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyKinds": [],
+              "publicKinds": [],
+              "queueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              },
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 7,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 8,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 9,
+              "connectionId": 1,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "afterStartMs": 5388
+            },
+            {
+              "direction": "received",
+              "sequence": 10,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 5697
+            },
+            {
+              "direction": "received",
+              "sequence": 11,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 12,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6057
+            },
+            {
+              "direction": "received",
+              "sequence": 13,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "afterStartMs": 6058
+            },
+            {
+              "direction": "received",
+              "sequence": 14,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6309
+            },
+            {
+              "direction": "received",
+              "sequence": 15,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "afterStartMs": 6309
+            },
+            {
+              "direction": "sent",
+              "sequence": 16,
+              "connectionId": 1,
+              "type": "participation.inspect",
+              "afterStartMs": 6765
+            },
+            {
+              "direction": "received",
+              "sequence": 17,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 6765
+            },
+            {
+              "direction": "sent",
+              "sequence": 18,
+              "connectionId": 1,
+              "type": "interaction.submit",
+              "eventId": "c8d47b34-d893-48c2-aaec-422023ccfff2",
+              "kind": "chat",
+              "afterStartMs": 6836
+            },
+            {
+              "direction": "received",
+              "sequence": 19,
+              "connectionId": 1,
+              "type": "interaction.ack",
+              "roomId": "studio",
+              "eventId": "c8d47b34-d893-48c2-aaec-422023ccfff2",
+              "interactionId": "935562a5-d808-4196-a414-9421392d4d07",
+              "duplicate": false,
+              "acknowledged": true,
+              "afterStartMs": 6836
+            },
+            {
+              "direction": "received",
+              "sequence": 20,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "chat",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "935562a5-d808-4196-a414-9421392d4d07",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6840
+            },
+            {
+              "direction": "sent",
+              "sequence": 21,
+              "connectionId": 1,
+              "type": "interaction.submit",
+              "eventId": "5d00f318-9374-4360-8bf2-25d9255ae96a",
+              "kind": "sticker",
+              "afterStartMs": 6893
+            },
+            {
+              "direction": "received",
+              "sequence": 22,
+              "connectionId": 1,
+              "type": "interaction.ack",
+              "roomId": "studio",
+              "eventId": "5d00f318-9374-4360-8bf2-25d9255ae96a",
+              "interactionId": "a3a0cc9d-e08a-4afb-87d5-f43a03b66133",
+              "duplicate": false,
+              "acknowledged": true,
+              "afterStartMs": 6893
+            },
+            {
+              "direction": "received",
+              "sequence": 23,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "sticker",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "a3a0cc9d-e08a-4afb-87d5-f43a03b66133",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6893
+            },
+            {
+              "direction": "sent",
+              "sequence": 24,
+              "connectionId": 1,
+              "type": "interaction.submit",
+              "eventId": "213ab4b6-15ef-45ef-be3c-f752c2c4d85f",
+              "kind": "feedback",
+              "afterStartMs": 6948
+            },
+            {
+              "direction": "received",
+              "sequence": 25,
+              "connectionId": 1,
+              "type": "interaction.ack",
+              "roomId": "studio",
+              "eventId": "213ab4b6-15ef-45ef-be3c-f752c2c4d85f",
+              "interactionId": "a0d78219-3e18-4700-959e-3842bc3e5859",
+              "duplicate": false,
+              "acknowledged": true,
+              "afterStartMs": 6948
+            },
+            {
+              "direction": "received",
+              "sequence": 26,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "feedback",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "a0d78219-3e18-4700-959e-3842bc3e5859",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6948
+            },
+            {
+              "direction": "sent",
+              "sequence": 27,
+              "connectionId": 1,
+              "type": "participation.setMode",
+              "mode": "watch",
+              "afterStartMs": 6988
+            },
+            {
+              "direction": "received",
+              "sequence": 28,
+              "connectionId": 1,
+              "type": "participation.modeChanged",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audioSubscribed": false,
+                "screenSubscribed": false
+              },
+              "afterStartMs": 6988
+            },
+            {
+              "direction": "received",
+              "sequence": 29,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 6988
+            },
+            {
+              "direction": "sent",
+              "sequence": 30,
+              "connectionId": 1,
+              "type": "participation.inspect",
+              "afterStartMs": 7473
+            },
+            {
+              "direction": "received",
+              "sequence": 31,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 7473
+            },
+            {
+              "direction": "sent",
+              "sequence": 32,
+              "connectionId": 1,
+              "type": "audio.subscribe",
+              "afterStartMs": 7622
+            },
+            {
+              "direction": "received",
+              "sequence": 33,
+              "connectionId": 1,
+              "type": "audio.subscribed",
+              "afterStartMs": 7623
+            },
+            {
+              "direction": "received",
+              "sequence": 34,
+              "connectionId": 1,
+              "type": "audio.stream",
+              "afterStartMs": 7625
+            },
+            {
+              "direction": "sent",
+              "sequence": 36,
+              "connectionId": 1,
+              "type": "screen.subscribe",
+              "afterStartMs": 7627
+            },
+            {
+              "direction": "received",
+              "sequence": 37,
+              "connectionId": 1,
+              "type": "screen.subscribed",
+              "afterStartMs": 7628
+            },
+            {
+              "direction": "received",
+              "sequence": 38,
+              "connectionId": 1,
+              "type": "screen.stream",
+              "afterStartMs": 7631
+            },
+            {
+              "direction": "sent",
+              "sequence": 57,
+              "connectionId": 1,
+              "type": "participation.inspect",
+              "afterStartMs": 7914
+            },
+            {
+              "direction": "received",
+              "sequence": 58,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": true,
+                  "downlinkBytes": 2175,
+                  "downlinkFrames": 15
+                },
+                "screen": {
+                  "subscribed": true,
+                  "downlinkBytes": 609,
+                  "downlinkFrames": 4
+                }
+              },
+              "afterStartMs": 7914
+            },
+            {
+              "direction": "sent",
+              "sequence": 64,
+              "connectionId": 1,
+              "type": "audio.unsubscribe",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 65,
+              "connectionId": 1,
+              "type": "audio.unsubscribed",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "sent",
+              "sequence": 66,
+              "connectionId": 1,
+              "type": "screen.unsubscribe",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 67,
+              "connectionId": 1,
+              "type": "screen.unsubscribed",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "sent",
+              "sequence": 68,
+              "connectionId": 1,
+              "type": "participation.setMode",
+              "mode": "interaction",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 69,
+              "connectionId": 1,
+              "type": "audio.unsubscribed",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 70,
+              "connectionId": 1,
+              "type": "screen.unsubscribed",
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 71,
+              "connectionId": 1,
+              "type": "participation.modeChanged",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audioSubscribed": false,
+                "screenSubscribed": false
+              },
+              "afterStartMs": 7999
+            },
+            {
+              "direction": "received",
+              "sequence": 72,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 2767,
+                  "downlinkFrames": 19
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 678,
+                  "downlinkFrames": 5
+                }
+              },
+              "afterStartMs": 8000
+            },
+            {
+              "direction": "sent",
+              "sequence": 73,
+              "connectionId": 1,
+              "type": "participation.inspect",
+              "afterStartMs": 8490
+            },
+            {
+              "direction": "received",
+              "sequence": 74,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 2767,
+                  "downlinkFrames": 19
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 678,
+                  "downlinkFrames": 5
+                }
+              },
+              "afterStartMs": 8490
+            },
+            {
+              "direction": "sent",
+              "sequence": 75,
+              "connectionId": 1,
+              "type": "interaction.submit",
+              "eventId": "857f1e15-2a5b-4a75-8404-11d0c6325112",
+              "kind": "danmaku",
+              "afterStartMs": 8572
+            },
+            {
+              "direction": "received",
+              "sequence": 76,
+              "connectionId": 1,
+              "type": "interaction.ack",
+              "roomId": "studio",
+              "eventId": "857f1e15-2a5b-4a75-8404-11d0c6325112",
+              "interactionId": "7b77a3f9-5aa2-42ef-9f9b-ac01b3b37ef2",
+              "duplicate": false,
+              "acknowledged": true,
+              "afterStartMs": 8572
+            },
+            {
+              "direction": "received",
+              "sequence": 77,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "danmaku",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "7b77a3f9-5aa2-42ef-9f9b-ac01b3b37ef2",
+              "stateHistoryCount": 0,
+              "afterStartMs": 8572
+            },
+            {
+              "direction": "sent",
+              "sequence": 78,
+              "connectionId": 1,
+              "type": "participation.setMode",
+              "mode": "watch",
+              "afterStartMs": 9490
+            },
+            {
+              "direction": "received",
+              "sequence": 79,
+              "connectionId": 1,
+              "type": "participation.modeChanged",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audioSubscribed": false,
+                "screenSubscribed": false
+              },
+              "afterStartMs": 9491
+            },
+            {
+              "direction": "received",
+              "sequence": 80,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 2767,
+                  "downlinkFrames": 19
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 678,
+                  "downlinkFrames": 5
+                }
+              },
+              "afterStartMs": 9491
+            },
+            {
+              "direction": "sent",
+              "sequence": 81,
+              "connectionId": 1,
+              "type": "participation.inspect",
+              "afterStartMs": 9973
+            },
+            {
+              "direction": "received",
+              "sequence": 82,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "role": "participant",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 2767,
+                  "downlinkFrames": 19
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 678,
+                  "downlinkFrames": 5
+                }
+              },
+              "afterStartMs": 9973
+            }
+          ],
+          "packets": {
+            "sent": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            },
+            "received": {
+              "audio": {
+                "frames": 19,
+                "bytes": 2767
+              },
+              "screen": {
+                "frames": 5,
+                "bytes": 678
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            }
+          },
+          "packetFrames": [
+            {
+              "sequence": 35,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7626
+            },
+            {
+              "sequence": 39,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7646
+            },
+            {
+              "sequence": 40,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 7646
+            },
+            {
+              "sequence": 41,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7667
+            },
+            {
+              "sequence": 42,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7688
+            },
+            {
+              "sequence": 43,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 143,
+              "afterStartMs": 7704
+            },
+            {
+              "sequence": 44,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 87,
+              "afterStartMs": 7714
+            },
+            {
+              "sequence": 45,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 144,
+              "afterStartMs": 7726
+            },
+            {
+              "sequence": 46,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7747
+            },
+            {
+              "sequence": 47,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7768
+            },
+            {
+              "sequence": 48,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7784
+            },
+            {
+              "sequence": 49,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7790
+            },
+            {
+              "sequence": 50,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7806
+            },
+            {
+              "sequence": 51,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 145,
+              "afterStartMs": 7827
+            },
+            {
+              "sequence": 52,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 147,
+              "afterStartMs": 7848
+            },
+            {
+              "sequence": 53,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7864
+            },
+            {
+              "sequence": 54,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7864
+            },
+            {
+              "sequence": 55,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7885
+            },
+            {
+              "sequence": 56,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 146,
+              "afterStartMs": 7907
+            },
+            {
+              "sequence": 59,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 147,
+              "afterStartMs": 7929
+            },
+            {
+              "sequence": 60,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7940
+            },
+            {
+              "sequence": 61,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 149,
+              "afterStartMs": 7944
+            },
+            {
+              "sequence": 62,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 7966
+            },
+            {
+              "sequence": 63,
+              "direction": "received",
+              "channel": "audio",
+              "bytes": 148,
+              "afterStartMs": 7988
+            }
+          ],
+          "latestParticipation": {
+            "direction": "received",
+            "sequence": 82,
+            "connectionId": 1,
+            "type": "participation.self",
+            "roomId": "studio",
+            "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+            "role": "participant",
+            "mode": "watch",
+            "media": {
+              "audio": {
+                "subscribed": false,
+                "downlinkBytes": 2767,
+                "downlinkFrames": 19
+              },
+              "screen": {
+                "subscribed": false,
+                "downlinkBytes": 678,
+                "downlinkFrames": 5
+              }
+            },
+            "afterStartMs": 9973
+          },
+          "collectionOverflow": false
+        },
+        {
+          "id": 2,
+          "controls": [
+            {
+              "direction": "sent",
+              "sequence": 83,
+              "connectionId": 2,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "interaction",
+              "afterStartMs": 10180
+            },
+            {
+              "direction": "received",
+              "sequence": 84,
+              "connectionId": 2,
+              "type": "protocol.error",
+              "code": "room_password_required",
+              "afterStartMs": 10181
+            },
+            {
+              "direction": "sent",
+              "sequence": 85,
+              "connectionId": 2,
+              "type": "join",
+              "roomId": "studio",
+              "role": "participant",
+              "mode": "interaction",
+              "afterStartMs": 10344
+            },
+            {
+              "direction": "received",
+              "sequence": 86,
+              "connectionId": 2,
+              "type": "control.event",
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "received",
+              "sequence": 87,
+              "connectionId": 2,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "isLocked": true,
+              "memberCount": 3,
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "received",
+              "sequence": 88,
+              "connectionId": 2,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 3,
+              "historyKinds": [
+                "chat",
+                "sticker",
+                "danmaku"
+              ],
+              "publicKinds": [
+                "danmaku"
+              ],
+              "queueCount": 1,
+              "feedbackCounts": {
+                "like": 1,
+                "want-listen": 0,
+                "useful": 0
+              },
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "received",
+              "sequence": 89,
+              "connectionId": 2,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "372e2911-1710-4179-b71c-0d2f8a0d923c",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "received",
+              "sequence": 90,
+              "connectionId": 2,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "372e2911-1710-4179-b71c-0d2f8a0d923c",
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "received",
+              "sequence": 91,
+              "connectionId": 2,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "afterStartMs": 10370
+            },
+            {
+              "direction": "sent",
+              "sequence": 92,
+              "connectionId": 2,
+              "type": "participation.inspect",
+              "afterStartMs": 10857
+            },
+            {
+              "direction": "received",
+              "sequence": 93,
+              "connectionId": 2,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "372e2911-1710-4179-b71c-0d2f8a0d923c",
+              "role": "participant",
+              "mode": "interaction",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 10857
+            }
+          ],
+          "packets": {
+            "sent": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            },
+            "received": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            }
+          },
+          "packetFrames": [],
+          "latestParticipation": {
+            "direction": "received",
+            "sequence": 93,
+            "connectionId": 2,
+            "type": "participation.self",
+            "roomId": "studio",
+            "participantId": "372e2911-1710-4179-b71c-0d2f8a0d923c",
+            "role": "participant",
+            "mode": "interaction",
+            "media": {
+              "audio": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              },
+              "screen": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              }
+            },
+            "afterStartMs": 10857
+          },
+          "collectionOverflow": false
+        }
+      ],
+      "pageErrors": [],
+      "inboundHostTokenLeak": false,
+      "inboundRoomPasswordLeak": false
+    },
+    "display": {
+      "connections": [
+        {
+          "id": 1,
+          "controls": [
+            {
+              "direction": "sent",
+              "sequence": 1,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "display",
+              "mode": "watch",
+              "afterStartMs": 5580
+            },
+            {
+              "direction": "received",
+              "sequence": 2,
+              "connectionId": 1,
+              "type": "protocol.error",
+              "code": "room_password_required",
+              "afterStartMs": 5581
+            },
+            {
+              "direction": "sent",
+              "sequence": 3,
+              "connectionId": 1,
+              "type": "join",
+              "roomId": "studio",
+              "role": "display",
+              "mode": "watch",
+              "afterStartMs": 5665
+            },
+            {
+              "direction": "received",
+              "sequence": 4,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 5,
+              "connectionId": 1,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "isLocked": true,
+              "memberCount": 3,
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 6,
+              "connectionId": 1,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyKinds": [],
+              "publicKinds": [],
+              "queueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              },
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 7,
+              "connectionId": 1,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "role": "display",
+              "mode": "watch",
+              "media": {
+                "audio": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                },
+                "screen": {
+                  "subscribed": false,
+                  "downlinkBytes": 0,
+                  "downlinkFrames": 0
+                }
+              },
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 8,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "received",
+              "sequence": 9,
+              "connectionId": 1,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "afterStartMs": 5699
+            },
+            {
+              "direction": "sent",
+              "sequence": 10,
+              "connectionId": 1,
+              "type": "screen.subscribe",
+              "afterStartMs": 5741
+            },
+            {
+              "direction": "received",
+              "sequence": 11,
+              "connectionId": 1,
+              "type": "screen.subscribed",
+              "afterStartMs": 5741
+            },
+            {
+              "direction": "received",
+              "sequence": 12,
+              "connectionId": 1,
+              "type": "screen.stream",
+              "afterStartMs": 5741
+            },
+            {
+              "direction": "received",
+              "sequence": 17,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6057
+            },
+            {
+              "direction": "received",
+              "sequence": 18,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "afterStartMs": 6057
+            },
+            {
+              "direction": "received",
+              "sequence": 23,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 6309
+            },
+            {
+              "direction": "received",
+              "sequence": 24,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "afterStartMs": 6309
+            },
+            {
+              "direction": "received",
+              "sequence": 34,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "feedback",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "a0d78219-3e18-4700-959e-3842bc3e5859",
+              "stateHistoryCount": 0,
+              "afterStartMs": 6948
+            },
+            {
+              "direction": "received",
+              "sequence": 58,
+              "connectionId": 1,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventKind": "danmaku",
+              "participantId": "7a45c738-b64d-480a-9864-0caa59976c96",
+              "interactionId": "7b77a3f9-5aa2-42ef-9f9b-ac01b3b37ef2",
+              "stateHistoryCount": 0,
+              "afterStartMs": 8572
+            },
+            {
+              "direction": "received",
+              "sequence": 78,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 10009
+            },
+            {
+              "direction": "received",
+              "sequence": 79,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "afterStartMs": 10009
+            },
+            {
+              "direction": "received",
+              "sequence": 85,
+              "connectionId": 1,
+              "type": "control.event",
+              "afterStartMs": 10355
+            },
+            {
+              "direction": "received",
+              "sequence": 86,
+              "connectionId": 1,
+              "type": "space.snapshot",
+              "currentRoomId": "studio",
+              "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+              "afterStartMs": 10356
+            },
+            {
+              "direction": "received",
+              "sequence": 96,
+              "connectionId": 1,
+              "type": "screen.streamEnded",
+              "afterStartMs": 10958
+            }
+          ],
+          "packets": {
+            "sent": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            },
+            "received": {
+              "audio": {
+                "frames": 0,
+                "bytes": 0
+              },
+              "screen": {
+                "frames": 73,
+                "bytes": 6434
+              },
+              "unknown": {
+                "frames": 0,
+                "bytes": 0
+              }
+            }
+          },
+          "packetFrames": [
+            {
+              "sequence": 13,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 5753
+            },
+            {
+              "sequence": 14,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 94,
+              "afterStartMs": 5823
+            },
+            {
+              "sequence": 15,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 5898
+            },
+            {
+              "sequence": 16,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 5971
+            },
+            {
+              "sequence": 19,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6057
+            },
+            {
+              "sequence": 20,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6112
+            },
+            {
+              "sequence": 21,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6180
+            },
+            {
+              "sequence": 22,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6255
+            },
+            {
+              "sequence": 25,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6330
+            },
+            {
+              "sequence": 26,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6397
+            },
+            {
+              "sequence": 27,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6472
+            },
+            {
+              "sequence": 28,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 60,
+              "afterStartMs": 6547
+            },
+            {
+              "sequence": 29,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 6622
+            },
+            {
+              "sequence": 30,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 6697
+            },
+            {
+              "sequence": 31,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6772
+            },
+            {
+              "sequence": 32,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6848
+            },
+            {
+              "sequence": 33,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 6922
+            },
+            {
+              "sequence": 35,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 6996
+            },
+            {
+              "sequence": 36,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7063
+            },
+            {
+              "sequence": 37,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7139
+            },
+            {
+              "sequence": 38,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7214
+            },
+            {
+              "sequence": 39,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7288
+            },
+            {
+              "sequence": 40,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7363
+            },
+            {
+              "sequence": 41,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7430
+            },
+            {
+              "sequence": 42,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7505
+            },
+            {
+              "sequence": 43,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7579
+            },
+            {
+              "sequence": 44,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 7646
+            },
+            {
+              "sequence": 45,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 87,
+              "afterStartMs": 7714
+            },
+            {
+              "sequence": 46,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7789
+            },
+            {
+              "sequence": 47,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 7863
+            },
+            {
+              "sequence": 48,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 7938
+            },
+            {
+              "sequence": 49,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8005
+            },
+            {
+              "sequence": 50,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8072
+            },
+            {
+              "sequence": 51,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 60,
+              "afterStartMs": 8146
+            },
+            {
+              "sequence": 52,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 8214
+            },
+            {
+              "sequence": 53,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 8280
+            },
+            {
+              "sequence": 54,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8355
+            },
+            {
+              "sequence": 55,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8421
+            },
+            {
+              "sequence": 56,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 8497
+            },
+            {
+              "sequence": 57,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 8563
+            },
+            {
+              "sequence": 59,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 60,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 61,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 62,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 63,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 64,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9311
+            },
+            {
+              "sequence": 65,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 66,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 67,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 68,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9327
+            },
+            {
+              "sequence": 69,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9393
+            },
+            {
+              "sequence": 70,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9422
+            },
+            {
+              "sequence": 71,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9497
+            },
+            {
+              "sequence": 72,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9572
+            },
+            {
+              "sequence": 73,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 368,
+              "afterStartMs": 9647
+            },
+            {
+              "sequence": 74,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 9722
+            },
+            {
+              "sequence": 75,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 110,
+              "afterStartMs": 9797
+            },
+            {
+              "sequence": 76,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 109,
+              "afterStartMs": 9872
+            },
+            {
+              "sequence": 77,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 9947
+            },
+            {
+              "sequence": 80,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10017
+            },
+            {
+              "sequence": 81,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10089
+            },
+            {
+              "sequence": 82,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10164
+            },
+            {
+              "sequence": 83,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10238
+            },
+            {
+              "sequence": 84,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10305
+            },
+            {
+              "sequence": 87,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10389
+            },
+            {
+              "sequence": 88,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10456
+            },
+            {
+              "sequence": 89,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10522
+            },
+            {
+              "sequence": 90,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10596
+            },
+            {
+              "sequence": 91,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10671
+            },
+            {
+              "sequence": 92,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10738
+            },
+            {
+              "sequence": 93,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 69,
+              "afterStartMs": 10813
+            },
+            {
+              "sequence": 94,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10880
+            },
+            {
+              "sequence": 95,
+              "direction": "received",
+              "channel": "screen",
+              "bytes": 77,
+              "afterStartMs": 10948
+            }
+          ],
+          "latestParticipation": {
+            "direction": "received",
+            "sequence": 7,
+            "connectionId": 1,
+            "type": "participation.self",
+            "roomId": "studio",
+            "participantId": "22ccc055-5ee9-44cf-91f9-2ddf722e1698",
+            "role": "display",
+            "mode": "watch",
+            "media": {
+              "audio": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              },
+              "screen": {
+                "subscribed": false,
+                "downlinkBytes": 0,
+                "downlinkFrames": 0
+              }
+            },
+            "afterStartMs": 5699
+          },
+          "collectionOverflow": false
+        }
+      ],
+      "pageErrors": [],
+      "inboundHostTokenLeak": false,
+      "inboundRoomPasswordLeak": false
+    }
+  },
+  "probes": [
+    {
+      "name": "display-readonly",
+      "joinedRole": "display",
+      "joinedMode": "watch",
+      "roomId": "studio",
+      "operations": [
+        {
+          "operation": "audio.start",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "screen.start",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "interaction.submit",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "legacy reaction",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "host.claim with configured token",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "host.interaction.clearQueue",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "participation.setMode",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "audio LTA1 binary",
+          "code": "display_read_only"
+        },
+        {
+          "operation": "screen LTS1 binary",
+          "code": "display_read_only"
+        }
+      ],
+      "responseCount": 15,
+      "traceCapReached": false
+    }
+  ],
+  "qr": {
+    "pixelDecode": "passed",
+    "decodedPublicJoinUrl": "https://localhost:4173/?room=studio&mode=interaction",
+    "width": 270,
+    "height": 270
+  },
+  "privacy": {
+    "privateChatTextRecorded": false,
+    "displayRawPrivateChatLeak": false,
+    "displayRawHistoryCount": 0,
+    "displayNonPublicInteractionEventCount": 0,
+    "displayReceivedAudioBinaryFrames": 0,
+    "displayPublishedMediaControls": 0
+  },
+  "screenshots": [
+    "display-live.png",
+    "participant-interaction.png"
+  ],
+  "limits": {
+    "phonesAndCameraQRScan": "not-tested",
+    "realMicrophoneOrHumanListening": "not-tested; all audio is synthetic",
+    "physicalDisplayCapture": "not-tested; the source is an injected canvas",
+    "endToEndQualityOrLatency": "not-tested",
+    "accountsAndDurableIdentity": "not-tested; participant IDs are connection-scoped",
+    "capacityOrLongRun": "not-tested; no 100-event benchmark or p95 claim",
+    "deployment": "not-tested; local POC only"
+  },
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "finishedAt": "2026-11-04T08:04:45.218Z"
+}

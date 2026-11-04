@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
 import { SpacePanel } from "./SpacePanel";
 import { HostPanel } from "./HostPanel";
 import { InteractionPanel } from "./InteractionPanel";
+import { ParticipationControls } from "./ParticipationControls";
+import { readParticipantEntry, type ParticipationMode } from "./entry";
+import type { ParticipationSnapshot } from "./participation";
 import {
   createInteractionMessage,
   emptyInteractionSnapshot,
@@ -67,6 +70,14 @@ type ServerMessage =
       state: Pick<InteractionSnapshot, "publicQueue" | "queueCount" | "presentation" | "feedbackStats" | "serverNow">;
     }
   | { type: "interaction.ack"; roomId: string; eventId: string; interactionId: string; duplicate: boolean }
+  | ({ type: "participation.self" } & ParticipationSnapshot)
+  | {
+      type: "participation.modeChanged";
+      roomId: string;
+      role: "participant" | "display";
+      mode: ParticipationMode;
+      media: { audioSubscribed: boolean; screenSubscribed: boolean };
+    }
   | { type: "interaction.error"; roomId?: string; eventId?: string; code: string; message: string }
   | { type: "protocol.error"; code: string; message: string }
   | { type: "room.catalogue"; rooms: RoomSummary[] }
@@ -125,9 +136,15 @@ type EntryAttempt =
   | { type: "switch"; roomId: string };
 
 export function App() {
+  const [initialEntry] = useState(() => readParticipantEntry(window.location.search));
   const [displayName, setDisplayName] = useState("");
   const [rooms, setRooms] = useState<RoomSummary[]>([]);
-  const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [selectedRoomId, setSelectedRoomId] = useState(initialEntry.roomId ?? "");
+  const [participationMode, setParticipationMode] = useState<ParticipationMode>(initialEntry.mode);
+  const [modeSwitchPending, setModeSwitchPending] = useState(false);
+  const [pendingModeTarget, setPendingModeTarget] = useState<ParticipationMode | null>(null);
+  const [quiescedMedia, setQuiescedMedia] = useState({ audio: false, screen: false });
+  const [participationSelf, setParticipationSelf] = useState<ParticipationSnapshot | null>(null);
   const [currentRoomId, setCurrentRoomId] = useState("");
   const [apiStatus, setApiStatus] = useState("Checking local API…");
   const [connectionStatus, setConnectionStatus] = useState("Not connected");
@@ -166,6 +183,8 @@ export function App() {
   const pendingReportRef = useRef<CapabilityReport | null>(null);
   const lastSequenceRef = useRef(0);
   const lastSpaceSequenceRef = useRef(0);
+  const modeChangeSentRef = useRef(false);
+  const pendingModeTargetRef = useRef<ParticipationMode | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -177,7 +196,10 @@ export function App() {
         if (active) {
           setRooms(rooms);
           setHostControlsEnabled(rooms.some((room) => room.hostControlsEnabled));
-          setSelectedRoomId((current) => current || rooms[0]?.id || "");
+          setSelectedRoomId((current) => current || initialEntry.roomId || rooms[0]?.id || "");
+          if (initialEntry.roomId && !rooms.some((room) => room.id === initialEntry.roomId)) {
+            setProtocolError(`連結指定的房間「${initialEntry.roomId}」不存在；請選擇可用房間。`);
+          }
           setApiStatus(health.status === "ok" ? `API ready · ${health.persistence}` : "API unavailable");
         }
       })
@@ -189,7 +211,7 @@ export function App() {
       active = false;
       socketRef.current?.close();
     };
-  }, []);
+  }, [initialEntry]);
 
   const joinRoom = () => {
     if (!selectedRoomId || socketRef.current || !displayName.trim()) return;
@@ -198,6 +220,8 @@ export function App() {
     setGrantedPublisherIds([]);
     setHostActionStatus("");
     setHostActionError("");
+    setParticipationSelf(null);
+    setModeSwitchPending(false);
     setInteractionState(emptyInteractionSnapshot());
     setInteractionStatus("");
     setInteractionError("");
@@ -226,7 +250,7 @@ export function App() {
     socket.addEventListener("open", () => {
       if (socketRef.current !== socket) return;
       setConnectionStatus("Joining room…");
-      socket.send(JSON.stringify({ type: "join", roomId: selectedRoomId, displayName: displayName.trim() }));
+      socket.send(JSON.stringify({ type: "join", roomId: selectedRoomId, displayName: displayName.trim(), role: "participant", mode: participationMode }));
     });
 
     socket.addEventListener("message", (messageEvent) => {
@@ -274,6 +298,29 @@ export function App() {
         setMediaSessionEpoch((current) => current + 1);
         setMembers(message.members);
         setConnectionStatus(`Connected to ${message.room.name}`);
+        return;
+      }
+
+      if (message.type === "participation.modeChanged") {
+        if (message.roomId !== currentRoomIdRef.current) return;
+        setParticipationMode(message.mode);
+        setModeSwitchPending(false);
+        setPendingModeTarget(null);
+        pendingModeTargetRef.current = null;
+        setQuiescedMedia({ audio: false, screen: false });
+        modeChangeSentRef.current = false;
+        if (message.mode === "interaction" && (message.media.audioSubscribed || message.media.screenSubscribed)) {
+          setProtocolError("伺服器回報仍有影音訂閱；請重新檢查只互動狀態。");
+        } else {
+          setProtocolError("");
+        }
+        return;
+      }
+
+      if (message.type === "participation.self") {
+        if (message.roomId !== currentRoomIdRef.current) return;
+        setParticipationSelf(message);
+        setParticipationMode(message.mode);
         return;
       }
 
@@ -413,6 +460,12 @@ export function App() {
           return;
         }
         setProtocolError(message.message);
+        if (pendingModeTargetRef.current) {
+          setModeSwitchPending(false);
+          setPendingModeTarget(null);
+          pendingModeTargetRef.current = null;
+          modeChangeSentRef.current = false;
+        }
         if (message.code === "unknown_room" || message.code === "invalid_room_switch") setPendingRoomId(null);
         if (message.code === "invalid_capability_report") {
           pendingReportRef.current = null;
@@ -519,6 +572,12 @@ export function App() {
       setEntryDialogError("");
       setEntrySubmitting(false);
       setConnectionStatus("Not connected");
+      setModeSwitchPending(false);
+      setPendingModeTarget(null);
+      pendingModeTargetRef.current = null;
+      setQuiescedMedia({ audio: false, screen: false });
+      modeChangeSentRef.current = false;
+      setParticipationSelf(null);
       setHostClaimed(false);
       setCurrentParticipantId("");
       setGrantedPublisherIds([]);
@@ -578,6 +637,34 @@ export function App() {
     socket.send(JSON.stringify(message));
   };
 
+  const changeParticipationMode = (mode: ParticipationMode) => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !connected || modeSwitchPending || mode === participationMode) return;
+    setProtocolError("");
+    setModeSwitchPending(true);
+    setPendingModeTarget(mode);
+    pendingModeTargetRef.current = mode;
+    setQuiescedMedia({ audio: mode !== "interaction", screen: mode !== "interaction" });
+    modeChangeSentRef.current = false;
+  };
+
+  const markAudioQuiesced = useCallback(() => setQuiescedMedia((current) => ({ ...current, audio: true })), []);
+  const markScreenQuiesced = useCallback(() => setQuiescedMedia((current) => ({ ...current, screen: true })), []);
+
+  useEffect(() => {
+    const socket = socketRef.current;
+    if (!pendingModeTarget || !socket || socket.readyState !== WebSocket.OPEN || modeChangeSentRef.current) return;
+    if (pendingModeTarget === "interaction" && (!quiescedMedia.audio || !quiescedMedia.screen)) return;
+    modeChangeSentRef.current = true;
+    socket.send(JSON.stringify({ type: "participation.setMode", mode: pendingModeTarget }));
+  }, [pendingModeTarget, quiescedMedia, currentSocket]);
+
+  const inspectParticipation = () => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !connected) return;
+    socket.send(JSON.stringify({ type: "participation.inspect" }));
+  };
+
   const leaveRoom = () => {
     socketRef.current?.close(1000, "Participant left");
     socketRef.current = null;
@@ -601,6 +688,12 @@ export function App() {
     lastSequenceRef.current = 0;
     lastSpaceSequenceRef.current = 0;
     setConnectionStatus("Not connected");
+    setModeSwitchPending(false);
+    setPendingModeTarget(null);
+    pendingModeTargetRef.current = null;
+    setQuiescedMedia({ audio: false, screen: false });
+    modeChangeSentRef.current = false;
+    setParticipationSelf(null);
     setHostClaimed(false);
     setCurrentParticipantId("");
     setGrantedPublisherIds([]);
@@ -636,7 +729,7 @@ export function App() {
     setEntryDialogError("");
     setEntrySubmitting(true);
     if (attempt.type === "join") {
-      socket.send(JSON.stringify({ type: "join", roomId: attempt.roomId, displayName: attempt.displayName, password }));
+      socket.send(JSON.stringify({ type: "join", roomId: attempt.roomId, displayName: attempt.displayName, role: "participant", mode: participationMode, password }));
       return;
     }
     pendingSwitchPasswordRef.current = password;
@@ -831,6 +924,16 @@ export function App() {
       ) : <section className="panel-card space-panel" role="status">Loading the room map…</section>}
 
       {connected && !pendingRoomId ? (
+        <ParticipationControls
+          mode={participationMode}
+          pending={modeSwitchPending}
+          snapshot={participationSelf}
+          onChange={changeParticipationMode}
+          onInspect={inspectParticipation}
+        />
+      ) : null}
+
+      {connected && !pendingRoomId ? (
         <InteractionPanel
           connected={connected}
           hostActive={hostClaimed && Boolean(currentSocket)}
@@ -936,8 +1039,8 @@ export function App() {
         ) : null}
       </section>
 
-      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} /> : null}
-      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} /> : null}
+      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} participationMode={participationMode} pendingModeTarget={pendingModeTarget} onModeQuiesced={markAudioQuiesced} /> : null}
+      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} publishAllowed={publishAllowed} hostControlsEnabled={hostControlsEnabled} participationMode={participationMode} pendingModeTarget={pendingModeTarget} onModeQuiesced={markScreenQuiesced} /> : null}
 
       <DoorEntryDialog
         open={entryDialogOpen}

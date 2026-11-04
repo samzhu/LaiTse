@@ -40,7 +40,8 @@ type AudioRelayOptions = {
   isRecipientEligible?: (publisherConnectionId: string, recipientConnectionId: string) => boolean;
 };
 
-export type PublisherStopReason = "permission_revoked" | "session_ended";
+export type PublisherStopReason = "permission_revoked" | "session_ended" | "mode_changed";
+export type AudioStreamEndReason = "publisher_stopped" | "out_of_range" | PublisherStopReason;
 
 function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: readonly string[]): boolean {
   return Object.keys(value).every((key) => allowedKeys.includes(key));
@@ -76,7 +77,7 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     connectionId: string,
     connection: RelayConnection,
     active: Publisher,
-    reason: "publisher_stopped" | "out_of_range" | PublisherStopReason,
+    reason: AudioStreamEndReason,
   ) => {
     if (connectionId === active.connectionId || connection.announcedGeneration !== active.generation) return;
     sendToOpenSubscriber(connection, { type: "audio.streamEnded", generation: active.generation, reason });
@@ -84,7 +85,7 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     if (reason === "out_of_range") connection.outOfRangeGeneration = active.generation;
   };
 
-  const endAnnouncedSubscribers = (active: Publisher, reason: "publisher_stopped" | "out_of_range" | PublisherStopReason) => {
+  const endAnnouncedSubscribers = (active: Publisher, reason: AudioStreamEndReason) => {
     for (const [connectionId, connection] of connections) endSubscriber(connectionId, connection, active, reason);
   };
 
@@ -285,10 +286,27 @@ export function createAudioRelay(options: AudioRelayOptions = {}) {
     return true;
   }
 
+  function disableConnection(connectionId: string): void {
+    const connection = connections.get(connectionId);
+    if (!connection) return;
+    stopPublishing(connectionId, "mode_changed");
+    if (connection.subscribed && publisher) endSubscriber(connectionId, connection, publisher, "mode_changed");
+    connection.subscribed = false;
+    connection.announcedGeneration = null;
+    connection.outOfRangeGeneration = null;
+    if (connection.joined && connection.peer.readyState() === connection.peer.openState) {
+      connection.peer.sendControl({ type: "audio.unsubscribed", reason: "mode_changed" });
+    }
+  }
+
+  function isSubscribed(connectionId: string): boolean {
+    return connections.get(connectionId)?.subscribed ?? false;
+  }
+
   function close(): void {
     connections.clear();
     publisher = null;
   }
 
-  return { register, markJoined, handleControl, handleBinary, reconcileRecipients, stopPublishing, disconnect, close };
+  return { register, markJoined, handleControl, handleBinary, reconcileRecipients, stopPublishing, disableConnection, isSubscribed, disconnect, close };
 }

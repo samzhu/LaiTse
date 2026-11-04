@@ -1,0 +1,23 @@
+{
+  "package-lock.json": "ea1e69322427ed0addf4f45252a69de119b58e8726faf46c3724ca67600cef1d",
+  "package.json": "4c3838eb5b32fb54216449a4cceb55b49aa9b889be58ea4484b9a90fb67f3542",
+  "public/vendor-notices.txt": "4524003d65acab735aa1eace52463a3bfecab0cd65ed840a0af2e7472219ba19",
+  "src/client/App.tsx": "4e22d2f7c35082b9fa927f580746bcc8b9983437c3470ada881e93b6a5d9fd26",
+  "src/client/AudioPanel.tsx": "b4e189e7d230979db07560daea578c77f67110186e141663d20311ce858698cf",
+  "src/client/DisplayApp.tsx": "62e26395d8824173be39cdc09b4e519e3e7d807c716dad61495335f9ac29d0e5",
+  "src/client/JoinQr.tsx": "14a90bbcf7e8c55e18641aac453355b0ec05d21a8c00516e5e19a877b6bfce65",
+  "src/client/ParticipationControls.tsx": "cbe1a81f821208fefc6dafaf9a23c0c3cca9a92362ca58990d4fdcd3b9becd4f",
+  "src/client/PublicInteractionView.tsx": "45072f78bddc3f73767fbc484e6d7ca202696aea21703e273db1129538c47eca",
+  "src/client/ScreenPanel.tsx": "93bf8bd3e1b2ecd997ceecf7f1c4f007ef87d8e1cd027b99aad34e0d41cd387b",
+  "src/client/audio.ts": "7e9459160348c22f3eab58fda086e2b239a376f8dc9a1ba918a928ebb7973b48",
+  "src/client/entry.ts": "b1a8288f8310a35746f02732abd725b7cdefa011ec6e49ff4706551ab3b900ce",
+  "src/client/main.tsx": "69fec99ceda161bec383ba2a920f676a65e68cad9be57b9bd1a6baf93484fcf3",
+  "src/client/participation.ts": "a7d5a2b5f9f6224526a36330cef16c92c9fc1ab00c5b86aca8a1b9d86f9854e4",
+  "src/client/qr.ts": "68a58a2a80c89284be714ed0c267041d3e09c264d9d5aadbbd5b0cc491ce2ed1",
+  "src/client/screen.ts": "e0c27cf5c9806bea56466ed5566797efb75888a8b7d074bf77ddcbced4c2d067",
+  "src/client/styles.css": "f568fc5997304b7e5456e75923fb336b9b82ac3d2514e3b7b2eb51f13d12f9b1",
+  "src/server/app.ts": "b560767b72c1e333537ee8343adc96899485c17f961922e8e593a4fdb0eb69f7",
+  "src/server/audio-relay.ts": "7454687f49492c0bcfd700d5a5a289efee856d53630493af2ea6c4b6c61a3b9d",
+  "src/server/screen-relay.ts": "6e3111d696626375cdd9d3df39c1aefe539048fe68ec99d93e559c88b9f900e5",
+  "tests/participation.integration.test.mjs": "d35bfcaa9bd334391ed7efe08e5004d3c21d728ee798ff89e4c4d92f10b829ac"
+}

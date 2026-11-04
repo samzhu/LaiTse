@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { AudioController, type AudioSnapshot } from "./audio";
 import { MediaTimeline } from "./media-timeline";
+import type { ParticipationMode } from "./entry";
 
 type AudioPanelProps = {
   socket: WebSocket | null;
   timeline: MediaTimeline;
   publishAllowed?: boolean;
   hostControlsEnabled?: boolean;
+  participationMode?: ParticipationMode;
+  pendingModeTarget?: ParticipationMode | null;
+  onModeQuiesced?: () => void;
 };
 
-export function AudioPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false }: AudioPanelProps) {
+export function AudioPanel({ socket, timeline, publishAllowed = true, hostControlsEnabled = false, participationMode = "watch", pendingModeTarget = null, onModeQuiesced }: AudioPanelProps) {
   const [state, setState] = useState<AudioSnapshot | null>(null);
+  const [volume, setVolume] = useState(1);
   const controllerRef = useRef<AudioController | null>(null);
 
   useEffect(() => {
@@ -25,6 +30,13 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
       if (controllerRef.current === controller) controllerRef.current = null;
     };
   }, [socket, timeline]);
+
+  useEffect(() => {
+    if (pendingModeTarget !== "interaction") return;
+    controllerRef.current?.stopMicrophone();
+    controllerRef.current?.stopListening();
+    onModeQuiesced?.();
+  }, [pendingModeTarget, onModeQuiesced]);
 
   if (!socket || !state) return null;
 
@@ -62,6 +74,8 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
       className="panel-card audio-panel"
       aria-labelledby="audio-title"
       data-testid="audio-panel"
+      hidden={participationMode === "interaction" || pendingModeTarget === "interaction"}
+      style={participationMode === "interaction" || pendingModeTarget === "interaction" ? { display: "none" } : undefined}
       data-listener-state={state.listenerState}
       data-publisher-state={state.publisherState}
       data-sent-packets={state.sentPackets}
@@ -127,6 +141,26 @@ export function AudioPanel({ socket, timeline, publishAllowed = true, hostContro
           )}
         </div>
       </div>
+
+      <label className="audio-volume-control" htmlFor="audio-playback-volume">
+        <span>播放音量</span>
+        <input
+          id="audio-playback-volume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          data-testid="audio-volume"
+          onChange={(event) => {
+            const nextVolume = Number(event.target.value);
+            setVolume(nextVolume);
+            controllerRef.current?.setVolume(nextVolume);
+          }}
+          aria-valuetext={`${Math.round(volume * 100)}%`}
+        />
+        <output data-testid="audio-volume-value">{Math.round(volume * 100)}%</output>
+      </label>
 
       <div className="audio-stats" aria-label="Audio pipeline counters">
         <span><strong>送出封包</strong><output data-testid="audio-sent-packets">{state.sentPackets}</output></span>
