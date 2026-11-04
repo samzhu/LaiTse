@@ -1,0 +1,51 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (190.429667ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (167.051625ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (88.297625ms)
+✖ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (127.1605ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (113.1535ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (168.548667ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (3.1005ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (86.623542ms)
+✔ the application serves health and a built-in room catalogue (40.878ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.672125ms)
+✔ the websocket rejects cross-origin clients before joining (1.621167ms)
+✔ malformed or oversized control frames close without being broadcast (3.347958ms)
+✔ clients cannot select arbitrary rooms (1.51725ms)
+✔ display names longer than the server limit are rejected (1.498417ms)
+✔ control events reject client-supplied fields outside the protocol (1.839875ms)
+✔ the room has a fixed member limit (9.246417ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.741917ms)
+✔ space snapshots expose member positions only for the recipient's current room (32.084ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (65.476709ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (107.998708ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 19
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 659.552292
+
+✖ failing tests:
+
+test at tests/room-isolation.integration.test.mjs:222:1
+✖ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (127.1605ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'Lobby Publisher',
+  -   'Lobby Receiver'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/room-isolation.integration.test.mjs:243:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'Lobby Publisher' ],
+    expected: [ 'Lobby Publisher', 'Lobby Receiver' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

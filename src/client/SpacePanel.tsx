@@ -33,6 +33,7 @@ function describeRooms(roomChoices: RoomChoice[], snapshot: SpaceSnapshot | null
     ...room,
     style: room.id === "lobby" ? "sunroom" : "blueprint",
     players: [],
+    membersVisible: false,
   })) as SpaceRoom[];
 }
 
@@ -126,9 +127,9 @@ export function SpacePanel({
   };
 
   const activeRoomName = rooms.find((room) => room.id === selectedRoomId)?.name ?? selectedRoomId;
-  const characterCount = visibleRooms.reduce((count, room) => count + room.players.length, 0);
+  const characterCount = visibleRooms.find((room) => room.id === snapshot?.currentRoomId)?.players.length ?? 0;
   const statusText = renderDiagnostics
-    ? `Phaser ${renderDiagnostics.phaserVersion} · ${renderDiagnostics.renderer} · ${characterCount} in both rooms`
+    ? `Phaser ${renderDiagnostics.phaserVersion} · ${renderDiagnostics.renderer} · ${characterCount} visible in your room`
     : "Starting pixel map…";
 
   return (
@@ -187,7 +188,7 @@ export function SpacePanel({
 
       <div className="space-controls-row">
         <p className="space-hint" id="space-keyboard-hint">
-          Focus the map, then move with arrow keys or W A S D. Other room characters stay visible in the map.
+          Focus the map, then move with arrow keys or W A S D. Membership and positions in the other room stay hidden.
         </p>
         <label className="reduced-motion-toggle">
           <input
@@ -222,7 +223,7 @@ export function SpacePanel({
         {pendingRoomId
           ? `Moving to ${rooms.find((room) => room.id === pendingRoomId)?.name ?? pendingRoomId}…`
           : connected
-            ? `You are in ${activeRoomName}. The other room remains visible.`
+            ? `You are in ${activeRoomName}. The other room is listed without its members.`
             : `Joining ${activeRoomName} when you connect.`}
       </p>
       {errorMessage ? <p className="error-message space-error" role="alert">{errorMessage}</p> : null}

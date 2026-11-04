@@ -14,6 +14,7 @@ export type SpaceRoom = {
   name: string;
   style: "sunroom" | "blueprint";
   players: SpacePlayer[];
+  membersVisible: boolean;
 };
 
 export type SpaceSnapshot = {
@@ -160,8 +161,13 @@ export async function createPixelSpaceRenderer(
         for (const player of room.players) activePlayers.set(player.id, player);
         const emptyLabel = this.emptyLabels.get(room.id);
         if (emptyLabel) {
-          emptyLabel.setText(snapshot ? "Room is quiet" : "Join to see people");
-          emptyLabel.setVisible(!snapshot || room.players.length === 0);
+          const label = !snapshot
+            ? "Join to see people"
+            : !room.membersVisible
+              ? "Members hidden"
+              : "Room is quiet";
+          emptyLabel.setText(label);
+          emptyLabel.setVisible(!snapshot || !room.membersVisible || room.players.length === 0);
         }
       }
 

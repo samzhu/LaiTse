@@ -1,0 +1,27 @@
+{
+  "method": "Root independently rechecked all saved final packet hashes against both publisher raw sent-hash sets, source order and switch ACK boundary; six external zero-delivery observations; no dropped/unknown binary trace records.",
+  "sourcePacketCounts": {
+    "lobby-receiver": {
+      "audio": {
+        "lobby": 85,
+        "studio": 76
+      },
+      "screen": {
+        "lobby": 21,
+        "studio": 20
+      }
+    },
+    "studio-receiver": {
+      "audio": {
+        "studio": 192
+      },
+      "screen": {
+        "studio": 51
+      }
+    }
+  },
+  "unknownOrCrossRoomPackets": 0,
+  "foreignBrowserRoomEvents": 0,
+  "externalUnauthorizedMediaOrForeignEvents": 0,
+  "rawTraceReadback": "passed"
+}

@@ -1,0 +1,70 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (195.349167ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (168.708833ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (86.89575ms)
+file:///Users/samzhu/workspace_herdr/LaiTse/tests/room-isolation.integration.test.mjs:305
+    const lobbyReceiverSpace = nextJson(lobbyReceiver, (message) => message.type === "space.snapshot" && message.currentRoomId === "studio");
+          ^
+
+SyntaxError: Identifier 'lobbyReceiverSpace' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:355:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:94:18)
+    at #translate (node:internal/modules/esm/loader:441:20)
+    at afterLoad (node:internal/modules/esm/loader:509:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:514:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:567:36)
+    at afterResolve (node:internal/modules/esm/loader:614:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:620:12)
+    at node:internal/modules/esm/loader:639:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:582:22)
+
+Node.js v26.13.0
+✖ tests/room-isolation.integration.test.mjs (44.935625ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (115.747541ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (168.126209ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.829875ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (85.12975ms)
+✔ the application serves health and a built-in room catalogue (42.041917ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.964333ms)
+✔ the websocket rejects cross-origin clients before joining (1.617917ms)
+✔ malformed or oversized control frames close without being broadcast (3.142833ms)
+✔ clients cannot select arbitrary rooms (1.369084ms)
+✔ display names longer than the server limit are rejected (1.725375ms)
+✔ control events reject client-supplied fields outside the protocol (2.241167ms)
+✔ the room has a fixed member limit (15.742958ms)
+✔ the server closes a client that exceeds the reaction rate limit (3.157083ms)
+file:///Users/samzhu/workspace_herdr/LaiTse/tests/space.integration.test.mjs:300
+    const [audioStarted, audioAtViewer] = await Promise.all([studioAudioStarted, studioAudioStream]);
+           ^
+
+SyntaxError: Identifier 'audioStarted' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:355:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:94:18)
+    at #translate (node:internal/modules/esm/loader:441:20)
+    at afterLoad (node:internal/modules/esm/loader:509:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:514:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:567:36)
+    at afterResolve (node:internal/modules/esm/loader:614:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:620:12)
+    at node:internal/modules/esm/loader:639:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:582:22)
+
+Node.js v26.13.0
+✖ tests/space.integration.test.mjs (42.71625ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 16
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 682.802417
+
+✖ failing tests:
+
+test at tests/room-isolation.integration.test.mjs:1:1
+✖ tests/room-isolation.integration.test.mjs (44.935625ms)
+  'test failed'
+
+test at tests/space.integration.test.mjs:1:1
+✖ tests/space.integration.test.mjs (42.71625ms)
+  'test failed'

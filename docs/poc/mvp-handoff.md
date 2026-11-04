@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
 | SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面晚加入與同步排程核心可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
-| SOL-003 | 權威 Room／Session／事件與權限 | 待實驗 | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
-| SOL-004 | Phaser 像素角色與操作橋接 | 待實驗 | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
+| SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T08連線房間隔離核心，帳號/角色待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
+| SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
 | SOL-006 | 重連、時基、快照與解碼恢復 | 待實驗 | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
 | SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（盤點完成） | T01／R002盤點；恢復待POC-06 | 本機結果與後續部署耐久性分清，未解限制不能默認忽略 |
@@ -106,3 +106,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-008：可沿用tests/space.integration.test.mjs、scripts/t07-smoke.mjs、POST_RENDER診斷及[證據](evidence/POC-03-R001/README.md)。26核心/build通過；初期測試等待離線端等缺陷修正並補逾時。render資料是軟體物件座標，不是裝置效能/觸控/網路品質證據。
 - 單一連線身份及room權威、切房先unmount影音／server清理舊relay可參考；此步Studio只做空間，拒絕影音。共享地圖含兩房人物，People here僅當前房間，不構成私密成員權限；正式角色、可見性及跨房影音須T08/後續設計驗證。
 - MVP前重整：固定房間/出生點、process-memory身份與位置、公開snapshot策略、debug與POC英文操作；補商品美術、碰撞/門口等產品需求、持久化/恢復、必要裝置與無障礙、資源卸載/版本升級。Phaser.AUTO實測WebGL，Canvas未測且v4deprecated；不假設其他裝置相容。保留MIT notices及精確lock，新增依賴不綁SaaS，inventory非完整授權/弱點稽核。
+
+## T08／POC-03-R002：SOL-002、SOL-003、SOL-008（2026-11-04）
+
+- SOL-002：原生Opus/LTA1、VP8/LTS1及controller不變；server以固定room→audio/screen relay map隔離publisher/subscribers。同一socket，generation是room-local、可能相同，clockId／封包hash才能分辨來源；不能把generation當全域來源ID。四Firefox雙房合成decode/render與hash吻合，證據見[R002](evidence/POC-03-R002/README.md)，非真mic/人耳/裝置品質。
+- SOL-003：server建立connection/participant UUID、只依connection.currentRoomId分流，media訊息不接受client自填room/identity/role；peer callback捕捉來源room並再檢目前成員，binary必須擁有該room/channel publisher。切房disconnect舊relay、更新room、register新relay，subscription不搬移；前端pending先dispose、ACK後新timeline/decoder，需明確重新收聽/觀看。500ms舊房0新增、六外部探針拒絕已驗。
+- T07共享地圖的全空間人物可見策略由T08收斂：目錄仍可見、room.snapshot／events及space.players只含本房，異房membersVisible=false。不要以空players宣稱房間為空。此策略可供MVP空間bridge參考，正式可見性需依產品/授權定義。
+- 復用界線：開放匿名join/switch與server UUID不等於帳號認證或私密房間ACL；每channel單publisher ownership非主持人授權主講角色，audio/screen仍能由不同成員佔用。正式身份/Session/角色/撤權/恢復、觀測API授權仍待後續，完整T08/POC-03未通過。固定房與process-memory不改變SOL-007耐久風險。
+- SOL-008：可沿用room-isolation.integration契約、t08-smoke的四真browser/兩合成來源、SHA256來源比對、切房ACK前後window、外部WSS拒絕與trace無截斷檢查；27核心/build及最終browser通過，早期fixture失敗和root窄修保存。/api/media-diagnostics僅聚合有界計數，代表排入WS不是對端已收；MVP需關閉或限制診斷。原t07-smoke全空間可見預期屬歷史，不作現行回歸入口。長名字標籤重疊仍需整理，沒有新增依賴。

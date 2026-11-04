@@ -1,0 +1,6 @@
+[T08] four-clients-joined-two-rooms
+[T08] independent-audio-screen-source-hashes-matched
+[T08] switch-ack-old-subscriptions-stopped {"roomSnapshotAt":1793758666037,"lobbyMediaRecordsAtAck":{"audio":85,"screen":21},"postAckAudioFrames":0,"postAckScreenFrames":0}
+[T08] explicit-new-room-subscription-rendered
+[T08] forged-controls-and-unauthorized-binary-rejected {"attempts":6}
+T08 smoke passed; evidence saved under .scratch/t08/desktop-smoke.

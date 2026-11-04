@@ -28,7 +28,7 @@ export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
 export const MAX_ROOM_MEMBERS = MAX_SPACE_MEMBERS;
 export const MAX_SOCKET_BUFFERED_BYTES = MAX_SCREEN_SOCKET_BUFFERED_BYTES;
 
-const ROOM = SPACE_ROOMS[0];
+const DEFAULT_ROOM = SPACE_ROOMS[0];
 const REACTIONS = new Set(["wave", "clap", "heart"]);
 const MAX_DISPLAY_NAME_CODE_POINTS = 32;
 const MAX_EVENTS_PER_SECOND = 10;
@@ -69,6 +69,61 @@ type CreateAppOptions = {
   https?: HttpsServerOptions;
 };
 
+type MediaMetricCounter = {
+  controlMessagesSent: number;
+  binaryFramesSent: number;
+  rejected: number;
+  guardedSendChecks: number;
+  crossRoomGuardBlocks: number;
+};
+
+type ControlMetricCounter = {
+  roomSnapshotsSent: number;
+  spaceSnapshotsSent: number;
+  eventsSent: number;
+  rejected: number;
+  guardedSendChecks: number;
+  crossRoomGuardBlocks: number;
+};
+
+type RoomMetricCounters = {
+  control: ControlMetricCounter;
+  audio: MediaMetricCounter;
+  screen: MediaMetricCounter;
+};
+
+type RoomRelays = {
+  audio: ReturnType<typeof createAudioRelay>;
+  screen: ReturnType<typeof createScreenRelay>;
+};
+
+function createRoomMetricCounters(): RoomMetricCounters {
+  return {
+    control: {
+      roomSnapshotsSent: 0,
+      spaceSnapshotsSent: 0,
+      eventsSent: 0,
+      rejected: 0,
+      guardedSendChecks: 0,
+      crossRoomGuardBlocks: 0,
+    },
+    audio: {
+      controlMessagesSent: 0,
+      binaryFramesSent: 0,
+      rejected: 0,
+      guardedSendChecks: 0,
+      crossRoomGuardBlocks: 0,
+    },
+    screen: {
+      controlMessagesSent: 0,
+      binaryFramesSent: 0,
+      rejected: 0,
+      guardedSendChecks: 0,
+      crossRoomGuardBlocks: 0,
+    },
+  };
+}
+
 function isSameOriginRequest(request: FastifyRequest, useHttps: boolean): boolean {
   const origin = request.headers.origin;
   const host = request.headers.host;
@@ -94,8 +149,12 @@ export async function createApp(options: CreateAppOptions = {}) {
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
-  const audioRelay = createAudioRelay();
-  const screenRelay = createScreenRelay();
+  const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
+    audio: createAudioRelay(),
+    screen: createScreenRelay(),
+  }]));
+  const roomMetrics = new Map<RoomId, RoomMetricCounters>(SPACE_ROOMS.map(({ id }) => [id, createRoomMetricCounters()]));
+  let unassignedControlRejections = 0;
   let sequence = 0;
   let spaceSequence = 0;
 
@@ -120,6 +179,14 @@ export async function createApp(options: CreateAppOptions = {}) {
 
   app.get("/api/rooms", async () => SPACE_ROOMS.map(({ id, name }) => ({ id, name })));
 
+  app.get("/api/media-diagnostics", async () => ({
+    rooms: SPACE_ROOMS.map(({ id }) => ({
+      roomId: id,
+      ...roomMetrics.get(id)!,
+    })),
+    unassignedControlRejections,
+  }));
+
   app.get<{ Params: { observationId: string } }>("/api/observations/:observationId", async (request, reply) => {
     const observation = observations.get(request.params.observationId);
     if (!observation) return reply.code(404).send({ error: "observation_not_found" });
@@ -140,41 +207,48 @@ export async function createApp(options: CreateAppOptions = {}) {
       const connection: ClientConnection = { id: randomUUID(), eventTimes: [], moveTimes: [] };
       clients.set(socket, connection);
 
-      const send = (message: unknown) => {
-        if (socket.readyState !== socket.OPEN) return;
+      const send = (message: unknown): boolean => {
+        if (socket.readyState !== socket.OPEN) return false;
         const payload = JSON.stringify(message);
         if (socket.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
           socket.close(1013, "Receiver is too slow");
-          return;
+          return false;
         }
         socket.send(payload, (error) => {
           if (error) socket.terminate();
         });
+        return true;
       };
 
-      const sendBinary = (message: Buffer) => {
-        if (socket.readyState !== socket.OPEN) return;
+      const sendBinary = (message: Buffer): boolean => {
+        if (socket.readyState !== socket.OPEN) return false;
         if (socket.bufferedAmount + message.byteLength > MAX_SOCKET_BUFFERED_BYTES) {
           socket.close(1013, "Receiver is too slow");
-          return;
+          return false;
         }
         socket.send(message, { binary: true, compress: false }, (error) => {
           if (error) socket.terminate();
         });
+        return true;
       };
 
-      const sendScreenBinary = (message: Buffer) => {
-        if (socket.readyState !== socket.OPEN) return;
+      const sendScreenBinary = (message: Buffer): boolean => {
+        if (socket.readyState !== socket.OPEN) return false;
         if (socket.bufferedAmount + message.byteLength > MAX_SCREEN_SOCKET_BUFFERED_BYTES) {
           socket.close(1013, "Screen receiver is too slow");
-          return;
+          return false;
         }
         socket.send(message, { binary: true, compress: false }, (error) => {
           if (error) socket.terminate();
         });
+        return true;
       };
 
-      const rejectControl = (code: string, message: string, closeCode = 1008) => {
+      const rejectControl = (code: string, message: string, closeCode = 1008, countControlRejection = true) => {
+        if (countControlRejection) {
+          if (connection.currentRoomId) roomMetrics.get(connection.currentRoomId)!.control.rejected += 1;
+          else unassignedControlRejections += 1;
+        }
         send({ type: "protocol.error", code, message });
         socket.once("error", () => {});
         socket.close(closeCode, "Invalid control message");
@@ -184,44 +258,87 @@ export async function createApp(options: CreateAppOptions = {}) {
         send({ type: "protocol.error", code, message });
       };
 
-      const registerMediaConnection = () => {
-        audioRelay.register(connection.id, {
-          sendControl: send,
-          sendBinary,
-          reject: rejectControl,
-          readyState: () => socket.readyState,
-          openState: socket.OPEN,
-        });
-        screenRelay.register(connection.id, {
-          sendControl: send,
-          sendBinary,
-          sendScreenBinary,
-          reject: rejectControl,
-          readyState: () => socket.readyState,
-          openState: socket.OPEN,
+      const registerMediaConnection = (roomId: RoomId) => {
+        const roomRelays = mediaRooms.get(roomId)!;
+        const peer = (channel: "audio" | "screen") => {
+          const metrics = roomMetrics.get(roomId)![channel];
+          const authorizedCurrentRoom = () => {
+            metrics.guardedSendChecks += 1;
+            if (!connection.member || connection.currentRoomId !== roomId) {
+              metrics.crossRoomGuardBlocks += 1;
+              return false;
+            }
+            return true;
+          };
+          return {
+            sendControl: (message: unknown) => {
+              if (!authorizedCurrentRoom()) return;
+              if (
+                message && typeof message === "object" &&
+                typeof (message as { type?: unknown }).type === "string" &&
+                send(message)
+              ) {
+                metrics.controlMessagesSent += 1;
+              }
+            },
+            sendBinary: (message: Buffer) => {
+              if (!authorizedCurrentRoom()) return;
+              if (sendBinary(message)) metrics.binaryFramesSent += 1;
+            },
+            sendScreenBinary: (message: Buffer) => {
+              if (!authorizedCurrentRoom()) return;
+              if (sendScreenBinary(message)) metrics.binaryFramesSent += 1;
+            },
+            reject: (code: string, explanation: string, closeCode?: number) => {
+              metrics.rejected += 1;
+              rejectControl(code, explanation, closeCode, false);
+            },
+            readyState: () => socket.readyState,
+            openState: socket.OPEN,
+          };
+        };
+        roomRelays.audio.register(connection.id, peer("audio"));
+        roomRelays.screen.register(connection.id, peer("screen"));
+      };
+
+      const sendRoomMessage = (
+        target: import("ws").WebSocket,
+        targetConnection: ClientConnection,
+        roomId: RoomId,
+        message: unknown,
+        metric: "roomSnapshotsSent" | "spaceSnapshotsSent" | "eventsSent",
+      ) => {
+        const counters = roomMetrics.get(roomId)!.control;
+        counters.guardedSendChecks += 1;
+        if (!targetConnection.member || targetConnection.currentRoomId !== roomId) {
+          counters.crossRoomGuardBlocks += 1;
+          return;
+        }
+        if (target.readyState !== target.OPEN) return;
+        const payload = JSON.stringify(message);
+        if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
+          target.close(1013, "Receiver is too slow");
+          return;
+        }
+        counters[metric] += 1;
+        target.send(payload, (error) => {
+          if (error) target.terminate();
         });
       };
-      registerMediaConnection();
 
       const broadcastSpaceState = () => {
         const seq = ++spaceSequence;
         for (const [target, targetConnection] of clients) {
           if (!targetConnection.member || !targetConnection.currentRoomId || target.readyState !== target.OPEN) continue;
-          const payload = JSON.stringify({
+          const roomId = targetConnection.currentRoomId;
+          sendRoomMessage(target, targetConnection, roomId, {
             type: "space.snapshot",
             ...space.snapshot({
               seq,
               participantId: targetConnection.member.id,
-              currentRoomId: targetConnection.currentRoomId,
+              currentRoomId: roomId,
             }),
-          });
-          if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
-            target.close(1013, "Receiver is too slow");
-          } else {
-            target.send(payload, (error) => {
-              if (error) target.terminate();
-            });
-          }
+          }, "spaceSnapshotsSent");
         }
       };
 
@@ -238,14 +355,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         const message = { type: "control.event", event };
         for (const [target, targetConnection] of clients) {
           if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
-            const payload = JSON.stringify(message);
-            if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
-              target.close(1013, "Receiver is too slow");
-            } else {
-              target.send(payload, (error) => {
-                if (error) target.terminate();
-              });
-            }
+            sendRoomMessage(target, targetConnection, roomId, message, "eventsSent");
           }
         }
         return event;
@@ -255,12 +365,14 @@ export async function createApp(options: CreateAppOptions = {}) {
         if (socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
         if (isBinary) {
-          if (connection.currentRoomId !== ROOM.id) {
-            sendProtocolError("media_unavailable_in_room", "Audio and screen relay are available only in the lobby during this step.");
+          if (!connection.currentRoomId || !connection.member) {
+            unassignedControlRejections += 1;
+            sendProtocolError("media_not_joined", "Join a room before publishing or receiving media.");
             return;
           }
-          if (screenRelay.handleBinary(connection.id, bytes)) return;
-          audioRelay.handleBinary(connection.id, bytes);
+          const relays = mediaRooms.get(connection.currentRoomId)!;
+          if (relays.screen.handleBinary(connection.id, bytes)) return;
+          relays.audio.handleBinary(connection.id, bytes);
           return;
         }
         if (bytes.byteLength > MAX_CAPABILITY_MESSAGE_BYTES) {
@@ -305,7 +417,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             observationId: randomUUID(),
             observedAtServer: new Date().toISOString(),
             connectionId: connection.id,
-            roomId: connection.currentRoomId ?? ROOM.id,
+            roomId: connection.currentRoomId ?? DEFAULT_ROOM.id,
             member: { ...connection.member },
             report,
           };
@@ -331,17 +443,19 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
-        if (
-          connection.currentRoomId !== ROOM.id &&
-          typeof message.type === "string" &&
-          (message.type.startsWith("audio.") || message.type.startsWith("screen."))
-        ) {
-          sendProtocolError("media_unavailable_in_room", "Audio and screen relay are available only in the lobby during this step.");
+        const audioControl = typeof message.type === "string" && message.type.startsWith("audio.");
+        const screenControl = typeof message.type === "string" && message.type.startsWith("screen.");
+        if ((audioControl || screenControl) && (!connection.currentRoomId || !connection.member)) {
+          unassignedControlRejections += 1;
+          sendProtocolError("media_not_joined", "Join a room before publishing or receiving media.");
           return;
         }
 
-        if (audioRelay.handleControl(connection.id, message)) return;
-        if (screenRelay.handleControl(connection.id, message)) return;
+        if (connection.currentRoomId) {
+          const relays = mediaRooms.get(connection.currentRoomId)!;
+          if (relays.audio.handleControl(connection.id, message)) return;
+          if (relays.screen.handleControl(connection.id, message)) return;
+        }
 
         if (!connection.member) {
           if (
@@ -375,19 +489,18 @@ export async function createApp(options: CreateAppOptions = {}) {
           connection.member = member;
           connection.currentRoomId = roomId;
           space.add(member, roomId);
-          if (roomId === ROOM.id) {
-            audioRelay.markJoined(connection.id);
-            screenRelay.markJoined(connection.id);
-          }
+          registerMediaConnection(roomId);
+          mediaRooms.get(roomId)!.audio.markJoined(connection.id);
+          mediaRooms.get(roomId)!.screen.markJoined(connection.id);
           members.set(member.id, member);
           const event = emit("member.joined", member, roomId);
           const room = SPACE_ROOMS.find((candidate) => candidate.id === roomId)!;
-          send({
+          sendRoomMessage(socket, connection, roomId, {
             type: "room.snapshot",
             room: { id: room.id, name: room.name },
             members: space.roomMembers(roomId),
             lastSeq: event.seq,
-          });
+          }, "roomSnapshotsSent");
           broadcastSpaceState();
           return;
         }
@@ -425,25 +538,23 @@ export async function createApp(options: CreateAppOptions = {}) {
           const previousRoomId = connection.currentRoomId!;
           const nextRoomId = message.roomId;
           if (previousRoomId !== nextRoomId) {
-            audioRelay.disconnect(connection.id);
-            screenRelay.disconnect(connection.id);
-            registerMediaConnection();
-            emit("member.left", connection.member, previousRoomId);
+            mediaRooms.get(previousRoomId)!.audio.disconnect(connection.id);
+            mediaRooms.get(previousRoomId)!.screen.disconnect(connection.id);
             connection.currentRoomId = nextRoomId;
+            registerMediaConnection(nextRoomId);
+            mediaRooms.get(nextRoomId)!.audio.markJoined(connection.id);
+            mediaRooms.get(nextRoomId)!.screen.markJoined(connection.id);
+            emit("member.left", connection.member, previousRoomId);
             space.switchRoom(connection.member.id, nextRoomId);
-            if (nextRoomId === ROOM.id) {
-              audioRelay.markJoined(connection.id);
-              screenRelay.markJoined(connection.id);
-            }
             emit("member.joined", connection.member, nextRoomId);
           }
           const room = SPACE_ROOMS.find((candidate) => candidate.id === nextRoomId)!;
-          send({
+          sendRoomMessage(socket, connection, nextRoomId, {
             type: "room.snapshot",
             room: { id: room.id, name: room.name },
             members: space.roomMembers(nextRoomId),
             lastSeq: sequence,
-          });
+          }, "roomSnapshotsSent");
           broadcastSpaceState();
           return;
         }
@@ -470,8 +581,10 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       socket.on("close", () => {
         clients.delete(socket);
-        audioRelay.disconnect(connection.id);
-        screenRelay.disconnect(connection.id);
+        for (const relays of mediaRooms.values()) {
+          relays.audio.disconnect(connection.id);
+          relays.screen.disconnect(connection.id);
+        }
         if (!connection.member) return;
         members.delete(connection.member.id);
         space.remove(connection.member.id);
@@ -489,8 +602,10 @@ export async function createApp(options: CreateAppOptions = {}) {
     clients.clear();
     members.clear();
     observations.clear();
-    audioRelay.close();
-    screenRelay.close();
+    for (const relays of mediaRooms.values()) {
+      relays.audio.close();
+      relays.screen.close();
+    }
   });
 
   return app;

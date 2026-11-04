@@ -170,3 +170,15 @@ build/typecheck、14個新舊核心整合、script syntax及三Firefox流程皆e
 Phaser4.2.1實際WebGL／原創16×20像素人物、server權威16×10位置、同一WS兩房同步與操作入口完成。root production build/typecheck、26核心整合與一次短雙Firefox157可信HTTPS/WSS流程通過；鍵盤移動跨端實際POST_RENDER座標吻合、兩房進出/空房、離開重入及減少動態無tween可行，page/socket errors空。實際查看代表截圖，來源/JSON讀回，證據見[POC-03-R001](evidence/POC-03-R001/README.md)。
 
 初期測試等待已離線端／關閉socket後繼續動作導致卡住，已終止舊程序、修正測試順序/觀察端並補逾時，focused12/12後root26/26通過；保留診斷界線。新增Phaser/eventemitter3 MIT notices及111套件inventory；既存3 moderate audit未在本票處理。桌面核心Pass；實體手機、完整跨房影音隔離/正式權限及完整T07/POC-03仍Inconclusive。共享地圖公開顯示兩房人物、People here當前房名單；Studio暫不提供影音，切房清理lobby relay，Node契約不代替T08實播。無媒體權限/硬體擷取，本機程式+紀錄commit、不push/部署/T08；writer及server/browser已釋出。
+
+## POC-03-R002／T08跨房影音與成員隔離
+
+2026-11-04配發；進行中，待實測。假設：同一本機WS可支援兩房各一合成影音publisher及receiver；server依連線成員房間分流、切房舊訂閱停止，惡意自填room/identity/role遭拒絕。DEC-010輕量，身份仍為server建立連線身份，無帳號驗證/私密入房完成宣稱；不做T09/雲端部署。
+
+### T08完成與保存讀回（2026-11-04）
+
+兩固定房各自relay／server連線room權威、room-specific成員快照與控制事件、切房先清舊發布/訂閱再建立新參與完成。27核心案例、production build/typecheck及最終四Firefox157合成雙publisher雙receiver短流程通過；兩房真實Opus/VP8 decode/render、不同顏色與封包hash來源吻合，無未知或跨房封包。切房ACK後500ms舊房server audio85→85/screen21→21、receiver新下送0，需手動訂閱才播放新房。六項外部真WSS偽造欄位/非publisher binary皆拒絕，每項未授權媒體/異房事件0。原始report/圖/指紋、server計數與root獨立全trace讀回見[POC-03-R002](evidence/POC-03-R002/README.md)。
+
+初期fixture/語法與首輪browser將合法移房成員誤分類的測試失敗已保留；root窄修script後只重跑受影響browser及語法。代表紅/綠播放器與隱藏異房地圖已實際查看，長名重疊屬POC呈現限制。無新依賴／codec變更；SOL-002/003/008、操作與協作文件同步。
+
+本輪桌面合成隔離核心可行；server UUID仍非帳號驗證、房間開放join/switch，正式主講授權/私密准入未實作，因此完整T08/POC-03仍Inconclusive。手機/真mic/真人/品質/容量/雲端不預填通過。程式+紀錄一起本機commit，不push/GitHub/T09/部署，writer與server/browser已停止釋出。

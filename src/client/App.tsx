@@ -584,8 +584,8 @@ export function App() {
         ) : null}
       </section>
 
-      {connected && currentRoomId === "lobby" && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
-      {connected && currentRoomId === "lobby" && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
+      {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
+      {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
 
       <footer className="footer-note">
         <span>Local experiment</span>

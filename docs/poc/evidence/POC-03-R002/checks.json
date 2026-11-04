@@ -1,0 +1,73 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T02:16:48.462253+00:00",
+    "finishedAt": "2026-11-04T02:16:49.976505+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=15000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T02:16:49.977278+00:00",
+    "finishedAt": "2026-11-04T02:16:50.701337+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t08-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T02:16:50.701807+00:00",
+    "finishedAt": "2026-11-04T02:16:50.741256+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "room-isolation-smoke",
+    "command": [
+      "node",
+      "scripts/t08-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T02:16:50.866052+00:00",
+    "finishedAt": "2026-11-04T02:17:00.905830+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "smoke-syntax-final",
+    "command": [
+      "node",
+      "--check",
+      "scripts/t08-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T02:17:39.669618+00:00",
+    "finishedAt": "2026-11-04T02:17:39.749805+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "room-isolation-smoke-final",
+    "command": [
+      "node",
+      "scripts/t08-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T02:17:39.875506+00:00",
+    "finishedAt": "2026-11-04T02:17:48.502028+00:00",
+    "exitCode": 0
+  }
+]

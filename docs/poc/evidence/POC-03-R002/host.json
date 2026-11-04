@@ -1,0 +1,7 @@
+{
+  "osVersion": "27.2",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "baselineCommit": "df47f4c9074014dde5666d6f34002a06a7d97de4",
+  "scope": "one local app; two synthetic desktop media publishers/two receivers; physical phone/mic/human listening deferred"
+}

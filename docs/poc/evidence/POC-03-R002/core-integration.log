@@ -1,0 +1,35 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (196.918708ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (167.743875ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.097125ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (75.510167ms)
+✔ invalid capability reports are rejected and not stored (4.098375ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (3.0955ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.159958ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.222458ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.189959ms)
+✔ new future output samples do not hide a due audio-master sample (0.103209ms)
+✔ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (455.184542ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (112.201625ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (168.235833ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.644791ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (84.911667ms)
+✔ the application serves health and a built-in room catalogue (46.64ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.287417ms)
+✔ the websocket rejects cross-origin clients before joining (1.515ms)
+✔ malformed or oversized control frames close without being broadcast (3.458917ms)
+✔ clients cannot select arbitrary rooms (1.31025ms)
+✔ display names longer than the server limit are rejected (1.406625ms)
+✔ control events reject client-supplied fields outside the protocol (1.599ms)
+✔ the room has a fixed member limit (8.788375ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.845583ms)
+✔ space snapshots expose member positions only for the recipient's current room (36.310667ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (68.991667ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (108.373792ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 651.405625

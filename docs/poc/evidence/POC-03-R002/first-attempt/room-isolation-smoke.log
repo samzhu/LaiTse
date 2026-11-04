@@ -1,0 +1,38 @@
+[T08] four-clients-joined-two-rooms
+[T08] independent-audio-screen-source-hashes-matched
+[T08] switch-ack-old-subscriptions-stopped {"roomSnapshotAt":1793758617156,"lobbyMediaRecordsAtAck":{"audio":86,"screen":22},"postAckAudioFrames":0,"postAckScreenFrames":0}
+[T08] explicit-new-room-subscription-rendered
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: forged-screen-control must not receive foreign member data/events
++ actual - expected
+
++ [
++   {
++     foreignMemberName: true,
++     roomId: 'studio',
++     type: 'room.snapshot'
++   }
++ ]
+- []
+
+    at verifyExternalNoMedia (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t08-smoke.mjs:614:10)
+    at exerciseMaliciousClients (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t08-smoke.mjs:679:21)
+    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t08-smoke.mjs:974:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      type: 'room.snapshot',
+      roomId: 'studio',
+      foreignMemberName: true
+    }
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.13.0

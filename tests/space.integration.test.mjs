@@ -121,7 +121,7 @@ function closeAll(sockets) {
   }
 }
 
-test("two rooms retain members and server positions synchronize over the same space snapshot", { timeout: TEST_TIMEOUT_MS }, async () => {
+test("space snapshots expose member positions only for the recipient's current room", { timeout: TEST_TIMEOUT_MS }, async () => {
   const sockets = [];
   try {
     const ada = await connect();
@@ -140,17 +140,22 @@ test("two rooms retain members and server positions synchronize over the same sp
     assert.equal(graceJoined.room.room.id, "studio");
     assert.deepEqual(graceJoined.room.members.map((member) => member.displayName), ["Grace"]);
     assert.equal(player(adaSpace, "Ada").roomId, "lobby");
-    assert.equal(player(adaSpace, "Grace").roomId, "studio");
+    assert.equal(player(adaSpace, "Grace"), undefined);
     assert.deepEqual(adaSpace.rooms.find((room) => room.id === "lobby").players.map((member) => member.displayName), ["Ada"]);
-    assert.deepEqual(adaSpace.rooms.find((room) => room.id === "studio").players.map((member) => member.displayName), ["Grace"]);
+    assert.equal(adaSpace.rooms.find((room) => room.id === "lobby").membersVisible, true);
+    assert.deepEqual(adaSpace.rooms.find((room) => room.id === "studio").players, []);
+    assert.equal(adaSpace.rooms.find((room) => room.id === "studio").membersVisible, false);
+    assert.deepEqual(graceJoined.space.rooms.find((room) => room.id === "lobby").players, []);
+    assert.equal(graceJoined.space.rooms.find((room) => room.id === "lobby").membersVisible, false);
+    assert.deepEqual(graceJoined.space.rooms.find((room) => room.id === "studio").players.map((member) => member.displayName), ["Grace"]);
 
     const beforeMove = player(graceJoined.space, "Grace");
     const adaSeesMove = nextMessage(ada, (message) => message.type === "space.snapshot");
     const graceSeesMove = nextMessage(grace, (message) => message.type === "space.snapshot");
     send(grace, { type: "space.move", direction: "right" });
     const [movedAtAda, movedAtGrace] = await Promise.all([adaSeesMove, graceSeesMove]);
-    assert.deepEqual(player(movedAtAda, "Grace"), player(movedAtGrace, "Grace"));
-    assert.equal(player(movedAtAda, "Grace").x, beforeMove.x + 1);
+    assert.equal(player(movedAtAda, "Grace"), undefined, "a participant in another room is omitted from this snapshot");
+    assert.equal(player(movedAtGrace, "Grace").x, beforeMove.x + 1);
     assert.equal(movedAtAda.seq, movedAtGrace.seq);
 
     const graceSawAdaEnter = nextMessage(grace, (message) => message.type === "control.event" && message.event.kind === "member.joined");
@@ -161,6 +166,9 @@ test("two rooms retain members and server positions synchronize over the same sp
     assert.deepEqual(switchRoom.members.map((member) => member.displayName).sort(), ["Ada", "Grace"]);
     assert.equal(joinEvent.event.roomId, "studio");
     assert.equal(player(switchState, "Ada").roomId, "studio");
+    assert.equal(player(switchState, "Grace").roomId, "studio");
+    assert.deepEqual(switchState.rooms.find((room) => room.id === "lobby").players, []);
+    assert.equal(switchState.rooms.find((room) => room.id === "lobby").membersVisible, false);
 
     const adaSawGraceLeave = nextMessage(ada, (message) => message.type === "control.event" && message.event.kind === "member.left");
     const adaAfterGraceLeaves = nextMessage(ada, (message) => message.type === "space.snapshot");
@@ -176,6 +184,7 @@ test("two rooms retain members and server positions synchronize over the same sp
     const [lobbyState, emptyState] = await Promise.all([adaLobbySnapshot, adaSeesEmptyStudio]);
     assert.deepEqual(lobbyState.members.map((member) => member.displayName), ["Ada"]);
     assert.deepEqual(emptyState.rooms.find((room) => room.id === "studio").players, []);
+    assert.equal(emptyState.rooms.find((room) => room.id === "studio").membersVisible, false);
     assert.deepEqual(emptyState.rooms.map((room) => room.id), ["lobby", "studio"]);
 
     const returningGrace = await connect();
@@ -184,7 +193,8 @@ test("two rooms retain members and server positions synchronize over the same sp
     const graceRejoined = await join(returningGrace, "Grace", "studio");
     const rejoinedState = await adaSeesRejoin;
     assert.deepEqual(graceRejoined.room.members.map((member) => member.displayName), ["Grace"]);
-    assert.equal(player(rejoinedState, "Grace").roomId, "studio");
+    assert.equal(player(rejoinedState, "Grace"), undefined);
+    assert.equal(rejoinedState.rooms.find((room) => room.id === "studio").membersVisible, false);
   } finally {
     closeAll(sockets);
   }
@@ -240,7 +250,7 @@ test("movement is one bounded step, rejects room and participant spoofing, and f
   }
 });
 
-test("switching rooms ends lobby media and rejects media controls and bytes outside the lobby", { timeout: TEST_TIMEOUT_MS }, async () => {
+test("media controls are available in both rooms and switching clears the previous publisher", { timeout: TEST_TIMEOUT_MS }, async () => {
   const sockets = [];
   try {
     const ada = await connect();
@@ -275,15 +285,28 @@ test("switching rooms ends lobby media and rejects media controls and bytes outs
     send(ada, { type: "room.switch", roomId: "studio" });
     await Promise.all([adaStudio, graceLeftLobby, graceAudioEnded, graceScreenEnded]);
 
-    for (const mediaControl of [{ type: "audio.subscribe" }, { type: "screen.subscribe" }]) {
-      const error = nextMessage(ada, (message) => message.type === "protocol.error");
-      send(ada, mediaControl);
-      assert.equal((await error).code, "media_unavailable_in_room");
-    }
-    const binaryError = nextMessage(ada, (message) => message.type === "protocol.error");
-    ada.send(Buffer.from("LTA1"));
-    assert.equal((await binaryError).code, "media_unavailable_in_room");
-    assert.equal(ada.readyState, WebSocket.OPEN);
+    const studioViewer = await connect();
+    sockets.push(studioViewer);
+    await join(studioViewer, "Studio Viewer", "studio");
+    const studioAudioSubscribed = nextMessage(studioViewer, (message) => message.type === "audio.subscribed");
+    const studioScreenSubscribed = nextMessage(studioViewer, (message) => message.type === "screen.subscribed");
+    send(studioViewer, { type: "audio.subscribe" });
+    send(studioViewer, { type: "screen.subscribe" });
+    await Promise.all([studioAudioSubscribed, studioScreenSubscribed]);
+
+    const studioAudioStream = nextMessage(studioViewer, (message) => message.type === "audio.stream");
+    const studioAudioStarted = nextMessage(ada, (message) => message.type === "audio.started");
+    send(ada, { type: "audio.start", codec: "opus", sampleRate: 48_000, channels: 1, bitrate: 32_000, frameDurationUs: 20_000 });
+    const [studioAudioAck, audioAtViewer] = await Promise.all([studioAudioStarted, studioAudioStream]);
+    assert.equal(audioAtViewer.generation, studioAudioAck.generation);
+
+    const studioScreenStream = nextMessage(studioViewer, (message) => message.type === "screen.stream");
+    const studioScreenStarted = nextMessage(ada, (message) => message.type === "screen.started");
+    send(ada, { type: "screen.start", codec: "vp8", width: 320, height: 180, frameRate: 10, bitrate: 200_000 });
+    const [studioScreenAck, screenAtViewer] = await Promise.all([studioScreenStarted, studioScreenStream]);
+    assert.equal(screenAtViewer.generation, studioScreenAck.generation);
+    const noForeignMedia = noMessage(grace, (message) => message.type === "audio.stream" || message.type === "screen.stream", 100);
+    assert.equal(await noForeignMedia, null, "lobby members do not receive studio publisher controls");
 
     const returnedToLobby = nextMessage(ada, (message) => message.type === "room.snapshot" && message.room.id === "lobby");
     send(ada, { type: "room.switch", roomId: "lobby" });

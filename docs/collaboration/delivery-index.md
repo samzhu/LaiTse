@@ -38,3 +38,4 @@
 | T05-IMPLEMENT／T05-ACCEPT | 站內畫面分享、獨立啟停與觀測 | ScreenController/Panel/relay、t05-smoke、README；POC-02-R001 | 18核心/build、三Firefox合成影音、原生Chrome分頁擷取/瀏覽器停止成功；失敗與修正保留 | 桌面核心可行，完整POC-02待晚加入/同步與必要裝置；本機commit、不push；資源釋出 |
 | T06-IMPLEMENT／T06-ACCEPT | 晚加入、世代重建與同發布者音訊主時鐘排程 | media-timeline、relays/controllers/worklets、t06-smoke；POC-02-R002 | 23核心/build、三Firefox合成閉環及marker觀測；失敗/修正保存，schema2下載已讀回 | 軟體核心可行，完整品質/裝置未通過；本機commit、不push/T07；資源釋出 |
 | T07-IMPLEMENT／T07-ACCEPT | Phaser像素人物、server權威兩房/位置與操作入口 | SpacePanel/pixel-space、space model、t07-smoke；POC-03-R001 | 26核心/build、雙FirefoxWebGL移動/切房/離開重入/減少動態通過；SOL-004/008與MIT notices同步 | 桌面核心可行；手機/完整跨房影音/POC-03待補，本機commit不push/T08；資源釋出 |
+| T08-IMPLEMENT／T08-ACCEPT | 房間影音與成員隔離、切房及惡意client拒絕 | app per-room relays/guard、room-isolation契約、t08-smoke；POC-03-R002 | 27核心/build、四Firefox合成雙房/切房/來源hash與六外部拒絕通過，SOL-002/003/008同步；失敗保存 | 匿名連線核心可行；帳號/角色/私密准入及完整POC-03待補，本機commit不push/T09；資源釋出 |

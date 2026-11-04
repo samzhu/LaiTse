@@ -32,6 +32,7 @@ export type SpaceState = {
     name: string;
     style: (typeof SPACE_ROOMS)[number]["style"];
     players: SpacePlayer[];
+    membersVisible: boolean;
   }>;
 };
 
@@ -129,9 +130,12 @@ export function createSpaceModel() {
         grid: SPACE_GRID,
         rooms: SPACE_ROOMS.map((room) => ({
           ...room,
-          players: [...players.values()]
-            .filter((player) => player.roomId === room.id)
-            .map((player) => ({ ...player })),
+          players: room.id === input.currentRoomId
+            ? [...players.values()]
+              .filter((player) => player.roomId === room.id)
+              .map((player) => ({ ...player }))
+            : [],
+          membersVisible: room.id === input.currentRoomId,
         })),
       };
     },

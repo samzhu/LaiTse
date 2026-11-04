@@ -1,0 +1,15 @@
+{
+  "package.json": "07c29d5dd1892b528c42f764cf08ec3e1051a08654d0c00523e0fbc1d6733cf4",
+  "package-lock.json": "95b73be9df876b1af457d5b8c9c2b26e3f92a3e7f0a433ecc8c56aa2d7594148",
+  "README.md": "32789ebad3358a8c7f8dc6da8499661f62121d311cc7bc24ec8415a40c5ab8b5",
+  "src/server/app.ts": "5a43a4e41c946cbb735c1b97e0c3d69ea3e7e7f6742fb06af56ee64eb0574f3a",
+  "src/server/space.ts": "7ad1e3b3ba992f6c2d77ccb0967dcf8d418b863f34e99f0632de295bdc022f17",
+  "src/server/audio-relay.ts": "80446cafe4d4923f7627f46dd84ae29bcd3bf55a396931edfe77dcb555e72683",
+  "src/server/screen-relay.ts": "d4b65b35cf90d305cf96fde1fa1c2bbfa3fb1d9cd39fbf47f5d0ded519f5f51f",
+  "src/client/App.tsx": "911ee9f1dec80ed35cb7b3120ef7e03cd566c2c9bfed18ef2b6c10a2ca8d0fdc",
+  "src/client/SpacePanel.tsx": "7fc97ea9cee78feb294f22c22639458929412cc42c89e24099734a71add87f31",
+  "src/client/pixel-space.ts": "4653ab29b62f455fbc6369f7f8fb88d22863f7cbaf9db34aec5c57436aa9f707",
+  "tests/space.integration.test.mjs": "44592d5cf23366226a6414f969bd4af57adfa9aa7479e562c81ea1281efdf303",
+  "tests/room-isolation.integration.test.mjs": "c0a542f61eea1da38fe278ff1ec6903751095e0050205e80976ae3ec084361fa",
+  "scripts/t08-smoke.mjs": "09f265c1073b6e435f86e6f1b2184dddd2d15d75ae37df19f3edcd03d9a07f2f"
+}
