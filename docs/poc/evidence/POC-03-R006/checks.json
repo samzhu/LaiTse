@@ -1,0 +1,45 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T06:45:01.918296+00:00",
+    "finishedAt": "2026-11-04T06:45:03.333609+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T06:45:03.334288+00:00",
+    "finishedAt": "2026-11-04T06:45:12.520577+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "interaction-smoke",
+    "command": [
+      "node",
+      "scripts/interaction-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T06:47:10.047872+00:00",
+    "finishedAt": "2026-11-04T06:47:29.960527+00:00",
+    "exitCode": 0
+  }
+]

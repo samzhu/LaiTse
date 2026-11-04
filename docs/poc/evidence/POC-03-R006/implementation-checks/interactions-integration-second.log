@@ -1,0 +1,13 @@
+✔ interaction snapshots follow the room snapshot and feedback/chat/stickers stay room-scoped (353.227541ms)
+✔ dedup ACK precedes rate checks; event ID collisions and injected room fields are rejected (308.770417ms)
+✔ host pause, block, clear, remove, expiry, and room-switch replay retain separate outcomes (14.4335ms)
+✔ expired public items are pruned and a replay inside dedup TTL is ACK-only (8175.699959ms)
+✔ the bounded dedup store does not evict accepted IDs before their TTL (4.405917ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9003.264333

@@ -80,3 +80,23 @@ Luna已明確停止並釋出README、smoke-script及implementation-checks紀錄�
 T09圖像讀回新差異：browser核心pass後root查看圖發現門圖仍OPEN而metadata已locked。root唯一writer追加`src/client/pixel-space.ts`窄修門圖隨當前rooms更新（不動命中區/位置/指標修正），現有script增加實際POST_RENDER門狀態斷言；保留before-door-visual-fix原圖/報告，重build與受影響browser。source已全交接無衝突。
 
 T09最終驗收：完整34/34、主持切房往返補充後T09檔3/3、兩次build/typecheck與最終三Firefox157通過。兩selector失敗與門圖真實不一致/窄修證據保留R005，最終POST_RENDER LOCKED/OPEN三頁及實際鎖門截圖由root讀回查看。文件/SOL/使用方式已同步，source/code writer全部交接後root完成窄修並停止，待本機commit後資源釋出；不push/遠端票/T10/部署。
+
+## T10／POC-03-R006（2026-11-04）
+
+人類要求T10房內互動/彈幕核心可行與用法、輕量驗測、程式與紀錄本機commit。已讀回#11「房內回應與公開留言」；最新DEC-010/人類指示優先，原票100個延遲樣本/p95品質門檻本輪不強制，未執行須明列，不宣稱完整T10/POC-03通過。基線cff55ba。
+
+- **T10-IMPL／Luna xhigh唯一writer**：`src/server/app.ts`、新增`src/server/interactions.ts`；`src/client/App.tsx`、新增`src/client/InteractionPanel.tsx`、新增`src/client/interactions.ts`（若需要shared types採此client檔，不改tsconfig）、`src/client/styles.css`；`tests/interactions.integration.test.mjs`、`scripts/interaction-smoke.mjs`、README、`.scratch/t10/implementation-checks/`。唯讀其他source/tests/docs，manifest/lock/影音relays/controllers/Phaser/HostPanel不寫；若需擴寫先交回root。不做Git寫入、不啟動server/browser。
+- **root唯一writer**：本輪docs（沿用poc execution-log/mvp-handoff/plan/ticket-breakdown與R006、collaboration dispatch/brief/checkpoint/index、PRD/handoff狀態）、.gitignore、驗收runner/runtime、Git。child未交接前不寫其檔案。舊匿名wave/clap/heart協議保留供既有契約/技術示範，新增正式三種feedback明確分開，不能把舊反應當新PRD已完成。
+- **最小行為/已授權選擇**：👍讚/👂我想聽/💡這個實用；純文字聊天最多300 codepoints、固定emoji圖案、明確按「公開彈幕」最多60 codepoints，聊天不自動投影。以現有WS/server connection推導room/participant，strict schema禁止自填room/role/來源；純文字React逃逸，不處理HTML或任意圖片。必要interaction text獨立<=2KiB訊息上限，既有control1KiB/media界線不放寬。
+- **權威狀態/不變條件**：eventId去重（同sender+ID重送只ACK、不重廣播/計數；同ID不同payload或房間拒絕），去重cache/歷史/待播queue皆有界/TTL，界線明示；server每connection限流，過期server清理/顯示端不補播。feedback互動次數與不重複參與者統計分開/明示統計窗口，不以總訊息數當人數。roomA內容不進roomB快照或事件，切房/移除後停止舊房呈現；不改既有主持/密碼/媒體清理規則。
+- **展示管理**：沿T09 connection.hostActive的當前房權限，不另造主持系統，無token匿名模式不提供管理。暫停展示會隱藏/停播公開層但仍收新彈幕入有界queue；禁止新增只拒絕新彈幕，不等同pause、不封聊天/feedback。resume只顯示尚未過期；clear公開queue與remove特定內容分開，remove從聊天歷史/公開層對應條目撤下，結果可核對，已被看過不可收回。用目前頁內公開展示區驗證，不提前實作T11獨立display route/模式/QR。具體fixture TTL/queue/rate由實作者選小且可操作數值、README與測試明示，不定案商品參數。
+- **驗收/輸出/停止**：少量新Node整合契約含同房送達/跨房0、去重/重用ID/限流、TTL/queue界線、未主持/跨房偽造管理拒絕、pause vs block/clear/remove；短三Firefox（兩頁同房、一頁異房）普通UI三feedback/chat/sticker/明確彈幕/主持pause-block-remove-expiry，外部WS負例。輕量核心，不做100樣本/品質/裝置長測；root build/typecheck/完整Node一次、真browser/代表圖與獨立讀回，保留失敗及新證據修正。不得晚交接後又寫已釋出檔案；分批釋出要精確列saved/readback/stop、root接手後只能提交建議patch。完成本機commit、不push/遠端票/T11/部署。
+- **狀態**：範圍已保存並委派，Luna xhigh實作中；root規劃/驗收。
+
+### T10 source/test交接
+
+Luna明確回報saved/readback/STOP，釋出app.ts、server/interactions.ts、client App/InteractionPanel/interactions/styles及tests/interactions.integration.test.mjs。focused互動第二輪5/5與typecheck-third已保存，root已讀回。root目前為source/tests唯一writer，開始build/完整Node；Luna僅保留README、interaction-smoke與implementation-checks紀錄至完成後明確釋出，不得late source patch。
+
+T10剩餘資源交接：Luna已saved/readback/STOP並釋出README、interaction-smoke與implementation-checks。root讀回final syntax與重要腳本斷言，source/test交接時指紋未變；production build/typecheck、完整39/39通過。root現為本輪唯一writer/runtime操作者，開始三Firefox驗收。
+
+T10最終交付：source交接指紋與root build一致、完整39/39及首次三Firefox短流程通過。script/README/log均已STOP交接，root獨立讀回frame/ID/room並看兩張代表圖；開發中失敗保留。README/需求狀態/計畫/票面/SOL/協作紀錄同步，root唯一writer完成驗收與文件後停止，本機commit後資源釋出；不push/遠端票/T11/部署。100accepted/p95品質與完整POC-03未驗，不宣稱商品交付。

@@ -1,0 +1,33 @@
+✔ interaction snapshots follow the room snapshot and feedback/chat/stickers stay room-scoped (328.853625ms)
+✔ dedup ACK precedes rate checks; event ID collisions and injected room fields are rejected (311.298875ms)
+✖ host pause, block, clear, remove, expiry, and room-switch replay retain separate outcomes (9.006333ms)
+✔ expired public items are pruned and a replay inside dedup TTL is ACK-only (8515.497625ms)
+✔ the bounded dedup store does not evict accepted IDs before their TTL (0.306959ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9336.464333
+
+✖ failing tests:
+
+test at tests/interactions.integration.test.mjs:158:1
+✖ host pause, block, clear, remove, expiry, and room-switch replay retain separate outcomes (9.006333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/interactions.integration.test.mjs:220:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,96 @@
+{
+  "status": "pass",
+  "startedAt": "2026-11-04T06:47:10.243Z",
+  "finishedAt": "2026-11-04T06:47:29.929Z",
+  "clientSummaries": {
+    "studio-host": {
+      "frameRecords": 68,
+      "receivedInteractionEvents": 22,
+      "uniqueInteractionIds": 22,
+      "dedupProbeEvents": 1,
+      "foreignRoomInteractionFrames": 0,
+      "acceptedUiAcknowledgements": 0,
+      "lastAcknowledgedRoom": "studio"
+    },
+    "studio-guest": {
+      "frameRecords": 72,
+      "receivedInteractionEvents": 22,
+      "uniqueInteractionIds": 22,
+      "dedupProbeEvents": 1,
+      "foreignRoomInteractionFrames": 0,
+      "acceptedUiAcknowledgements": 11,
+      "lastAcknowledgedRoom": "studio"
+    },
+    "lobby-observer": {
+      "frameRecords": 19,
+      "receivedInteractionEvents": 1,
+      "uniqueInteractionIds": 1,
+      "dedupProbeEvents": 0,
+      "foreignRoomInteractionFrames": 0,
+      "acceptedUiAcknowledgements": 1,
+      "lastAcknowledgedRoom": "studio"
+    }
+  },
+  "sameStudioEventIdSets": true,
+  "controlCapReached": false,
+  "probes": [
+    {
+      "name": "unauthorized-host-control",
+      "roomId": "studio",
+      "result": "host_unauthorized",
+      "participantId": "555b4673-ed81-4ca5-91a8-61e52290b2ec"
+    },
+    {
+      "name": "forged-room-field",
+      "roomId": "studio",
+      "result": "invalid_interaction"
+    },
+    {
+      "name": "sender-event-id-dedup",
+      "roomId": "studio",
+      "eventId": "dedup-probe",
+      "results": [
+        "accepted",
+        "duplicate-ack-only",
+        "changed-payload-rejected"
+      ]
+    },
+    {
+      "name": "interaction-rate-limit",
+      "roomId": "studio",
+      "sent": 11,
+      "accepted": 10,
+      "rejected": 1,
+      "rejectionCode": "interaction_rate_limited"
+    },
+    {
+      "name": "continuous-room-isolation-and-dedup-trace",
+      "roomId": "studio",
+      "dedupProbeReceivedOnceBy": [
+        "studio-host",
+        "studio-guest"
+      ],
+      "lobbyInteractionEventCount": 0,
+      "lobbyRoomAtIsolationCheck": "lobby",
+      "checkedAt": "2026-11-04T06:47:20.015Z"
+    },
+    {
+      "name": "switch-clears-previous-room-ui",
+      "fromRoom": "lobby",
+      "toRoom": "studio",
+      "oldRoomItemVisibleAfterSwitch": false
+    },
+    {
+      "name": "leave-clears-interaction-ui",
+      "lastRoom": "studio",
+      "panelPresentAfterLeave": false
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "collectionErrors": [],
+    "failure": null
+  },
+  "scope": "Room membership tracked from ordered room.snapshot frames; the lobby observer deliberately switches to studio and leaves at the end. Historical final room label is not an active connection claim."
+}

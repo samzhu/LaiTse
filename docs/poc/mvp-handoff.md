@@ -144,3 +144,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-002：relay新增stopPublishing(connectionId, reason)，撤權/結束保留訂閱與peer、清publisher、廣播streamEnded並通知source停止tracks/encoder；app對managed未授權start/binary都拒絕。三Firefox合成實播與350ms停止窗口通過，非真mic/display/品質；原codec與距離規則保留。
 - SOL-004/007：HostPanel正常claim/grant/revoke/lock/password/unlock/end可操作；密碼/host input提交清空、room切換清空，catalogue即時更新。root視覺驗收發現Phaser門圖只初始化，已窄修更新現有graphics/text而保留命中區。MVP需整理匿名模式/管理credential、角色展示/帳號、診斷UI與視覺長名字重疊。
 - SOL-008：[R005](evidence/POC-03-R005/README.md)保存34核心/補充3、短三Firefox、五外部越權、stop計數/track ended、失敗與動態門圖修正/最終代表圖。可復用`host-control.integration.test.mjs`及`host-control-smoke.mjs`；此輪計數不做payload hash。沒有新依賴/手機/真人/長測/容量/雲證據，完整POC-03/MVP仍需整合驗證。
+
+## T10／POC-03-R006：SOL-003／007／008（2026-11-04）
+
+- SOL-003：`interactions.ts`按Room保留history/publicQueue/feedback，sender+eventId索引跨房，原樣重送只ACK、不同payload/room拒絕；未過期ID不為容量靜默淘汰，滿2048拒新至TTL到期。新`interaction.submit`獨立2KiB，舊control1KiB/影音界線不變；server從connection推導room/participant，管理沿T09同房hostActive。prune dirty通知避免其他room活動偷清過期而漏更新，snapshot/state與event都有room guard。
+- SOL-007：history50/5min、public20/8s、feedback60s/512及dedup10min/2048為bounded process-memory fixture；統計次數/臨時participant數分開，非真人身份。pause只停展示、block只禁新公開，remove同步歷史+queue、clear僅公開queue。重啟清空，換匿名身份不承接去重；MVP須設計耐久/帳號/大量負載與保留政策。
+- SOL-008：[R006](evidence/POC-03-R006/README.md)首次root39核心/build及三Firefox普通UI/外部probe通過，studio22 IDs相同無重送/異房，11速率10接受1拒；原開發型別/fixture失敗與修正保存。可復用`interactions.integration.test.mjs`及`interaction-smoke.mjs`，含Unicode長度、bounded cache、實際TTL與正常畫面。
+- 可用呈現：InteractionPanel分聊天/固定圖案/明確公開區，常態區分pause/acceptance，serverNow+monotonic elapsed只估期限，非E2E校準。SOL-005的獨立display/模式/QR/保留草稿仍T11，未因公開區可見就宣稱完成。未跑100accepted/p95、手機/真人/弱網/容量/雲或完整POC-03；沒有新依賴/影音或Phaser改動。

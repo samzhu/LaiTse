@@ -1,0 +1,9 @@
+
+> laitse-local-poc@0.1.0 typecheck
+> tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit
+
+src/client/App.tsx(342,40): error TS2339: Property 'paused' does not exist on type '{ type: "host.actionResult"; action: string; participantId?: string | undefined; allowed?: boolean | undefined; roomId?: string | undefined; isLocked?: boolean | undefined; grantsCleared?: boolean | undefined; }'.
+src/client/App.tsx(345,40): error TS2339: Property 'enabled' does not exist on type '{ type: "host.actionResult"; action: string; participantId?: string | undefined; allowed?: boolean | undefined; roomId?: string | undefined; isLocked?: boolean | undefined; grantsCleared?: boolean | undefined; }'.
+src/client/App.tsx(348,54): error TS2339: Property 'clearedCount' does not exist on type '{ type: "host.actionResult"; action: string; participantId?: string | undefined; allowed?: boolean | undefined; roomId?: string | undefined; isLocked?: boolean | undefined; grantsCleared?: boolean | undefined; }'.
+src/client/App.tsx(348,90): error TS2339: Property 'clearedCount' does not exist on type '{ type: "host.actionResult"; action: string; participantId?: string | undefined; allowed?: boolean | undefined; roomId?: string | undefined; isLocked?: boolean | undefined; grantsCleared?: boolean | undefined; }'.
+src/client/App.tsx(351,40): error TS2339: Property 'removed' does not exist on type '{ type: "host.actionResult"; action: string; participantId?: string | undefined; allowed?: boolean | undefined; roomId?: string | undefined; isLocked?: boolean | undefined; grantsCleared?: boolean | undefined; }'.

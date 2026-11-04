@@ -166,3 +166,5 @@ DEC011-BC已依人類新指示啟動門/密碼核心POC（R004）：server啟動
 DEC011-BC門/密碼准入核心已於R004交付（startup設定鎖，31核心/兩config browser），未配新T號/改遠端票。B的點門與C的密碼准入核心有證據；行走穿門、C中即時管理/密碼更新與T09角色仍待後續，不改原票完成狀態。
 
 T09本機桌面核心已於[POC-03-R005](evidence/POC-03-R005/README.md)交付：主持claim/主講grant-revoke/remove/end及即時門鎖/密碼更新，34核心+3補充/三Firefox核心通過。DEC011-C的即時管理已有本機證據，正式帳號/逐房管理secret/耐久狀態仍待；不將原票/完整POC-03自動標為全通過。#10遠端狀態未修改、未push，下一項依人類指示。
+
+T10房內互動/公開留言桌面核心已於[POC-03-R006](evidence/POC-03-R006/README.md)保存：39核心/build及三Firefox三feedback/chat/sticker/明確公開、pause/block/remove/clear/TTL/去重/限流/異房隔離成功。原#11至少100accepted/p95品質未驗（本輪人類指定輕量核心），完整票面/POC-03 Inconclusive；不改遠端狀態、不push、不自動啟動T11。

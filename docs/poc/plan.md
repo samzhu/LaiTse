@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T09桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 狀態：T01～T10桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
 - 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
 - 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
@@ -263,3 +263,7 @@ GitHub Issue 是這份 POC 計畫的發布鏡像；修改本計畫時同步 Issu
 ### T09本輪結果（2026-11-04）
 
 [R005](evidence/POC-03-R005/README.md)驗證當前房主持bootstrap claim、主講grant/revoke、remove、活動結束及DEC011-C的live lock/password/unlock核心。34核心/補充3及最終三Firefox合成音畫/正常UI+外部越權通過；原失敗與門圖不同步修正保留。無token為舊匿名技術POC；不是帳號/逐房credential/耐久Session/完整資安。T09桌面核心完成，不改判完整POC-03；手機/真人/重啟/容量/完整流程仍待。T10等後續依人類指示，不改遠端19票鏡像。
+
+### T10本輪結果（2026-11-04）
+
+[R006](evidence/POC-03-R006/README.md)完成三feedback/聊天/固定圖案/明確公開文字及同房主持pause/block/remove/clear、去重/限流/TTL的桌面核心；39核心/build/typecheck與三Firefox一次流程通過。依本輪人類輕量要求，未強制原票100accepted/p95品質量測，完整T10/POC-03仍Inconclusive，不把核心可行當品質通過。T11展示頁/模式/QR/草稿、裝置/耐久/容量/弱網與部署待後續；遠端票不修改。

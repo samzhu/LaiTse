@@ -1,0 +1,47 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (209.372125ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (165.450584ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (86.038917ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (86.943041ms)
+✔ invalid capability reports are rejected and not stored (5.452792ms)
+✔ managed host claims are separate from room passwords; revoke stops both relays and blocks later frames (471.628334ms)
+✔ host token startup bounds are enforced without copying the configured value to errors (4.280167ms)
+✔ host claims have a per-connection rolling attempt limit (3.641875ms)
+✔ interaction snapshots follow the room snapshot and feedback/chat/stickers stay room-scoped (392.444667ms)
+✔ dedup ACK precedes rate checks; event ID collisions and injected room fields are rejected (309.155792ms)
+✔ host pause, block, clear, remove, expiry, and room-switch replay retain separate outcomes (8.727ms)
+✔ expired public items are pruned and a replay inside dedup TTL is ACK-only (8169.985292ms)
+✔ the bounded dedup store does not evict accepted IDs before their TTL (2.732917ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.78425ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.111833ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.209625ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.185667ms)
+✔ new future output samples do not hide a due audio-master sample (0.098ms)
+✔ room door policy shares one locked server gate for join, switch, and room media (914.296ms)
+✔ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (463.624834ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (137.1685ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (170.8345ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.528541ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (85.899708ms)
+✔ the application serves health and a built-in room catalogue (65.152458ms)
+✔ two clients receive the same authoritative members and sequenced reaction (10.855667ms)
+✔ the websocket rejects cross-origin clients before joining (1.343958ms)
+✔ malformed or oversized control frames close without being broadcast (4.862958ms)
+✔ clients cannot select arbitrary rooms (2.800375ms)
+✔ display names longer than the server limit are rejected (1.505959ms)
+✔ control events reject client-supplied fields outside the protocol (1.6785ms)
+✔ the room has a fixed member limit (10.307917ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.82325ms)
+✔ open-area audio follows authoritative distance, including the six-unit edge (302.442041ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (189.574958ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (6.972875ms)
+✔ space snapshots expose member positions only for the recipient's current room (25.191083ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (65.886458ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (108.762958ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9132.313667

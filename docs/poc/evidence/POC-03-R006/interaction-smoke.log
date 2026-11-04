@@ -1,0 +1,17 @@
+[T10] joined two studio pages and one isolated lobby page {"clients":{"studio-host":{"roomId":"studio","participantId":"afbed9ca-e934-4d64-9aad-8082354e8082"},"studio-guest":{"roomId":"studio","participantId":"de0d2570-04c3-4678-98c3-667a4e7d53c4"},"lobby-observer":{"roomId":"lobby","participantId":"2edde6ac-a632-4aaf-8ba9-f456e8da944f"}}}
+[T10] host claimed controls through the existing T09 panel
+[T10] sent official feedback like
+[T10] sent official feedback want-listen
+[T10] sent official feedback useful
+[T10] sent plain text chat to the studio history only
+[T10] sent a fixed sticker to the studio chat list
+[T10] explicit danmaku projected in the studio only
+[T10] pause hid the public layer while the server accepted and queued new danmaku
+[T10] host removed one item from both history and public queue
+[T10] host cleared the public queue without deleting the chat history
+[T10] blocking public posting left ordinary chat available
+[T10] external WebSocket probes verified host authorization, strict fields, duplicate ACK, collision, and rate limit
+[T10] public danmaku expired from the live projection {"publicTtlMs":8000}
+[T10] room switch and leave cleared the previous interaction view
+[T10] all browser pages and WebSocket instrumentation finished without errors
+{"status":"pass","report":"/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/report.json","checks":["joined two studio pages and one isolated lobby page","host claimed controls through the existing T09 panel","sent official feedback like","sent official feedback want-listen","sent official feedback useful","sent plain text chat to the studio history only","sent a fixed sticker to the studio chat list","explicit danmaku projected in the studio only","pause hid the public layer while the server accepted and queued new danmaku","host removed one item from both history and public queue","host cleared the public queue without deleting the chat history","blocking public posting left ordinary chat available","external WebSocket probes verified host authorization, strict fields, duplicate ACK, collision, and rate limit","public danmaku expired from the live projection","room switch and leave cleared the previous interaction view","all browser pages and WebSocket instrumentation finished without errors"],"screenshots":["/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/public-stage-visible-interaction-panel.png","/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-studio-host.png","/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-studio-guest.png","/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-lobby-observer.png"]}

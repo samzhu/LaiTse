@@ -15,6 +15,13 @@ import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_B
 import { createHostControlPolicy } from "./host-control.ts";
 import { createRoomAccessPolicy, isValidRoomPassword } from "./room-access.ts";
 import {
+  InteractionStore,
+  MAX_FEEDBACK_PER_SECOND,
+  MAX_INTERACTION_MESSAGE_BYTES,
+  MAX_INTERACTIONS_PER_SECOND,
+  parseInteractionInput,
+} from "./interactions.ts";
+import {
   createSpaceModel,
   isKnownRoom,
   isMoveDirection,
@@ -55,6 +62,8 @@ type ClientConnection = {
   hostActive: boolean;
   removed: boolean;
   eventTimes: number[];
+  interactionTimes: number[];
+  feedbackTimes: number[];
   moveTimes: number[];
 };
 
@@ -170,6 +179,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
+  const interactions = new InteractionStore(SPACE_ROOMS.map(({ id }) => id));
   const roomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
   const hostControl = createHostControlPolicy(options.hostControlToken);
   const publisherGrants = new Map<RoomId, Set<string>>(SPACE_ROOMS.map(({ id }) => [id, new Set()]));
@@ -198,6 +208,28 @@ export async function createApp(options: CreateAppOptions = {}) {
     screen: createScreenRelay(),
   }]));
   const roomMetrics = new Map<RoomId, RoomMetricCounters>(SPACE_ROOMS.map(({ id }) => [id, createRoomMetricCounters()]));
+  const broadcastRoomInteractionState = (roomId: RoomId) => {
+    const state = interactions.snapshot(roomId);
+    const payload = JSON.stringify({ type: "interaction.state", ...state });
+    for (const [target, targetConnection] of clients) {
+      if (!targetConnection.member || targetConnection.currentRoomId !== roomId || target.readyState !== target.OPEN) continue;
+      const counters = roomMetrics.get(roomId)!.control;
+      counters.guardedSendChecks += 1;
+      if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
+        target.close(1013, "Receiver is too slow");
+        continue;
+      }
+      counters.eventsSent += 1;
+      target.send(payload, (error) => {
+        if (error) target.terminate();
+      });
+    }
+  };
+  const interactionPruneTimer = setInterval(() => {
+    interactions.prune();
+    for (const roomId of interactions.drainChangedRooms()) broadcastRoomInteractionState(roomId as RoomId);
+  }, 500);
+  interactionPruneTimer.unref();
   let unassignedControlRejections = 0;
   let sequence = 0;
   let spaceSequence = 0;
@@ -248,7 +280,10 @@ export async function createApp(options: CreateAppOptions = {}) {
       },
     },
     (socket) => {
-      const connection: ClientConnection = { id: randomUUID(), hostActive: false, removed: false, eventTimes: [], moveTimes: [] };
+      const connection: ClientConnection = {
+        id: randomUUID(), hostActive: false, removed: false,
+        eventTimes: [], interactionTimes: [], feedbackTimes: [], moveTimes: [],
+      };
       clients.set(socket, connection);
 
       const send = (message: unknown): boolean => {
@@ -398,6 +433,53 @@ export async function createApp(options: CreateAppOptions = {}) {
         counters[metric] += 1;
         target.send(payload, (error) => {
           if (error) target.terminate();
+        });
+      };
+
+      const sendInteractionSnapshot = (target: import("ws").WebSocket, targetConnection: ClientConnection, roomId: RoomId) => {
+        sendRoomMessage(target, targetConnection, roomId, {
+          type: "interaction.snapshot",
+          ...interactions.snapshot(roomId),
+        }, "eventsSent");
+      };
+
+      const broadcastInteractionState = (roomId: RoomId) => {
+        const state = interactions.snapshot(roomId);
+        for (const [target, targetConnection] of clients) {
+          if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
+            sendRoomMessage(target, targetConnection, roomId, { type: "interaction.state", ...state }, "eventsSent");
+          }
+        }
+      };
+
+      const broadcastInteractionEvent = (roomId: RoomId, event: NonNullable<ReturnType<InteractionStore["accept"]>>) => {
+        const state = interactions.snapshot(roomId);
+        for (const [target, targetConnection] of clients) {
+          if (targetConnection.member && targetConnection.currentRoomId === roomId && target.readyState === target.OPEN) {
+            sendRoomMessage(target, targetConnection, roomId, {
+              type: "interaction.event",
+              roomId,
+              event,
+              state: {
+                publicQueue: state.publicQueue,
+                queueCount: state.queueCount,
+                presentation: state.presentation,
+                feedbackStats: state.feedbackStats,
+                serverNow: state.serverNow,
+              },
+            }, "eventsSent");
+          }
+        }
+      };
+
+      const sendInteractionError = (code: string, explanation: string, eventId?: string) => {
+        if (connection.currentRoomId) roomMetrics.get(connection.currentRoomId)!.control.rejected += 1;
+        send({
+          type: "interaction.error",
+          code,
+          message: explanation,
+          ...(connection.currentRoomId ? { roomId: connection.currentRoomId } : {}),
+          ...(eventId ? { eventId } : {}),
         });
       };
 
@@ -552,6 +634,58 @@ export async function createApp(options: CreateAppOptions = {}) {
             roomId: observation.roomId,
             member: observation.member,
           });
+          return;
+        }
+
+        if (message.type === "interaction.submit") {
+          if (bytes.byteLength > MAX_INTERACTION_MESSAGE_BYTES) {
+            sendInteractionError("interaction_message_too_large", "Interaction messages are limited to 2 KiB.", typeof message.eventId === "string" ? message.eventId : undefined);
+            return;
+          }
+          if (!connection.member || !connection.currentRoomId) {
+            sendInteractionError("interaction_not_joined", "Join a room before sending an interaction.");
+            return;
+          }
+          const parsed = parseInteractionInput(message);
+          if (!parsed) {
+            sendInteractionError("invalid_interaction", "The interaction does not match the supported text, sticker, feedback, or event ID format.", typeof message.eventId === "string" ? message.eventId : undefined);
+            return;
+          }
+          const roomId = connection.currentRoomId;
+          const duplicate = interactions.checkDuplicate(connection.member.id, parsed.eventId, roomId, parsed.fingerprint);
+          if (duplicate.kind === "duplicate") {
+            send({ type: "interaction.ack", roomId, eventId: parsed.eventId, interactionId: duplicate.interactionId, duplicate: true });
+            return;
+          }
+          if (duplicate.kind === "collision") {
+            sendInteractionError("interaction_event_id_conflict", "This event ID was already used with different content or in another room.", parsed.eventId);
+            return;
+          }
+          if (parsed.input.kind === "danmaku" && !interactions.isDanmakuEnabled(roomId)) {
+            sendInteractionError("danmaku_blocked", "The host is not accepting new public danmaku right now.", parsed.eventId);
+            return;
+          }
+          const now = Date.now();
+          if (!interactions.hasDedupCapacity(now)) {
+            sendInteractionError("interaction_dedup_capacity", "The bounded duplicate protection cache is full; wait for retained event IDs to expire.", parsed.eventId);
+            return;
+          }
+          connection.interactionTimes = connection.interactionTimes.filter((eventAt) => now - eventAt < EVENT_WINDOW_MS);
+          connection.feedbackTimes = connection.feedbackTimes.filter((eventAt) => now - eventAt < EVENT_WINDOW_MS);
+          if (connection.interactionTimes.length >= MAX_INTERACTIONS_PER_SECOND ||
+              (parsed.input.kind === "feedback" && connection.feedbackTimes.length >= MAX_FEEDBACK_PER_SECOND)) {
+            sendInteractionError("interaction_rate_limited", "The local interaction rate limit was reached; wait briefly and try again.", parsed.eventId);
+            return;
+          }
+          const event = interactions.accept(connection.member.id, roomId, connection.member, parsed.eventId, parsed.input, now);
+          if (!event) {
+            sendInteractionError("interaction_dedup_capacity", "The bounded duplicate protection cache is full; wait for retained event IDs to expire.", parsed.eventId);
+            return;
+          }
+          connection.interactionTimes.push(now);
+          if (parsed.input.kind === "feedback") connection.feedbackTimes.push(now);
+          send({ type: "interaction.ack", roomId, eventId: parsed.eventId, interactionId: event.id, duplicate: false });
+          broadcastInteractionEvent(roomId, event);
           return;
         }
 
@@ -722,6 +856,50 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
 
+          if (message.type === "host.interaction.setPaused") {
+            if (!hasOnlyKeys(message, ["type", "paused"]) || typeof message.paused !== "boolean") {
+              sendHostError("invalid_interaction_control", "Set the presentation pause state using a boolean paused field.");
+              return;
+            }
+            interactions.setPaused(roomId, message.paused);
+            broadcastInteractionState(roomId);
+            sendHostResult("interaction.setPaused", { roomId, paused: message.paused, queueCount: interactions.snapshot(roomId).queueCount });
+            return;
+          }
+
+          if (message.type === "host.interaction.setDanmakuEnabled") {
+            if (!hasOnlyKeys(message, ["type", "enabled"]) || typeof message.enabled !== "boolean") {
+              sendHostError("invalid_interaction_control", "Set public danmaku acceptance using a boolean enabled field.");
+              return;
+            }
+            interactions.setDanmakuEnabled(roomId, message.enabled);
+            broadcastInteractionState(roomId);
+            sendHostResult("interaction.setDanmakuEnabled", { roomId, enabled: message.enabled });
+            return;
+          }
+
+          if (message.type === "host.interaction.clearQueue") {
+            if (!hasOnlyKeys(message, ["type"])) {
+              sendHostError("invalid_interaction_control", "Clear the public queue without extra fields.");
+              return;
+            }
+            const clearedCount = interactions.clearPublicQueue(roomId);
+            broadcastInteractionState(roomId);
+            sendHostResult("interaction.clearQueue", { roomId, clearedCount });
+            return;
+          }
+
+          if (message.type === "host.interaction.remove") {
+            if (!hasOnlyKeys(message, ["type", "interactionId"]) || typeof message.interactionId !== "string" || message.interactionId.length < 1 || message.interactionId.length > 128) {
+              sendHostError("invalid_interaction_control", "Remove one current room item using its server-issued interaction ID.");
+              return;
+            }
+            const removed = interactions.remove(roomId, message.interactionId);
+            if (removed) broadcastInteractionState(roomId);
+            sendHostResult("interaction.remove", { roomId, interactionId: message.interactionId, removed });
+            return;
+          }
+
           sendHostError("invalid_host_control", "This host control is not supported.");
           return;
         }
@@ -808,6 +986,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             members: space.roomMembers(roomId),
             lastSeq: event.seq,
           }, "roomSnapshotsSent");
+          sendInteractionSnapshot(socket, connection, roomId);
           broadcastSpaceState();
           sendPublishPermission(socket, connection);
           return;
@@ -883,6 +1062,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             members: space.roomMembers(nextRoomId),
             lastSeq: sequence,
           }, "roomSnapshotsSent");
+          sendInteractionSnapshot(socket, connection, nextRoomId);
           broadcastSpaceState();
           sendPublishPermission(socket, connection);
           return;
@@ -932,6 +1112,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   );
 
   app.addHook("onClose", async () => {
+    clearInterval(interactionPruneTimer);
     clients.clear();
     members.clear();
     for (const grants of publisherGrants.values()) grants.clear();

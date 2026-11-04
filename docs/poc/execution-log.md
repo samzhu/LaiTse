@@ -216,3 +216,13 @@ root已讀回JSON/hash與代表圖，README/SOL-003/004/007/008與協作/需求�
 初全量33/34只是第三處精確snapshot漏新欄位；兩次browser分別文字strict-mode與root補的門按鈕尾綴選取失敗。其後script pass但root看圖發現門圖OPEN/metadata locked矛盾，窄修renderer每次room更新重畫顏色/標示，補三頁POST_RENDER鎖/解鎖斷言，重build與受影響browser成功。R005保留全部原始結果/圖/診斷，最終report/計數/root讀回與代表圖已保存查看。
 
 SOL-002/003/004/007/008與README、需求狀態/計畫/票面/協作紀錄同步。沒有新依賴、codec格式或距離規則變更。bootstrap主持secret/匿名新身份/記憶體鎖與grant、限次可新socket繞過、未驗手機/真人/耐久/容量/雲部署是MVP限制；完整POC-03仍未通過。source writer交接異常已在dispatch如實記錄/核對，root最後唯一writer。server/browser停止，本機commit、不push/遠端票/T10/部署。
+
+## T10／POC-03-R006：房內互動與公開彈幕（2026-11-04）
+
+人類指定輕量核心與用法、程式+紀錄commit；#11「房內回應與公開留言」已讀回，基線cff55ba。加入👍讚/👂我想聽/💡這個實用、300-codepoint聊天、固定圖案與60-codepoint明確公開彈幕；聊天/圖案不自動投影。現有同一WS與T09 hostActive管理pause/block/clear/remove，server嚴格schema/room/identity、限流/去重、有界TTL與dirty狀態更新，無新依賴/媒體或Phaser修改。
+
+root build/typecheck、完整39/39與首次三Firefox157流程06:47:10.243～06:47:29.929UTC通過。studio各22個唯一ID/集合相同，duplicate-probe各1，guest UI11accepted；lobby異房觀測0後刻意本房送1/切房/離開，前一房UI清除。外部未主持/偽造room/ID碰撞拒絕，11速率探針10接受1拒；pause仍能收新公開、block聊天仍可用、remove/clear效果不同、8秒過期可見。root讀回全部trace並看live公開圖與guest最終圖，errors/cap皆無；只驗本頁固定公開區，不做飄移或T11展示頁。
+
+開發中typecheck欄位型別缺漏與focused queue2≠1保留在R006，補型別/各案新app/清情境舊queue後5/5；root檢視補容量拒絕保留舊ID、dirty通知、UI時鐘/acceptance、腳本async等待及負例預先監聽。source交接後無late patch，build指紋保持一致，root無需重跑全量。
+
+SOL-003/007/008與README、需求狀態/計畫/票面/協作索引同步。50歷史/5min、20公開/8s、512 feedback/60s、2048去重/10min、10互動/s含feedback1/s皆POC初值，非商品定案。臨時participant不是真人帳號，restart清記憶體、跨重連去重未知；原票100accepted/p95未驗，完整T10品質/POC-03 Inconclusive。資源停止釋出，本機commit程式+紀錄、不push/遠端票/T11/部署。

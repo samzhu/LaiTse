@@ -4,6 +4,14 @@ import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
 import { SpacePanel } from "./SpacePanel";
 import { HostPanel } from "./HostPanel";
+import { InteractionPanel } from "./InteractionPanel";
+import {
+  createInteractionMessage,
+  emptyInteractionSnapshot,
+  type InteractionInput,
+  type InteractionRecord,
+  type InteractionSnapshot,
+} from "./interactions";
 import { DoorEntryDialog } from "./DoorEntryDialog";
 import type { AudioPolicy, MoveDirection, SpaceKind, SpaceSnapshot } from "./pixel-space";
 import {
@@ -51,6 +59,15 @@ type ServerMessage =
     }
   | ({ type: "space.snapshot" } & SpaceSnapshot)
   | { type: "control.event"; event: RoomEvent }
+  | ({ type: "interaction.snapshot" | "interaction.state" } & InteractionSnapshot)
+  | {
+      type: "interaction.event";
+      roomId: string;
+      event: InteractionRecord;
+      state: Pick<InteractionSnapshot, "publicQueue" | "queueCount" | "presentation" | "feedbackStats" | "serverNow">;
+    }
+  | { type: "interaction.ack"; roomId: string; eventId: string; interactionId: string; duplicate: boolean }
+  | { type: "interaction.error"; roomId?: string; eventId?: string; code: string; message: string }
   | { type: "protocol.error"; code: string; message: string }
   | { type: "room.catalogue"; rooms: RoomSummary[] }
   | { type: "host.claimed"; roomId: string; participantId: string; publisherGrants: string[] }
@@ -59,7 +76,21 @@ type ServerMessage =
   | { type: "host.publishRevoked"; reason: string }
   | { type: "host.publishDenied"; message: string }
   | { type: "host.sessionEnded"; roomId: string }
-  | { type: "host.actionResult"; action: string; participantId?: string; allowed?: boolean; roomId?: string; isLocked?: boolean; grantsCleared?: boolean }
+  | {
+      type: "host.actionResult";
+      action: string;
+      participantId?: string;
+      allowed?: boolean;
+      roomId?: string;
+      isLocked?: boolean;
+      grantsCleared?: boolean;
+      paused?: boolean;
+      enabled?: boolean;
+      queueCount?: number;
+      clearedCount?: number;
+      interactionId?: string;
+      removed?: boolean;
+    }
   | { type: "host.error"; code: string; message: string }
   | {
       type: "capability.ack";
@@ -122,6 +153,9 @@ export function App() {
   const [grantedPublisherIds, setGrantedPublisherIds] = useState<string[]>([]);
   const [hostActionStatus, setHostActionStatus] = useState("");
   const [hostActionError, setHostActionError] = useState("");
+  const [interactionState, setInteractionState] = useState<InteractionSnapshot>(() => emptyInteractionSnapshot());
+  const [interactionStatus, setInteractionStatus] = useState("");
+  const [interactionError, setInteractionError] = useState("");
   const mediaTimeline = useMemo(() => new MediaTimeline(), [currentSocket, mediaSessionEpoch]);
   const socketRef = useRef<WebSocket | null>(null);
   const entryAttemptRef = useRef<EntryAttempt | null>(null);
@@ -164,6 +198,9 @@ export function App() {
     setGrantedPublisherIds([]);
     setHostActionStatus("");
     setHostActionError("");
+    setInteractionState(emptyInteractionSnapshot());
+    setInteractionStatus("");
+    setInteractionError("");
     setProtocolError("");
     setEvents([]);
     setCapabilityReport(null);
@@ -217,6 +254,9 @@ export function App() {
           setGrantedPublisherIds([]);
           setHostActionStatus("");
           setHostActionError("");
+          setInteractionState(emptyInteractionSnapshot(message.room.id));
+          setInteractionStatus("");
+          setInteractionError("");
         }
         currentRoomIdRef.current = message.room.id;
         setCurrentRoomId(message.room.id);
@@ -234,6 +274,43 @@ export function App() {
         setMediaSessionEpoch((current) => current + 1);
         setMembers(message.members);
         setConnectionStatus(`Connected to ${message.room.name}`);
+        return;
+      }
+
+      if (message.type === "interaction.snapshot" || message.type === "interaction.state") {
+        if (message.roomId !== currentRoomIdRef.current) return;
+        setInteractionState(message);
+        setInteractionError("");
+        return;
+      }
+
+      if (message.type === "interaction.event") {
+        if (message.roomId !== currentRoomIdRef.current || message.event.roomId !== message.roomId) return;
+        setInteractionState((current) => {
+          if (current.roomId !== message.roomId) return current;
+          const history = message.event.kind === "feedback" || current.history.some((event) => event.id === message.event.id)
+            ? current.history
+            : [...current.history, message.event].slice(-current.limits.historyItems);
+          return {
+            ...current,
+            history,
+            ...message.state,
+          };
+        });
+        return;
+      }
+
+      if (message.type === "interaction.ack") {
+        if (message.roomId !== currentRoomIdRef.current) return;
+        setInteractionError("");
+        setInteractionStatus(message.duplicate ? "這筆互動已送達，重送沒有重複計數。" : "互動已送達房內成員。");
+        return;
+      }
+
+      if (message.type === "interaction.error") {
+        if (message.roomId && message.roomId !== currentRoomIdRef.current) return;
+        setInteractionStatus("");
+        setInteractionError(message.message);
         return;
       }
 
@@ -274,6 +351,18 @@ export function App() {
         } else if (message.action === "endSession") {
           setGrantedPublisherIds([]);
           setHostActionStatus("活動已結束；房間與成員保留，主持人可開始新的活動。" );
+        } else if (message.action === "interaction.setPaused") {
+          setInteractionError("");
+          setInteractionStatus(message.paused ? "公開展示已暫停，收到的新彈幕會留在待播佇列。" : "公開展示已恢復，待播佇列只保留尚未過期的彈幕。" );
+        } else if (message.action === "interaction.setDanmakuEnabled") {
+          setInteractionError("");
+          setInteractionStatus(message.enabled ? "已允許新增公開彈幕。" : "已禁止新增公開彈幕；聊天與回饋仍可使用。" );
+        } else if (message.action === "interaction.clearQueue") {
+          setInteractionError("");
+          setInteractionStatus(`已清空 ${typeof message.clearedCount === "number" ? message.clearedCount : 0} 則待播彈幕。`);
+        } else if (message.action === "interaction.remove") {
+          setInteractionError("");
+          setInteractionStatus(message.removed ? "已從聊天列表與公開佇列移除此內容。" : "此內容已過期或已移除。" );
         }
         return;
       }
@@ -281,6 +370,10 @@ export function App() {
       if (message.type === "host.error") {
         setHostActionError(message.message);
         setHostActionStatus("");
+        if (message.code === "invalid_interaction_control") {
+          setInteractionError(message.message);
+          setInteractionStatus("");
+        }
         return;
       }
 
@@ -431,6 +524,9 @@ export function App() {
       setGrantedPublisherIds([]);
       setHostActionStatus("");
       setHostActionError("");
+      setInteractionState(emptyInteractionSnapshot());
+      setInteractionStatus("");
+      setInteractionError("");
       setPublishAllowed(true);
       pendingReportRef.current = null;
       setIsSendingObservation(false);
@@ -465,6 +561,14 @@ export function App() {
     if (socketRef.current?.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify({ type: "reaction", reaction }));
     }
+  };
+
+  const sendInteraction = (input: InteractionInput) => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !connected || pendingRoomId) return;
+    setInteractionError("");
+    setInteractionStatus("Sending interaction…");
+    socket.send(JSON.stringify(createInteractionMessage(input)));
   };
 
   const sendHostControl = (message: Record<string, unknown>) => {
@@ -502,6 +606,9 @@ export function App() {
     setGrantedPublisherIds([]);
     setHostActionStatus("");
     setHostActionError("");
+    setInteractionState(emptyInteractionSnapshot());
+    setInteractionStatus("");
+    setInteractionError("");
     setPublishAllowed(true);
   };
 
@@ -722,6 +829,18 @@ export function App() {
           onMove={sendMove}
         />
       ) : <section className="panel-card space-panel" role="status">Loading the room map…</section>}
+
+      {connected && !pendingRoomId ? (
+        <InteractionPanel
+          connected={connected}
+          hostActive={hostClaimed && Boolean(currentSocket)}
+          state={interactionState}
+          statusMessage={interactionStatus}
+          errorMessage={interactionError}
+          onSend={sendInteraction}
+          onHostAction={sendHostControl}
+        />
+      ) : null}
 
       <HostPanel
         connected={connected}

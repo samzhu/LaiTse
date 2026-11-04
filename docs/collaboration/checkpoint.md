@@ -139,3 +139,15 @@ Luna停止writer交接，root窄修/驗收結束；server/browser已停止。sta
 R005完成：34核心/build/typecheck及host切房往返補充3；三Firefox157合成音畫grant/revoke/end/live lock/錯正密碼/credential分離/unlock直接再入房成功，五外部越權+發布重放拒絕。原33/34是snapshot精確預期，兩個browser selector失敗各已保存；之後script pass但root看圖發現門圖OPEN/locked不一致，窄修renderer動態重畫、補三頁POST_RENDER鎖/解鎖斷言後重build/browser通過。source22/5與host收22/5，停止後350ms穩定；未宣稱payload hash/真人品質。R005原圖/JSON/log/獨立讀回與使用步驟保存。
 
 主持token=process bootstrap、無帳號/耐久Session/永久封鎖；無token是舊匿名POC，非正式授權。remove成功Node4001，瀏覽器未另點移除；手機/真人/容量/弱網/完整階段待補。source交接後late patch已記dispatch，root核對build時序/測試未覆寫；現唯一writer停止後釋出。README/PRD/handoff狀態/計畫/票面/SOL/索引同步，程式+紀錄本機commit、不push/遠端票/T10/部署，server/browser停止。
+
+## T10啟動（2026-11-04）
+
+人類要求T10房內互動/彈幕輕量核心與用法、程式+紀錄commit。已讀回#11「房內回應與公開留言」，基線cff55ba；R006配發，Luna xhigh實作/root設計驗收與文件/Git。三種正式feedback、聊天與固定圖案、明確公開彈幕、server去重/限流/有界TTL及T09主持pause/block/clear/remove，同房隔離；不提前做T11展示route。原票100樣本/p95量測本輪未強制，未測不填通過，不變更遠端票/不部署/push。派工完整範圍見dispatch，source需明確停止writer後才交root。
+
+### T10桌面核心交付（2026-11-04）
+
+R006完成；root build/typecheck、完整39/39與首次三Firefox157流程通過。三正式feedback/chat/sticker/明確公開、T09主持pause/block/remove/clear、去重/限流/8秒TTL與異房隔離可行；兩studio各22唯一ID/集合相同、guest普通UI11ACK、duplicate-probe各1、lobby隔離觀測0後自送1/刻意切房/離開，trace68/72/19未截斷。root讀回report/IDs/room並看live公開面板與guest最終畫面。
+
+開發中typecheck漏action欄位與queue2≠1失敗log保存，修正為每test新app/清情境舊queue後focused5/5。root檢視容量拒絕/expiry dirty通知/UI時鐘anchor與acceptance狀態/腳本等待及預先掛負例；source交接後hash保持一致，root無source窄修或額外全量重跑。
+
+只有頁內固定文字公開區，無T11展示頁/模式/QR/保留草稿/飄移動畫。原#11 100accepted/p95品質未驗，完整T10/POC-03 Inconclusive；臨時participant/dedup與全部狀態process-memory，手機/真人/弱網/容量/耐久/部署未知。README/需求狀態/計畫/票面/SOL/索引同步，server/browser停止，本輪writer停止並釋出。本機commit程式+紀錄，不push/遠端票/T11/部署，下一項依人類指示。

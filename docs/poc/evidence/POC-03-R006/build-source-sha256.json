@@ -1,0 +1,9 @@
+{
+  "src/server/app.ts": "ec05815f49b80ecea6b5beb72db999c086044e86f256f76b236a02f985bc3b06",
+  "src/server/interactions.ts": "4afba728327d4162bfdb08fb5b3628aa362c9fbccc89a7ea05930a9b56645046",
+  "src/client/App.tsx": "9b7b9c617769a06b9731c423cd0ced80b2f1ff154dca661c35ba9c91c00014b4",
+  "src/client/InteractionPanel.tsx": "5dc8282ed2d04e46bcb21ddce309255c61c0e30fa98be06afb73da4bac6d814b",
+  "src/client/interactions.ts": "3641b0e44133c613ea698dabbb091f62b02c501033610c6ddba63fc8bbf7ebc6",
+  "src/client/styles.css": "bc52dd1f1a169dcdd1e38d280f64499abf3f14e65c6fe9951fe5474f895c203e",
+  "tests/interactions.integration.test.mjs": "ae83a2bc111606f91f6d01df7102e5aa02ae0e21e8620682344942409bef910c"
+}

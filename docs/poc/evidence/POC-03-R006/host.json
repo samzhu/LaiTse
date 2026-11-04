@@ -1,0 +1,7 @@
+{
+  "baselineCommit": "cff55ba141c1da657cb526f848162614eafcb88c",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "node": "v26.13.0",
+  "scope": "T10 lightweight local interaction and explicit public danmaku POC",
+  "ticket": "https://github.com/samzhu/LaiTse/issues/11"
+}

@@ -1,0 +1,1817 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T10 room interaction check: official feedback, chat, fixed stickers, explicit public danmaku, host display controls, bounded expiry, and room isolation.",
+  "startedAt": "2026-11-04T06:47:10.243Z",
+  "status": "pass",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0"
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into isolated Firefox profiles and trusted by Node WebSocket probes",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "clients": {
+    "studio-host": {
+      "roomId": "studio",
+      "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082",
+      "frames": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "participantIds": [
+            "afbed9ca-e934-4d64-9aad-8082354e8082"
+          ],
+          "lastSeq": 1
+        },
+        {
+          "direction": "received",
+          "type": "interaction.snapshot",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 0,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "want-listen": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "useful": {
+              "count": 0,
+              "uniqueParticipants": 0
+            }
+          },
+          "serverNow": 1793774835222
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "sent",
+          "type": "host.claim"
+        },
+        {
+          "direction": "received",
+          "type": "host.claimed",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "3fb17d20-5ebf-487f-bded-8d79cbde4840",
+          "interactionId": "6881e8e7-0e97-4e2b-aecc-f250ccbf264d",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "60b0b608-09f4-4020-b084-df7ba9c86fa0",
+          "interactionId": "d9290ce3-8586-429e-aa40-e02ca99383ff",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "f694b29d-ad09-4c75-82f0-8ca8d3924c11",
+          "interactionId": "8f82049a-f3cb-46a3-9b44-13baecfaceca",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "fe789bf3-7e0e-48d8-8342-aaef5ad6adec",
+          "interactionId": "6a63ab7d-e423-4312-b88d-55705be77ecf",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "sticker",
+          "eventId": "53e8c772-a8e3-4e82-92af-e37b9c74019d",
+          "interactionId": "c4b65789-74e6-4d17-a49c-253eede676e3",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "2736a3c2-90eb-47f0-859a-246ba4ad5f6b",
+          "interactionId": "c1d8dcee-f25a-4aac-8482-d549e4223d59",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 1
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.setPaused",
+          "paused": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 1,
+          "historyCount": 3,
+          "presentation": {
+            "paused": true,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839120
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "interaction.setPaused",
+          "paused": true,
+          "queueCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "26eac461-e25a-4618-b3b4-32bfdfc00e9a",
+          "interactionId": "c3387adc-2100-41fb-9efe-ba22c015e8a6",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 2
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.setPaused",
+          "paused": false
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 2,
+          "historyCount": 4,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839397
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "interaction.setPaused",
+          "paused": false,
+          "queueCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "74210f61-3472-4edf-930d-b710987de528",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 3
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.remove",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 2,
+          "historyCount": 4,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839545
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607",
+          "action": "interaction.remove",
+          "removed": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "ab29328c-b42d-4573-93a9-4167cee18353",
+          "interactionId": "a7ec1adb-57aa-4d0b-9a4c-d739333d4d0f",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 3
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.clearQueue"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 5,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839843
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "interaction.clearQueue",
+          "clearedCount": 3
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.setDanmakuEnabled",
+          "enabled": false
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 5,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": false
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839891
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "interaction.setDanmakuEnabled",
+          "enabled": false
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "29872e53-5919-4a32-a936-60aa339027de",
+          "interactionId": "dc1f049c-7c51-4be9-a844-62326570dc79",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "dedup-probe",
+          "interactionId": "0e60f62d-32b7-498c-98e2-0cd74f628b6a",
+          "participantId": "555b4673-ed81-4ca5-91a8-61e52290b2ec",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-0",
+          "interactionId": "3aa14842-530c-48c2-b8e3-25f83410eaa6",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-1",
+          "interactionId": "061110d3-89d9-4f6d-a611-b71a5f7ae0d3",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-2",
+          "interactionId": "9e81b36e-e863-4624-a47f-eb7acd69ca13",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-3",
+          "interactionId": "388723fc-22b3-410c-a3fb-39451d024836",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-4",
+          "interactionId": "7d7b1997-5725-4132-8910-092cfc658290",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-5",
+          "interactionId": "f51fe3ce-5872-4252-9ac0-be7ede0cab46",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-6",
+          "interactionId": "85fbe11d-9e3e-44a0-88da-6dbf892754cf",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-7",
+          "interactionId": "fe9c0c8d-b4a0-4090-aa82-8b01a2c9f79e",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-8",
+          "interactionId": "44250d03-bf73-4b59-b049-cd7588476ab3",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-9",
+          "interactionId": "55bda9f1-015c-421c-b2b5-2df252b98d8b",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "sent",
+          "type": "host.interaction.setDanmakuEnabled",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 17,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774840058
+        },
+        {
+          "direction": "received",
+          "type": "host.actionResult",
+          "roomId": "studio",
+          "action": "interaction.setDanmakuEnabled",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "e75e640e-2b61-4cc7-86a4-6919a1871fc8",
+          "interactionId": "0515493b-e8ea-4dae-9aea-a9f5d15a4ce5",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 18,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774848464
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        {
+          "direction": "received",
+          "type": "host.publisherGrants"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        }
+      ],
+      "acknowledgements": [],
+      "controlErrors": [],
+      "pageErrors": []
+    },
+    "studio-guest": {
+      "roomId": "studio",
+      "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+      "frames": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "participantIds": [
+            "afbed9ca-e934-4d64-9aad-8082354e8082",
+            "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+          ],
+          "lastSeq": 2
+        },
+        {
+          "direction": "received",
+          "type": "interaction.snapshot",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 0,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "want-listen": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "useful": {
+              "count": 0,
+              "uniqueParticipants": 0
+            }
+          },
+          "serverNow": 1793774835261
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "3fb17d20-5ebf-487f-bded-8d79cbde4840",
+          "kind": "feedback"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "3fb17d20-5ebf-487f-bded-8d79cbde4840",
+          "interactionId": "6881e8e7-0e97-4e2b-aecc-f250ccbf264d",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "3fb17d20-5ebf-487f-bded-8d79cbde4840",
+          "interactionId": "6881e8e7-0e97-4e2b-aecc-f250ccbf264d",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "60b0b608-09f4-4020-b084-df7ba9c86fa0",
+          "kind": "feedback"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "60b0b608-09f4-4020-b084-df7ba9c86fa0",
+          "interactionId": "d9290ce3-8586-429e-aa40-e02ca99383ff",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "60b0b608-09f4-4020-b084-df7ba9c86fa0",
+          "interactionId": "d9290ce3-8586-429e-aa40-e02ca99383ff",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "f694b29d-ad09-4c75-82f0-8ca8d3924c11",
+          "kind": "feedback"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "f694b29d-ad09-4c75-82f0-8ca8d3924c11",
+          "interactionId": "8f82049a-f3cb-46a3-9b44-13baecfaceca",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "feedback",
+          "eventId": "f694b29d-ad09-4c75-82f0-8ca8d3924c11",
+          "interactionId": "8f82049a-f3cb-46a3-9b44-13baecfaceca",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "fe789bf3-7e0e-48d8-8342-aaef5ad6adec",
+          "kind": "chat"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "fe789bf3-7e0e-48d8-8342-aaef5ad6adec",
+          "interactionId": "6a63ab7d-e423-4312-b88d-55705be77ecf",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "fe789bf3-7e0e-48d8-8342-aaef5ad6adec",
+          "interactionId": "6a63ab7d-e423-4312-b88d-55705be77ecf",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "53e8c772-a8e3-4e82-92af-e37b9c74019d",
+          "kind": "sticker"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "53e8c772-a8e3-4e82-92af-e37b9c74019d",
+          "interactionId": "c4b65789-74e6-4d17-a49c-253eede676e3",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "sticker",
+          "eventId": "53e8c772-a8e3-4e82-92af-e37b9c74019d",
+          "interactionId": "c4b65789-74e6-4d17-a49c-253eede676e3",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "2736a3c2-90eb-47f0-859a-246ba4ad5f6b",
+          "kind": "danmaku"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "2736a3c2-90eb-47f0-859a-246ba4ad5f6b",
+          "interactionId": "c1d8dcee-f25a-4aac-8482-d549e4223d59",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "2736a3c2-90eb-47f0-859a-246ba4ad5f6b",
+          "interactionId": "c1d8dcee-f25a-4aac-8482-d549e4223d59",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 1,
+          "historyCount": 3,
+          "presentation": {
+            "paused": true,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839120
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "26eac461-e25a-4618-b3b4-32bfdfc00e9a",
+          "kind": "danmaku"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "26eac461-e25a-4618-b3b4-32bfdfc00e9a",
+          "interactionId": "c3387adc-2100-41fb-9efe-ba22c015e8a6",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "26eac461-e25a-4618-b3b4-32bfdfc00e9a",
+          "interactionId": "c3387adc-2100-41fb-9efe-ba22c015e8a6",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 2
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 2,
+          "historyCount": 4,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839397
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "74210f61-3472-4edf-930d-b710987de528",
+          "kind": "danmaku"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "74210f61-3472-4edf-930d-b710987de528",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "74210f61-3472-4edf-930d-b710987de528",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 3
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 2,
+          "historyCount": 4,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839545
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "ab29328c-b42d-4573-93a9-4167cee18353",
+          "kind": "danmaku"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "ab29328c-b42d-4573-93a9-4167cee18353",
+          "interactionId": "a7ec1adb-57aa-4d0b-9a4c-d739333d4d0f",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "ab29328c-b42d-4573-93a9-4167cee18353",
+          "interactionId": "a7ec1adb-57aa-4d0b-9a4c-d739333d4d0f",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 3
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 5,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839843
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 5,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": false
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774839891
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "29872e53-5919-4a32-a936-60aa339027de",
+          "kind": "chat"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "29872e53-5919-4a32-a936-60aa339027de",
+          "interactionId": "dc1f049c-7c51-4be9-a844-62326570dc79",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "29872e53-5919-4a32-a936-60aa339027de",
+          "interactionId": "dc1f049c-7c51-4be9-a844-62326570dc79",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "dedup-probe",
+          "interactionId": "0e60f62d-32b7-498c-98e2-0cd74f628b6a",
+          "participantId": "555b4673-ed81-4ca5-91a8-61e52290b2ec",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-0",
+          "interactionId": "3aa14842-530c-48c2-b8e3-25f83410eaa6",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-1",
+          "interactionId": "061110d3-89d9-4f6d-a611-b71a5f7ae0d3",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-2",
+          "interactionId": "9e81b36e-e863-4624-a47f-eb7acd69ca13",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-3",
+          "interactionId": "388723fc-22b3-410c-a3fb-39451d024836",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-4",
+          "interactionId": "7d7b1997-5725-4132-8910-092cfc658290",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-5",
+          "interactionId": "f51fe3ce-5872-4252-9ac0-be7ede0cab46",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-6",
+          "interactionId": "85fbe11d-9e3e-44a0-88da-6dbf892754cf",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-7",
+          "interactionId": "fe9c0c8d-b4a0-4090-aa82-8b01a2c9f79e",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-8",
+          "interactionId": "44250d03-bf73-4b59-b049-cd7588476ab3",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "chat",
+          "eventId": "rate-9",
+          "interactionId": "55bda9f1-015c-421c-b2b5-2df252b98d8b",
+          "participantId": "46e5d187-29f9-4657-b451-ca5578c12514",
+          "queueCount": 0
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 17,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774840058
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "e75e640e-2b61-4cc7-86a4-6919a1871fc8",
+          "kind": "danmaku"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "e75e640e-2b61-4cc7-86a4-6919a1871fc8",
+          "interactionId": "0515493b-e8ea-4dae-9aea-a9f5d15a4ce5",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "studio",
+          "kind": "danmaku",
+          "eventId": "e75e640e-2b61-4cc7-86a4-6919a1871fc8",
+          "interactionId": "0515493b-e8ea-4dae-9aea-a9f5d15a4ce5",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+          "queueCount": 1
+        },
+        {
+          "direction": "received",
+          "type": "interaction.state",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 18,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774848464
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        }
+      ],
+      "acknowledgements": [
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "3fb17d20-5ebf-487f-bded-8d79cbde4840",
+          "interactionId": "6881e8e7-0e97-4e2b-aecc-f250ccbf264d",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "60b0b608-09f4-4020-b084-df7ba9c86fa0",
+          "interactionId": "d9290ce3-8586-429e-aa40-e02ca99383ff",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "f694b29d-ad09-4c75-82f0-8ca8d3924c11",
+          "interactionId": "8f82049a-f3cb-46a3-9b44-13baecfaceca",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "fe789bf3-7e0e-48d8-8342-aaef5ad6adec",
+          "interactionId": "6a63ab7d-e423-4312-b88d-55705be77ecf",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "53e8c772-a8e3-4e82-92af-e37b9c74019d",
+          "interactionId": "c4b65789-74e6-4d17-a49c-253eede676e3",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "2736a3c2-90eb-47f0-859a-246ba4ad5f6b",
+          "interactionId": "c1d8dcee-f25a-4aac-8482-d549e4223d59",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "26eac461-e25a-4618-b3b4-32bfdfc00e9a",
+          "interactionId": "c3387adc-2100-41fb-9efe-ba22c015e8a6",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "74210f61-3472-4edf-930d-b710987de528",
+          "interactionId": "b7f4d947-ef00-4ae0-863d-9d04af686607",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "ab29328c-b42d-4573-93a9-4167cee18353",
+          "interactionId": "a7ec1adb-57aa-4d0b-9a4c-d739333d4d0f",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "29872e53-5919-4a32-a936-60aa339027de",
+          "interactionId": "dc1f049c-7c51-4be9-a844-62326570dc79",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "eventId": "e75e640e-2b61-4cc7-86a4-6919a1871fc8",
+          "interactionId": "0515493b-e8ea-4dae-9aea-a9f5d15a4ce5",
+          "duplicate": false,
+          "acknowledged": true
+        }
+      ],
+      "controlErrors": [],
+      "pageErrors": []
+    },
+    "lobby-observer": {
+      "roomId": "studio",
+      "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f",
+      "frames": [
+        {
+          "direction": "sent",
+          "type": "join",
+          "roomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "participantIds": [
+            "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+          ],
+          "lastSeq": 3
+        },
+        {
+          "direction": "received",
+          "type": "interaction.snapshot",
+          "roomId": "lobby",
+          "queueCount": 0,
+          "historyCount": 0,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "want-listen": {
+              "count": 0,
+              "uniqueParticipants": 0
+            },
+            "useful": {
+              "count": 0,
+              "uniqueParticipants": 0
+            }
+          },
+          "serverNow": 1793774835381
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "sent",
+          "type": "interaction.submit",
+          "eventId": "41e63f79-130a-43d4-b6a1-d84a0d56535c",
+          "kind": "chat"
+        },
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "lobby",
+          "eventId": "41e63f79-130a-43d4-b6a1-d84a0d56535c",
+          "interactionId": "1587553b-9c84-4466-bca6-39e70a98a43e",
+          "duplicate": false,
+          "acknowledged": true
+        },
+        {
+          "direction": "received",
+          "type": "interaction.event",
+          "roomId": "lobby",
+          "kind": "chat",
+          "eventId": "41e63f79-130a-43d4-b6a1-d84a0d56535c",
+          "interactionId": "1587553b-9c84-4466-bca6-39e70a98a43e",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f",
+          "queueCount": 0
+        },
+        {
+          "direction": "sent",
+          "type": "room.switch",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "type": "control.event"
+        },
+        {
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "participantIds": [
+            "afbed9ca-e934-4d64-9aad-8082354e8082",
+            "de0d2570-04c3-4678-98c3-667a4e7d53c4",
+            "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+          ],
+          "lastSeq": 9
+        },
+        {
+          "direction": "received",
+          "type": "interaction.snapshot",
+          "roomId": "studio",
+          "queueCount": 0,
+          "historyCount": 18,
+          "presentation": {
+            "paused": false,
+            "danmakuEnabled": true
+          },
+          "feedbackStats": {
+            "like": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "want-listen": {
+              "count": 1,
+              "uniqueParticipants": 1
+            },
+            "useful": {
+              "count": 1,
+              "uniqueParticipants": 1
+            }
+          },
+          "serverNow": 1793774848621
+        },
+        {
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        },
+        {
+          "direction": "received",
+          "type": "host.publishPermission",
+          "enabled": true
+        }
+      ],
+      "acknowledgements": [
+        {
+          "direction": "received",
+          "type": "interaction.ack",
+          "roomId": "lobby",
+          "eventId": "41e63f79-130a-43d4-b6a1-d84a0d56535c",
+          "interactionId": "1587553b-9c84-4466-bca6-39e70a98a43e",
+          "duplicate": false,
+          "acknowledged": true
+        }
+      ],
+      "controlErrors": [],
+      "pageErrors": []
+    }
+  },
+  "probes": [
+    {
+      "name": "unauthorized-host-control",
+      "roomId": "studio",
+      "result": "host_unauthorized",
+      "participantId": "555b4673-ed81-4ca5-91a8-61e52290b2ec"
+    },
+    {
+      "name": "forged-room-field",
+      "roomId": "studio",
+      "result": "invalid_interaction"
+    },
+    {
+      "name": "sender-event-id-dedup",
+      "roomId": "studio",
+      "eventId": "dedup-probe",
+      "results": [
+        "accepted",
+        "duplicate-ack-only",
+        "changed-payload-rejected"
+      ]
+    },
+    {
+      "name": "interaction-rate-limit",
+      "roomId": "studio",
+      "sent": 11,
+      "accepted": 10,
+      "rejected": 1,
+      "rejectionCode": "interaction_rate_limited"
+    },
+    {
+      "name": "continuous-room-isolation-and-dedup-trace",
+      "roomId": "studio",
+      "dedupProbeReceivedOnceBy": [
+        "studio-host",
+        "studio-guest"
+      ],
+      "lobbyInteractionEventCount": 0,
+      "lobbyRoomAtIsolationCheck": "lobby",
+      "checkedAt": "2026-11-04T06:47:20.015Z"
+    },
+    {
+      "name": "switch-clears-previous-room-ui",
+      "fromRoom": "lobby",
+      "toRoom": "studio",
+      "oldRoomItemVisibleAfterSwitch": false
+    },
+    {
+      "name": "leave-clears-interaction-ui",
+      "lastRoom": "studio",
+      "panelPresentAfterLeave": false
+    }
+  ],
+  "checks": [
+    {
+      "name": "joined two studio pages and one isolated lobby page",
+      "at": "2026-11-04T06:47:15.449Z",
+      "clients": {
+        "studio-host": {
+          "roomId": "studio",
+          "participantId": "afbed9ca-e934-4d64-9aad-8082354e8082"
+        },
+        "studio-guest": {
+          "roomId": "studio",
+          "participantId": "de0d2570-04c3-4678-98c3-667a4e7d53c4"
+        },
+        "lobby-observer": {
+          "roomId": "lobby",
+          "participantId": "2edde6ac-a632-4aaf-8ba9-f456e8da944f"
+        }
+      }
+    },
+    {
+      "name": "host claimed controls through the existing T09 panel",
+      "at": "2026-11-04T06:47:15.575Z"
+    },
+    {
+      "name": "sent official feedback like",
+      "at": "2026-11-04T06:47:15.611Z"
+    },
+    {
+      "name": "sent official feedback want-listen",
+      "at": "2026-11-04T06:47:16.702Z"
+    },
+    {
+      "name": "sent official feedback useful",
+      "at": "2026-11-04T06:47:17.790Z"
+    },
+    {
+      "name": "sent plain text chat to the studio history only",
+      "at": "2026-11-04T06:47:18.888Z"
+    },
+    {
+      "name": "sent a fixed sticker to the studio chat list",
+      "at": "2026-11-04T06:47:18.945Z"
+    },
+    {
+      "name": "explicit danmaku projected in the studio only",
+      "at": "2026-11-04T06:47:19.094Z"
+    },
+    {
+      "name": "pause hid the public layer while the server accepted and queued new danmaku",
+      "at": "2026-11-04T06:47:19.354Z"
+    },
+    {
+      "name": "host removed one item from both history and public queue",
+      "at": "2026-11-04T06:47:19.552Z"
+    },
+    {
+      "name": "host cleared the public queue without deleting the chat history",
+      "at": "2026-11-04T06:47:19.852Z"
+    },
+    {
+      "name": "blocking public posting left ordinary chat available",
+      "at": "2026-11-04T06:47:19.953Z"
+    },
+    {
+      "name": "external WebSocket probes verified host authorization, strict fields, duplicate ACK, collision, and rate limit",
+      "at": "2026-11-04T06:47:20.015Z"
+    },
+    {
+      "name": "public danmaku expired from the live projection",
+      "at": "2026-11-04T06:47:28.478Z",
+      "publicTtlMs": 8000
+    },
+    {
+      "name": "room switch and leave cleared the previous interaction view",
+      "at": "2026-11-04T06:47:28.705Z"
+    },
+    {
+      "name": "all browser pages and WebSocket instrumentation finished without errors",
+      "at": "2026-11-04T06:47:28.705Z"
+    }
+  ],
+  "screenshots": [
+    "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/public-stage-visible-interaction-panel.png",
+    "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-studio-host.png",
+    "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-studio-guest.png",
+    "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t10/acceptance/final-lobby-observer.png"
+  ],
+  "limits": {
+    "chatCodePoints": 300,
+    "danmakuCodePoints": 60,
+    "chatHistoryItems": 50,
+    "chatHistoryTtlMs": 300000,
+    "publicQueueItems": 20,
+    "publicTtlMs": 8000,
+    "feedbackWindowMs": 60000,
+    "feedbackItems": 512,
+    "dedupItems": 2048,
+    "dedupTtlMs": 600000,
+    "interactionRatePerSecond": 10,
+    "feedbackRatePerSecond": 1,
+    "note": "Small local POC fixture limits; not product settings. No 100-event latency sample or p95 claim was run."
+  },
+  "credentials": {
+    "hostToken": "not-recorded",
+    "meetingRoomPassword": "not-used"
+  },
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "collectionErrors": [],
+    "failure": null
+  },
+  "finishedAt": "2026-11-04T06:47:29.929Z"
+}
