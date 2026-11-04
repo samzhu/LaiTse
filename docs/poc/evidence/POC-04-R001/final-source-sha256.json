@@ -1,0 +1,12 @@
+{
+  "src/server/app.ts": "a91f9400a0a6a3cd3f8b405f5fb4b3a9b219ae4645b00fc5797acb375ca58e11",
+  "src/server/room-access.ts": "1897cd535e7cd75e5d46706bcb8fda19f515576bb1430552b3ef512a06656de4",
+  "src/server/control-resume.ts": "c0f0e6000024bf5fb717d0c155c53e29e924a79552227bf32a255b89425bec59",
+  "src/client/App.tsx": "2e8938477a4d083f3e741797af41d2193a6fddb55f1982d55cc6280affdb6a6d",
+  "src/client/DisplayApp.tsx": "1ab19315d6382bdda82f562f5f3d679695dc958660f9bce3a6b6ac894e87edd3",
+  "src/client/control-reconnect.ts": "386d053ae7ebdf4c05a3517cf614a2295211f39a51d260539db9cfb1f1444d36",
+  "tests/control-reconnect.integration.test.mjs": "f3fcf33b38511eefeeb3fc43264427935633885ace360d5f875d99fe83de283a",
+  "package.json": "4c3838eb5b32fb54216449a4cceb55b49aa9b889be58ea4484b9a90fb67f3542",
+  "package-lock.json": "ea1e69322427ed0addf4f45252a69de119b58e8726faf46c3724ca67600cef1d",
+  "scripts/control-reconnect-smoke.mjs": "78e2e69e2d83637cd7edb433bfb69384c7de89b8700aef579c6c644c863c9113"
+}

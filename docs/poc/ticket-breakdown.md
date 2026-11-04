@@ -170,3 +170,5 @@ T09本機桌面核心已於[POC-03-R005](evidence/POC-03-R005/README.md)交付�
 T10房內互動/公開留言桌面核心已於[POC-03-R006](evidence/POC-03-R006/README.md)保存：39核心/build及三Firefox三feedback/chat/sticker/明確公開、pause/block/remove/clear/TTL/去重/限流/異房隔離成功。原#11至少100accepted/p95品質未驗（本輪人類指定輕量核心），完整票面/POC-03 Inconclusive；不改遠端狀態、不push、不自動啟動T11。
 
 T11直接入房/只互動/展示端桌面核心已於[POC-03-R007](evidence/POC-03-R007/README.md)保存：42核心/build/typecheck及三Firefox正常門禁/模式切換server+raw0/草稿音量/實播公開與QR真pixel解碼成功，9外部唯讀越權拒絕。手機相機/真人/耐久/品質/完整POC-03仍未驗；本輪僅輕量核心，不改遠端票、不push、不啟動T12。
+
+T12控制通道重連桌面核心已於[POC-04-R001](evidence/POC-04-R001/README.md)保存：47核心/build/typecheck與首次三Firefox受控中斷/refresh/原房身份/最新gate與權限/去重TTL可行。程式與紀錄本機commit；媒體恢復、手機/實體弱網/耐久及完整POC-04未驗，不改遠端票/不push、不自動啟動T13。

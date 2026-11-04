@@ -14,6 +14,7 @@ import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
 import { createHostControlPolicy } from "./host-control.ts";
 import { createRoomAccessPolicy, isValidRoomPassword } from "./room-access.ts";
+import { createControlResumeStore, type ResumeMode, type ResumeRole } from "./control-resume.ts";
 import {
   InteractionStore,
   MAX_FEEDBACK_PER_SECOND,
@@ -59,6 +60,7 @@ type ControlEvent = {
 
 type ClientConnection = {
   id: string;
+  resumeToken?: string;
   member?: Member;
   currentRoomId?: RoomId;
   hostActive: boolean;
@@ -193,6 +195,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const space = createSpaceModel();
   const interactions = new InteractionStore(SPACE_ROOMS.map(({ id }) => id));
   const roomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
+  const resumeSessions = createControlResumeStore();
   const hostControl = createHostControlPolicy(options.hostControlToken);
   const publisherGrants = new Map<RoomId, Set<string>>(SPACE_ROOMS.map(({ id }) => [id, new Set()]));
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
@@ -510,6 +513,29 @@ export async function createApp(options: CreateAppOptions = {}) {
         }, "eventsSent");
       };
 
+      const sendAuthoritativeRoomState = (roomId: RoomId, lastSeq: number) => {
+        const room = SPACE_ROOMS.find((candidate) => candidate.id === roomId)!;
+        sendRoomMessage(socket, connection, roomId, {
+          type: "room.snapshot",
+          room: {
+            id: room.id,
+            name: room.name,
+            kind: room.kind,
+            audioPolicy: room.audioPolicy,
+            audioRadiusGridUnits: room.audioRadiusGridUnits,
+            isLocked: roomAccess.isMeetingRoomLocked(roomId),
+            hostControlsEnabled: hostControl.enabled,
+            publishAllowed: canPublish(connection),
+          },
+          members: space.roomMembers(roomId),
+          lastSeq,
+        }, "roomSnapshotsSent");
+        sendInteractionSnapshot(socket, connection, roomId);
+        sendParticipationSnapshot();
+        broadcastSpaceState();
+        sendPublishPermission(socket, connection);
+      };
+
       const broadcastInteractionState = (roomId: RoomId) => {
         const state = interactions.snapshot(roomId);
         for (const [target, targetConnection] of clients) {
@@ -677,6 +703,88 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
 
         const message = payload as Record<string, unknown>;
+
+        if (message.type === "session.leave") {
+          if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES || !hasOnlyKeys(message, ["type"])) {
+            rejectControl("invalid_session_leave", "Leave the current resumable control session without extra fields.");
+            return;
+          }
+          if (connection.resumeToken) {
+            resumeSessions.invalidate(connection.resumeToken);
+            connection.resumeToken = undefined;
+          }
+          send({ type: "session.left" });
+          socket.close(1000, "Session left");
+          return;
+        }
+
+        if (message.type === "session.resume") {
+          if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES || !hasOnlyKeys(message, ["type", "token", "password"]) || typeof message.token !== "string" ||
+              (message.password !== undefined && typeof message.password !== "string") || connection.member) {
+            sendProtocolError("invalid_resume", "Resume with the issued session token and, when requested, the current room password.");
+            socket.close(1008, "Invalid resume request");
+            return;
+          }
+          const lookup = resumeSessions.lookup(message.token);
+          if (!lookup.record) {
+            sendProtocolError(lookup.expired ? "resume_expired" : "resume_invalid", "This control session can no longer be resumed.");
+            socket.close(1008, "Resume unavailable");
+            return;
+          }
+          const record = lookup.record;
+          if (record.activeConnectionId !== null) {
+            sendProtocolError("resume_busy", "This control session is still active; retry after the previous connection closes.");
+            socket.close(4002, "Resume is busy");
+            return;
+          }
+          const currentAdmissionRevision = roomAccess.admissionRevision(record.roomId);
+          let admissionWasRevalidated = false;
+          if (currentAdmissionRevision !== record.admissionRevision) {
+            const denial = roomAccess.authorizeEntry(record.roomId, message.password, connection);
+            if (denial) {
+              send({ type: "protocol.error", ...denial, roomId: record.roomId });
+              return;
+            }
+            admissionWasRevalidated = true;
+          }
+          if (members.size >= MAX_ROOM_MEMBERS) {
+            sendProtocolError("room_full", "The local space has reached its eight participant limit.");
+            socket.close(1013, "Room is full");
+            return;
+          }
+          if (!resumeSessions.attach(record, connection.id)) {
+            sendProtocolError("resume_busy", "This control session is still active; retry after the previous connection closes.");
+            socket.close(4002, "Resume is busy");
+            return;
+          }
+          if (admissionWasRevalidated) resumeSessions.refreshAdmission(record.token, currentAdmissionRevision);
+
+          const member = { id: record.participantId, displayName: record.displayName };
+          connection.member = member;
+          connection.currentRoomId = record.roomId;
+          connection.role = record.role;
+          connection.mode = record.mode;
+          connection.hostActive = false;
+          connection.removed = false;
+          connection.resumeToken = record.token;
+          publisherGrants.get(record.roomId)!.delete(member.id);
+          space.add(member, record.roomId);
+          registerMediaConnection(record.roomId);
+          mediaRooms.get(record.roomId)!.audio.markJoined(connection.id);
+          mediaRooms.get(record.roomId)!.screen.markJoined(connection.id);
+          members.set(member.id, member);
+          send({
+            type: "session.resumed",
+            participantId: member.id,
+            roomId: record.roomId,
+            role: record.role,
+            mode: record.mode,
+          });
+          const event = emit("member.joined", member, record.roomId);
+          sendAuthoritativeRoomState(record.roomId, event.seq);
+          return;
+        }
+
         if (connection.member && connection.role === "display") {
           const allowedDisplayControl = message.type === "participation.inspect" ||
             message.type === "audio.subscribe" || message.type === "audio.unsubscribe" ||
@@ -757,6 +865,7 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
           const nextMode = message.mode as ParticipationMode;
           connection.mode = nextMode;
+          resumeSessions.updateMode(connection.resumeToken, nextMode);
           if (nextMode === "interaction") {
             const relays = mediaRooms.get(connection.currentRoomId)!;
             relays.audio.disableConnection(connection.id);
@@ -917,6 +1026,8 @@ export async function createApp(options: CreateAppOptions = {}) {
             const removedMember = target.connection.member!;
             target.connection.removed = true;
             target.connection.hostActive = false;
+          resumeSessions.invalidateParticipant(targetMemberId);
+          target.connection.resumeToken = undefined;
             publisherGrants.get(roomId)!.delete(targetMemberId);
             broadcastHostPublisherGrants(roomId);
             members.delete(targetMemberId);
@@ -1075,12 +1186,13 @@ export async function createApp(options: CreateAppOptions = {}) {
 
         if (!connection.member) {
           if (
-            !hasOnlyKeys(message, ["type", "roomId", "displayName", "password", "role", "mode"]) ||
+            !hasOnlyKeys(message, ["type", "roomId", "displayName", "password", "role", "mode", "resumable"]) ||
             message.type !== "join" ||
             !isKnownRoom(message.roomId) ||
             typeof message.displayName !== "string" ||
             (message.role !== undefined && message.role !== "participant" && message.role !== "display") ||
-            (message.mode !== undefined && message.mode !== "watch" && message.mode !== "interaction")
+            (message.mode !== undefined && message.mode !== "watch" && message.mode !== "interaction") ||
+            (message.resumable !== undefined && typeof message.resumable !== "boolean")
           ) {
             rejectControl("invalid_join", "Choose an available room and join with a short display name.");
             return;
@@ -1110,36 +1222,44 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
 
           const member = { id: randomUUID(), displayName };
-          connection.role = (message.role as ParticipationRole | undefined) ?? "participant";
-          connection.mode = (message.mode as ParticipationMode | undefined) ?? "watch";
+          const role = (message.role as ParticipationRole | undefined) ?? "participant";
+          const mode = (message.mode as ParticipationMode | undefined) ?? "watch";
+          const resumeRecord = message.resumable === true
+            ? resumeSessions.issue({
+                participantId: member.id,
+                displayName: member.displayName,
+                roomId,
+                role,
+                mode,
+                admissionRevision: roomAccess.admissionRevision(roomId),
+              }, connection.id)
+            : null;
+          if (message.resumable === true && !resumeRecord) {
+            rejectControl("resume_unavailable", "The bounded local resume store is full; join without automatic recovery or try again later.");
+            return;
+          }
+          connection.role = role;
+          connection.mode = mode;
           connection.member = member;
           connection.currentRoomId = roomId;
+          if (resumeRecord) {
+            connection.resumeToken = resumeRecord.token;
+            send({
+              type: "session.issued",
+              token: resumeRecord.token,
+              participantId: member.id,
+              roomId,
+              role,
+              mode,
+            });
+          }
           space.add(member, roomId);
           registerMediaConnection(roomId);
           mediaRooms.get(roomId)!.audio.markJoined(connection.id);
           mediaRooms.get(roomId)!.screen.markJoined(connection.id);
           members.set(member.id, member);
           const event = emit("member.joined", member, roomId);
-          const room = SPACE_ROOMS.find((candidate) => candidate.id === roomId)!;
-          sendRoomMessage(socket, connection, roomId, {
-            type: "room.snapshot",
-            room: {
-              id: room.id,
-              name: room.name,
-              kind: room.kind,
-              audioPolicy: room.audioPolicy,
-              audioRadiusGridUnits: room.audioRadiusGridUnits,
-              isLocked: roomAccess.isMeetingRoomLocked(roomId),
-              hostControlsEnabled: hostControl.enabled,
-              publishAllowed: canPublish(connection),
-            },
-            members: space.roomMembers(roomId),
-            lastSeq: event.seq,
-          }, "roomSnapshotsSent");
-          sendInteractionSnapshot(socket, connection, roomId);
-          sendParticipationSnapshot();
-          broadcastSpaceState();
-          sendPublishPermission(socket, connection);
+          sendAuthoritativeRoomState(roomId, event.seq);
           return;
         }
 
@@ -1182,6 +1302,7 @@ export async function createApp(options: CreateAppOptions = {}) {
               send({ type: "protocol.error", ...denial });
               return;
             }
+            resumeSessions.updateRoom(connection.resumeToken, nextRoomId, roomAccess.admissionRevision(nextRoomId));
           }
           if (previousRoomId !== nextRoomId) {
             publisherGrants.get(previousRoomId)!.delete(connection.member.id);
@@ -1197,26 +1318,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             space.switchRoom(connection.member.id, nextRoomId);
             emit("member.joined", connection.member, nextRoomId);
           }
-          const room = SPACE_ROOMS.find((candidate) => candidate.id === nextRoomId)!;
-          sendRoomMessage(socket, connection, nextRoomId, {
-            type: "room.snapshot",
-            room: {
-              id: room.id,
-              name: room.name,
-              kind: room.kind,
-              audioPolicy: room.audioPolicy,
-              audioRadiusGridUnits: room.audioRadiusGridUnits,
-              isLocked: roomAccess.isMeetingRoomLocked(nextRoomId),
-              hostControlsEnabled: hostControl.enabled,
-              publishAllowed: canPublish(connection),
-            },
-            members: space.roomMembers(nextRoomId),
-            lastSeq: sequence,
-          }, "roomSnapshotsSent");
-          sendInteractionSnapshot(socket, connection, nextRoomId);
-          sendParticipationSnapshot();
-          broadcastSpaceState();
-          sendPublishPermission(socket, connection);
+          sendAuthoritativeRoomState(nextRoomId, sequence);
           return;
         }
 
@@ -1242,6 +1344,7 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       socket.on("close", () => {
         clients.delete(socket);
+        resumeSessions.detach(connection.resumeToken, connection.id);
         for (const relays of mediaRooms.values()) {
           relays.audio.disconnect(connection.id);
           relays.screen.disconnect(connection.id);
@@ -1269,6 +1372,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     members.clear();
     for (const grants of publisherGrants.values()) grants.clear();
     observations.clear();
+    resumeSessions.clear();
     for (const relays of mediaRooms.values()) {
       relays.audio.close();
       relays.screen.close();

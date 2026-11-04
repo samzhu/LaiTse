@@ -1,0 +1,47 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T08:41:19.547528+00:00",
+    "finishedAt": "2026-11-04T08:41:21.057261+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T08:41:21.058001+00:00",
+    "finishedAt": "2026-11-04T08:41:30.622970+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "control-reconnect-smoke",
+    "command": [
+      "node",
+      "scripts/control-reconnect-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T08:47:28.568563+00:00",
+    "finishedAt": "2026-11-04T08:47:49.850141+00:00",
+    "exitCode": 0
+  }
+]

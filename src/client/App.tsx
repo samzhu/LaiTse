@@ -18,6 +18,14 @@ import {
 import { DoorEntryDialog } from "./DoorEntryDialog";
 import type { AudioPolicy, MoveDirection, SpaceKind, SpaceSnapshot } from "./pixel-space";
 import {
+  BoundedReconnectLoop,
+  clearResumeCandidate,
+  readResumeCandidate,
+  resumeEntryMatches,
+  saveResumeCandidate,
+  type ResumeCandidate,
+} from "./control-reconnect";
+import {
   API_KEYS,
   API_LABELS,
   CODEC_PROBE_KEYS,
@@ -45,6 +53,9 @@ type RoomEvent = {
 };
 
 type ServerMessage =
+  | { type: "session.issued"; token: string; participantId: string; roomId: string; role: "participant" | "display"; mode: ParticipationMode }
+  | { type: "session.resumed"; participantId: string; roomId: string; role: "participant" | "display"; mode: ParticipationMode }
+  | { type: "session.left" }
   | {
       type: "room.snapshot";
       room: {
@@ -79,7 +90,7 @@ type ServerMessage =
       media: { audioSubscribed: boolean; screenSubscribed: boolean };
     }
   | { type: "interaction.error"; roomId?: string; eventId?: string; code: string; message: string }
-  | { type: "protocol.error"; code: string; message: string }
+  | { type: "protocol.error"; code: string; message: string; roomId?: string }
   | { type: "room.catalogue"; rooms: RoomSummary[] }
   | { type: "host.claimed"; roomId: string; participantId: string; publisherGrants: string[] }
   | { type: "host.publishPermission"; enabled: boolean; allowed: boolean }
@@ -133,7 +144,12 @@ type RoomSummary = {
 
 type EntryAttempt =
   | { type: "join"; roomId: string; displayName: string }
-  | { type: "switch"; roomId: string };
+  | { type: "switch"; roomId: string }
+  | { type: "resume"; roomId: string };
+
+type ConnectionIntent =
+  | { type: "join"; roomId: string; displayName: string; mode: ParticipationMode; password?: string }
+  | { type: "resume"; password?: string };
 
 export function App() {
   const [initialEntry] = useState(() => readParticipantEntry(window.location.search));
@@ -148,6 +164,8 @@ export function App() {
   const [currentRoomId, setCurrentRoomId] = useState("");
   const [apiStatus, setApiStatus] = useState("Checking local API…");
   const [connectionStatus, setConnectionStatus] = useState("Not connected");
+  const [canManuallyRetry, setCanManuallyRetry] = useState(false);
+  const [resumeStoragePersistent, setResumeStoragePersistent] = useState(true);
   const [members, setMembers] = useState<Member[]>([]);
   const [events, setEvents] = useState<RoomEvent[]>([]);
   const [protocolError, setProtocolError] = useState("");
@@ -185,6 +203,22 @@ export function App() {
   const lastSpaceSequenceRef = useRef(0);
   const modeChangeSentRef = useRef(false);
   const pendingModeTargetRef = useRef<ParticipationMode | null>(null);
+  const resumeCandidateRef = useRef<ResumeCandidate | null>(null);
+  const startConnectionRef = useRef<(intent: ConnectionIntent) => void>(() => {});
+  const retryAttemptRef = useRef<(() => void) | null>(null);
+  const connectionIntentRef = useRef<ConnectionIntent | null>(null);
+  const terminalResumeRef = useRef(false);
+  const explicitLeaveRef = useRef(false);
+  const reconnectLoopRef = useRef<BoundedReconnectLoop | null>(null);
+  if (!reconnectLoopRef.current) {
+    reconnectLoopRef.current = new BoundedReconnectLoop(
+      () => retryAttemptRef.current?.(),
+      () => {
+        setCanManuallyRetry(true);
+        setConnectionStatus("Reconnection paused after several attempts.");
+      },
+    );
+  }
 
   useEffect(() => {
     let active = true;
@@ -201,6 +235,20 @@ export function App() {
             setProtocolError(`連結指定的房間「${initialEntry.roomId}」不存在；請選擇可用房間。`);
           }
           setApiStatus(health.status === "ok" ? `API ready · ${health.persistence}` : "API unavailable");
+          const stored = readResumeCandidate("participant");
+          setResumeStoragePersistent(stored.persistent);
+          if (stored.candidate && resumeEntryMatches(stored.candidate, initialEntry.roomId ?? null)) {
+            resumeCandidateRef.current = stored.candidate;
+            setSelectedRoomId(stored.candidate.roomId);
+            setConnectionStatus("Restoring your room control connection…");
+            reconnectLoopRef.current?.recovered();
+            setCanManuallyRetry(false);
+            retryAttemptRef.current = () => startConnectionRef.current({ type: "resume" });
+            startConnectionRef.current({ type: "resume" });
+          } else if (stored.candidate) {
+            clearResumeCandidate("participant");
+            resumeCandidateRef.current = null;
+          }
         }
       })
       .catch(() => {
@@ -209,38 +257,18 @@ export function App() {
 
     return () => {
       active = false;
-      socketRef.current?.close();
+      reconnectLoopRef.current?.dispose();
+      const socket = socketRef.current;
+      socketRef.current = null;
+      socket?.close();
     };
   }, [initialEntry]);
 
-  const joinRoom = () => {
-    if (!selectedRoomId || socketRef.current || !displayName.trim()) return;
-    setHostClaimed(false);
-    setCurrentParticipantId("");
-    setGrantedPublisherIds([]);
-    setHostActionStatus("");
-    setHostActionError("");
-    setParticipationSelf(null);
-    setModeSwitchPending(false);
-    setInteractionState(emptyInteractionSnapshot());
-    setInteractionStatus("");
-    setInteractionError("");
-    setProtocolError("");
-    setEvents([]);
-    setCapabilityReport(null);
-    setObservation(null);
-    setCapabilityStatus("尚未探測。加入房間後可手動檢查此瀏覽器。");
-    lastSequenceRef.current = 0;
-    lastSpaceSequenceRef.current = 0;
-    setSpaceSnapshot(null);
-    setCurrentRoomId("");
-    currentRoomIdRef.current = "";
-    entryAttemptRef.current = { type: "join", roomId: selectedRoomId, displayName: displayName.trim() };
-    setEntryDialogOpen(false);
-    setEntryDialogError("");
-    setEntrySubmitting(false);
-    setConnectionStatus("Connecting…");
-
+  const openConnection = (intent: ConnectionIntent) => {
+    connectionIntentRef.current = intent;
+    explicitLeaveRef.current = false;
+    if (intent.type === "resume") setConnectionStatus("Reconnecting…");
+    else setConnectionStatus("Connecting…");
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
     const socket = new WebSocket(`${scheme}//${window.location.host}/ws`);
     socket.binaryType = "arraybuffer";
@@ -249,8 +277,20 @@ export function App() {
 
     socket.addEventListener("open", () => {
       if (socketRef.current !== socket) return;
+      if (intent.type === "resume") {
+        const candidate = resumeCandidateRef.current;
+        if (!candidate) {
+          terminalResumeRef.current = true;
+          setConnectionStatus("No resumable session is available. Join the room again.");
+          socket.close(1000, "Resume unavailable");
+          return;
+        }
+        setConnectionStatus("Reconnecting to your room…");
+        socket.send(JSON.stringify({ type: "session.resume", token: candidate.token, ...(intent.password === undefined ? {} : { password: intent.password }) }));
+        return;
+      }
       setConnectionStatus("Joining room…");
-      socket.send(JSON.stringify({ type: "join", roomId: selectedRoomId, displayName: displayName.trim(), role: "participant", mode: participationMode }));
+      socket.send(JSON.stringify({ type: "join", roomId: intent.roomId, displayName: intent.displayName, role: "participant", mode: intent.mode, resumable: true, ...(intent.password === undefined ? {} : { password: intent.password }) }));
     });
 
     socket.addEventListener("message", (messageEvent) => {
@@ -263,6 +303,48 @@ export function App() {
         setProtocolError("The server sent a message this page could not read.");
         return;
       }
+
+      if (message.type === "session.issued") {
+        const current = resumeCandidateRef.current;
+        const candidate: ResumeCandidate = {
+          token: message.token,
+          roomId: message.roomId,
+          entryRoomId: current?.entryRoomId ?? initialEntry.roomId ?? null,
+        };
+        resumeCandidateRef.current = candidate;
+        setResumeStoragePersistent(saveResumeCandidate("participant", candidate));
+        retryAttemptRef.current = () => startConnectionRef.current({ type: "resume" });
+        reconnectLoopRef.current?.recovered();
+        setCanManuallyRetry(false);
+        return;
+      }
+
+      if (message.type === "session.resumed") {
+        const current = resumeCandidateRef.current;
+        if (current) {
+          const candidate = { ...current, roomId: message.roomId, entryRoomId: message.roomId };
+          resumeCandidateRef.current = candidate;
+          setResumeStoragePersistent(saveResumeCandidate("participant", candidate));
+        }
+        terminalResumeRef.current = false;
+        reconnectLoopRef.current?.recovered();
+        setCanManuallyRetry(false);
+        setSelectedRoomId(message.roomId);
+        setParticipationMode(message.mode);
+        setCurrentParticipantId(message.participantId);
+        setHostClaimed(false);
+        setGrantedPublisherIds([]);
+        setHostActionStatus("");
+        setHostActionError("");
+        setProtocolError("");
+        setConnectionStatus("Refreshing restored room state…");
+        const url = new URL(window.location.href);
+        url.searchParams.set("room", message.roomId);
+        window.history.replaceState(window.history.state, "", url);
+        return;
+      }
+
+      if (message.type === "session.left") return;
 
       if (message.type === "room.catalogue") {
         setRooms(message.rooms);
@@ -281,6 +363,15 @@ export function App() {
           setInteractionState(emptyInteractionSnapshot(message.room.id));
           setInteractionStatus("");
           setInteractionError("");
+          const candidate = resumeCandidateRef.current;
+          if (candidate) {
+            const updated = { ...candidate, roomId: message.room.id, entryRoomId: message.room.id };
+            resumeCandidateRef.current = updated;
+            setResumeStoragePersistent(saveResumeCandidate("participant", updated));
+            const url = new URL(window.location.href);
+            url.searchParams.set("room", message.room.id);
+            window.history.replaceState(window.history.state, "", url);
+          }
         }
         currentRoomIdRef.current = message.room.id;
         setCurrentRoomId(message.room.id);
@@ -448,6 +539,11 @@ export function App() {
 
       if (message.type === "protocol.error") {
         if (message.code.startsWith("room_password_")) {
+          if (connectionIntentRef.current?.type === "resume") {
+            const roomId = message.roomId ?? resumeCandidateRef.current?.roomId ?? selectedRoomId;
+            entryAttemptRef.current = { type: "resume", roomId };
+            setSelectedRoomId(roomId);
+          }
           setPendingRoomId(null);
           pendingSwitchPasswordRef.current = null;
           if (mediaStoppedForEntryRef.current) {
@@ -458,6 +554,16 @@ export function App() {
           setEntryDialogOpen(true);
           setEntrySubmitting(false);
           return;
+        }
+        if (message.code === "resume_invalid" || message.code === "resume_expired" || message.code === "invalid_resume") {
+          terminalResumeRef.current = true;
+          reconnectLoopRef.current?.stop();
+          clearResumeCandidate("participant");
+          resumeCandidateRef.current = null;
+          setCanManuallyRetry(false);
+          setConnectionStatus("Saved session expired or unavailable. Join the room again.");
+        } else if (message.code === "resume_busy" || message.code === "room_full") {
+          setConnectionStatus("Retrying the room control connection…");
         }
         setProtocolError(message.message);
         if (pendingModeTargetRef.current) {
@@ -561,6 +667,7 @@ export function App() {
       socketRef.current = null;
       setCurrentSocket(null);
       setMembers([]);
+      setEvents([]);
       setSpaceSnapshot(null);
       setCurrentRoomId("");
       currentRoomIdRef.current = "";
@@ -571,7 +678,16 @@ export function App() {
       setEntryDialogOpen(false);
       setEntryDialogError("");
       setEntrySubmitting(false);
-      setConnectionStatus("Not connected");
+      const hasCandidate = Boolean(resumeCandidateRef.current);
+      if (!explicitLeaveRef.current && !terminalResumeRef.current && hasCandidate) {
+        setConnectionStatus("Reconnecting…");
+        setProtocolError("");
+        reconnectLoopRef.current?.schedule();
+      } else if (terminalResumeRef.current) {
+        setConnectionStatus("Saved session expired or unavailable. Join the room again.");
+      } else {
+        setConnectionStatus("Not connected");
+      }
       setModeSwitchPending(false);
       setPendingModeTarget(null);
       pendingModeTargetRef.current = null;
@@ -589,13 +705,56 @@ export function App() {
       setPublishAllowed(true);
       pendingReportRef.current = null;
       setIsSendingObservation(false);
+      setCapabilityReport(null);
+      setObservation(null);
+      setCapabilityStatus("尚未探測。加入房間後可手動檢查此瀏覽器。");
+      lastSequenceRef.current = 0;
+      lastSpaceSequenceRef.current = 0;
     });
 
     socket.addEventListener("error", () => {
       if (socketRef.current !== socket) return;
-      setProtocolError("The room connection could not be opened.");
-      setConnectionStatus("Connection failed");
+      if (resumeCandidateRef.current) {
+        setConnectionStatus("Reconnecting…");
+      } else {
+        setProtocolError("The room connection could not be opened.");
+        setConnectionStatus("Connection failed");
+      }
     });
+  };
+
+  startConnectionRef.current = openConnection;
+  const joinRoom = () => {
+    if (!selectedRoomId || socketRef.current || !displayName.trim() || resumeCandidateRef.current) return;
+    reconnectLoopRef.current?.recovered();
+    setCanManuallyRetry(false);
+    terminalResumeRef.current = false;
+    setHostClaimed(false);
+    setCurrentParticipantId("");
+    setGrantedPublisherIds([]);
+    setHostActionStatus("");
+    setHostActionError("");
+    setParticipationSelf(null);
+    setModeSwitchPending(false);
+    setInteractionState(emptyInteractionSnapshot());
+    setInteractionStatus("");
+    setInteractionError("");
+    setProtocolError("");
+    setEvents([]);
+    setCapabilityReport(null);
+    setObservation(null);
+    setCapabilityStatus("尚未探測。加入房間後可手動檢查此瀏覽器。");
+    lastSequenceRef.current = 0;
+    lastSpaceSequenceRef.current = 0;
+    setSpaceSnapshot(null);
+    setCurrentRoomId("");
+    currentRoomIdRef.current = "";
+    entryAttemptRef.current = { type: "join", roomId: selectedRoomId, displayName: displayName.trim() };
+    setEntryDialogOpen(false);
+    setEntryDialogError("");
+    setEntrySubmitting(false);
+    retryAttemptRef.current = () => startConnectionRef.current({ type: "resume" });
+    openConnection({ type: "join", roomId: selectedRoomId, displayName: displayName.trim(), mode: participationMode });
   };
 
   useEffect(() => {
@@ -665,9 +824,27 @@ export function App() {
     socket.send(JSON.stringify({ type: "participation.inspect" }));
   };
 
+  const retryConnection = () => {
+    if (!resumeCandidateRef.current) return;
+    setCanManuallyRetry(false);
+    setProtocolError("");
+    setConnectionStatus("Retrying room control connection…");
+    reconnectLoopRef.current?.retryNow();
+  };
+
   const leaveRoom = () => {
-    socketRef.current?.close(1000, "Participant left");
+    explicitLeaveRef.current = true;
+    terminalResumeRef.current = true;
+    reconnectLoopRef.current?.stop();
+    const socket = socketRef.current;
+    if (socket?.readyState === WebSocket.OPEN) {
+      try { socket.send(JSON.stringify({ type: "session.leave" })); } catch {}
+      socket.close(1000, "Participant left");
+    }
     socketRef.current = null;
+    clearResumeCandidate("participant");
+    resumeCandidateRef.current = null;
+    setCanManuallyRetry(false);
     setCurrentSocket(null);
     setMembers([]);
     setSpaceSnapshot(null);
@@ -728,8 +905,19 @@ export function App() {
     if (!socket || socket.readyState !== WebSocket.OPEN || !attempt) return;
     setEntryDialogError("");
     setEntrySubmitting(true);
+    if (attempt.type === "resume") {
+      const candidate = resumeCandidateRef.current;
+      if (!candidate) {
+        setEntrySubmitting(false);
+        setEntryDialogError("恢復工作階段不存在，請重新加入房間。");
+        return;
+      }
+      connectionIntentRef.current = { type: "resume", password };
+      socket.send(JSON.stringify({ type: "session.resume", token: candidate.token, password }));
+      return;
+    }
     if (attempt.type === "join") {
-      socket.send(JSON.stringify({ type: "join", roomId: attempt.roomId, displayName: attempt.displayName, role: "participant", mode: participationMode, password }));
+      socket.send(JSON.stringify({ type: "join", roomId: attempt.roomId, displayName: attempt.displayName, role: "participant", mode: participationMode, resumable: true, password }));
       return;
     }
     pendingSwitchPasswordRef.current = password;
@@ -745,6 +933,7 @@ export function App() {
     setEntrySubmitting(false);
     setPendingRoomId(null);
     if (attempt?.type === "join" && !currentRoomIdRef.current) leaveRoom();
+    if (attempt?.type === "resume") leaveRoom();
   };
 
   const sendMove = (direction: MoveDirection) => {
@@ -829,15 +1018,21 @@ export function App() {
           />
 
           <div className="button-row">
-            <button className="primary-button" onClick={joinRoom} disabled={!selectedRoomId || !displayName.trim() || connected || connectionStatus.startsWith("Connecting") || connectionStatus.startsWith("Joining")}>
+            <button className="primary-button" onClick={joinRoom} disabled={!selectedRoomId || !displayName.trim() || connected || Boolean(resumeCandidateRef.current) || connectionStatus.startsWith("Connecting") || connectionStatus.startsWith("Joining") || connectionStatus.startsWith("Restoring") || connectionStatus.startsWith("Reconnecting") || connectionStatus.startsWith("Refreshing")}>
               Join room
             </button>
-            {connected ? (
-              <button className="quiet-button" onClick={leaveRoom}>Leave</button>
+            {connected || resumeCandidateRef.current ? (
+              <button className="quiet-button" data-testid="control-leave" onClick={leaveRoom}>{connected ? "Leave" : "Cancel recovery"}</button>
             ) : null}
           </div>
 
-          <p className="connection-status" role="status">{connectionStatus}</p>
+          <p className="connection-status" role="status" data-testid="control-connection-status">{connectionStatus}</p>
+          <p className="api-status" data-testid="control-resume-state">
+            {resumeCandidateRef.current
+              ? resumeStoragePersistent ? "Control recovery is available in this tab." : "Control recovery lasts only while this page stays open because session storage is unavailable."
+              : "Control recovery starts after joining this room."}
+          </p>
+          {canManuallyRetry && resumeCandidateRef.current ? <button className="quiet-button" type="button" data-testid="control-retry" onClick={retryConnection}>Retry connection</button> : null}
           <p className="api-status">{apiStatus}</p>
           {protocolError ? <p className="error-message" role="alert">{protocolError}</p> : null}
 

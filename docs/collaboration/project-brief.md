@@ -1,12 +1,12 @@
 # 專案 brief
 
-**狀態：T11桌面核心已完成驗測、保存與讀回；帳號/耐久/品質與完整階段待補；2026-11-04 更新。**
+**狀態：T12桌面控制恢復核心完成驗測、保存與讀回；媒體恢復/耐久/品質與完整階段待補；2026-11-04 更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。
-- 目前工作範圍：19票已發布並讀回；本機POC逐票實作至T11，桌面核心與用法已有證據。完整階段／手機／真人／品質仍依執行紀錄判定，尚未啟動MVP或部署。
+- 目前工作範圍：19票已發布並讀回；本機POC逐票實作至T12，桌面核心與用法已有證據。完整階段／手機／真人／品質仍依執行紀錄判定，尚未啟動MVP或部署。
 - 目前技術與相關路徑：自研，不採用 WorkAdventure；人物像素圖。已有 Git 儲存庫與需求文件，T01程式基線已建置及本機雙瀏覽器驗收；核心功能須可獨立部署、不強制綁供應商 SaaS；部署限定所有元件一個 Cloud Run；Node.js 26 LTS已指定為專案標準，React/Vite/Fastify/ws在T01作本機候選驗證，影音傳輸與耐久資料仍未定。POC僅本機開發測試、不部署CloudRun；後續部署目標維持。原交接的「尚無 repo」為歷史狀態。
-- 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T10本機成果見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
+- 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T12本機成果見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
 - POC權威入口：`docs/poc/plan.md`；執行紀錄 `docs/poc/execution-log.md`；MVP可用方案 `docs/poc/mvp-handoff.md`；Issue為計畫發布鏡像，不建平行PRD；發布入口 https://github.com/samzhu/LaiTse/issues/1 。
 - 權威需求／決策來源：`docs/laitse-prd.md` v0.8、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
 - 穩定項目 ID：TECH-001／TECH-001-MEDIA 為初輪研究；TECH-002／TECH-002-LICENSE 為維護與授權查核；TECH-003／TECH-003-ALT 為獨立部署影音研究；TECH-004／TECH-004-RUN 為單一 Cloud Run 研究；TECH-005／TECH-005-CODEC 為整合框架與瀏覽器影音研究；TECH-006／TECH-006-PROTOCOL 為成熟度及協議比較；DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009 為人類決策；後續項目沿用既有 ID，退役不重用。未為 PRD 功能補造人類確認 ID。
@@ -68,3 +68,7 @@
 - 本輪T11（#12）：人類指定直接入房/只互動/展示端輕量核心與用法、程式+紀錄commit。R007配發，Luna xhigh實作/root驗收。深連結/實際QR指向正常room gate，server mode/role+媒體訂閱/bytes與rawtrace驗只互動0，展示端readonly/無私聊、實際分享與公開反應；draft/volume保留及watch手動啟動。小型QR依賴本機bundled，不用外部服務；不做T12/手機/真人/部署/push。
 
 - T11交付：R007保存42核心/build/typecheck與三Firefox直接門禁/模式切換/草稿音量/唯讀實播公開/QR實解碼再入房。5活動音畫窗口server+raw0、9外部越權拒絕，root讀回/看圖完成；原test時序與selector失敗保留並窄修。SOL/README/需求狀態/計畫/票面同步。手機/真人/耐久/品質/完整POC-03仍待，資源停止釋出，程式+紀錄本機commit、不push/T12/部署。
+
+- 本輪T12（#13）：人類「繼續下一個」，沿用輕量與程式+紀錄commit；R001/POC-04配發，server短期憑證+最新門禁/權限重驗、client意外斷線/刷新控制恢復。root設計/驗收，Luna xhigh實作；不做T13媒體恢復/部署/push。
+
+- T12交付：POC-04-R001保存47核心/build/typecheck與首次三Firefox受控close/refresh/切房server原房與身份、最新gate與權限、去重/8,696ms過期不補。兩圖/摘要/指紋已root實際看圖與讀回；不保留raw控制/token trace。短期憑證只程序內，offline cancel等server TTL，影音/弱網/手機/耐久/完整POC-04仍待。SOL/README/需求狀態/計畫/票面同步，程式+紀錄本機commit，runtime/writer停止釋出，不push/T13/部署。

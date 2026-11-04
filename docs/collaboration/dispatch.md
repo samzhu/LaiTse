@@ -131,3 +131,34 @@ T11全部資源交接：T11-IMPL已釋出README與implementation-checks；T11-SM
 ### T11最終驗收與釋出
 
 root完整42/build/typecheck與三Firefox最終通過，source指紋對build一致。首次browser錯用參與頁public-stage selector，保留first-attempt後只修script；其餘source/依賴未再改，未重跑無關全套。5活動來源zero窗口/9唯讀拒絕/真QR/readback/兩圖及cleanup保存。README/需求/計畫/票面/SOL/協作同步，唯一writer完成本機commit後停止釋出；不push/遠端票/T12/部署。全部agent已明確STOP；手機/真人/耐久/完整POC-03待後續。
+
+## T12／POC-04-R001（2026-11-04）
+
+人類「繼續下一個」接T12 #13「控制通道自動重連」，沿用輕量核心/用法及程式+紀錄本機commit，基線133684b。T09/T11桌面核心已完成；完整階段/手機/真人未因此改判。root負責設計/驗收/權威docs/Git/runtime，T12-IMPL依既有人類Luna xhigh偏好負責大量程式。
+
+- **唯一writer/資源**：T12-IMPL可寫`src/server/app.ts`、新增`src/server/control-resume.ts`、`src/server/room-access.ts`（只追加門禁revision）、`src/client/App.tsx`、`DisplayApp.tsx`、新增`control-reconnect.ts`及必要同主題client types、`src/client/styles.css`、`tests/control-reconnect.integration.test.mjs`、`scripts/control-reconnect-smoke.mjs`、README.md、`.scratch/t12/implementation-checks/`。其餘source唯讀；若契約要求其他source先送root窄patch建議。root獨占docs/poc、docs/collaboration、需求狀態及.gitignore、server/browser runtime/Git；manifest/lock/vendor不變、無新依賴。不得寫AGENTS/.agents/.codex或前run evidence，不跑server/browser，不commit/push/遠端票/T13。
+- **授權技術選擇/不變條件**：舊join預設相容，可選`resumable:true`取得session.issued；opaque隨機32byte bearer只WSS與sessionStorage同tab保存，不能進URL/QR/console/metrics/截圖/證據，report只token存在布林。server有界process-memory resume store（暫定10min有效/512cap，非商品定案/耐久認證）；token驗證後從server record恢復原memberId/displayName/currentroom/role/mode，不收client自證身份房間權限。token不能升display role；active session拒resume_busy，不搶別人連線、短期retry即可；server重啟/過期/移除/手動離開要誠實失效，不fallback自動匿名join繞門禁。
+- **准入/權限**：server record記成功准入的room gate revision；原房未變revision可憑receipt恢復，不保存password；live lock/password更新increment revision，resume需當下密碼重新驗證，錯密碼不入。成功switch更新record（含准入revision）；mode ACK更新record。host/grants沿既有close撤銷，恢復只能最新普通權限，主持需重新claim/grant，client不能復活舊claim/permission。remove使token失效；explicit session.leave清server記錄/close與clientstorage並停止retry。不得在reload/unmount當explicit leave清token。
+- **client/事件**：participant與display均支援正常意外close退避重試（例如250ms→2s capped/jitter，最多8次後可手動retry）；unmount/explicit leave取消timer/遲到socket guard。刷新讀sessionStorage token自動resume，sessionStorage不可用可降級同頁記憶體、如實記錄刷新無法恢復。新socket先清舊room/private UI/host/media，server快照後可操作；不queue/replay未確認mutation。interaction eventId沿既有InteractionStore以原memberId去重，accepted同ID不重執行；pruned權威snapshot不補過期queue。legacy reaction不補播。媒體dispose且不自動訂閱/發布/解碼；display原autoWatch在resume也需本步停用，避免假稱T13媒體恢復。T11初次display autoWatch仍保持。
+- **驗收/交付/停止**：新增少量外部WS契約：真token同身份/最新房mode/零媒體，新token錯誤/偽造額外role-room拒絕，remove/leave/expiry/active busy，gate revision新密碼，撤權不復活，duplicate accepted事件一次/過期不補；輕量browser兩或三隔離Firefox正常UI斷開→重試→可操作、reload恢復、舊權限不復活/正常門禁、相同ID外部核對與真8秒TTL。受控browser socket close不是實體網路/弱網證據。script有界secret-safe report+中斷/恢復圖，不注入產品debug API，不跑100次/p95/媒體/手機/雲。pinnedNode26.13 typecheck/focused/語法、rootbuild+完整Node一次與browser/看圖/readback；失敗保留、窄診斷，不無限全量重跑。
+- **交接**：可source/tests先saved/readback/STOP精確釋出root，同時保留script/README/log；明確釋出後不得latepatch，只送建議。root完成文件/證據/資源清理與本機commit；不啟動T13或部署。範圍已保存，待啟動T12-IMPL。
+
+### T12 smoke獨立交接
+
+T12-IMPL已明確回報scripts/control-reconnect-smoke.mjs無檔案/草稿、STOP並釋出；root將此單檔與`.scratch/t12/smoke-authoring/`交T12-SMOKE／Luna xhigh唯一寫入，其餘source/tests/README/checks不移交。唯讀source/tests/既有smoke/package/本scope，不寫docs/manifest/source/Git、不跑server/browser。使用已交接協議：resumable:true join→session.issued(token/member/room/role/mode)；session.resume僅token+可選password→session.resumed不echo token+權威快照；session.leave失效並close；resume_invalid/expired停止，busy退避，room_password_*含roomId正常dialog。預定testids control-connection-status/control-retry/control-resume-state，display-status/display-retry。
+
+script交付短2～3Firefox可信HTTPS，正常join/host、participant意外中斷與恢復可操作、刷新原身份、切房再刷新server原房、去重一次與8秒過期不補、舊host/grant不復活/門禁revision可按正常UI重驗，display控制恢復不自動訂閱；中斷/恢復圖與boundedsecret-safe report。具體核心條件沿前scope，必要source差異送root而非自行修。不得記token/password/host秘密或dump sessionStorage；trace只白名單控制摘要，token存在布林。受控socket.close4000可用並標明非實體斷網；可在測試WS wrapper阻擋新連線以拍reconnecting再釋放，不注入appdebug API。目標約500～700行，不為逐包trace膨脹；root最後獨占runtime/看圖/驗收。完成saved/readback/STOP釋出後才由root接管，範圍已保存待啟動。
+
+### T12 source/tests交接
+
+T12-IMPL明確saved/readback/STOP，釋出app.ts/room-access/control-resume、client App/DisplayApp/control-reconnect及control-reconnect.integration給root，5聚焦/型別/語法/diff通過。root現為上述檔案唯一writer，交接指紋保存R001/build-source-sha256.json，開始production build與完整Node。第一位只保留README/checks，第二位保留smoke/smoke-authoring，不得late source patch。
+
+T12-IMPL其餘README/checks已saved/readback/STOP釋出；root讀回README與5聚焦、typecheck/語法/diff紀錄。production build/typecheck與完整47/47一次通過，交接source指紋一致；第一位全部資源停止，root接管README/source/tests，第二位僅保留smoke/smoke-authoring。
+
+T12-SMOKE已saved/readback/STOP釋出script/smoke-authoring，語法通過且未跑server/browser。root接管全部資源，已讀回buffer hold/新connection快照/密碼與去重TTL斷言；窄補成功結尾恢復測試起始密碼，避免獨立重現script成功後留下未知隨機密碼。應用source/build/47核心不變，root開始三Firefox runtime。
+
+### T12最終交付與釋出
+
+root production build/typecheck、完整47/47及首次三Firefox21秒流程通過，source交接指紋未變，script只補成功回復起始密碼。participant/host/display受控close同身份恢復、切房refresh/新gate/去重TTL與active Leave成功；root實際看中斷/恢復圖、摘要/指紋讀回。保存非raw逐包trace，不作超出摘要的重放宣稱。47核心另覆remove/假proof/size/clock邊界。
+
+全部agent已明確STOP釋出，root唯一writer完成文件/SOL/需求/票面/README同步、runtime cleanup讀回4173與自有profiles無process。程式+R001紀錄本機commit後writer釋出；保留既有AGENTS/.scratch未追蹤，不stage/push/遠端票/T13/部署。T12桌面控制核心Pass，媒體/弱網/手機/耐久/完整POC-04仍未驗。

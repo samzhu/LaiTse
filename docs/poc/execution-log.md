@@ -234,3 +234,15 @@ SOL-003/007/008與README、需求狀態/計畫/票面/協作索引同步。50歷
 root build/typecheck、42核心與三Firefox157短流程08:04:33～08:04:45UTC成功。5個425～427ms窗口來源audio新增21～22／screen5～6frames，參與端server計數差值/raw media皆0；手動watch實際11,008samples/3frames，切換保留與不auto驗過。展示實播/公開可見、無私聊/圖案raw history，9外部唯讀負例拒絕；270pxQR實解碼→正常密碼門禁新身份。root指紋/JSON讀回及兩代表圖已查看，errors/cap皆無。[R007](evidence/POC-03-R007/README.md)保留證據與操作。
 
 首次完整41/42為舊space共享app時序，隔離每case app後42/42，未改space模型；首次browser錯用參與頁selector逾時，保留first-attempt，只修script再通過。SOL-005/003/008及002/007、README/需求狀態/計畫/票面/協作同步，無late source patch。手機相機/真人/原生擷取/fullscreen/弱網/耐久/容量/雲與完整POC-03未驗；本輪僅桌面核心可行。server/browser/writer停止釋出，程式+紀錄本機commit，不push/遠端票/T12/部署。
+
+## T12／POC-04-R001：控制狀態自動重連（2026-11-04）
+
+人類「繼續下一個」接#13，輕量核心/用法及程式+紀錄commit沿用，基線133684b。已配發scope與讀回票面，server短期opaque憑證、同身份/房間/mode恢復、最新門禁revision與權限、去重/過期，client退避重試/刷新與媒體停止。Luna xhigh實作，root設計/驗收；進行中，尚未判結果。無新SaaS/依賴、T13媒體/手機/耐久/容量/雲未納入。
+
+### T12完成與保存讀回
+
+root production build/typecheck、完整47/47與首次三Firefox157流程08:47:28～08:47:49UTC通過。participant/host/display受控close4000後同身份控制恢復、回饋可用；切lobby後refresh仍server原房/身份、回studio正常門禁；舊grant/host不復活、host需再claim，display resume不自動screen.subscribe。live改密碼後舊錯新對；同eventId跨resume duplicate ACK且額外projection0，等待8,696ms後publicQueue/replay皆0；active Leave後refresh不auto resume。[POC-04-R001](evidence/POC-04-R001/README.md)保存命令、摘要、兩圖、source指紋/清理與手動用法。
+
+新增5契約含remove舊proof失效/假token/1KiB、clock seam的離線10min TTL/512cap；active不因prune到期，未過期record不提前淘汰。root source檢視收斂gate revision/同房及mode不刷新、只處理自身leave、offline cancel可達、舊events清理與StrictMode retry arm；script檢視收斂新socket/ACK相關性與有界hold forwarding、當前密碼。這些是執行前修正，本輪沒有虛構failed run；首次完整/browser皆通。
+
+保存為斷言摘要/代表圖，未保留raw身份/逐包控制trace；root實際看圖/讀回source-match，無獨立逐包重放宣稱。程序內短期bearer不是帳號/耐久；offline cancel只清本頁且server等TTL，control恢復不auto媒體，8次耗盡/半開/手機/弱網/耐久/容量/CloudRun/完整POC-04未驗。SOL-003/005/006/008及README/需求狀態/計畫/票面/協作同步，全部writer與runtime停止釋出，程式+紀錄本機commit，不push/遠端票/T13/部署。

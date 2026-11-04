@@ -1,0 +1,13 @@
+✔ resume store keeps a short idle TTL and never evicts an unexpired proof (0.73725ms)
+✔ resume preserves room identity and interaction dedup while rechecking live gate and host rights (247.380208ms)
+✔ display resumes with its immutable read-only role and expired danmaku stays out of the public queue (8280.209709ms)
+✔ removal invalidates a detached proof and a resumed host must claim again (11.123625ms)
+✔ resume rejects wrong and oversized credentials and keeps session leave within the control-frame bound (6.298667ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8689.594

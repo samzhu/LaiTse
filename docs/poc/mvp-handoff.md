@@ -12,8 +12,8 @@
 | SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面晚加入與同步排程核心可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
 | SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T09臨時主持/主講及即時門禁核心，正式帳號/耐久待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
 | SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
-| SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 待實驗 | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
-| SOL-006 | 重連、時基、快照與解碼恢復 | 待實驗 | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
+| SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 驗證中（T11桌面核心可行） | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
+| SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12桌面控制恢復核心可行，媒體/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
 | SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（盤點完成） | T01／R002盤點；恢復待POC-06 | 本機結果與後續部署耐久性分清，未解限制不能默認忽略 |
 | SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
 
@@ -159,3 +159,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-002：mode interaction先本地停止來源/接收、server強制stop/unsubscribe並每次binary守衛；同connection generation保留。self inspect回累積enqueue bytes/frames/subscribed，明示非對端receipt。watch不auto來源或訂閱，AudioController音量gain連到播放管線，草稿/音量保留僅同頁。codec/封包/距離規則未換。
 - SOL-008：[R007](evidence/POC-03-R007/README.md)含42核心/build/typecheck、三Firefox合成來源5個活動窗口server0/raw0、11,008samples/3frames手動watch、9外部唯讀負例與真QR；root讀回/兩圖/失敗與窄修保存。復用participation.integration與participation-smoke；舊space測試改每案新app以隔離清理時序，原assertions保留。
 - SOL-007／整合限制：process-memory/匿名身份及原T09 bootstrap授權不等於商品帳號，mode/draft不跨刷新。QR origin需可達/可信LAN才能手機掃，localhost只同機；展示POC診斷UI待商品整合。113項依賴declared license皆已知，兩新套件精確鎖版/notice/readback保存，非完整法務/安全稽核。手機/人耳/原生擷取/fullscreen/弱網/耐久/容量/CloudRun/完整POC-03未驗，T12不自動開工。
+
+## T12／POC-04-R001：SOL-003／005／006／008（2026-11-04）
+
+- SOL-006：`control-resume.ts`以256-bit opaque proof綁server原member/room/role/mode，離線10min TTL、512cap、active不prune/不搶active socket；legacy join相容，可選resumable:true。resume只帶token/可選當前密碼，回session.resumed+權威快照，不收自證room/role/權限；沒有valid proof就明示重入，不auto匿名fallback。store界線由clock seam驗，非耐久/帳號或多instance恢復。
+- SOL-003：room-access revision在live lock/password改變時遞增，session receipt只於成功新准入更新，mode/同房switch不刷新；新gate要求當前密碼。close沿T09撤host/grant，resume按當下普通權限；remove/active leave使proof失效。穩定memberId延續既有InteractionStore eventId去重，snapshot prune掉公開過期項，不重播未確認mutation或legacy events。
+- SOL-005：`control-reconnect.ts`同tab sessionStorage+同頁memory fallback，role分key、URL不含token，新的不同房link走正常join；成功switch更新公開room URL。participant/display close先清權限/內容/media，有限退避8次/取消與手動retry；unmount不當explicit leave。回復控制不auto任何媒體，display初次T11 autoWatch保留、resume需手動觀看。草稿/音量跨disconnect或refresh不在本輪保留承諾。
+- SOL-008：[R001](evidence/POC-04-R001/README.md)含47核心/build、三Firefox正常UI+受控transport close/refresh/門禁/去重TTL、兩代表圖/摘要/指紋/cleanup，首次通過。可沿用control-reconnect.integration與control-reconnect-smoke，source及script執行前root修正紀錄保留。摘要無原始token/身份/逐包trace，非獨立封包重放資產；無新依賴或codec/Phaser改動。
+- 整合限制：offline cancel只清本頁、server離線record等TTL；process restart清store，需手動正常join，不能當CloudRun耐久已驗。新tab/token被清除不是舊身份。controller disposal與no-auto有source/控制斷言，沒有活動影音來源/解碼恢復證據；T13/弱網半開/手機/容量/長測/正式認證/完整POC-04仍待。可接續控制候選方案，不能整包當可交付商品。

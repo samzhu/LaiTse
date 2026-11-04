@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T11桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 狀態：T01～T12桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
 - 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
 - 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
@@ -271,3 +271,7 @@ GitHub Issue 是這份 POC 計畫的發布鏡像；修改本計畫時同步 Issu
 ### T11本輪結果（2026-11-04）
 
 [R007](evidence/POC-03-R007/README.md)已驗直接room/mode連結與正常密碼gate、同socket只互動/觀看切換、草稿/音量、唯讀展示實播/公開projection及真QR像素解碼再入房。42核心/build/typecheck及三Firefox短流程通過，活動來源5窗口server/raw媒體0、9越權拒絕。首次舊test時序與selector失敗/修正保留。本輪依人類只判桌面核心可行；手機相機/真人/耐久/弱網/容量/雲/完整POC-03仍未驗。遠端票不修改，T12待人類指示。
+
+### T12本輪結果（2026-11-04）
+
+[POC-04-R001](evidence/POC-04-R001/README.md)桌面控制核心Pass：47核心/build/typecheck與首次三Firefox重連/切房refresh/最新權限與gate/去重/過期成功。短期process-memory proof、同tab storage、有界重試與失效明示，可沿用SOL-003/005/006/008。受控WS close非實體弱網，未驗媒體訂閱/解碼/發布恢復、8次耗盡/半開/手機/耐久/容量/Cloud Run；完整POC-04 Inconclusive，T13待人類指定，遠端票不改。

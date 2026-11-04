@@ -167,3 +167,13 @@ T11-SMOKE／Luna xhigh仍唯一寫scripts/participation-smoke.mjs與.scratch/t11
 R007桌面核心驗收完成：42核心/build/typecheck與三Firefox成功，直接正常gate/只互動server+raw0/同身份房間草稿音量/觀看手動/唯讀實播公開/真QR像素解碼再入房可行；9外部越權拒絕。root已獨立讀回與實際看圖。首輪舊space共享app時序與browser selector失敗保留，最小修正後通過。SOL-005/003/008與002/007及需求/計畫/票面/README/協作同步。
 
 所有agent已saved/readback/STOP交接，root唯一writer；server/Firefox已停止，cleanup讀回4173無listener/自有profile無process。預先未追蹤AGENTS.md與.scratch/保留不stage，程式+R007紀錄同一本機commit；不push/T12/遠端票/部署。手機相機/真人/耐久/品質與完整POC-03仍待，下一步由人類指定。
+
+## T12啟動checkpoint（2026-11-04）
+
+人類明確「繼續下一個」，範圍T12 #13（已讀回R001票面），不接T13。基線133684b，既有AGENTS/.scratch未追蹤保留。完整writer/設計/驗收/停止條件已記dispatch；T12-IMPL／Luna xhigh已啟動且唯一寫source/tests/script/README/checks，root獨占權威docs/Git/runtime。.gitignore補本輪scratch，無manifest/lock更動。等待明確source saved/readback/STOP才可root改動或build；root設計/驗收，未先宣稱通過/部署。
+
+## T12最終checkpoint（2026-11-04）
+
+基線133684b；人類「繼續下一個」已完成T12控制核心。source與兩位Luna分別明確STOP交接後root build/typecheck/完整47與首次三Firefox21秒流程通過；原身份/房間/最新gate與權限/去重8,696ms過期/active Leave成功。root已實際看兩圖、核對去識別摘要與build指紋，沒有raw逐包重放證據宣稱。R001/README/SOL-003/005/006/008、需求狀態/計畫/票面/協作索引已同步。
+
+root為最後唯一writer，server/Firefox/profiles已停止清理，cleanup讀回4173無listener、自有profile無process。程式與驗測紀錄同一本機commit，既有AGENTS.md/.scratch保留未stage，不push/遠端票/T13/部署。媒體恢復、實體弱網/半開、手機、耐久/容量/完整POC-04仍待。下一票須人類指示，不自行接續。

@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short local Firefox control-session reconnect acceptance; no media recovery claim.",
+  "startedAt": "2026-11-04T08:47:28.767Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0"
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into isolated Firefox profiles and supplied to WSS probes",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "isolatedFirefoxProfiles": 3,
+    "browsers": [
+      "host",
+      "participant",
+      "display"
+    ],
+    "controlledDisconnect": "test-only Playwright WebSocket route close code 4000; not physical network loss",
+    "displayRoleIncluded": true
+  },
+  "credentials": {
+    "hostToken": "not-recorded",
+    "roomPasswords": "not-recorded",
+    "resumeToken": "not-recorded; only presence booleans and same-participant comparison"
+  },
+  "checks": [
+    {
+      "name": "trusted-https-room-catalogue-confirms-normal-gate",
+      "at": "2026-11-04T08:47:28.784Z",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true
+    },
+    {
+      "name": "normal-host-and-password-gated-participant-joined",
+      "at": "2026-11-04T08:47:34.401Z",
+      "hostRoom": "studio",
+      "participantRoom": "studio",
+      "lockedRoomPasswordUsed": true
+    },
+    {
+      "name": "host-granted-publisher-before-resume-check",
+      "at": "2026-11-04T08:47:34.830Z",
+      "grantWasActive": true,
+      "participantIdentityRecorded": true
+    },
+    {
+      "name": "participant-controlled-disconnect-resumed-same-identity",
+      "at": "2026-11-04T08:47:35.409Z",
+      "client": "participant",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    },
+    {
+      "name": "resume-restores-current-permission-without-old-publisher-grant",
+      "at": "2026-11-04T08:47:35.415Z",
+      "roomId": "studio",
+      "publishAllowed": false,
+      "oldGrantRevived": false
+    },
+    {
+      "name": "participant-can-use-allowed-control-after-recovery",
+      "at": "2026-11-04T08:47:35.471Z",
+      "control": "feedback",
+      "acknowledged": true
+    },
+    {
+      "name": "participant-reload-restored-server-identity-and-room",
+      "at": "2026-11-04T08:47:35.636Z",
+      "sameParticipant": true,
+      "roomId": "lobby",
+      "explicitLeaveSent": false
+    },
+    {
+      "name": "server-room-switch-to-locked-room-used-normal-password-ui",
+      "at": "2026-11-04T08:47:35.891Z",
+      "participantIdentityStable": true,
+      "roomId": "studio",
+      "passwordRetained": false
+    },
+    {
+      "name": "host-controlled-disconnect-resumed-same-identity",
+      "at": "2026-11-04T08:47:36.239Z",
+      "client": "host",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    },
+    {
+      "name": "host-reclaimed-only-after-normal-user-action",
+      "at": "2026-11-04T08:47:36.317Z",
+      "hostControlWasRestoredAutomatically": false
+    },
+    {
+      "name": "display-controlled-disconnect-resumed-same-identity",
+      "at": "2026-11-04T08:47:36.936Z",
+      "client": "display",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    },
+    {
+      "name": "host-changed-room-gate-revision-through-normal-control",
+      "at": "2026-11-04T08:47:37.033Z",
+      "roomId": "studio",
+      "locked": true,
+      "passwordRetained": false
+    },
+    {
+      "name": "gate-revision-rejected-old-password-and-resumed-same-identity-with-current-password",
+      "at": "2026-11-04T08:47:37.840Z",
+      "roomId": "studio",
+      "requiredCurrentPassword": true,
+      "previousPasswordRejected": true,
+      "sameParticipant": true,
+      "passwordValuesRetained": false
+    },
+    {
+      "name": "event-id-dedup-survives-resume-and-public-ttl-expires-without-replay",
+      "at": "2026-11-04T08:47:46.680Z",
+      "sameParticipantAfterResume": true,
+      "initialAcceptedDuplicate": false,
+      "duplicateAcknowledged": true,
+      "duplicateProjectionCount": 0,
+      "waitedBeyondPublicTtlMs": 8696,
+      "publicSnapshotCountAfterExpiry": 0,
+      "expiredReplayCount": 0,
+      "eventIdRetained": false,
+      "resumeTokenRetained": false
+    },
+    {
+      "name": "explicit-leave-invalidates-session-and-prevents-reconnect-after-reload",
+      "at": "2026-11-04T08:47:49.115Z",
+      "leaveSent": true,
+      "tokenPresentAfterReload": false,
+      "automaticResumeAfterLeave": false
+    },
+    {
+      "name": "host-changed-room-gate-revision-through-normal-control",
+      "at": "2026-11-04T08:47:49.215Z",
+      "roomId": "studio",
+      "locked": true,
+      "passwordRetained": false
+    },
+    {
+      "name": "startup-test-password-restored-after-successful-flow",
+      "at": "2026-11-04T08:47:49.215Z",
+      "restored": true,
+      "passwordRetained": false
+    },
+    {
+      "name": "bounded-secret-safe-control-traces-and-final-assertions",
+      "at": "2026-11-04T08:47:49.215Z",
+      "clientCount": 3,
+      "totalControlRecords": 237,
+      "traceCapsReached": false,
+      "secretsRetained": false
+    }
+  ],
+  "reconnects": [
+    {
+      "client": "participant",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    },
+    {
+      "client": "host",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    },
+    {
+      "client": "display",
+      "sameParticipant": true,
+      "roomId": "studio",
+      "resumeTokenIssued": true,
+      "resumeTokenPresented": true,
+      "reconnectStateWasVisible": true,
+      "controlledCloseCode": 4000,
+      "physicalNetworkClaim": false
+    }
+  ],
+  "probes": [
+    {
+      "sameParticipantAfterResume": true,
+      "initialAcceptedDuplicate": false,
+      "duplicateAcknowledged": true,
+      "duplicateProjectionCount": 0,
+      "waitedBeyondPublicTtlMs": 8696,
+      "publicSnapshotCountAfterExpiry": 0,
+      "expiredReplayCount": 0,
+      "eventIdRetained": false,
+      "resumeTokenRetained": false
+    }
+  ],
+  "screenshots": [
+    "participant-reconnecting.png",
+    "participant-recovered.png"
+  ],
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "browserStorageDumped": false,
+    "secretsInRetainedTrace": false,
+    "serverSecretEchoObserved": false,
+    "sessionIssuedTokenStoredAsBooleanOnly": true
+  },
+  "limits": {
+    "physicalNetworkInterruption": "not-tested; disconnects are controlled application WebSocket closes",
+    "mediaDecodeSubscriptionOrPublishRecovery": "not-tested; T13 scope",
+    "physicalMicrophoneOrDisplayCapture": "not-tested",
+    "mobileDevicesAndCameraQRScan": "not-tested",
+    "accountsAndDurableIdentity": "not-tested; identity is a server-issued local POC participant ID",
+    "capacityLongRunAndLatency": "not-tested; no 100-event, p95, or endurance claim",
+    "cloudDeployment": "not-tested; local POC only"
+  },
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "finishedAt": "2026-11-04T08:47:49.818Z",
+  "durationMs": 21051
+}

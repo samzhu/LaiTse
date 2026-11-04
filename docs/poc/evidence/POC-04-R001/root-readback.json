@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "reviewer": "root",
+  "evidenceBoundary": "Passed script assertions, sanitized summary report and actual screenshots; raw identities/control payloads/token traces were not retained. No independent per-frame replay claim.",
+  "productionSourceMatchesBuild": true,
+  "fullNodeCases": 47,
+  "controlledBrowserReconnects": 3,
+  "sameIdentityAcrossEachReconnect": true,
+  "duplicateProjectionCount": 0,
+  "publicExpiryWaitMs": 8696,
+  "expiredReplayCount": 0,
+  "pageAndSocketErrorsEmpty": true,
+  "imagesActuallyViewed": [
+    "participant-reconnecting.png",
+    "participant-recovered.png"
+  ],
+  "credentialsProfilesExcluded": true,
+  "tokenShapedEvidenceStrings": 0
+}

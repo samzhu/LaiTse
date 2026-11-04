@@ -1,0 +1,6 @@
+command: .tools/node-v26.13.0-darwin-arm64/bin/node --check scripts/control-reconnect-smoke.mjs
+exit_code: 0
+stdout: (empty)
+stderr: (empty)
+runtime_started: false
+browser_started: false

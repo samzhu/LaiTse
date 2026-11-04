@@ -29,9 +29,14 @@ function createVerifier(password: string): { salt: Buffer; verifier: Buffer } {
 
 export function createRoomAccessPolicy(meetingRoomPassword?: string) {
   let stored = meetingRoomPassword ? createVerifier(meetingRoomPassword) : null;
+  let studioRevision = 0;
   const attemptsByConnection = new WeakMap<object, number[]>();
 
   return {
+    admissionRevision(roomId: RoomId): number {
+      return roomId === "studio" ? studioRevision : 0;
+    },
+
     isMeetingRoomLocked(roomId: RoomId): boolean {
       return roomId === "studio" && stored !== null;
     },
@@ -70,6 +75,7 @@ export function createRoomAccessPolicy(meetingRoomPassword?: string) {
 
     setMeetingRoomPassword(password: string | null): void {
       stored = password === null ? null : createVerifier(password);
+      studioRevision += 1;
     },
   };
 }

@@ -1,0 +1,14 @@
+{
+  "baseline": "133684b",
+  "unchanged": [
+    "package.json",
+    "package-lock.json",
+    "public/vendor-notices.txt",
+    "src/server/interactions.ts",
+    "src/server/audio-relay.ts",
+    "src/server/screen-relay.ts",
+    "src/client/audio.ts",
+    "src/client/screen.ts",
+    "src/client/pixel-space.ts"
+  ]
+}
