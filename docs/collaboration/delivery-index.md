@@ -41,3 +41,4 @@
 | T08-IMPLEMENT／T08-ACCEPT | 房間影音與成員隔離、切房及惡意client拒絕 | app per-room relays/guard、room-isolation契約、t08-smoke；POC-03-R002 | 27核心/build、四Firefox合成雙房/切房/來源hash與六外部拒絕通過，SOL-002/003/008同步；失敗保存 | 匿名連線核心可行；帳號/角色/私密准入及完整POC-03待補，本機commit不push/T09；資源釋出 |
 | DEC-011 | 空間類型/距離廣播/會議室密碼門禁 | decisions；PRD/handoff v0.8、POC-PLAN v1.2、ticket-breakdown與SOL影響 | 人類原話/釐清已保存讀回，純文件一致性檢查 | 新規則未實作/未驗，需補POC與票面；未啟動T09或寫GitHub |
 | DEC011-A | 會議室全房/開放空間距離語音 | space/audio relay/UI、space-policy-smoke；POC-03-R003 | 30核心/build、三Firefox實際render/過界/meeting9格，原始收尾trace與窄修/完整hash讀回保存；SOL同步 | 6格暫定、單來源；門/密碼/真人裝置待補，程式/需求/紀錄本機commit不push，資源釋出 |
+| DEC011-BC | 場景門與密碼准入 | room-access/Phaser門/密碼dialog、room-access-smoke；POC-03-R004 | 31核心/build、兩config真canvas門/正確密碼/外部拒絕與合成audio；原始失敗/71px座標診斷與修正保存，SOL同步 | startup鎖/基本budget，T09即時管理/正式身份與實機品質待補；本機commit不push，資源釋出 |

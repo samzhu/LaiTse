@@ -194,3 +194,15 @@ Phaser4.2.1實際WebGL／原創16×20像素人物、server權威16×10位置、�
 首輪主流程通過但關閉後raw尾端各8筆接收包缺來源trace；root獨立讀回揭露，原始資料保存在[R003 first-attempt](evidence/POC-03-R003/first-attempt/)。只窄修script先停發布/等ACK與穩定後再核對，重跑受影響browser/語法成功：source127、near127/far43全部LTA1 hash匹配、cap未達；未重跑無關30測試。R003含實際位置/政策/計數、原始control/hash、兩圖及source指紋，root代表圖實際查看/JSON讀回完成。
 
 桌面合成兩類空間核心可行，6格不是產品定案，無多人混音/音量漸變/門/密碼或正式帳號權限；手機/真人/影音共存/品質/容量/部署仍未知，完整POC-03不判通過。SOL-002/003/004/008與需求/操作/協作同步，上次DEC-011未commit文件與本步程式+紀錄一起本機commit；無新依賴，不push/遠端票/T09/門禁/部署，server/browser與writer已停止釋出。
+
+## POC-03-R004／DEC011-BC會議室門與密碼
+
+2026-11-04配發；進行中，未判定。假設：同一本機應用可提供場景門/鍵盤與等效入口，server設定未鎖直接進、上鎖無/錯密碼不入/正確密碼入；初次join與switch共用門禁，門外不取得會議室影音/成員。配置採啟動環境，不實作T09即時管理。沿用合成audio與短真browser，手機/真人/完整角色/密碼變更政策未驗。
+
+### DEC011-BC完成與保存讀回（2026-11-04）
+
+31核心/production build/typecheck通過；門與room choice/初次join/switch共用server密碼准入，無/錯密碼不分配私房member/relay，正確才入房，startup設定切未鎖/上鎖。密碼不下發metadata/trace，scrypt verifier及基本per-socket限次，無新公開管理API。
+
+首次與補scroll後第二次未鎖browser門點擊逾時，已停止整套重跑、保存[R004](evidence/POC-03-R004/README.md)兩輪及單頁輸入診斷：DOM canvas top868.1但Phaser cached797.1，pointer錯落276而非門205。root修原生down capture前同步bounds/displayScale（destroy移除listeners），單頁實測over Zone/activations1與真入房，再恢復兩config最終流程。修正後build/typecheck及兩config各兩Firefox157真WebGL，未鎖點canvas門入/出及HTML再入；上鎖錯誤留lobby原位/0封包、正確入studio，private publisher事前持續合成語音，外部無/錯join與訂閱/偽造皆拒絕。實際AudioWorklet render未鎖2048、上鎖1792samples；stop/ACK/穩定後source33/58、visitor11/9全部hash匹配、cap未達，page/socket errors空。
+
+root已讀回JSON/hash與代表圖，README/SOL-003/004/007/008與協作/需求同步。兩config皆本機同app依序啟動；無真mic/人耳/原生畫面/手機/完整T09角色/即時鎖房或全面資安/容量驗收，完整POC-03未通過。錯誤提交前client會清理舊影音，server原房資格保持但需手動重開本機媒體的限制已明示。無新依賴/AV底層變更，程式+紀錄本機commit、不push/遠端票/T09/部署，writer與runtime停止釋出。

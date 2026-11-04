@@ -1,0 +1,13 @@
+[ROOM-ACCESS] meeting-audio-publisher-active-before-door-probes {"sourceFramesObserved":1,"source":"synthetic oscillator"}
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+Error: locator.waitFor: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByText('Connected to Meeting room', { exact: true }) to be visible[22m
+
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/room-access-smoke.mjs:621:80
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/room-access-smoke.mjs:680:13
+
+Node.js v26.13.0

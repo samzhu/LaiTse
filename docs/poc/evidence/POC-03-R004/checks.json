@@ -1,0 +1,137 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T04:19:28.328427+00:00",
+    "finishedAt": "2026-11-04T04:19:29.630821+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=15000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-04T04:19:29.631481+00:00",
+    "finishedAt": "2026-11-04T04:19:30.830886+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:19:30.831141+00:00",
+    "finishedAt": "2026-11-04T04:19:30.877083+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "unlocked-smoke",
+    "command": [
+      "node",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:19:30.999827+00:00",
+    "finishedAt": "2026-11-04T04:19:43.597874+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "smoke-syntax-final",
+    "command": [
+      "node",
+      "--check",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:20:29.747775+00:00",
+    "finishedAt": "2026-11-04T04:20:29.796873+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "unlocked-smoke-final",
+    "command": [
+      "node",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:20:29.920395+00:00",
+    "finishedAt": "2026-11-04T04:20:42.446373+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "diagnostic-build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T04:24:49.651726+00:00",
+    "finishedAt": "2026-11-04T04:24:51.000537+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "input-diagnostic",
+    "command": [
+      "node",
+      ".scratch/room-access/input-diagnostic.mjs"
+    ],
+    "startedAt": "2026-11-04T04:24:51.123681+00:00",
+    "finishedAt": "2026-11-04T04:24:53.763578+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "input-fix-build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-04T04:26:27.076923+00:00",
+    "finishedAt": "2026-11-04T04:26:28.390521+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "input-fixed-diagnostic",
+    "command": [
+      "node",
+      ".scratch/room-access/input-diagnostic.mjs"
+    ],
+    "startedAt": "2026-11-04T04:26:28.516972+00:00",
+    "finishedAt": "2026-11-04T04:26:31.189628+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "unlocked-smoke-confirmed",
+    "command": [
+      "node",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:27:30.851024+00:00",
+    "finishedAt": "2026-11-04T04:27:36.446857+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "locked-smoke-confirmed",
+    "command": [
+      "node",
+      "scripts/room-access-smoke.mjs"
+    ],
+    "startedAt": "2026-11-04T04:27:36.671872+00:00",
+    "finishedAt": "2026-11-04T04:27:42.961754+00:00",
+    "exitCode": 0
+  }
+]

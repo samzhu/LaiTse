@@ -1,0 +1,7 @@
+{
+  "osVersion": "27.2",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "baselineCommit": "0d881765ee55c77248be64e44b76071f18a21d87",
+  "scope": "one local app sequential unlocked/locked startup configurations, isolated real desktop browsers, synthetic audio only; no hardware/phone or host role claims"
+}

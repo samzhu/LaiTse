@@ -1,0 +1,14 @@
+[ROOM-ACCESS] meeting-audio-publisher-active-before-door-probes {"sourceFramesObserved":1,"source":"synthetic oscillator"}
+[ROOM-ACCESS] scene-door-click-geometry {"beforeScroll":{"x":206,"y":868.0999755859375,"width":1028,"height":409.2166748046875},"visibleCanvas":{"x":206,"y":320.1000061035156,"width":1028,"height":409.2166442871094}}
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+Error: locator.waitFor: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByText('Connected to Meeting room', { exact: true }) to be visible[22m
+
+    at /Users/samzhu/workspace_herdr/LaiTse/scripts/room-access-smoke.mjs:624:80
+    at file:///Users/samzhu/workspace_herdr/LaiTse/scripts/room-access-smoke.mjs:683:13
+
+Node.js v26.13.0

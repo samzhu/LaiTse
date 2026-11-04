@@ -133,14 +133,15 @@ test("space snapshots expose member positions only for the recipient's current r
       kind: "open-area",
       audioPolicy: "proximity",
       audioRadiusGridUnits: 6,
+      isLocked: false,
     });
     assert.deepEqual(adaJoined.room.members.map((member) => member.displayName), ["Ada"]);
     assert.deepEqual(adaJoined.space.rooms.map((room) => room.id), ["lobby", "studio"]);
     assert.deepEqual(
-      adaJoined.space.rooms.map(({ kind, audioPolicy, audioRadiusGridUnits }) => ({ kind, audioPolicy, audioRadiusGridUnits })),
+      adaJoined.space.rooms.map(({ kind, audioPolicy, audioRadiusGridUnits, isLocked }) => ({ kind, audioPolicy, audioRadiusGridUnits, isLocked })),
       [
-        { kind: "open-area", audioPolicy: "proximity", audioRadiusGridUnits: 6 },
-        { kind: "meeting-room", audioPolicy: "room", audioRadiusGridUnits: null },
+        { kind: "open-area", audioPolicy: "proximity", audioRadiusGridUnits: 6, isLocked: false },
+        { kind: "meeting-room", audioPolicy: "room", audioRadiusGridUnits: null, isLocked: false },
       ],
     );
     assert.equal(adaJoined.space.participantId, player(adaJoined.space, "Ada").id);

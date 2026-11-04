@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-04",
+  "method": "narrow ps process readback and lsof TCP 4173 listener readback",
+  "pocServerProcesses": 0,
+  "pocFirefoxProcesses": 0,
+  "port4173Listeners": 0,
+  "publishedOrDeployed": false
+}

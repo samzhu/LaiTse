@@ -1,0 +1,8 @@
+{
+  "observedVisitorSentTypes": [
+    "join"
+  ],
+  "failure": "door click did not lead to room.switch; no membership admission observed",
+  "hypothesis": "raw page.mouse.click does not auto-scroll map canvas after media controls scrolled viewport",
+  "controlledChange": "record before/after canvas bounds, scrollIntoViewIfNeeded, click center in visible viewport"
+}

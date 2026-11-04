@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short room door and password POC under one startup lock configuration, with synthetic desktop audio after authorized entry.",
+  "startedAt": "2026-11-04T04:24:51.306Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "configuration": {
+    "expectedLocked": false,
+    "publicCatalogueMatched": false,
+    "passwordIncludedInEvidence": false
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "not-reported",
+    "renderers": {}
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA explicitly trusted by Node requests and imported into isolated Firefox profiles",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "syntheticSource": "Publisher getUserMedia is replaced before app load with an AudioContext oscillator routed to MediaStreamDestination; no hardware microphone is used.",
+  "settings": {
+    "lockedDoorRequiresPassword": false,
+    "maxControlRecordsPerClient": 800,
+    "maxAudioPacketHashesPerDirection": 2000
+  },
+  "clients": {
+    "visitor": {
+      "sockets": 1,
+      "latestSnapshot": {
+        "seq": 1,
+        "currentRoomId": "lobby",
+        "isLocked": false,
+        "players": [
+          {
+            "displayName": "Input diagnostic",
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793766293117,
+          "direction": "sent",
+          "type": "join",
+          "roomId": "lobby",
+          "hasPassword": false
+        },
+        {
+          "at": 1793766293118,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766293118,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766293118,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby"
+        }
+      ],
+      "droppedControls": 0,
+      "protocolErrors": [],
+      "packets": {
+        "sent": [],
+        "received": []
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    }
+  },
+  "phases": [],
+  "snapshots": [],
+  "externalProbes": [],
+  "screenshots": [
+    "input-map.png"
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": null
+  },
+  "limits": {
+    "passwordValue": "not-recorded",
+    "passwordVerifier": "not-recorded",
+    "audioPayloads": "not-recorded; bounded opaque LTA1 packet hashes only",
+    "audioPacketHashTruncation": "run fails if a collection reaches its cap",
+    "mobile": "not-tested",
+    "physicalMicrophone": "not-tested",
+    "humanHearing": "not-tested",
+    "identitiesAndHostRoles": "not-tested; the POC has no verified account or room-management role",
+    "liveLockChanges": "not-tested; lock configuration takes effect at server startup"
+  },
+  "inputDiagnostic": {
+    "box": {
+      "x": 206,
+      "y": 320.1000061035156,
+      "width": 1028,
+      "height": 409.2166442871094
+    },
+    "before": {
+      "ready": true,
+      "phaserVersion": "4.2.1",
+      "renderer": "WebGL",
+      "renderCount": 10,
+      "renderedAt": "2026-11-04T04:24:53.208Z",
+      "snapshotSeq": 1,
+      "players": [
+        {
+          "id": "e22bbec1-8192-4154-a02e-26fee6e9e3dc",
+          "displayName": "Input diagnostic",
+          "roomId": "lobby",
+          "gridX": 2,
+          "gridY": 2,
+          "x": 113.5,
+          "y": 173.5,
+          "targetX": 113.5,
+          "targetY": 173.5,
+          "tweenActive": false,
+          "texture": "t07-avatar-3"
+        }
+      ],
+      "doorInput": {
+        "activations": 0,
+        "sceneEnabled": true,
+        "managerEnabled": true,
+        "pointer": {
+          "x": 43.50194552529183,
+          "y": -282.3623693920269
+        },
+        "canvasBounds": {
+          "x": 206,
+          "y": 797.0999755859375,
+          "width": 1028,
+          "height": 409.2166748046875
+        },
+        "displayScale": {
+          "x": 1.0116731517509727,
+          "y": 1.011688979188337
+        },
+        "lastSceneDown": null
+      }
+    },
+    "after": {
+      "ready": true,
+      "phaserVersion": "4.2.1",
+      "renderer": "WebGL",
+      "renderCount": 25,
+      "renderedAt": "2026-11-04T04:24:53.431Z",
+      "snapshotSeq": 1,
+      "players": [
+        {
+          "id": "e22bbec1-8192-4154-a02e-26fee6e9e3dc",
+          "displayName": "Input diagnostic",
+          "roomId": "lobby",
+          "gridX": 2,
+          "gridY": 2,
+          "x": 113.5,
+          "y": 173.5,
+          "targetX": 113.5,
+          "targetY": 173.5,
+          "tweenActive": false,
+          "texture": "t07-avatar-3"
+        }
+      ],
+      "doorInput": {
+        "activations": 0,
+        "sceneEnabled": true,
+        "managerEnabled": true,
+        "pointer": {
+          "x": 520,
+          "y": 276.0899471199351
+        },
+        "canvasBounds": {
+          "x": 206,
+          "y": 797.0999755859375,
+          "width": 1028,
+          "height": 409.2166748046875
+        },
+        "displayScale": {
+          "x": 1.0116731517509727,
+          "y": 1.011688979188337
+        },
+        "lastSceneDown": {
+          "x": 520,
+          "y": 276.0899471199351,
+          "over": []
+        }
+      }
+    },
+    "dom": "T07 · LIVE PIXEL SPACE\n\nTwo rooms, one shared space\nPhaser 4.2.1 · WebGL · 1 visible in your room\n\nChoose a room or use the marked door. Open area voice follows avatar distance; meeting room voice reaches everyone inside. The visible 6-grid-unit range is a provisional demo setting.\n\nOpen area\nOpen area · proximity voice · demo range 6 grid units · You are here\nMeeting room\nMeeting room · everyone inside can hear · open door\n\nFocus the map, move with arrow keys or W A S D, or press Enter to use the door. Membership and positions in the other room stay hidden.\n\nEnter Meeting room through door · open\nReduce motion\n↑\n←\n↓\n→\nMOVE\n\nYou are in Open area. The other room is listed without its members."
+  },
+  "finishedAt": "2026-11-04T04:24:53.735Z"
+}

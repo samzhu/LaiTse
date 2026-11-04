@@ -13,6 +13,7 @@ type RoomChoice = {
   kind: SpaceRoom["kind"];
   audioPolicy: SpaceRoom["audioPolicy"];
   audioRadiusGridUnits: number | null;
+  isLocked: boolean;
 };
 
 type SpacePanelProps = {
@@ -34,7 +35,12 @@ const DIRECTIONS: Array<{ direction: MoveDirection; label: string; symbol: strin
 ];
 
 function describeRooms(roomChoices: RoomChoice[], snapshot: SpaceSnapshot | null): SpaceRoom[] {
-  if (snapshot) return snapshot.rooms;
+  if (snapshot) {
+    return snapshot.rooms.map((room) => ({
+      ...room,
+      isLocked: roomChoices.find((choice) => choice.id === room.id)?.isLocked ?? false,
+    }));
+  }
   return roomChoices.map((room) => ({
     ...room,
     kind: room.kind,
@@ -56,6 +62,8 @@ export function SpacePanel({
   onMove,
 }: SpacePanelProps) {
   const mapRef = useRef<HTMLDivElement>(null);
+  const onSelectRoomRef = useRef(onSelectRoom);
+  onSelectRoomRef.current = onSelectRoom;
   const rendererRef = useRef<Awaited<ReturnType<typeof createPixelSpaceRenderer>> | null>(null);
   const stateRef = useRef({ rooms: describeRooms(rooms, snapshot), snapshot, reducedMotion: false });
   const [renderDiagnostics, setRenderDiagnostics] = useState<SpaceRenderDiagnostics | null>(null);
@@ -82,7 +90,7 @@ export function SpacePanel({
     const parent = mapRef.current;
     if (!parent) return;
     void createPixelSpaceRenderer(
-      { parent, ...stateRef.current },
+      { parent, ...stateRef.current, onEnterRoom: (roomId) => onSelectRoomRef.current(roomId) },
       (diagnostics) => {
         if (!cancelled) setRenderDiagnostics(diagnostics);
       },
@@ -114,6 +122,11 @@ export function SpacePanel({
     if (event.target !== event.currentTarget) return;
     const target = event.target as HTMLElement;
     if (target.matches("input, textarea, select, button, [contenteditable='true']")) return;
+    if (event.key === "Enter") {
+      event.preventDefault();
+      onSelectRoom(snapshot?.currentRoomId === "studio" ? "lobby" : "studio");
+      return;
+    }
     const directions: Record<string, MoveDirection> = {
       ArrowUp: "up",
       w: "up",
@@ -135,6 +148,9 @@ export function SpacePanel({
   };
 
   const activeRoomName = rooms.find((room) => room.id === selectedRoomId)?.name ?? selectedRoomId;
+  const nextRoomId = snapshot?.currentRoomId === "studio" ? "lobby" : "studio";
+  const nextRoom = rooms.find((room) => room.id === nextRoomId);
+  const studioLocked = rooms.find((room) => room.id === "studio")?.isLocked ?? false;
   const characterCount = visibleRooms.find((room) => room.id === snapshot?.currentRoomId)?.players.length ?? 0;
   const statusText = renderDiagnostics
     ? `Phaser ${renderDiagnostics.phaserVersion} · ${renderDiagnostics.renderer} · ${characterCount} visible in your room`
@@ -157,7 +173,7 @@ export function SpacePanel({
         </span>
       </div>
 
-      <p className="space-intro">Choose a room to enter. Open area voice follows avatar distance; meeting room voice reaches everyone inside. The visible 6-grid-unit range is a provisional demo setting.</p>
+      <p className="space-intro">Choose a room or use the marked door. Open area voice follows avatar distance; meeting room voice reaches everyone inside. The visible 6-grid-unit range is a provisional demo setting.</p>
 
       <div className="space-room-choices" role="group" aria-label="Choose a room">
         {rooms.map((room) => {
@@ -178,7 +194,7 @@ export function SpacePanel({
               <span className="space-room-choice-detail">
                 {room.kind === "open-area"
                   ? `Open area · proximity voice · demo range ${room.audioRadiusGridUnits} grid units`
-                  : "Meeting room · everyone inside can hear"}
+                  : `Meeting room · everyone inside can hear · ${room.isLocked ? "password required" : "open door"}`}
                 {isCurrent ? " · You are here" : ""}
               </span>
             </button>
@@ -194,15 +210,25 @@ export function SpacePanel({
         data-current-room={snapshot?.currentRoomId ?? selectedRoomId}
         tabIndex={0}
         role="application"
-        aria-label={`Pixel map of the lobby and studio. Focus this map and use arrow keys or W A S D to move in ${activeRoomName}.`}
+        aria-label={`Pixel map of the lobby and studio with a ${studioLocked ? "locked" : "open"} meeting room door. Focus this map and use arrow keys or W A S D to move in ${activeRoomName}; press Enter to use the door.`}
         onKeyDown={handleMapKeyDown}
         onClick={() => mapRef.current?.focus()}
       />
 
       <div className="space-controls-row">
         <p className="space-hint" id="space-keyboard-hint">
-          Focus the map, then move with arrow keys or W A S D. Membership and positions in the other room stay hidden.
+          Focus the map, move with arrow keys or W A S D, or press Enter to use the door. Membership and positions in the other room stay hidden.
         </p>
+        <button
+          className="door-entry-button"
+          type="button"
+          data-door-entry={nextRoomId}
+          disabled={Boolean(pendingRoomId)}
+          onClick={() => onSelectRoom(nextRoomId)}
+        >
+          {snapshot?.currentRoomId === "studio" ? "Leave meeting room through door" : `Enter ${nextRoom?.name ?? "meeting room"} through door`}
+          {nextRoomId === "studio" ? (studioLocked ? " · password required" : " · open") : ""}
+        </button>
         <label className="reduced-motion-toggle">
           <input
             type="checkbox"

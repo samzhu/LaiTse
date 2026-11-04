@@ -1,0 +1,1019 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short room door and password POC under one startup lock configuration, with synthetic desktop audio after authorized entry.",
+  "startedAt": "2026-11-04T04:27:36.858Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "configuration": {
+    "expectedLocked": true,
+    "publicCatalogueMatched": true,
+    "passwordIncludedInEvidence": false
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0",
+    "renderers": {
+      "publisher": "WebGL",
+      "visitor": "WebGL"
+    }
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA explicitly trusted by Node requests and imported into isolated Firefox profiles",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "syntheticSource": "Publisher getUserMedia is replaced before app load with an AudioContext oscillator routed to MediaStreamDestination; no hardware microphone is used.",
+  "settings": {
+    "lockedDoorRequiresPassword": true,
+    "maxControlRecordsPerClient": 800,
+    "maxAudioPacketHashesPerDirection": 2000
+  },
+  "clients": {
+    "publisher": {
+      "sockets": 1,
+      "latestSnapshot": {
+        "seq": 3,
+        "currentRoomId": "studio",
+        "isLocked": true,
+        "players": [
+          {
+            "displayName": "Door publisher",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "displayName": "Door visitor",
+            "x": 5,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793766460051,
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio",
+          "hasPassword": false
+        },
+        {
+          "at": 1793766460052,
+          "direction": "received",
+          "type": "protocol.error"
+        },
+        {
+          "at": 1793766460162,
+          "direction": "sent",
+          "type": "join",
+          "roomId": "studio",
+          "hasPassword": true
+        },
+        {
+          "at": 1793766460194,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766460194,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766460194,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766460603,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766460807,
+          "direction": "sent",
+          "type": "audio.start"
+        },
+        {
+          "at": 1793766460807,
+          "direction": "received",
+          "type": "audio.started"
+        },
+        {
+          "at": 1793766461601,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766461601,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766461983,
+          "direction": "sent",
+          "type": "audio.stop"
+        },
+        {
+          "at": 1793766461983,
+          "direction": "received",
+          "type": "audio.stopped"
+        }
+      ],
+      "droppedControls": 0,
+      "protocolErrors": [
+        {
+          "at": "2026-11-04T04:27:40.052Z",
+          "code": "room_password_required"
+        }
+      ],
+      "packets": {
+        "sent": [
+          {
+            "at": 1793766460829,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 0,
+            "bytes": 119,
+            "sha256": "9ce18d42f45d705972b1612f9257547cbbc0c7ae7407063f454fcec74e8b0309"
+          },
+          {
+            "at": 1793766460850,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 1,
+            "bytes": 99,
+            "sha256": "ec55dfdbee57b1e83e96512d545e12eb229a618b75738818c3002eba6b89c7a6"
+          },
+          {
+            "at": 1793766460872,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 2,
+            "bytes": 99,
+            "sha256": "55636b764170134144d1f5f2906c2400f343b3d2ddf54e02012b4a39ad32f447"
+          },
+          {
+            "at": 1793766460887,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 3,
+            "bytes": 104,
+            "sha256": "b97058e963f084d43d237a2c490ba10e362581f3a5bbbacb4fd88abbfb6ff9f9"
+          },
+          {
+            "at": 1793766460908,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 4,
+            "bytes": 101,
+            "sha256": "94baeb5c3dadfe160000f2cdf251fafca559eefc95ac86adaeacad0216b04a23"
+          },
+          {
+            "at": 1793766460930,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 5,
+            "bytes": 101,
+            "sha256": "515f96083e473180b7fb2d6c835bce818ef06d6259f6471bc3a2203275a531a1"
+          },
+          {
+            "at": 1793766460951,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 6,
+            "bytes": 105,
+            "sha256": "1393f54683fba4d39c235daa5ac825cf8e044e48a21a1bfce369f8eba0600af2"
+          },
+          {
+            "at": 1793766460967,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 7,
+            "bytes": 102,
+            "sha256": "4f9a5abde82ac119edd23d11b450fb6d5ac44386519d66bd7b2dd1800fdb0f99"
+          },
+          {
+            "at": 1793766460988,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 8,
+            "bytes": 98,
+            "sha256": "cad2cfd4dfa03d9c389fe8772877ffbf5ba9470276cf66f53fdcc8b3ce3aa6fd"
+          },
+          {
+            "at": 1793766461009,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 9,
+            "bytes": 99,
+            "sha256": "004fc41c6708181a30bee0006162bedbb23a702d6e09a016663af9e36bf133eb"
+          },
+          {
+            "at": 1793766461032,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 10,
+            "bytes": 103,
+            "sha256": "23ac8852e6691c2c94bbb216a894383489ee74d3a8e9b53d3cc071217e8b5b65"
+          },
+          {
+            "at": 1793766461047,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 11,
+            "bytes": 104,
+            "sha256": "5a08c051511015c3bef3aa64754cbd9b6339b27fe8e779747cf2b2c3dbfc4eaf"
+          },
+          {
+            "at": 1793766461070,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 12,
+            "bytes": 102,
+            "sha256": "9992ebfa8415d09f7f5be24f7ae0dafccee85ef9291d1ae85d2a05241c0fe701"
+          },
+          {
+            "at": 1793766461090,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 13,
+            "bytes": 104,
+            "sha256": "8d111dba2956c83308ad864f29247dc79e8381ccfeae13df0d5dddb6dc6a60fb"
+          },
+          {
+            "at": 1793766461111,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 14,
+            "bytes": 102,
+            "sha256": "bad79b1bf40444cd3abb73f4363ff8436e754a18b1484dcd0ce8a0b23014a172"
+          },
+          {
+            "at": 1793766461127,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 15,
+            "bytes": 105,
+            "sha256": "d6f3c9ccbc25046719705a7a88b971c7ad827c1df0908eac634f091b1bf4826e"
+          },
+          {
+            "at": 1793766461148,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 16,
+            "bytes": 107,
+            "sha256": "21a39fb7843828683ef7447f85a984f35b0af1602b61e6e6003157ef8235c2af"
+          },
+          {
+            "at": 1793766461170,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 17,
+            "bytes": 144,
+            "sha256": "cc4bbd4e0620b91dd1f829824a943a8d9d85a888f8ef54aef4a7aa496d8c35c6"
+          },
+          {
+            "at": 1793766461191,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 18,
+            "bytes": 122,
+            "sha256": "8f88aa169991d3986a368e93f5076dd338a46a9e3791f306f6abd322de97130f"
+          },
+          {
+            "at": 1793766461207,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 19,
+            "bytes": 122,
+            "sha256": "f91d1251388280db2cc9ba8f5b211d92c205667f2a2030170c12ebeb69783fd8"
+          },
+          {
+            "at": 1793766461228,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 20,
+            "bytes": 122,
+            "sha256": "54366e880b312663299a575b4cefc651a90e88f1329d06a6daed8ffd403021ed"
+          },
+          {
+            "at": 1793766461251,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 21,
+            "bytes": 122,
+            "sha256": "2bc73c76a00481d9fdc69050cdf7344fb24eb38dc8a1c7d6ec1ed0063b74b94c"
+          },
+          {
+            "at": 1793766461271,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 22,
+            "bytes": 122,
+            "sha256": "ec9918353aff16dddfc63e62cceea9ddd501181a7e916f8c1fa8e23e61aa4d5c"
+          },
+          {
+            "at": 1793766461287,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 23,
+            "bytes": 122,
+            "sha256": "6cb6eeb88ad4bf83ddfb74b02bb9069979e8f9f1ed220c39ebd9e422ca22dad8"
+          },
+          {
+            "at": 1793766461319,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 24,
+            "bytes": 123,
+            "sha256": "e85f8552024cef96675b98e1dcb77a04b7961ada4067a270dd3f6982a35d024e"
+          },
+          {
+            "at": 1793766461329,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 25,
+            "bytes": 124,
+            "sha256": "b08a364b45f71239831991497706d5c89b442e2d8069d222b69b824d52694cdb"
+          },
+          {
+            "at": 1793766461351,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 26,
+            "bytes": 125,
+            "sha256": "bd3ee35d018662cc5d232c7ecb1ceb532336ba0c63feee1035dd04f895682bdd"
+          },
+          {
+            "at": 1793766461366,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 27,
+            "bytes": 126,
+            "sha256": "f88889b3adf7aa757e304f6f7dc9958521344674cb2404cb6be299e5c00b5d02"
+          },
+          {
+            "at": 1793766461388,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 28,
+            "bytes": 126,
+            "sha256": "92a1fc0d8f57c008bfbee4ec0de88e742669e0cedc943841d09d340792d77863"
+          },
+          {
+            "at": 1793766461409,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 29,
+            "bytes": 128,
+            "sha256": "a2c6959a5836f27677db769b0639f101ade5d4ae317c7d792e6a74a01f13e614"
+          },
+          {
+            "at": 1793766461431,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 30,
+            "bytes": 130,
+            "sha256": "19ed0989ab18a23d4a9c53e202956c27036b81c0bd4d336350af02958cc96417"
+          },
+          {
+            "at": 1793766461447,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 31,
+            "bytes": 132,
+            "sha256": "c52b4921194b6e119e74567a1d40da6bc413643f1078b814f3245749fa2e8906"
+          },
+          {
+            "at": 1793766461468,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 32,
+            "bytes": 135,
+            "sha256": "639b83562903cd86329fed62ca56ab5c6d41a804cbecd7ad611f2b7af7c335a1"
+          },
+          {
+            "at": 1793766461489,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 33,
+            "bytes": 136,
+            "sha256": "67030ac8ed8d01c742e43184e7c7a58c14d7ceb1aa72cbdd63b54135d01e57d3"
+          },
+          {
+            "at": 1793766461511,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 34,
+            "bytes": 140,
+            "sha256": "29345949f55ac9cc9eb06f436632ff7c418d9521be85e1888cab42ca79bb936a"
+          },
+          {
+            "at": 1793766461527,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 35,
+            "bytes": 139,
+            "sha256": "ee89c1918ad00ef8fe3fa20dc05ff40dd24432fcba9176959df04b60e2234270"
+          },
+          {
+            "at": 1793766461548,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 36,
+            "bytes": 141,
+            "sha256": "e15179c10eaba1188421f84f3243a60b0c170910d127c5d51186d2e7f1d1d3d2"
+          },
+          {
+            "at": 1793766461569,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 37,
+            "bytes": 141,
+            "sha256": "fb7b7ac217b89796258fef49c5a221330d5fe1baa867d9a144c7bb11db72777b"
+          },
+          {
+            "at": 1793766461591,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 38,
+            "bytes": 140,
+            "sha256": "9070c1b86799b124bd32318e2a0610acfe50c12db1e1bee6cb47745570e7e819"
+          },
+          {
+            "at": 1793766461606,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 39,
+            "bytes": 140,
+            "sha256": "4d0e6de9ebc5702172e6fd8d4562e670e0ad3f19bc3c11f996d94abc6ac09886"
+          },
+          {
+            "at": 1793766461628,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 40,
+            "bytes": 139,
+            "sha256": "98164dce0537ffc86c5c20a72ee2e24727ade900fd00f2318bd3dc030d91b672"
+          },
+          {
+            "at": 1793766461650,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 41,
+            "bytes": 141,
+            "sha256": "19d85487642de1cfaa33ef554a610509dd7691268ee5c180a08a537af768882d"
+          },
+          {
+            "at": 1793766461671,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 42,
+            "bytes": 141,
+            "sha256": "c0c65ea56bf6f571d2c2599d2731ab53f3d15614052c4837490e26bf71dfccd3"
+          },
+          {
+            "at": 1793766461687,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 43,
+            "bytes": 140,
+            "sha256": "d809897d1ed86e85360b97e02cd59f44a132ddfa1e2d056c30e0a764e42ffe42"
+          },
+          {
+            "at": 1793766461709,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 44,
+            "bytes": 140,
+            "sha256": "c76ebe372ce9ab7c14e80957fde3a88dd9008b33a32d2f4ff8be2e195bb740f5"
+          },
+          {
+            "at": 1793766461729,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 45,
+            "bytes": 139,
+            "sha256": "89a7d38a89f1f6097cdd3698663ed682b69b678839297b9667d58dcb5517e5a5"
+          },
+          {
+            "at": 1793766461751,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 46,
+            "bytes": 141,
+            "sha256": "a514a7ea167ebc8bb82f02c50b32fc81bffcd438e58a77bcd52192a4b36085f9"
+          },
+          {
+            "at": 1793766461767,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 47,
+            "bytes": 141,
+            "sha256": "8a407f10512482313cac9dbf5ca1fe3b062259fef0328beb4e23af8a73ac76ad"
+          },
+          {
+            "at": 1793766461788,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 48,
+            "bytes": 140,
+            "sha256": "58151f9620dab47e077f3083c6f80ad7ec4f8449ef23e871da3d2f3a11f2fb17"
+          },
+          {
+            "at": 1793766461810,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 49,
+            "bytes": 140,
+            "sha256": "68dbe4a9b13747c52000b88c31707a572d93d7d20ce9d6e17c678c288ece748c"
+          },
+          {
+            "at": 1793766461830,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 50,
+            "bytes": 139,
+            "sha256": "ef8ee7184a440c2afff1b0edebaf9ce2239fa295dfd8609ae03e247928929a08"
+          },
+          {
+            "at": 1793766461847,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 51,
+            "bytes": 141,
+            "sha256": "7040c80f9b687dfde47fdb9ea96c05f3a571f9c63c5673080a9cde35704099b5"
+          },
+          {
+            "at": 1793766461868,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 52,
+            "bytes": 141,
+            "sha256": "161c294b1e44818de7b5fd460c75e83289ed6f1be7aef1e6b7d9856918d1a7e4"
+          },
+          {
+            "at": 1793766461890,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 53,
+            "bytes": 140,
+            "sha256": "91e9b3b778b0af8b99f5b2f2cf2cf73cd44b682d797797f3cfe566e5a94b7016"
+          },
+          {
+            "at": 1793766461911,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 54,
+            "bytes": 140,
+            "sha256": "e4514d2a422a52012b65ee2390e32375e2986cf1f77167760d2da221e4d17199"
+          },
+          {
+            "at": 1793766461927,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 55,
+            "bytes": 139,
+            "sha256": "a766310df270e15b8094b8db5e1d87fa63fe3a364d52700bd2462a93e48d7ea4"
+          },
+          {
+            "at": 1793766461948,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 56,
+            "bytes": 141,
+            "sha256": "f3bf8efe7b3076826d1679d0103a6b10345adf869b437c911d40b0041ace54d9"
+          },
+          {
+            "at": 1793766461969,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 57,
+            "bytes": 141,
+            "sha256": "d00e721f6ce331ba66f7f61294cece2fb8327c1e771bf6d41363ef98d0d73f73"
+          }
+        ],
+        "received": []
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    },
+    "visitor": {
+      "sockets": 1,
+      "latestSnapshot": {
+        "seq": 4,
+        "currentRoomId": "studio",
+        "isLocked": true,
+        "players": [
+          {
+            "displayName": "Door visitor",
+            "x": 5,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793766460608,
+          "direction": "sent",
+          "type": "join",
+          "roomId": "lobby",
+          "hasPassword": false
+        },
+        {
+          "at": 1793766460608,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766460608,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766460608,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766461119,
+          "direction": "sent",
+          "type": "room.switch",
+          "roomId": "studio",
+          "hasPassword": true
+        },
+        {
+          "at": 1793766461151,
+          "direction": "received",
+          "type": "protocol.error"
+        },
+        {
+          "at": 1793766461569,
+          "direction": "sent",
+          "type": "room.switch",
+          "roomId": "studio",
+          "hasPassword": true
+        },
+        {
+          "at": 1793766461601,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766461601,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766461601,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766461801,
+          "direction": "sent",
+          "type": "audio.subscribe"
+        },
+        {
+          "at": 1793766461801,
+          "direction": "received",
+          "type": "audio.subscribed"
+        },
+        {
+          "at": 1793766461801,
+          "direction": "received",
+          "type": "audio.stream"
+        },
+        {
+          "at": 1793766461983,
+          "direction": "received",
+          "type": "audio.streamEnded"
+        },
+        {
+          "at": 1793766462447,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766462451,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        }
+      ],
+      "droppedControls": 0,
+      "protocolErrors": [
+        {
+          "at": "2026-11-04T04:27:41.151Z",
+          "code": "room_password_incorrect"
+        }
+      ],
+      "packets": {
+        "sent": [],
+        "received": [
+          {
+            "at": 1793766461810,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 49,
+            "bytes": 140,
+            "sha256": "68dbe4a9b13747c52000b88c31707a572d93d7d20ce9d6e17c678c288ece748c"
+          },
+          {
+            "at": 1793766461831,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 50,
+            "bytes": 139,
+            "sha256": "ef8ee7184a440c2afff1b0edebaf9ce2239fa295dfd8609ae03e247928929a08"
+          },
+          {
+            "at": 1793766461847,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 51,
+            "bytes": 141,
+            "sha256": "7040c80f9b687dfde47fdb9ea96c05f3a571f9c63c5673080a9cde35704099b5"
+          },
+          {
+            "at": 1793766461921,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 52,
+            "bytes": 141,
+            "sha256": "161c294b1e44818de7b5fd460c75e83289ed6f1be7aef1e6b7d9856918d1a7e4"
+          },
+          {
+            "at": 1793766461948,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 53,
+            "bytes": 140,
+            "sha256": "91e9b3b778b0af8b99f5b2f2cf2cf73cd44b682d797797f3cfe566e5a94b7016"
+          },
+          {
+            "at": 1793766461948,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 54,
+            "bytes": 140,
+            "sha256": "e4514d2a422a52012b65ee2390e32375e2986cf1f77167760d2da221e4d17199"
+          },
+          {
+            "at": 1793766461950,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 55,
+            "bytes": 139,
+            "sha256": "a766310df270e15b8094b8db5e1d87fa63fe3a364d52700bd2462a93e48d7ea4"
+          },
+          {
+            "at": 1793766461950,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 56,
+            "bytes": 141,
+            "sha256": "f3bf8efe7b3076826d1679d0103a6b10345adf869b437c911d40b0041ace54d9"
+          },
+          {
+            "at": 1793766461969,
+            "magic": "LTA1",
+            "generation": 1,
+            "sequence": 57,
+            "bytes": 141,
+            "sha256": "d00e721f6ce331ba66f7f61294cece2fb8327c1e771bf6d41363ef98d0d73f73"
+          }
+        ]
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    }
+  },
+  "phases": [
+    {
+      "name": "meeting-audio-publisher-active-before-door-probes",
+      "at": "2026-11-04T04:27:40.847Z",
+      "sourceFramesObserved": 1,
+      "source": "synthetic oscillator"
+    },
+    {
+      "name": "external-locked-gate-probes",
+      "at": "2026-11-04T04:27:40.994Z",
+      "missingRejected": true,
+      "wrongRejected": true,
+      "audioBytesToVisitor": 0,
+      "screenBytesToVisitor": 0,
+      "forgedFieldsRejected": true
+    },
+    {
+      "name": "scene-door-click-geometry",
+      "at": "2026-11-04T04:27:41.027Z",
+      "beforeScroll": {
+        "x": 206,
+        "y": 868.0999755859375,
+        "width": 1028,
+        "height": 409.2166748046875
+      },
+      "visibleCanvas": {
+        "x": 206,
+        "y": 320.1000061035156,
+        "width": 1028,
+        "height": 409.2166442871094
+      }
+    },
+    {
+      "name": "wrong-password-kept-original-room",
+      "at": "2026-11-04T04:27:41.345Z",
+      "roomId": "lobby",
+      "passwordFieldCleared": true,
+      "mediaPacketsBeforeAndAfterDenial": 0
+    },
+    {
+      "name": "correct-password-entered-meeting-room",
+      "at": "2026-11-04T04:27:41.656Z",
+      "roomId": "studio",
+      "isLocked": true
+    },
+    {
+      "name": "authorized-meeting-audio-rendered",
+      "at": "2026-11-04T04:27:41.951Z",
+      "publisherStarted": true,
+      "receiver": {
+        "listenerState": "ready",
+        "receivedPackets": 3,
+        "decodedFrames": 3,
+        "renderedSamples": 1792,
+        "queuedSamples": 128,
+        "renderRms": 0.08903710257679169
+      }
+    },
+    {
+      "name": "publisher-stopped-and-source-hashes-audited",
+      "at": "2026-11-04T04:27:42.285Z",
+      "stableWindowMs": 300,
+      "sentFrames": 58,
+      "receivedFrames": 9,
+      "unmatchedSourceHashes": 0
+    },
+    {
+      "name": "bounded-traces-and-errors-checked",
+      "at": "2026-11-04T04:27:42.286Z"
+    }
+  ],
+  "snapshots": [
+    {
+      "phase": "external-denials-meeting-room-counters",
+      "before": {
+        "roomSnapshotsSent": 1,
+        "spaceSnapshotsSent": 2,
+        "eventsSent": 1,
+        "audioControlsSent": 1,
+        "audioFramesSent": 0,
+        "screenControlsSent": 0,
+        "screenFramesSent": 0
+      },
+      "after": {
+        "roomSnapshotsSent": 1,
+        "spaceSnapshotsSent": 2,
+        "eventsSent": 1,
+        "audioControlsSent": 1,
+        "audioFramesSent": 0,
+        "screenControlsSent": 0,
+        "screenFramesSent": 0
+      },
+      "filteredSpaceSnapshotsMayIncludeOtherRoomActivity": true
+    },
+    {
+      "phase": "wrong-password-kept-original-room",
+      "roomId": "lobby",
+      "position": {
+        "x": 2,
+        "y": 2
+      },
+      "meetingMemberCount": 0,
+      "passwordFieldCleared": true
+    },
+    {
+      "phase": "authorized-door-entry",
+      "roomId": "studio",
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "isLocked": true
+    },
+    {
+      "phase": "publisher-stop-stable-trace",
+      "stopAcknowledged": true,
+      "streamEnded": true,
+      "stableWindowMs": 300,
+      "packetCounts": {
+        "publisher": {
+          "sent": 58,
+          "received": 0
+        },
+        "visitor": {
+          "sent": 0,
+          "received": 9
+        }
+      },
+      "sourceHashAudit": "passed-before-browser-close"
+    }
+  ],
+  "externalProbes": [
+    {
+      "type": "missing-password",
+      "code": "room_password_required",
+      "roomSnapshots": 0,
+      "meetingEvents": 0,
+      "audioBytesSentToProbe": 0,
+      "screenBytesSentToProbe": 0
+    },
+    {
+      "type": "wrong-password",
+      "code": "room_password_incorrect",
+      "audioSubscribeCode": "media_not_joined",
+      "screenSubscribeCode": "media_not_joined",
+      "audioPacketRejected": true,
+      "screenPacketRejected": true,
+      "activeMeetingPublisherFramesBeforeProbe": 2,
+      "roomSnapshots": 0,
+      "meetingEvents": 0,
+      "audioBytesSentToProbe": 0,
+      "screenBytesSentToProbe": 0,
+      "counters": {
+        "audioFramesReceived": 0,
+        "screenFramesReceived": 0,
+        "otherBinaryFramesReceived": 0,
+        "roomSnapshots": 0,
+        "spaceSnapshots": 0,
+        "controlEvents": 0,
+        "audioControls": 0,
+        "screenControls": 0
+      }
+    },
+    {
+      "type": "forged-lock-role-identity",
+      "code": "invalid_join",
+      "roomSnapshots": 0,
+      "meetingEvents": 0
+    }
+  ],
+  "screenshots": [
+    "locked-door-rejected.png",
+    "meeting-room-audio-rendered.png"
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": null
+  },
+  "limits": {
+    "passwordValue": "not-recorded",
+    "passwordVerifier": "not-recorded",
+    "audioPayloads": "not-recorded; bounded opaque LTA1 packet hashes only",
+    "audioPacketHashTruncation": "not-truncated",
+    "mobile": "not-tested",
+    "physicalMicrophone": "not-tested",
+    "humanHearing": "not-tested",
+    "identitiesAndHostRoles": "not-tested; the POC has no verified account or room-management role",
+    "liveLockChanges": "not-tested; lock configuration takes effect at server startup",
+    "controlTraceTruncation": "not-truncated"
+  },
+  "packetSourceMappings": [
+    {
+      "receiver": "visitor",
+      "sentFrames": 58,
+      "receivedFrames": 9,
+      "unmatchedSourceHashes": 0,
+      "source": "publisher page synthetic oscillator; payload bytes not retained"
+    }
+  ],
+  "finishedAt": "2026-11-04T04:27:42.904Z"
+}

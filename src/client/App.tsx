@@ -3,6 +3,7 @@ import { AudioPanel } from "./AudioPanel";
 import { ScreenPanel } from "./ScreenPanel";
 import { MediaTimeline } from "./media-timeline";
 import { SpacePanel } from "./SpacePanel";
+import { DoorEntryDialog } from "./DoorEntryDialog";
 import type { AudioPolicy, MoveDirection, SpaceKind, SpaceSnapshot } from "./pixel-space";
 import {
   API_KEYS,
@@ -40,6 +41,7 @@ type ServerMessage =
         kind: SpaceKind;
         audioPolicy: AudioPolicy;
         audioRadiusGridUnits: number | null;
+        isLocked: boolean;
       };
       members: Member[];
       lastSeq: number;
@@ -71,7 +73,12 @@ type RoomSummary = {
   kind: SpaceKind;
   audioPolicy: AudioPolicy;
   audioRadiusGridUnits: number | null;
+  isLocked: boolean;
 };
+
+type EntryAttempt =
+  | { type: "join"; roomId: string; displayName: string }
+  | { type: "switch"; roomId: string };
 
 export function App() {
   const [displayName, setDisplayName] = useState("");
@@ -91,9 +98,15 @@ export function App() {
   const [currentSocket, setCurrentSocket] = useState<WebSocket | null>(null);
   const [spaceSnapshot, setSpaceSnapshot] = useState<SpaceSnapshot | null>(null);
   const [pendingRoomId, setPendingRoomId] = useState<string | null>(null);
+  const [entryDialogOpen, setEntryDialogOpen] = useState(false);
+  const [entryDialogError, setEntryDialogError] = useState("");
+  const [entrySubmitting, setEntrySubmitting] = useState(false);
   const [mediaSessionEpoch, setMediaSessionEpoch] = useState(0);
   const mediaTimeline = useMemo(() => new MediaTimeline(), [currentSocket, mediaSessionEpoch]);
   const socketRef = useRef<WebSocket | null>(null);
+  const entryAttemptRef = useRef<EntryAttempt | null>(null);
+  const pendingSwitchPasswordRef = useRef<string | null>(null);
+  const mediaStoppedForEntryRef = useRef(false);
   const currentRoomIdRef = useRef("");
   const lastMoveSentAtRef = useRef(0);
   const pendingReportRef = useRef<CapabilityReport | null>(null);
@@ -135,6 +148,10 @@ export function App() {
     setSpaceSnapshot(null);
     setCurrentRoomId("");
     currentRoomIdRef.current = "";
+    entryAttemptRef.current = { type: "join", roomId: selectedRoomId, displayName: displayName.trim() };
+    setEntryDialogOpen(false);
+    setEntryDialogError("");
+    setEntrySubmitting(false);
     setConnectionStatus("Connecting…");
 
     const scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -167,6 +184,12 @@ export function App() {
         setCurrentRoomId(message.room.id);
         setSelectedRoomId(message.room.id);
         setPendingRoomId(null);
+        entryAttemptRef.current = null;
+        pendingSwitchPasswordRef.current = null;
+        mediaStoppedForEntryRef.current = false;
+        setEntryDialogOpen(false);
+        setEntryDialogError("");
+        setEntrySubmitting(false);
         setMediaSessionEpoch((current) => current + 1);
         setMembers(message.members);
         setConnectionStatus(`Connected to ${message.room.name}`);
@@ -184,6 +207,18 @@ export function App() {
       }
 
       if (message.type === "protocol.error") {
+        if (message.code.startsWith("room_password_")) {
+          setPendingRoomId(null);
+          pendingSwitchPasswordRef.current = null;
+          if (mediaStoppedForEntryRef.current) {
+            setMediaSessionEpoch((current) => current + 1);
+            mediaStoppedForEntryRef.current = false;
+          }
+          setEntryDialogError(message.message);
+          setEntryDialogOpen(true);
+          setEntrySubmitting(false);
+          return;
+        }
         setProtocolError(message.message);
         if (message.code === "unknown_room" || message.code === "invalid_room_switch") setPendingRoomId(null);
         if (message.code === "invalid_capability_report") {
@@ -281,6 +316,12 @@ export function App() {
       setCurrentRoomId("");
       currentRoomIdRef.current = "";
       setPendingRoomId(null);
+      entryAttemptRef.current = null;
+      pendingSwitchPasswordRef.current = null;
+      mediaStoppedForEntryRef.current = false;
+      setEntryDialogOpen(false);
+      setEntryDialogError("");
+      setEntrySubmitting(false);
       setConnectionStatus("Not connected");
       pendingReportRef.current = null;
       setIsSendingObservation(false);
@@ -298,11 +339,17 @@ export function App() {
     const socket = socketRef.current;
     if (!socket || socket.readyState !== WebSocket.OPEN || !connectionStatus.startsWith("Connected to ")) {
       setPendingRoomId(null);
+      pendingSwitchPasswordRef.current = null;
+      mediaStoppedForEntryRef.current = false;
       return;
     }
-    // The room panels unmount in this commit. Their effect cleanups stop tracks
-    // and send stop/unsubscribe controls before this ordered WebSocket message.
-    socket.send(JSON.stringify({ type: "room.switch", roomId: pendingRoomId }));
+    const password = pendingSwitchPasswordRef.current;
+    pendingSwitchPasswordRef.current = null;
+    socket.send(JSON.stringify({
+      type: "room.switch",
+      roomId: pendingRoomId,
+      ...(password === null ? {} : { password }),
+    }));
   }, [pendingRoomId, connectionStatus]);
 
   const sendReaction = (reaction: "wave" | "clap") => {
@@ -320,6 +367,12 @@ export function App() {
     setCurrentRoomId("");
     currentRoomIdRef.current = "";
     setPendingRoomId(null);
+    entryAttemptRef.current = null;
+    pendingSwitchPasswordRef.current = null;
+    mediaStoppedForEntryRef.current = false;
+    setEntryDialogOpen(false);
+    setEntryDialogError("");
+    setEntrySubmitting(false);
     setEvents([]);
     pendingReportRef.current = null;
     setCapabilityReport(null);
@@ -337,7 +390,39 @@ export function App() {
     }
     if (roomId === currentRoomIdRef.current || pendingRoomId) return;
     setProtocolError("");
-    setPendingRoomId(roomId);
+    entryAttemptRef.current = { type: "switch", roomId };
+    if (rooms.find((room) => room.id === roomId)?.isLocked) {
+      setEntryDialogError("");
+      setEntrySubmitting(false);
+      setEntryDialogOpen(true);
+    } else {
+      setPendingRoomId(roomId);
+    }
+  };
+
+  const submitRoomPassword = (password: string) => {
+    const socket = socketRef.current;
+    const attempt = entryAttemptRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !attempt) return;
+    setEntryDialogError("");
+    setEntrySubmitting(true);
+    if (attempt.type === "join") {
+      socket.send(JSON.stringify({ type: "join", roomId: attempt.roomId, displayName: attempt.displayName, password }));
+      return;
+    }
+    pendingSwitchPasswordRef.current = password;
+    mediaStoppedForEntryRef.current = true;
+    setPendingRoomId(attempt.roomId);
+  };
+
+  const cancelRoomPassword = () => {
+    const attempt = entryAttemptRef.current;
+    entryAttemptRef.current = null;
+    setEntryDialogOpen(false);
+    setEntryDialogError("");
+    setEntrySubmitting(false);
+    setPendingRoomId(null);
+    if (attempt?.type === "join" && !currentRoomIdRef.current) leaveRoom();
   };
 
   const sendMove = (direction: MoveDirection) => {
@@ -598,6 +683,15 @@ export function App() {
 
       {connected && !pendingRoomId ? <AudioPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
       {connected && !pendingRoomId ? <ScreenPanel socket={currentSocket} timeline={mediaTimeline} /> : null}
+
+      <DoorEntryDialog
+        open={entryDialogOpen}
+        roomName={rooms.find((candidate) => candidate.id === entryAttemptRef.current?.roomId)?.name ?? "meeting room"}
+        errorMessage={entryDialogError}
+        busy={entrySubmitting}
+        onSubmit={submitRoomPassword}
+        onCancel={cancelRoomPassword}
+      />
 
       <footer className="footer-note">
         <span>Local experiment</span>

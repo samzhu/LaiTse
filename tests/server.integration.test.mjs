@@ -96,8 +96,8 @@ test("the application serves health and a built-in room catalogue", async () => 
   const rooms = await fetch(`${baseUrl}/api/rooms`);
   assert.equal(rooms.status, 200);
   assert.deepEqual(await rooms.json(), [
-    { id: "lobby", name: "Open area", kind: "open-area", audioPolicy: "proximity", audioRadiusGridUnits: 6 },
-    { id: "studio", name: "Meeting room", kind: "meeting-room", audioPolicy: "room", audioRadiusGridUnits: null },
+    { id: "lobby", name: "Open area", kind: "open-area", audioPolicy: "proximity", audioRadiusGridUnits: 6, isLocked: false },
+    { id: "studio", name: "Meeting room", kind: "meeting-room", audioPolicy: "room", audioRadiusGridUnits: null, isLocked: false },
   ]);
 });
 

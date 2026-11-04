@@ -12,6 +12,7 @@ import {
 } from "./capabilities.ts";
 import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
+import { createRoomAccessPolicy } from "./room-access.ts";
 import {
   createSpaceModel,
   isKnownRoom,
@@ -67,6 +68,7 @@ type CreateAppOptions = {
   clientRoot?: string;
   serveClient?: boolean;
   https?: HttpsServerOptions;
+  meetingRoomPassword?: string;
 };
 
 type MediaMetricCounter = {
@@ -149,6 +151,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
+  const roomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
     audio: createAudioRelay({
       isRecipientEligible: (publisherConnectionId, recipientConnectionId) => {
@@ -203,6 +206,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     kind,
     audioPolicy,
     audioRadiusGridUnits,
+    isLocked: roomAccess.isMeetingRoomLocked(id),
   })));
 
   app.get("/api/media-diagnostics", async () => ({
@@ -357,13 +361,18 @@ export async function createApp(options: CreateAppOptions = {}) {
         for (const [target, targetConnection] of clients) {
           if (!targetConnection.member || !targetConnection.currentRoomId || target.readyState !== target.OPEN) continue;
           const roomId = targetConnection.currentRoomId;
+          const snapshot = space.snapshot({
+            seq,
+            participantId: targetConnection.member.id,
+            currentRoomId: roomId,
+          });
           sendRoomMessage(target, targetConnection, roomId, {
             type: "space.snapshot",
-            ...space.snapshot({
-              seq,
-              participantId: targetConnection.member.id,
-              currentRoomId: roomId,
-            }),
+            ...snapshot,
+            rooms: snapshot.rooms.map((room) => ({
+              ...room,
+              isLocked: roomAccess.isMeetingRoomLocked(room.id),
+            })),
           }, "spaceSnapshotsSent");
         }
       };
@@ -485,7 +494,7 @@ export async function createApp(options: CreateAppOptions = {}) {
 
         if (!connection.member) {
           if (
-            !hasOnlyKeys(message, ["type", "roomId", "displayName"]) ||
+            !hasOnlyKeys(message, ["type", "roomId", "displayName", "password"]) ||
             message.type !== "join" ||
             !isKnownRoom(message.roomId) ||
             typeof message.displayName !== "string"
@@ -505,12 +514,18 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
 
+          const roomId = message.roomId;
+          const denial = roomAccess.authorizeEntry(roomId, message.password, connection);
+          if (denial) {
+            send({ type: "protocol.error", ...denial });
+            return;
+          }
+
           if (members.size >= MAX_ROOM_MEMBERS) {
             rejectControl("room_full", "The local space has reached its eight participant limit.");
             return;
           }
 
-          const roomId = message.roomId;
           const member = { id: randomUUID(), displayName };
           connection.member = member;
           connection.currentRoomId = roomId;
@@ -529,6 +544,7 @@ export async function createApp(options: CreateAppOptions = {}) {
               kind: room.kind,
               audioPolicy: room.audioPolicy,
               audioRadiusGridUnits: room.audioRadiusGridUnits,
+              isLocked: roomAccess.isMeetingRoomLocked(roomId),
             },
             members: space.roomMembers(roomId),
             lastSeq: event.seq,
@@ -560,8 +576,8 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
 
         if (message.type === "room.switch") {
-          if (!hasOnlyKeys(message, ["type", "roomId"])) {
-            rejectControl("invalid_room_switch", "Room switching accepts only an available room ID.");
+          if (!hasOnlyKeys(message, ["type", "roomId", "password"])) {
+            rejectControl("invalid_room_switch", "Room switching accepts only an available room ID and optional password.");
             return;
           }
           if (!isKnownRoom(message.roomId)) {
@@ -570,6 +586,13 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
           const previousRoomId = connection.currentRoomId!;
           const nextRoomId = message.roomId;
+          if (previousRoomId !== nextRoomId) {
+            const denial = roomAccess.authorizeEntry(nextRoomId, message.password, connection);
+            if (denial) {
+              send({ type: "protocol.error", ...denial });
+              return;
+            }
+          }
           if (previousRoomId !== nextRoomId) {
             mediaRooms.get(previousRoomId)!.audio.disconnect(connection.id);
             mediaRooms.get(previousRoomId)!.screen.disconnect(connection.id);
@@ -590,6 +613,7 @@ export async function createApp(options: CreateAppOptions = {}) {
               kind: room.kind,
               audioPolicy: room.audioPolicy,
               audioRadiusGridUnits: room.audioRadiusGridUnits,
+              isLocked: roomAccess.isMeetingRoomLocked(nextRoomId),
             },
             members: space.roomMembers(nextRoomId),
             lastSeq: sequence,

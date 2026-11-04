@@ -195,6 +195,9 @@ button, input { font: inherit; }
 .pixel-space-map canvas { display: block; width: 100%; height: auto; aspect-ratio: 1040 / 414; image-rendering: pixelated; }
 .space-controls-row { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 12px; }
 .space-hint { margin: 0; color: #7d857d; font-size: 10px; line-height: 1.55; }
+.door-entry-button { flex: 0 0 auto; border: 1px solid #d8c8a9; border-radius: 9px; padding: 8px 11px; background: #fffaf0; color: #695743; font-size: 10px; font-weight: 700; cursor: pointer; }
+.door-entry-button:hover:not(:disabled) { border-color: #b89a6e; background: #fff4df; }
+.door-entry-button:disabled { cursor: wait; opacity: .65; }
 .reduced-motion-toggle { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 7px; color: #58665b; font-size: 10px; cursor: pointer; }
 .reduced-motion-toggle input { width: 15px; height: 15px; accent-color: #5c8c68; }
 .space-dpad { display: grid; grid-template-columns: repeat(3, 39px); grid-template-rows: repeat(3, 36px); gap: 4px; width: fit-content; margin-top: 14px; padding: 5px; border: 1px solid #e5e7df; border-radius: 12px; background: #fafbf7; }
@@ -208,10 +211,18 @@ button, input { font: inherit; }
 .space-dpad-center { display: grid; grid-row: 2; grid-column: 2; place-items: center; color: #9aa39a; font-size: 7px; font-weight: 700; letter-spacing: .07em; pointer-events: none; }
 .space-entry-status { min-height: 14px; margin: 10px 0 0; color: #768078; font-size: 10px; }
 .space-error { margin-top: 5px; }
+.door-dialog-backdrop { position: fixed; z-index: 30; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(33, 39, 34, .46); }
+.door-dialog { width: min(100%, 390px); border: 1px solid #e4ddce; border-radius: 16px; padding: 24px; background: #fffdf8; box-shadow: 0 24px 70px rgba(34, 38, 33, .22); }
+.door-dialog h2 { margin: 4px 0 8px; color: #303b34; font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-weight: 500; }
+.door-dialog-copy { margin: 0 0 20px; color: #727a74; font-size: 12px; line-height: 1.55; }
+.door-dialog .text-input { width: 100%; }
+.door-dialog-error { min-height: 16px; margin: 8px 0 0; font-size: 11px; }
+.door-dialog-actions { margin-top: 18px; }
 
 @media (max-width: 760px) {
   .space-panel { padding: 18px; }
   .space-controls-row { align-items: flex-start; flex-direction: column; gap: 9px; }
+  .door-entry-button { align-self: stretch; }
   .pixel-space-map { overflow-x: auto; }
   .pixel-space-map canvas { width: 760px; max-width: none; }
   .space-room-choices { grid-template-columns: 1fr; }

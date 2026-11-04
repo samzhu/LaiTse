@@ -20,7 +20,8 @@ if (!Number.isInteger(port) || port < 0 || port > 65_535) {
   throw new Error("PORT must be an integer between 0 and 65535.");
 }
 
-const app = await createApp({ https: readTlsOptions() });
+const meetingRoomPassword = process.env.MEETING_ROOM_PASSWORD ?? "";
+const app = await createApp({ https: readTlsOptions(), meetingRoomPassword });
 const address = await app.listen({
   host: process.env.HOST ?? "127.0.0.1",
   port,
@@ -29,6 +30,7 @@ const address = await app.listen({
 const url = new URL(address);
 console.log(`LaiTse local POC listening at ${url.origin}`);
 console.log("Room state and control events are held in process memory only.");
+console.log(`Meeting room access is ${meetingRoomPassword ? "locked" : "unlocked"} by startup configuration.`);
 
 const stop = async () => {
   await app.close();

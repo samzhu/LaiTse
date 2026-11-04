@@ -1,0 +1,9 @@
+[ROOM-ACCESS] meeting-audio-publisher-active-before-door-probes {"sourceFramesObserved":1,"source":"synthetic oscillator"}
+[ROOM-ACCESS] external-locked-gate-probes {"missingRejected":true,"wrongRejected":true,"audioBytesToVisitor":0,"screenBytesToVisitor":0,"forgedFieldsRejected":true}
+[ROOM-ACCESS] scene-door-click-geometry {"beforeScroll":{"x":206,"y":868.0999755859375,"width":1028,"height":409.2166748046875},"visibleCanvas":{"x":206,"y":320.1000061035156,"width":1028,"height":409.2166442871094}}
+[ROOM-ACCESS] wrong-password-kept-original-room {"roomId":"lobby","passwordFieldCleared":true,"mediaPacketsBeforeAndAfterDenial":0}
+[ROOM-ACCESS] correct-password-entered-meeting-room {"roomId":"studio","isLocked":true}
+[ROOM-ACCESS] authorized-meeting-audio-rendered {"publisherStarted":true,"receiver":{"listenerState":"ready","receivedPackets":3,"decodedFrames":3,"renderedSamples":1792,"queuedSamples":128,"renderRms":0.08903710257679169}}
+[ROOM-ACCESS] publisher-stopped-and-source-hashes-audited {"stableWindowMs":300,"sentFrames":58,"receivedFrames":9,"unmatchedSourceHashes":0}
+[ROOM-ACCESS] bounded-traces-and-errors-checked
+Room access smoke passed; evidence saved under .scratch/room-access/locked.

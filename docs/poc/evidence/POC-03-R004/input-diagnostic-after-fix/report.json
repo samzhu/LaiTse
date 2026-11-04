@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short room door and password POC under one startup lock configuration, with synthetic desktop audio after authorized entry.",
+  "startedAt": "2026-11-04T04:26:28.703Z",
+  "status": "passed",
+  "baseURL": "https://localhost:4173",
+  "configuration": {
+    "expectedLocked": false,
+    "publicCatalogueMatched": false,
+    "passwordIncludedInEvidence": false
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "not-reported",
+    "renderers": {}
+  },
+  "tls": {
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "trust": "local CA explicitly trusted by Node requests and imported into isolated Firefox profiles",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "syntheticSource": "Publisher getUserMedia is replaced before app load with an AudioContext oscillator routed to MediaStreamDestination; no hardware microphone is used.",
+  "settings": {
+    "lockedDoorRequiresPassword": false,
+    "maxControlRecordsPerClient": 800,
+    "maxAudioPacketHashesPerDirection": 2000
+  },
+  "clients": {
+    "visitor": {
+      "sockets": 1,
+      "latestSnapshot": {
+        "seq": 2,
+        "currentRoomId": "studio",
+        "isLocked": false,
+        "players": [
+          {
+            "displayName": "Input diagnostic",
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "otherRoomMemberCount": 0
+      },
+      "controls": [
+        {
+          "at": 1793766390526,
+          "direction": "sent",
+          "type": "join",
+          "roomId": "lobby",
+          "hasPassword": false
+        },
+        {
+          "at": 1793766390526,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766390526,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766390526,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "lobby"
+        },
+        {
+          "at": 1793766390621,
+          "direction": "sent",
+          "type": "room.switch",
+          "roomId": "studio",
+          "hasPassword": false
+        },
+        {
+          "at": 1793766390622,
+          "direction": "received",
+          "type": "control.event",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766390622,
+          "direction": "received",
+          "type": "room.snapshot",
+          "roomId": "studio"
+        },
+        {
+          "at": 1793766390622,
+          "direction": "received",
+          "type": "space.snapshot",
+          "roomId": "studio"
+        }
+      ],
+      "droppedControls": 0,
+      "protocolErrors": [],
+      "packets": {
+        "sent": [],
+        "received": []
+      },
+      "droppedPackets": {
+        "sent": 0,
+        "received": 0
+      },
+      "pageErrors": [],
+      "socketErrors": []
+    }
+  },
+  "phases": [],
+  "snapshots": [],
+  "externalProbes": [],
+  "screenshots": [
+    "input-map.png"
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": null
+  },
+  "limits": {
+    "passwordValue": "not-recorded",
+    "passwordVerifier": "not-recorded",
+    "audioPayloads": "not-recorded; bounded opaque LTA1 packet hashes only",
+    "audioPacketHashTruncation": "run fails if a collection reaches its cap",
+    "mobile": "not-tested",
+    "physicalMicrophone": "not-tested",
+    "humanHearing": "not-tested",
+    "identitiesAndHostRoles": "not-tested; the POC has no verified account or room-management role",
+    "liveLockChanges": "not-tested; lock configuration takes effect at server startup"
+  },
+  "inputDiagnostic": {
+    "box": {
+      "x": 206,
+      "y": 320.1000061035156,
+      "width": 1028,
+      "height": 409.2166442871094
+    },
+    "before": {
+      "ready": true,
+      "phaserVersion": "4.2.1",
+      "renderer": "WebGL",
+      "renderCount": 10,
+      "renderedAt": "2026-11-04T04:26:30.599Z",
+      "snapshotSeq": 1,
+      "players": [
+        {
+          "id": "fd0e5a80-b635-4bb4-b28e-20f732ce336d",
+          "displayName": "Input diagnostic",
+          "roomId": "lobby",
+          "gridX": 2,
+          "gridY": 2,
+          "x": 113.5,
+          "y": 173.5,
+          "targetX": 113.5,
+          "targetY": 173.5,
+          "tweenActive": false,
+          "texture": "t07-avatar-2"
+        }
+      ],
+      "doorInput": {
+        "activations": 0,
+        "sceneEnabled": true,
+        "managerEnabled": true,
+        "pointer": {
+          "x": 43.50194552529183,
+          "y": -282.3623693920269
+        },
+        "canvasBounds": {
+          "x": 206,
+          "y": 797.0999755859375,
+          "width": 1028,
+          "height": 409.2166748046875
+        },
+        "displayScale": {
+          "x": 1.0116731517509727,
+          "y": 1.011688979188337
+        },
+        "lastSceneDown": null
+      }
+    },
+    "after": {
+      "ready": true,
+      "phaserVersion": "4.2.1",
+      "renderer": "WebGL",
+      "renderCount": 25,
+      "renderedAt": "2026-11-04T04:26:30.824Z",
+      "snapshotSeq": 2,
+      "players": [
+        {
+          "id": "fd0e5a80-b635-4bb4-b28e-20f732ce336d",
+          "displayName": "Input diagnostic",
+          "roomId": "studio",
+          "gridX": 2,
+          "gridY": 2,
+          "x": 625.5,
+          "y": 173.5,
+          "targetX": 625.5,
+          "targetY": 173.5,
+          "tweenActive": false,
+          "texture": "t07-avatar-2"
+        }
+      ],
+      "doorInput": {
+        "activations": 1,
+        "sceneEnabled": true,
+        "managerEnabled": true,
+        "pointer": {
+          "x": 520,
+          "y": 204.25999872326574
+        },
+        "canvasBounds": {
+          "x": 206,
+          "y": 868.1000061035156,
+          "width": 1028,
+          "height": 409.2166748046875
+        },
+        "displayScale": {
+          "x": 1.0116731517509727,
+          "y": 1.011688979188337
+        },
+        "lastSceneDown": {
+          "x": 520,
+          "y": 204.25999872326574,
+          "over": [
+            "Zone"
+          ]
+        }
+      }
+    },
+    "dom": "T07 · LIVE PIXEL SPACE\n\nTwo rooms, one shared space\nPhaser 4.2.1 · WebGL · 1 visible in your room\n\nChoose a room or use the marked door. Open area voice follows avatar distance; meeting room voice reaches everyone inside. The visible 6-grid-unit range is a provisional demo setting.\n\nOpen area\nOpen area · proximity voice · demo range 6 grid units\nMeeting room\nMeeting room · everyone inside can hear · open door · You are here\n\nFocus the map, move with arrow keys or W A S D, or press Enter to use the door. Membership and positions in the other room stay hidden.\n\nLeave meeting room through door\nReduce motion\n↑\n←\n↓\n→\nMOVE\n\nYou are in Meeting room. The other room is listed without its members."
+  },
+  "finishedAt": "2026-11-04T04:26:31.125Z"
+}

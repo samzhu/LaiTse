@@ -1,0 +1,39 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (191.242583ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (168.815709ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.005375ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (85.881458ms)
+✔ invalid capability reports are rejected and not stored (4.841416ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.802875ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.127083ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.244666ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.195166ms)
+✔ new future output samples do not hide a due audio-master sample (0.103916ms)
+✔ room door policy shares one locked server gate for join, switch, and room media (907.374542ms)
+✔ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (458.078166ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (123.856292ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (170.174917ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (2.642458ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (83.622292ms)
+✔ the application serves health and a built-in room catalogue (32.795625ms)
+✔ two clients receive the same authoritative members and sequenced reaction (8.389125ms)
+✔ the websocket rejects cross-origin clients before joining (1.406209ms)
+✔ malformed or oversized control frames close without being broadcast (3.085167ms)
+✔ clients cannot select arbitrary rooms (1.282ms)
+✔ display names longer than the server limit are rejected (1.366416ms)
+✔ control events reject client-supplied fields outside the protocol (1.996458ms)
+✔ the room has a fixed member limit (8.780959ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.478542ms)
+✔ open-area audio follows authoritative distance, including the six-unit edge (307.813709ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (190.601084ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (5.407791ms)
+✔ space snapshots expose member positions only for the recipient's current room (37.952458ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (66.831333ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (106.669792ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1115.414375

@@ -19,6 +19,7 @@ export type SpaceRoom = {
   audioPolicy: AudioPolicy;
   audioRadiusGridUnits: number | null;
   style: "sunroom" | "blueprint";
+  isLocked: boolean;
   players: SpacePlayer[];
   membersVisible: boolean;
 };
@@ -53,6 +54,15 @@ export type SpaceRenderDiagnostics = {
   renderedAt: string;
   snapshotSeq: number | null;
   players: SpaceRenderPlayer[];
+  doorInput?: {
+    activations: number;
+    sceneEnabled: boolean;
+    managerEnabled: boolean;
+    pointer: { x: number; y: number };
+    canvasBounds: { x: number; y: number; width: number; height: number };
+    displayScale: { x: number; y: number };
+    lastSceneDown: { x: number; y: number; over: string[] } | null;
+  };
 };
 
 export type PixelSpaceOptions = {
@@ -60,6 +70,7 @@ export type PixelSpaceOptions = {
   rooms: SpaceRoom[];
   snapshot: SpaceSnapshot | null;
   reducedMotion: boolean;
+  onEnterRoom: (roomId: SpaceRoomId) => void;
 };
 
 export type PixelSpaceRenderer = {
@@ -73,6 +84,8 @@ const TILE_SIZE = 23;
 const GRID_X = 42;
 const GRID_Y = 116;
 const ROOM_ORIGINS: Record<SpaceRoomId, number> = { lobby: 14, studio: 526 };
+const DOOR_CENTER_X = 520;
+const DOOR_TOP = 166;
 
 type SpritePalette = { skin: string; hair: string; shirt: string; pants: string; accent: string };
 
@@ -146,6 +159,8 @@ export async function createPixelSpaceRenderer(
     private readonly emptyLabels = new Map<SpaceRoomId, Phaser.GameObjects.Text>();
     private gameRenderCount = 0;
     private initialStateDrawn = false;
+    private doorActivations = 0;
+    private lastSceneDown: { x: number; y: number; over: string[] } | null = null;
 
     constructor() {
       super({ key: "laitse-pixel-space" });
@@ -156,6 +171,10 @@ export async function createPixelSpaceRenderer(
       this.cameras.main.setBackgroundColor("#f7f5ef");
       this.cameras.main.roundPixels = true;
       this.drawRoomZones();
+      this.drawMeetingRoomDoor();
+      this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer, over: Phaser.GameObjects.GameObject[]) => {
+        this.lastSceneDown = { x: pointer.x, y: pointer.y, over: over.map((object) => object.type) };
+      });
       this.drawPlayerTextures();
       this.applySpaceState();
       this.game.events.on(Phaser.Core.Events.POST_RENDER, this.recordPostRender, this);
@@ -266,6 +285,32 @@ export async function createPixelSpaceRenderer(
       }
     }
 
+    private drawMeetingRoomDoor(): void {
+      const locked = rooms.find((room) => room.id === "studio")?.isLocked ?? false;
+      const frame = this.add.graphics();
+      frame.fillStyle(0x56453a, 1).fillRoundedRect(DOOR_CENTER_X - 15, DOOR_TOP, 30, 78, 5);
+      frame.fillStyle(locked ? 0x8c5b55 : 0x71916e, 1).fillRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
+      frame.lineStyle(2, 0xf4e5c4, 1).strokeRoundedRect(DOOR_CENTER_X - 10, DOOR_TOP + 5, 20, 68, 3);
+      frame.fillStyle(0xe9d1a3, 1).fillCircle(DOOR_CENTER_X + 5, DOOR_TOP + 40, 2);
+      frame.fillStyle(0xb68c57, 1).fillRect(DOOR_CENTER_X - 18, DOOR_TOP + 74, 36, 4);
+      this.add.text(DOOR_CENTER_X, DOOR_TOP - 12, locked ? "LOCKED" : "OPEN", {
+        fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+        fontSize: "8px",
+        fontStyle: "bold",
+        color: locked ? "#874e47" : "#557452",
+        backgroundColor: "#fffdf5",
+        padding: { left: 4, right: 4, top: 2, bottom: 2 },
+      }).setOrigin(0.5, 0.5);
+
+      this.add.zone(DOOR_CENTER_X, DOOR_TOP + 39, 38, 82)
+        .setInteractive({ cursor: "pointer" })
+        .on(Phaser.Input.Events.POINTER_DOWN, () => {
+          this.doorActivations += 1;
+          const currentRoomId = snapshot?.currentRoomId;
+          options.onEnterRoom(currentRoomId === "studio" ? "lobby" : "studio");
+        });
+    }
+
     private drawGrid(graphics: Phaser.GameObjects.Graphics, originX: number, colors: ReturnType<typeof roomColors>): void {
       const x = originX + GRID_X;
       const y = GRID_Y;
@@ -341,6 +386,15 @@ export async function createPixelSpaceRenderer(
         renderedAt: new Date().toISOString(),
         snapshotSeq: snapshot?.seq ?? null,
         players,
+        doorInput: {
+          activations: this.doorActivations,
+          sceneEnabled: this.input.enabled,
+          managerEnabled: this.game.input.enabled,
+          pointer: { x: this.input.activePointer.x, y: this.input.activePointer.y },
+          canvasBounds: { x: this.scale.canvasBounds.x, y: this.scale.canvasBounds.y, width: this.scale.canvasBounds.width, height: this.scale.canvasBounds.height },
+          displayScale: { x: this.scale.displayScale.x, y: this.scale.displayScale.y },
+          lastSceneDown: this.lastSceneDown,
+        },
       };
       const canvas = this.game.canvas;
       canvas?.setAttribute("data-testid", "t07-phaser-canvas");
@@ -366,10 +420,25 @@ export async function createPixelSpaceRenderer(
     antialias: false,
     roundPixels: true,
     audio: { noAudio: true },
-    input: false,
+    input: { keyboard: false, mouse: true, touch: true },
     banner: false,
     scene: [SpaceScene],
   });
+
+  // React can move the canvas without a window resize. Refresh the coordinate
+  // transform before Phaser receives a mouse/touch down at the new position.
+  const syncPointerBounds = () => {
+    if (!game.canvas) return;
+    game.scale.updateBounds();
+    const bounds = game.scale.canvasBounds;
+    if (bounds.width > 0 && bounds.height > 0) {
+      game.scale.displayScale.set(game.scale.baseSize.width / bounds.width, game.scale.baseSize.height / bounds.height);
+    }
+  };
+  const pointerBoundaryEvents = ["pointerdown", "mousedown", "touchstart"] as const;
+  for (const name of pointerBoundaryEvents) {
+    options.parent.addEventListener(name, syncPointerBounds, { capture: true, passive: true });
+  }
 
   renderer = {
     update(input) {
@@ -379,6 +448,7 @@ export async function createPixelSpaceRenderer(
       sceneInstance?.applySpaceState();
     },
     destroy() {
+      for (const name of pointerBoundaryEvents) options.parent.removeEventListener(name, syncPointerBounds, true);
       sceneInstance = null;
       game.destroy(true);
       delete options.parent.dataset.renderReady;

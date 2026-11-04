@@ -1,0 +1,18 @@
+{
+  "method": "Root independently rechecked all final saved LTA1 source hashes, dropped-trace counters, errors and two actual mode results; prior coordinate diagnostics preserved separately.",
+  "modes": {
+    "unlocked": {
+      "sourceSent": 33,
+      "visitorReceived": 11,
+      "unmatchedHashes": 0,
+      "rawTraceCapReached": false
+    },
+    "locked": {
+      "sourceSent": 58,
+      "visitorReceived": 9,
+      "unmatchedHashes": 0,
+      "rawTraceCapReached": false
+    }
+  },
+  "result": "passed"
+}

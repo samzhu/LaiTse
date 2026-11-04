@@ -119,3 +119,13 @@ R002保留三個失敗版本：先有換來源render0，時鐘歷史修正未單
 人類本輪「會議室跟開放空間」的兩類收聽規則POC完成：30核心/build/typecheck、三Firefox合成近/遠/6格邊界/超界清理/發布者移動及meeting9格播放成功。首輪關閉後尾端各8接收封包缺來源trace，root保存原始資料後窄修script先stop/ACK/穩定再audit，最終127 source/127 near/43 far全指紋匹配；R003含原始資料/圖/來源hash與獨立讀回。代表圖已查看，SOL/README/需求及計畫同步。
 
 Luna已明確停止writer交接，root窄修/驗收結束，server/browser停止。6格非產品定案，門/密碼/多人/手機/真人/完整POC-03仍待補；本輪把先前未commit的DEC-011需求文件與程式/紀錄一起本機commit，不push/GitHub/T09/門禁/部署。恢復下一步依人類指示，B未鎖門/C密碼門禁仍草案。
+
+## DEC011-BC會議室門與密碼啟動（2026-11-04）
+
+人類原話「繼續做會議室門與密碼的POC，驗測維持輕量，確認未上鎖可直接進入、上鎖需正確密碼才能進入，完成後把程式和驗測紀錄一起commit」。R004配發，root設計/驗收/紀錄，Luna xhigh寫派定程式。此輪將B/C核心合併為可操作門與server密碼准入；鎖狀態由server啟動設定切換，不新增無保護管理API，不代表T09主持角色/即時鎖房完成。維持本機/合成媒體/輕量，無推送/部署/遠端票寫入。
+
+### DEC011-BC完成（2026-11-04）
+
+本輪門/密碼核心完成：31核心/build，最終未鎖/上鎖兩config各兩Firefox157真門進出/錯密碼拒絕/正確入房與合成Opus render、外部WS門禁通過。首次及補scroll仍未命中的兩輪已保存後停止全流程，單頁診斷證實React排版71px位移/Phaser cached bounds舊座標；root同步down前bounds/scale後，命中Zone與真switch成功，再恢復兩config皆pass。R004原始JSON/圖/指紋/獨立hash讀回已保存，代表圖實際查看。
+
+Luna停止writer交接，root窄修/驗收結束；server/browser已停止。startup密碼不是T09即時主持/角色/帳號，5次每連線每分鐘非完整防暴力；client錯誤提交可能需手動重啟原影音。手機/真人/原生畫面/完整POC-03仍待。README/需求狀態/計畫/SOL及交付索引同步，程式+紀錄一起本機commit，不push/遠端票/T09/部署。下一步依人類指示。

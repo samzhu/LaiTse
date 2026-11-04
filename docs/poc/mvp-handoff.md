@@ -129,3 +129,11 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-004：Phaser位置/方向按鈕與room入口沿用，UI顯示類型與暫定6格；既有Room字樣/API容器仍可含OpenArea，MVP需統一領域命名而非將開放區當會議室。可見門口/密碼尚未實作，不能把room按鈕稱為門。
 - SOL-008：[R003](evidence/POC-03-R003/README.md)新3個Node外部契約與三Firefox合成audio流程可沿用；30核心/build、近/遠邊界、publisher移動、meeting9格及真render通過。首次關閉尾端8包來源trace不完整已保留，root窄修先stop/ACK/穩定再audit；最終127 sent/127 near/43 far全hash匹配且cap未達，無人耳/E2E品質承諾。
 - MVP前：6格只是示範、斜向體感/邊界抖動/多源與混音/音量/必要裝置/跨區移動需依需求驗證；screen仍原手動zone訂閱，本輪沒測新距離與影音同步共存。帳號/角色/門禁/恢復/耐久未補，不能視為完整商品。舊smoke名稱/政策屬歷史，當前回歸入口space-policy-smoke。
+
+## DEC011-BC／POC-03-R004：場景門與密碼准入（2026-11-04）
+
+- SOL-003：`room-access.ts` per-app policy，啟動MEETING_ROOM_PASSWORD空/非空對應未鎖/鎖；native salted scrypt verifier/定長比較，join/switch在任何member/space/relay變更前共用authorizeEntry，錯/無密碼可同socket重試、不改原房資格，額外鎖/角色/身份欄位不能越權。每新entry再驗，isLocked維持true；不是公開切鎖API或正式帳號/主持權。
+- SOL-004：Phaser場景Zone門、pointer/touch設定（keyboard false）、focus map Enter及HTML替代門，React最新callback ref避免舊狀態；此步是點門傳送，不是行走穿門/尋路。root實測修React排版後Phaser bounds快取71px偏移：down capture同步current bounds/displayScale、destroy清listeners，有界POST_RENDER doorInput診斷可保留作回歸。未鎖與上鎖真canvas操作皆驗。
+- SOL-007：鎖/密碼由每次server啟動環境提供，不寫產品儲存；room/成員/嘗試budget仍process memory。換密碼需restart且中斷當前狀態，不等於已驗恢復或接受資料遺失；角色/即時鎖房/邀請與有效期仍T09/後續。同步scrypt及per-connection budget非生產抗濫用/容量方案，新連線可繞限次需重構。
+- SOL-008：[R004](evidence/POC-03-R004/README.md)保留兩次門點擊失敗、before/after輸入診斷、最終兩config/可信CA/外部WS拒絕、private音源已活動時0下送、入房後實際render/全raw hash讀回與31核心/build。密碼frame只留hasPassword不留內容，runtime測試key不保存；browser只語音，screen拒絕是Node gate契約非活動VP8實播。
+- client密碼送出前仍有序dispose舊影音再switch；錯誤時server原房/relay不變，但local已停影音須手動重開，MVP改善失敗入房體驗前不能移除順序而讓舊幀打到新房。更完整角色/安全與a11y/touch/手機/真mic/恢復/容量都待補。無新套件、影音relay/controller/worklet不改，不把本步當完整私密會議商品驗收。

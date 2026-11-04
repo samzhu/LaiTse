@@ -1,0 +1,24 @@
+✔ room door policy shares one locked server gate for join, switch, and room media (918.064792ms)
+✔ the application serves health and a built-in room catalogue (38.054125ms)
+✔ two clients receive the same authoritative members and sequenced reaction (8.782541ms)
+✔ the websocket rejects cross-origin clients before joining (1.792167ms)
+✔ malformed or oversized control frames close without being broadcast (3.446625ms)
+✔ clients cannot select arbitrary rooms (1.568209ms)
+✔ display names longer than the server limit are rejected (1.429833ms)
+✔ control events reject client-supplied fields outside the protocol (1.607167ms)
+✔ the room has a fixed member limit (8.130875ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.223ms)
+✔ open-area audio follows authoritative distance, including the six-unit edge (307.737125ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (190.541375ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (6.581209ms)
+✔ space snapshots expose member positions only for the recipient's current room (26.677458ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (67.451875ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (108.382042ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1070.1895
