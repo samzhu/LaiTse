@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "baseline": "13fb00e",
+  "method": "independent assertions over retained per-connection control summaries, process lifecycle, phases and render samples; no raw media or token replay",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0",
+    "headless": true
+  },
+  "processPids": [
+    58035,
+    58041
+  ],
+  "ownedSigtermExit0": true,
+  "resumeConnectionReadback": [
+    {
+      "client": "revoked",
+      "reconnectIndex": 4,
+      "sentTypes": [
+        "session.resume"
+      ],
+      "error": "resume_invalid",
+      "autoJoinClaimPublishSubscribe": 0
+    },
+    {
+      "client": "host",
+      "reconnectIndex": 4,
+      "sentTypes": [
+        "session.resume"
+      ],
+      "error": "resume_invalid",
+      "autoJoinClaimPublishSubscribe": 0
+    },
+    {
+      "client": "watch",
+      "reconnectIndex": 4,
+      "sentTypes": [
+        "session.resume"
+      ],
+      "error": "resume_invalid",
+      "autoJoinClaimPublishSubscribe": 0
+    }
+  ],
+  "newIdsDiffer": true,
+  "firstNewJoinMembers": 1,
+  "firstNewJoinHostOrPublishAllowed": false,
+  "feedbackCounts": [
+    1,
+    0
+  ],
+  "chatLossEmpiricallyTested": false,
+  "runtimePasswordLostStartupAccepted": true,
+  "mediaSamples": {
+    "beforeRestart": [
+      {
+        "label": "before-restart",
+        "index": 1,
+        "audioRenderedSamples": 38016,
+        "screenRenderedFrames": 10,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "before-restart",
+        "index": 2,
+        "audioRenderedSamples": 56448,
+        "screenRenderedFrames": 16,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "before-restart",
+        "index": 3,
+        "audioRenderedSamples": 75904,
+        "screenRenderedFrames": 21,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      }
+    ],
+    "afterManualRejoin": [
+      {
+        "label": "after-manual-rejoin",
+        "index": 1,
+        "audioRenderedSamples": 32064,
+        "screenRenderedFrames": 8,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "after-manual-rejoin",
+        "index": 2,
+        "audioRenderedSamples": 51520,
+        "screenRenderedFrames": 14,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "after-manual-rejoin",
+        "index": 3,
+        "audioRenderedSamples": 70976,
+        "screenRenderedFrames": 19,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      }
+    ]
+  },
+  "freshClock": true,
+  "probeConnections": 2,
+  "probeRoleAndPublishDenied": true,
+  "expectedSocketErrors": 6,
+  "allSocketErrorTimesBetweenOldExitAndNewStart": true,
+  "unexpectedErrors": 0,
+  "buildInputsUnchanged": true,
+  "screenshotsActuallyViewed": [
+    "desktop/before-restart-media-active.png",
+    "desktop/after-manual-rejoin-media-rendering.png"
+  ],
+  "visualReadback": "before: feedback1/three studio members/green VP8 and positive audio; after: new named members/feedback0/green VP8,70976 AudioWorklet samples,19 rendered frames. Participant self panel is initial inspection, not live receive metrics.",
+  "operationalPass": true,
+  "dynamicRestoration": "not-restored",
+  "productConclusion": "NO_GO_DURABILITY_UNRESOLVED",
+  "fullT18Pass": false
+}

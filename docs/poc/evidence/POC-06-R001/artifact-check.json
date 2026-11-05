@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-05",
+  "beforeThisFile": {
+    "jsonParsed": 12,
+    "selectedEvidenceFiles": 35,
+    "selectedEvidenceBytes": 4617012
+  },
+  "fingerprintsVerified": 58,
+  "credentialFieldScan": "no raw token/password/private-key fields or private-key PEM found; runtime report exact secret scan passed",
+  "diffCheck": "initial unstaged tracked diff passed; staged full evidence scan found whitespace only in build.log and two generated README files; normalized trailing whitespace, retained substantive output; final cached check passed",
+  "scope": "script and records only; app/tests/manifest/lock unchanged",
+  "untrackedExcluded": [
+    "AGENTS.md",
+    ".scratch/"
+  ]
+}

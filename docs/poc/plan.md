@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T17桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 狀態：T01～T17桌面核心依執行紀錄判定，T18操作重建可行、動態耐久No-Go；完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
 - 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
 - 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
@@ -295,3 +295,7 @@ T16交付（2026-11-05）：[POC-05-R001](evidence/POC-05-R001/README.md)以1發
 ## T17本輪結果（2026-11-05）
 
 T17交付（2026-11-05）：[POC-05-R002](evidence/POC-05-R002/README.md)保存build/typecheck/63核心與首次六Firefox18,233ms短流程。每房1source/1watch/1only，兩房實播；專用only初始/活動self0且整輪raw0、回饋同房DOM0→1/異房0。studio watch→only零增量→watch不auto直到manual新config實播，lobby持續。root全hash重算source668/669→ownreceipts643/411，foreign/unknown/ambiguous0、count-byte完整；2圖實看/cleanup。app/依賴未變，SOL/操作/需求狀態/計畫/票面同步；50/20min/手機/真人/品質/全client資源/雲/完整POC05待，無Continue分支。writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T18/部署。
+
+## T18最終紀錄（2026-11-05）
+
+T18輕量評估完成：[POC-06-R001](evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。

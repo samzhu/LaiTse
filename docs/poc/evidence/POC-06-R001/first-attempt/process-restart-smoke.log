@@ -1,0 +1,4 @@
+[T18] initial-server-trusted-health-and-fixed-room-catalogue {"persistence":"process-memory","roomIds":["lobby","studio"],"studioLocked":true,"hostControlsEnabled":true}
+[T18] three-firefox-clients-joined-startup-locked-studio {"memberCount":3,"participantIdsRecorded":true,"startupPasswordValueRecorded":false}
+[T18] failure: Timed out waiting for feedback counter update after 20000 ms.
+[T18] failed operational=failed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t18/acceptance/run-2026-11-05T04-12-59.563Z-aeed98ca/report.json

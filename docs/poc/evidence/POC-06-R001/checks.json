@@ -1,0 +1,103 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T03:47:54.772351+00:00",
+    "finishedAt": "2026-11-05T03:47:56.178761+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/playback-queue.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs",
+      "tests/transport-budget.test.mjs"
+    ],
+    "startedAt": "2026-11-05T03:47:56.179554+00:00",
+    "finishedAt": "2026-11-05T03:48:05.833333+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:12:59.478958+00:00",
+    "finishedAt": "2026-11-05T04:12:59.521862+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "process-restart-smoke",
+    "command": [
+      "node",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:12:59.522181+00:00",
+    "finishedAt": "2026-11-05T04:13:31.138002+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:14:30.051485+00:00",
+    "finishedAt": "2026-11-05T04:14:30.100576+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "process-restart-smoke",
+    "command": [
+      "node",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:14:30.100898+00:00",
+    "finishedAt": "2026-11-05T04:14:46.242068+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:16:05.225163+00:00",
+    "finishedAt": "2026-11-05T04:16:05.271244+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "process-restart-smoke",
+    "command": [
+      "node",
+      "scripts/process-restart-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T04:16:05.271585+00:00",
+    "finishedAt": "2026-11-05T04:16:23.324780+00:00",
+    "exitCode": 0
+  }
+]

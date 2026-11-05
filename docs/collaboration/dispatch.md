@@ -276,3 +276,25 @@ T17-SMOKE明確saved/readback/STOP釋出script與authoring，root接管唯一wri
 ## T17最終紀錄
 
 T17交付（2026-11-05）：[POC-05-R002](../poc/evidence/POC-05-R002/README.md)保存build/typecheck/63核心與首次六Firefox18,233ms短流程。每房1source/1watch/1only，兩房實播；專用only初始/活動self0且整輪raw0、回饋同房DOM0→1/異房0。studio watch→only零增量→watch不auto直到manual新config實播，lobby持續。root全hash重算source668/669→ownreceipts643/411，foreign/unknown/ambiguous0、count-byte完整；2圖實看/cleanup。app/依賴未變，SOL/操作/需求狀態/計畫/票面同步；50/20min/手機/真人/品質/全client資源/雲/完整POC05待，無Continue分支。writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T18/部署。
+
+## T18／POC-06-R001 範圍包（2026-11-05）
+
+人類：「繼續做 T18，驗測維持輕量，確認程序重啟與資料恢復的核心功能可行跟使用方式就好，完成後把程式和驗測紀錄一起 commit。」基線13fb00e，#19程序重啟與資料恢復語意已讀回。既有程式全process-memory；不得擅自接受動態資料遺失或將手動重入等同耐久恢復。此輪不補造持久化、不加外部服務；原票允許明確No-Go/待決。
+
+- T18-SMOKE／Luna xhigh唯一writer：`scripts/process-restart-smoke.mjs`、`.scratch/t18/authoring/`；既有source/tests/scripts/README/docs/manifest/Git唯讀，不runtime。新script自行spawn/stop僅其擁有的dist/server/index.js子程序（不操作既有server），此能力由root執行時行使。精簡沿既有trustedFirefox/helpers，無公開restart API/新框架/依賴；saved/readback/syntax/fingerprint/STOP交root。
+- root唯一writer：權威docs/README/.gitignore、`docs/poc/evidence/POC-06-R001/`、暫存runner/Git；獨占服務/瀏覽器驗收。可更新既有SOL007分類與NoGo/候選方案，不建立平行需求/第二清冊。既有AGENTS/.scratch不stage。
+- 最小閉環：同一可信本機app三Firefox：studio host合成音畫＋watch＋revoked participant。正常join/password/claim；對第三者grant再revoke、留server拒權證據；host與watch真音畫實播。送一則合成chat/feedback（不記私人全文）及watch切only或mode選擇，live更換會議室密碼B（startup A不同）作執行期資料標記；active媒體/控制存在時真正停止owned process，記pid/時間/exit/signal/來源tracks結束/新socket意外斷線，短空窗後spawn新pid同startup設定。SIGTERM graceful若未退出可bounded SIGKILL fallback如實記，不當CloudRun實測。
+- 重啟後：固定lobby/studio場景/初始lock與managed設定重建；原三browser自動resume舊proof明確resume_invalid，無auto匿名join/hostclaim/publish；新server無舊members/chat/feedback/管理grant，generation可能重設不能當來源ID。舊host/被撤者不能自證權限，外部probe或正常freshjoin後未claim media.start拒絕/舊proof拒絕分列，無新增公開管理接口。
+- 人工操作恢復：普通Join room新UUID、以startup密碼A重新入房，舊liveB不再有效需如實測出，不將locked標誌當密碼恢復；主持需現在bootstrap token正常重認領，receiver手動開始、sender手動重開sources，新clock/實播，第三者仍無grant。只記這是重建/新身份/手動流程，不是舊Session/資料恢復。chat/統計遺失、runtime gate回startup為耐久缺口，POC06/商品Go不能因安全拒絕/可重開就Pass。
+- 邊界：幫助理解程序重啟與資料分類/可操作恢復，保留缺口/NoGo與MVP前待決；不寫本機snapshot/SQLite當雲耐久，不加DB/NFS/GCS/其他CloudRun服務，不改需求或默認會話資料可丟。root已核官方CloudRun container contract filesystem不跨instance stop保存，參考只用於方案判斷，未部署。
+- 驗收：Node26.13語法、production build/typecheck/既有全套一次；root執行有界三browser真程序restart，trustedCA/無autoplayfake/秘密只env與記憶/finalreportscan/白名單counter／錯誤code/身份新舊比對，無tokens/chat全文/原始媒體。代表before/down/recovered圖至少2張、含實播；root獨立讀回/實看/cleanup/指紋、操作及SOL003/006/007/008。collector capfail，page/cleanup error失敗分列；server停機造成socket錯誤需限定預期窗口、不泛忽略。
+- 失敗保存後一次最小診斷，同錯再現停該操作；若需改app先報root補scope。無手機/真人/全crashmatrix/磁碟保存/雲/完整耐久品質；不啟T19/MVP/push/部署/遠端issue。完成後程式+紀錄本機commit。
+- 狀態：scope已保存，agent待開始，尚未實作/判結果。
+
+### T18 script交接
+
+T18-SMOKE已saved/readback/STOP釋出script/authoring；root接管唯一writer/runtime。作者26.1 parser syntax只記其範圍，root已驗exactNode26.13 syntax；交接筆記/指紋複製R001。root最後窄修post-claim不存在欄位/32字元名稱，無app/tests更動；開始首次三Firefox與owned app實重啟。
+
+## T18最終紀錄（2026-11-05）
+
+T18輕量評估完成：[POC-06-R001](../poc/evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。

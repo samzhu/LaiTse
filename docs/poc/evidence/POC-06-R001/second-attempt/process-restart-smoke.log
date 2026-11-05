@@ -1,0 +1,13 @@
+[T18] initial-server-trusted-health-and-fixed-room-catalogue {"persistence":"process-memory","roomIds":["lobby","studio"],"studioLocked":true,"hostControlsEnabled":true}
+[T18] three-firefox-clients-joined-startup-locked-studio {"memberCount":3,"participantIdsRecorded":true,"startupPasswordValueRecorded":false}
+[T18] host-grant-revoke-live-password-feedback-and-media-observed {"grantObserved":true,"revokeObserved":true,"feedbackEventIdRecorded":true,"startupPasswordUnchangedInProcessEnvironment":true,"activeAudioAndScreenRenderSamples":3}
+[T18] owned-process-stopped-while-sources-active {"pid":57925,"stopMode":"SIGTERM","oldHostTracksEnded":true,"downWindowMsAtLeast":1000}
+[T18] restarted-server-trusted-health-and-fixed-room-catalogue {"persistence":"process-memory","roomIds":["lobby","studio"],"studioLocked":true,"hostControlsEnabled":true}
+[T18] manual-normal-join-used-new-identities-and-startup-password {"newIdsDiffer":true,"firstJoinMemberCount":1,"firstJoinHistoryCount":0,"firstJoinStudioLocked":true,"hostClaimedAgain":true,"oldGrantCount":0}
+[T18] failure: Expected values to be strictly equal:
++ actual - expected
+
++ undefined
+- true
+
+[T18] failed operational=failed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t18/acceptance/run-2026-11-05T04-14-30.142Z-afeb4a87/report.json

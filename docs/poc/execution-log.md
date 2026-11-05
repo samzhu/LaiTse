@@ -290,3 +290,11 @@ T16交付（2026-11-05）：[POC-05-R001](evidence/POC-05-R001/README.md)以1發
 ## T17本輪結果（2026-11-05）
 
 T17交付（2026-11-05）：[POC-05-R002](evidence/POC-05-R002/README.md)保存build/typecheck/63核心與首次六Firefox18,233ms短流程。每房1source/1watch/1only，兩房實播；專用only初始/活動self0且整輪raw0、回饋同房DOM0→1/異房0。studio watch→only零增量→watch不auto直到manual新config實播，lobby持續。root全hash重算source668/669→ownreceipts643/411，foreign/unknown/ambiguous0、count-byte完整；2圖實看/cleanup。app/依賴未變，SOL/操作/需求狀態/計畫/票面同步；50/20min/手機/真人/品質/全client資源/雲/完整POC05待，無Continue分支。writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T18/部署。
+
+## T18啟動（2026-11-05）
+
+人類指定程序重啟/資料恢復輕量核心及用法+commit；13fb00e、POC06-R001/#19。scope見dispatch，三browser/owned process實停重起/舊proof拒絕/新身份人工操作重建，動態資料/耐久缺口不得冒稱恢復。Luna xhigh新script、root設計驗收/docs/Git/runtime；無外部服務/持久化決策/T19/MVP/push/部署。
+
+## T18最終紀錄（2026-11-05）
+
+T18輕量評估完成：[POC-06-R001](evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。

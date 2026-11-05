@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-05",
+  "port4173ListenerCheck": {
+    "command": "lsof -nP -iTCP:4173 -sTCP:LISTEN",
+    "exitCode": 1,
+    "output": "",
+    "meaning": "no listener"
+  },
+  "ownedBrowserProcessCheck": {
+    "command": "ps -axo pid=,command= with narrow T18 profile/script filter",
+    "sandboxFirstAttempt": "ps operation not permitted",
+    "readOnlyEscalatedResult": {
+      "exitCode": 1,
+      "output": "",
+      "meaning": "no matching T18 processes"
+    }
+  },
+  "ownedChildren": [
+    {
+      "pid": 58035,
+      "exitCode": 0,
+      "signalSent": "SIGTERM",
+      "endedAt": "2026-11-05T04:16:11.974Z"
+    },
+    {
+      "pid": 58041,
+      "exitCode": 0,
+      "signalSent": "SIGTERM",
+      "endedAt": "2026-11-05T04:16:18.263Z"
+    }
+  ],
+  "cleanupErrors": [],
+  "resourcesReleased": true,
+  "otherServicesStopped": false
+}

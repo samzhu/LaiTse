@@ -55,3 +55,9 @@
 | T16／POC-05-R001 | 單房1→3接收實際影音fan-out | `docs/poc/evidence/POC-05-R001/README.md`、root-readback | build／短四Firefox通過，退訂隔離／來源停止；全套62/63＋孤立9/9、首輪browser失敗保留 | 10/25/50/長測/手機/品質待；資源釋出，不push/T17 |
 
 | T17／POC-05-R002 | 少量雙房影音／只互動混合 | `docs/poc/evidence/POC-05-R002/README.md`、root-readback | build/63核心/首次六Firefox通過，兩only0／mode切換／來源hash隔離與UI回饋 | 50人/20min/手機/品質/完整階段待，資源釋出、不push/T18 |
+
+## T18 資料恢復評估
+
+| 項目 | 範圍 | 證據 | 結果 | 限制 |
+|---|---|---|---|---|
+| T18／POC-06-R001 | 真程序重啟／資料恢復語意 | `docs/poc/evidence/POC-06-R001/README.md`、root-readback | build/63核心/三Firefox操作重建通過；feedback/live密碼遺失，耐久No-Go | 完整T18/POC06未過；必要資料來源待決、資源釋出，不push/T19 |

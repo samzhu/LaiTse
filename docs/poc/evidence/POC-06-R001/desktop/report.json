@@ -1,0 +1,5709 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Lightweight owned-server process restart and in-memory data-loss smoke; operational rejoin is reported separately from durable restoration.",
+  "startedAt": "2026-11-05T04:16:05.451Z",
+  "finishedAt": "2026-11-05T04:16:18.288Z",
+  "durationMs": 12837,
+  "status": "passed",
+  "operationalResult": "passed: owned-process restart, stale-proof rejection, and manual operational rejoin observed",
+  "dynamicRestoration": "not-restored; server records are process-memory only",
+  "productConclusion": "NO_GO_DURABILITY_UNRESOLVED",
+  "fullT18Pass": false,
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0",
+    "headless": true
+  },
+  "tls": {
+    "caCertificate": ".scratch/t01/tls/local-ca.pem",
+    "serverCertificate": ".scratch/t01/tls/localhost-cert.pem",
+    "trust": "trusted CA used for HTTPS/WSS requests and imported only into isolated Firefox profiles",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "browsers": [
+      "host",
+      "watch",
+      "revoked"
+    ],
+    "isolatedFirefoxProfiles": 3,
+    "profilesKeptOpenAcrossRestart": true,
+    "ownedServerProcesses": 2,
+    "serverHost": "127.0.0.1",
+    "serverPort": 4173,
+    "syntheticSources": "host-page oscillator/AudioContext and animated canvas only; no physical microphone or display capture",
+    "interaction": "one synthetic feedback event; no chat text submitted or retained",
+    "network": "one script-owned local HTTPS/WSS server process, stopped and restarted on the same port"
+  },
+  "startupConfiguration": {
+    "managedHostControls": true,
+    "studioInitiallyLocked": true,
+    "sameConfigurationAcrossProcesses": true,
+    "hostToken": "provided in process memory; value not recorded",
+    "startupRoomPassword": "provided in process memory; value not recorded",
+    "liveRoomPassword": "provided in process memory; value not recorded"
+  },
+  "processRuns": [
+    {
+      "label": "initial",
+      "pid": 58035,
+      "startedAt": "2026-11-05T04:16:07.757Z",
+      "readyAt": "2026-11-05T04:16:07.924Z",
+      "endedAt": "2026-11-05T04:16:11.974Z",
+      "stopMode": "SIGTERM",
+      "signalSent": "SIGTERM",
+      "exitCode": 0,
+      "exitSignal": null,
+      "ownedChild": true,
+      "startupHealthy": true,
+      "startupConfigSameAsFirst": true,
+      "persistence": "process-memory",
+      "staticStudioConfiguration": {
+        "locked": true,
+        "hostControlsEnabled": true
+      },
+      "stopRequestedAt": "2026-11-05T04:16:11.967Z",
+      "stopReason": "T18 controlled process restart with active host sources and watch rendering",
+      "exitedWithinBound": true,
+      "oldHostTracksEnded": true
+    },
+    {
+      "label": "restarted",
+      "pid": 58041,
+      "startedAt": "2026-11-05T04:16:12.981Z",
+      "readyAt": "2026-11-05T04:16:13.298Z",
+      "endedAt": "2026-11-05T04:16:18.263Z",
+      "stopMode": "SIGTERM",
+      "signalSent": "SIGTERM",
+      "exitCode": 0,
+      "exitSignal": null,
+      "ownedChild": true,
+      "startupHealthy": true,
+      "startupConfigSameAsFirst": true,
+      "persistence": "process-memory",
+      "staticStudioConfiguration": {
+        "locked": true,
+        "hostControlsEnabled": true
+      },
+      "stopRequestedAt": "2026-11-05T04:16:18.259Z",
+      "stopReason": "final cleanup of this script-owned child",
+      "exitedWithinBound": true
+    }
+  ],
+  "phases": {
+    "beforeRestart": {
+      "revoked": {
+        "identity": {
+          "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25",
+            "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+            "893bcf69-3986-4956-95d4-32c95da56f9b"
+          ],
+          "memberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25",
+            "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+            "893bcf69-3986-4956-95d4-32c95da56f9b"
+          ],
+          "memberCount": 3,
+          "lastSeq": 3
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 4,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": false,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": false
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 1,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      },
+      "host": {
+        "identity": {
+          "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25"
+          ],
+          "memberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25",
+            "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+            "893bcf69-3986-4956-95d4-32c95da56f9b"
+          ],
+          "memberCount": 3,
+          "lastSeq": 1
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 4,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": true,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": true
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 1,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      },
+      "watch": {
+        "identity": {
+          "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25",
+            "71635c0a-1e67-41dd-a232-e5beddb3d31a"
+          ],
+          "memberIds": [
+            "ea821329-3f98-4c1d-b535-8bdf20315a25",
+            "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+            "893bcf69-3986-4956-95d4-32c95da56f9b"
+          ],
+          "memberCount": 3,
+          "lastSeq": 2
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 4,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": false,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": false
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 1,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      }
+    },
+    "restartConnectionWindow": {
+      "startedAtElapsedMs": 6514,
+      "endedAtElapsedMs": 8507,
+      "completedAt": "2026-11-05T04:16:13.958Z"
+    },
+    "afterRestartBeforeManualRejoin": {
+      "revoked": {
+        "identity": {
+          "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "statusTextObserved": true,
+        "resumeInvalid": true,
+        "automaticJoinCount": 0,
+        "automaticHostClaimCount": 0,
+        "automaticAudioStartCount": 0,
+        "automaticScreenStartCount": 0
+      },
+      "host": {
+        "identity": {
+          "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "statusTextObserved": true,
+        "resumeInvalid": true,
+        "automaticJoinCount": 0,
+        "automaticHostClaimCount": 0,
+        "automaticAudioStartCount": 0,
+        "automaticScreenStartCount": 0
+      },
+      "watch": {
+        "identity": {
+          "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "statusTextObserved": true,
+        "resumeInvalid": true,
+        "automaticJoinCount": 0,
+        "automaticHostClaimCount": 0,
+        "automaticAudioStartCount": 0,
+        "automaticScreenStartCount": 0
+      }
+    },
+    "firstManualJoinAfterRestart": {
+      "identity": {
+        "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+        "role": "participant",
+        "mode": "watch",
+        "roomId": "studio"
+      },
+      "room": {
+        "roomId": "studio",
+        "locked": true,
+        "hostControlsEnabled": true,
+        "publishAllowed": false,
+        "snapshotMemberIds": [
+          "213293b9-0a38-472e-87a6-3dda4d55945f"
+        ],
+        "memberIds": [
+          "213293b9-0a38-472e-87a6-3dda4d55945f"
+        ],
+        "memberCount": 1,
+        "lastSeq": 1
+      },
+      "positions": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            }
+          ]
+        }
+      ],
+      "spaceSeq": 1,
+      "participation": {
+        "role": "participant",
+        "mode": "watch",
+        "audioSubscribed": false,
+        "screenSubscribed": false
+      },
+      "hostClaimed": false,
+      "grantIds": [],
+      "publisherPermission": {
+        "enabled": true,
+        "allowed": false
+      },
+      "interaction": {
+        "historyCount": 0,
+        "historyIds": [],
+        "publicQueueCount": 0,
+        "feedbackCounts": {
+          "like": 0,
+          "want-listen": 0,
+          "useful": 0
+        }
+      }
+    },
+    "afterManualRejoin": {
+      "revoked": {
+        "identity": {
+          "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f",
+            "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+            "20f8e4d0-12c1-4736-845d-254f140ca823"
+          ],
+          "memberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f",
+            "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+            "20f8e4d0-12c1-4736-845d-254f140ca823"
+          ],
+          "memberCount": 3,
+          "lastSeq": 3
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 5,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": false,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": false
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 0,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      },
+      "host": {
+        "identity": {
+          "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f"
+          ],
+          "memberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f",
+            "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+            "20f8e4d0-12c1-4736-845d-254f140ca823"
+          ],
+          "memberCount": 3,
+          "lastSeq": 1
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 5,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": true,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": true
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 0,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      },
+      "watch": {
+        "identity": {
+          "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+          "role": "participant",
+          "mode": "watch",
+          "roomId": "studio"
+        },
+        "room": {
+          "roomId": "studio",
+          "locked": true,
+          "hostControlsEnabled": true,
+          "publishAllowed": false,
+          "snapshotMemberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f",
+            "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054"
+          ],
+          "memberIds": [
+            "213293b9-0a38-472e-87a6-3dda4d55945f",
+            "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+            "20f8e4d0-12c1-4736-845d-254f140ca823"
+          ],
+          "memberCount": 3,
+          "lastSeq": 2
+        },
+        "positions": [
+          {
+            "id": "lobby",
+            "playerIds": []
+          },
+          {
+            "id": "studio",
+            "playerIds": [
+              {
+                "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                "x": 8,
+                "y": 2
+              }
+            ]
+          }
+        ],
+        "spaceSeq": 5,
+        "participation": {
+          "role": "participant",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        "hostClaimed": false,
+        "grantIds": [],
+        "publisherPermission": {
+          "enabled": true,
+          "allowed": false
+        },
+        "interaction": {
+          "historyCount": 0,
+          "historyIds": [],
+          "publicQueueCount": 0,
+          "feedbackCounts": {
+            "like": 0,
+            "want-listen": 0,
+            "useful": 0
+          }
+        }
+      }
+    },
+    "processRestart": {
+      "oldPid": 58035,
+      "newPid": 58041,
+      "oldPidDifferentFromNewPid": true,
+      "oldStopMode": "SIGTERM",
+      "oldSignalSent": "SIGTERM",
+      "downWindowMs": 1007,
+      "resumeAndManualRecoveryElapsedMs": 5659,
+      "browserProfilesSameAcrossRestart": true
+    }
+  },
+  "interactions": {
+    "feedbackSubmitted": true,
+    "eventIds": [
+      "ec7de480-6fbf-4620-9a6a-5fef679aa972"
+    ],
+    "beforeFeedbackCount": 1,
+    "afterRestartFeedbackCount": 0,
+    "chatLossTested": false,
+    "feedbackVisibleBeforeRestart": true
+  },
+  "grants": {
+    "grantedParticipantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+    "grantObserved": true,
+    "revokeObserved": true,
+    "oldGrantCountAfterRevoke": 0,
+    "postRestartGrantCount": 0
+  },
+  "resumeProofs": {
+    "valuesRetained": false,
+    "clients": [
+      {
+        "client": "revoked",
+        "oldParticipantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+        "resumeAttempted": true,
+        "tokenValueRetained": false,
+        "errorCode": "resume_invalid",
+        "autoAnonymousJoinCount": 0,
+        "autoHostClaimCount": 0,
+        "autoAudioStartCount": 0,
+        "autoScreenStartCount": 0
+      },
+      {
+        "client": "host",
+        "oldParticipantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+        "resumeAttempted": true,
+        "tokenValueRetained": false,
+        "errorCode": "resume_invalid",
+        "autoAnonymousJoinCount": 0,
+        "autoHostClaimCount": 0,
+        "autoAudioStartCount": 0,
+        "autoScreenStartCount": 0
+      },
+      {
+        "client": "watch",
+        "oldParticipantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+        "resumeAttempted": true,
+        "tokenValueRetained": false,
+        "errorCode": "resume_invalid",
+        "autoAnonymousJoinCount": 0,
+        "autoHostClaimCount": 0,
+        "autoAudioStartCount": 0,
+        "autoScreenStartCount": 0
+      }
+    ]
+  },
+  "manualRejoin": {
+    "oldParticipantIds": {
+      "host": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "watch": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "revoked": "893bcf69-3986-4956-95d4-32c95da56f9b"
+    },
+    "newParticipantIds": {
+      "host": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "watch": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "revoked": "20f8e4d0-12c1-4736-845d-254f140ca823"
+    },
+    "newIdsDiffer": true,
+    "hostClaimedAgain": true,
+    "publisherPermissionAfterRevoke": true,
+    "oldPublishAutoStarts": 0,
+    "passwordGate": {
+      "previousLivePasswordBRejected": true,
+      "rejectionCode": "room_password_incorrect",
+      "startupPasswordAAccepted": true
+    },
+    "syntheticControllerResetByNavigation": true,
+    "newSourceRequests": {
+      "audio": 1,
+      "screen": 1,
+      "allTracksLive": true
+    },
+    "recoveredClockIds": {
+      "audio": "e5938425-55d1-417d-9011-fe26391dc92b",
+      "screen": "e5938425-55d1-417d-9011-fe26391dc92b"
+    },
+    "sourceGenerations": {
+      "before": {
+        "audio": 1,
+        "screen": 1
+      },
+      "after": {
+        "audio": 1,
+        "screen": 1
+      }
+    }
+  },
+  "probes": [
+    {
+      "forgedRole": {
+        "attemptedRole": "host",
+        "rejected": true,
+        "rejectionCode": "invalid_join",
+        "roomSnapshotReceived": false
+      },
+      "publishDenial": {
+        "joinedAs": "participant",
+        "audioDenied": true,
+        "screenDenied": true,
+        "errorCode": "publish_not_authorized",
+        "roomSnapshotReceived": true
+      },
+      "protocolProbeConnections": 2
+    }
+  ],
+  "media": {
+    "beforeRestart": {
+      "audioClockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+      "screenClockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+      "audioGeneration": 1,
+      "screenGeneration": 1,
+      "renderedSamples": 75904,
+      "renderedFrames": 21,
+      "samples": [
+        {
+          "label": "before-restart",
+          "index": 1,
+          "audioRenderedSamples": 38016,
+          "screenRenderedFrames": 10,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        },
+        {
+          "label": "before-restart",
+          "index": 2,
+          "audioRenderedSamples": 56448,
+          "screenRenderedFrames": 16,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        },
+        {
+          "label": "before-restart",
+          "index": 3,
+          "audioRenderedSamples": 75904,
+          "screenRenderedFrames": 21,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        }
+      ]
+    },
+    "afterManualRejoin": {
+      "audioClockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+      "screenClockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+      "audioGeneration": 1,
+      "screenGeneration": 1,
+      "renderedSamples": 70976,
+      "renderedFrames": 19,
+      "samples": [
+        {
+          "label": "after-manual-rejoin",
+          "index": 1,
+          "audioRenderedSamples": 32064,
+          "screenRenderedFrames": 8,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        },
+        {
+          "label": "after-manual-rejoin",
+          "index": 2,
+          "audioRenderedSamples": 51520,
+          "screenRenderedFrames": 14,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        },
+        {
+          "label": "after-manual-rejoin",
+          "index": 3,
+          "audioRenderedSamples": 70976,
+          "screenRenderedFrames": 19,
+          "audioAdvanced": true,
+          "screenAdvanced": true
+        }
+      ]
+    },
+    "renderedSamples": [
+      {
+        "label": "before-restart",
+        "index": 1,
+        "audioRenderedSamples": 38016,
+        "screenRenderedFrames": 10,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "before-restart",
+        "index": 2,
+        "audioRenderedSamples": 56448,
+        "screenRenderedFrames": 16,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "before-restart",
+        "index": 3,
+        "audioRenderedSamples": 75904,
+        "screenRenderedFrames": 21,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "after-manual-rejoin",
+        "index": 1,
+        "audioRenderedSamples": 32064,
+        "screenRenderedFrames": 8,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "after-manual-rejoin",
+        "index": 2,
+        "audioRenderedSamples": 51520,
+        "screenRenderedFrames": 14,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      },
+      {
+        "label": "after-manual-rejoin",
+        "index": 3,
+        "audioRenderedSamples": 70976,
+        "screenRenderedFrames": 19,
+        "audioAdvanced": true,
+        "screenAdvanced": true
+      }
+    ],
+    "oldSourcesEnded": true,
+    "newClocksDiffer": true
+  },
+  "playbackGestures": [],
+  "screenshots": [
+    {
+      "label": "before-restart-media-active",
+      "file": "before-restart-media-active.png",
+      "client": "watch"
+    },
+    {
+      "label": "server-down-client-state",
+      "file": "server-down-client-state.png",
+      "client": "watch"
+    },
+    {
+      "label": "after-manual-rejoin-before-republish",
+      "file": "after-manual-rejoin-before-republish.png",
+      "client": "watch"
+    },
+    {
+      "label": "after-manual-rejoin-media-rendering",
+      "file": "after-manual-rejoin-media-rendering.png",
+      "client": "watch"
+    }
+  ],
+  "serverLogs": {
+    "rawLogsRetained": false,
+    "childStdoutAndStderr": "ignored; no server log payload retained"
+  },
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "browserStorageDumped": false,
+    "chatTextSubmitted": false,
+    "chatTextRetained": false,
+    "resumeTokensRetained": false,
+    "configuredSecretsInReport": false,
+    "finalSecretScanPassed": true
+  },
+  "limits": {
+    "restart": "the owned child process receives SIGTERM and has a bounded wait; SIGKILL is used only if that same child remains alive",
+    "recovery": "manual normal UI rejoin creates new server-issued identities; this is operational rebuild, not restoration of old state",
+    "persistence": "room members, host claim/grants, live room password, feedback/history, and runtime counters are process-memory; this smoke does not accept their loss",
+    "chat": "chat text is not submitted in this run; chat-loss behavior is classified from the process-memory implementation only",
+    "generation": "source generation may restart at an earlier number; clock IDs and actual rendered media are compared instead",
+    "devices": "no phone, physical microphone, human listening, physical display capture, weak-network shaping, capacity, endurance, Cloud Run, or deployment result"
+  },
+  "checks": [
+    {
+      "name": "initial-server-trusted-health-and-fixed-room-catalogue",
+      "at": "2026-11-05T04:16:07.925Z",
+      "elapsedMs": 2474,
+      "persistence": "process-memory",
+      "roomIds": [
+        "lobby",
+        "studio"
+      ],
+      "studioLocked": true,
+      "hostControlsEnabled": true
+    },
+    {
+      "name": "three-firefox-clients-joined-startup-locked-studio",
+      "at": "2026-11-05T04:16:09.446Z",
+      "elapsedMs": 3995,
+      "memberCount": 3,
+      "participantIdsRecorded": true,
+      "startupPasswordValueRecorded": false
+    },
+    {
+      "name": "host-grant-revoke-live-password-feedback-and-media-observed",
+      "at": "2026-11-05T04:16:11.965Z",
+      "elapsedMs": 6514,
+      "grantObserved": true,
+      "revokeObserved": true,
+      "feedbackEventIdRecorded": true,
+      "startupPasswordUnchangedInProcessEnvironment": true,
+      "activeAudioAndScreenRenderSamples": 3
+    },
+    {
+      "name": "owned-process-stopped-while-sources-active",
+      "at": "2026-11-05T04:16:12.979Z",
+      "elapsedMs": 7528,
+      "pid": 58035,
+      "stopMode": "SIGTERM",
+      "oldHostTracksEnded": true,
+      "downWindowMsAtLeast": 1000
+    },
+    {
+      "name": "restarted-server-trusted-health-and-fixed-room-catalogue",
+      "at": "2026-11-05T04:16:13.300Z",
+      "elapsedMs": 7849,
+      "persistence": "process-memory",
+      "roomIds": [
+        "lobby",
+        "studio"
+      ],
+      "studioLocked": true,
+      "hostControlsEnabled": true
+    },
+    {
+      "name": "manual-normal-join-used-new-identities-and-startup-password",
+      "at": "2026-11-05T04:16:15.557Z",
+      "elapsedMs": 10106,
+      "newIdsDiffer": true,
+      "firstJoinMemberCount": 1,
+      "firstJoinHistoryCount": 0,
+      "firstJoinStudioLocked": true,
+      "hostClaimedAgain": true,
+      "oldGrantCount": 0
+    },
+    {
+      "name": "manual-host-reclaim-new-sources-and-watch-render",
+      "at": "2026-11-05T04:16:17.623Z",
+      "elapsedMs": 12172,
+      "newClockIds": true,
+      "audioSamples": 70976,
+      "videoFrames": 19,
+      "sampleCount": 3,
+      "revokedPermissionDenied": true
+    },
+    {
+      "name": "operational-rebuild-pass-with-durable-restoration-explicitly-unresolved",
+      "at": "2026-11-05T04:16:17.624Z",
+      "elapsedMs": 12173,
+      "operationalPass": true,
+      "dynamicStateRestored": false,
+      "productNoGo": true
+    }
+  ],
+  "connections": [
+    {
+      "client": "revoked",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T04:16:09.230Z",
+          "openedAtElapsedMs": 3779,
+          "closedAt": "2026-11-05T04:16:11.972Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "elapsedMs": 3780,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "elapsedMs": 3781,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "elapsedMs": 3895,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "elapsedMs": 3931,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "elapsedMs": 3931,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "elapsedMs": 3931,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                "893bcf69-3986-4956-95d4-32c95da56f9b"
+              ],
+              "memberCount": 3,
+              "lastSeq": 3
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "elapsedMs": 3931,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "elapsedMs": 3931,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "elapsedMs": 3931,
+              "type": "space.snapshot",
+              "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "elapsedMs": 3931,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "elapsedMs": 4122,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "elapsedMs": 4180,
+              "type": "host.publishRevoked"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "elapsedMs": 4180,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "elapsedMs": 5024,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+              "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+              "kind": "feedback",
+              "feedbackCounts": {
+                "like": 1,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "elapsedMs": 5117,
+              "type": "room.catalogue"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "elapsedMs": 5118,
+              "type": "space.snapshot",
+              "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "openedAt": "2026-11-05T04:16:12.265Z",
+          "openedAtElapsedMs": 6814,
+          "closedAt": "2026-11-05T04:16:12.265Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 3,
+          "openedAt": "2026-11-05T04:16:12.749Z",
+          "openedAtElapsedMs": 7298,
+          "closedAt": "2026-11-05T04:16:12.749Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 4,
+          "openedAt": "2026-11-05T04:16:13.703Z",
+          "openedAtElapsedMs": 8252,
+          "closedAt": "2026-11-05T04:16:13.705Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 4,
+              "sequence": 1,
+              "elapsedMs": 8252,
+              "type": "session.resume",
+              "tokenPresent": true,
+              "passwordProvided": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 4,
+              "sequence": 2,
+              "elapsedMs": 8253,
+              "type": "protocol.error",
+              "code": "resume_invalid"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "openedAt": "2026-11-05T04:16:15.107Z",
+          "openedAtElapsedMs": 9656,
+          "closedAt": null,
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 1,
+              "elapsedMs": 9656,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 2,
+              "elapsedMs": 9656,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 3,
+              "elapsedMs": 9740,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 4,
+              "elapsedMs": 9774,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 5,
+              "elapsedMs": 9778,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 6,
+              "elapsedMs": 9778,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "213293b9-0a38-472e-87a6-3dda4d55945f",
+                "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                "20f8e4d0-12c1-4736-845d-254f140ca823"
+              ],
+              "memberCount": 3,
+              "lastSeq": 3
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 7,
+              "elapsedMs": 9778,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 8,
+              "elapsedMs": 9778,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 9,
+              "elapsedMs": 9778,
+              "type": "space.snapshot",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 10,
+              "elapsedMs": 9778,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 11,
+              "elapsedMs": 10186,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 12,
+              "elapsedMs": 10188,
+              "type": "space.snapshot",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    },
+                    {
+                      "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+                      "x": 11,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 13,
+              "elapsedMs": 10236,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 14,
+              "elapsedMs": 10238,
+              "type": "space.snapshot",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "currentRoomId": "studio",
+              "seq": 5,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 15,
+              "elapsedMs": 12349,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 16,
+              "elapsedMs": 12350,
+              "type": "space.snapshot",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "currentRoomId": "studio",
+              "seq": 6,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 17,
+              "elapsedMs": 12556,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 18,
+              "elapsedMs": 12558,
+              "type": "space.snapshot",
+              "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "currentRoomId": "studio",
+              "seq": 7,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T04:16:08.212Z",
+          "openedAtElapsedMs": 2761,
+          "closedAt": "2026-11-05T04:16:11.974Z",
+          "media": {
+            "sent": {
+              "audio": 104,
+              "screen": 27,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "elapsedMs": 2762,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "elapsedMs": 2763,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "elapsedMs": 2858,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "elapsedMs": 2892,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "elapsedMs": 2893,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "elapsedMs": 2893,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "ea821329-3f98-4c1d-b535-8bdf20315a25"
+              ],
+              "memberCount": 1,
+              "lastSeq": 1
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "elapsedMs": 2893,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "elapsedMs": 2893,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "elapsedMs": 2893,
+              "type": "space.snapshot",
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "currentRoomId": "studio",
+              "seq": 1,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "elapsedMs": 2894,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "elapsedMs": 3400,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "elapsedMs": 3405,
+              "type": "space.snapshot",
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "currentRoomId": "studio",
+              "seq": 2,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "elapsedMs": 3927,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "elapsedMs": 3930,
+              "type": "space.snapshot",
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "elapsedMs": 4052,
+              "type": "host.claim"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "elapsedMs": 4053,
+              "type": "host.claimed",
+              "roomId": "studio",
+              "hostClaimed": true,
+              "publisherGrantIds": []
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "elapsedMs": 4053,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "elapsedMs": 4121,
+              "type": "host.grantPublisher"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "elapsedMs": 4122,
+              "type": "host.publisherGrants",
+              "publisherGrantIds": [
+                "893bcf69-3986-4956-95d4-32c95da56f9b"
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "elapsedMs": 4123,
+              "type": "host.actionResult",
+              "action": "grantPublisher",
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "elapsedMs": 4179,
+              "type": "host.revokePublisher"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "elapsedMs": 4179,
+              "type": "host.publisherGrants",
+              "publisherGrantIds": []
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 23,
+              "elapsedMs": 4181,
+              "type": "host.actionResult",
+              "action": "revokePublisher",
+              "allowed": false
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 24,
+              "elapsedMs": 4433,
+              "type": "audio.start",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 25,
+              "elapsedMs": 4433,
+              "type": "audio.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 26,
+              "elapsedMs": 4537,
+              "type": "screen.start",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 27,
+              "elapsedMs": 4537,
+              "type": "screen.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 28,
+              "elapsedMs": 4721,
+              "type": "screen.keyframeRequest"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 29,
+              "elapsedMs": 5024,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+              "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+              "kind": "feedback",
+              "feedbackCounts": {
+                "like": 1,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 30,
+              "elapsedMs": 5084,
+              "type": "host.setMeetingRoomPassword"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 31,
+              "elapsedMs": 5117,
+              "type": "room.catalogue"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 32,
+              "elapsedMs": 5118,
+              "type": "space.snapshot",
+              "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 33,
+              "elapsedMs": 5119,
+              "type": "host.actionResult",
+              "roomId": "studio",
+              "action": "setMeetingRoomPassword",
+              "isLocked": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "openedAt": "2026-11-05T04:16:12.201Z",
+          "openedAtElapsedMs": 6750,
+          "closedAt": "2026-11-05T04:16:12.201Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 3,
+          "openedAt": "2026-11-05T04:16:12.763Z",
+          "openedAtElapsedMs": 7312,
+          "closedAt": "2026-11-05T04:16:12.763Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 4,
+          "openedAt": "2026-11-05T04:16:13.933Z",
+          "openedAtElapsedMs": 8482,
+          "closedAt": "2026-11-05T04:16:13.934Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 4,
+              "sequence": 1,
+              "elapsedMs": 8482,
+              "type": "session.resume",
+              "tokenPresent": true,
+              "passwordProvided": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 4,
+              "sequence": 2,
+              "elapsedMs": 8483,
+              "type": "protocol.error",
+              "code": "resume_invalid"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "openedAt": "2026-11-05T04:16:14.138Z",
+          "openedAtElapsedMs": 8687,
+          "closedAt": null,
+          "media": {
+            "sent": {
+              "audio": 100,
+              "screen": 27,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 1,
+              "elapsedMs": 8687,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 2,
+              "elapsedMs": 8687,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 3,
+              "elapsedMs": 8773,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 4,
+              "elapsedMs": 8805,
+              "type": "protocol.error",
+              "code": "room_password_incorrect"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 5,
+              "elapsedMs": 9047,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 6,
+              "elapsedMs": 9079,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 7,
+              "elapsedMs": 9080,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 8,
+              "elapsedMs": 9080,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "213293b9-0a38-472e-87a6-3dda4d55945f"
+              ],
+              "memberCount": 1,
+              "lastSeq": 1
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 9,
+              "elapsedMs": 9082,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 10,
+              "elapsedMs": 9082,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 11,
+              "elapsedMs": 9082,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 1,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 12,
+              "elapsedMs": 9084,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 13,
+              "elapsedMs": 9425,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 14,
+              "elapsedMs": 9426,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 2,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 15,
+              "elapsedMs": 9774,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 16,
+              "elapsedMs": 9776,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 17,
+              "elapsedMs": 9900,
+              "type": "host.claim"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 18,
+              "elapsedMs": 9900,
+              "type": "host.claimed",
+              "roomId": "studio",
+              "hostClaimed": true,
+              "publisherGrantIds": []
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 19,
+              "elapsedMs": 9900,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 20,
+              "elapsedMs": 10186,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 21,
+              "elapsedMs": 10187,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    },
+                    {
+                      "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+                      "x": 11,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 22,
+              "elapsedMs": 10242,
+              "type": "host.publisherGrants",
+              "publisherGrantIds": []
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 23,
+              "elapsedMs": 10242,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 24,
+              "elapsedMs": 10242,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 5,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 25,
+              "elapsedMs": 10391,
+              "type": "audio.start",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 26,
+              "elapsedMs": 10391,
+              "type": "audio.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 27,
+              "elapsedMs": 10437,
+              "type": "screen.start",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 28,
+              "elapsedMs": 10438,
+              "type": "screen.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 29,
+              "elapsedMs": 10540,
+              "type": "screen.keyframeRequest"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 30,
+              "elapsedMs": 12349,
+              "type": "host.publisherGrants",
+              "publisherGrantIds": []
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 31,
+              "elapsedMs": 12350,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 32,
+              "elapsedMs": 12350,
+              "type": "space.snapshot",
+              "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "currentRoomId": "studio",
+              "seq": 6,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T04:16:08.700Z",
+          "openedAtElapsedMs": 3249,
+          "closedAt": "2026-11-05T04:16:11.974Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 92,
+              "screen": 24,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "elapsedMs": 3249,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "elapsedMs": 3249,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "elapsedMs": 3367,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "elapsedMs": 3400,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "elapsedMs": 3400,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "elapsedMs": 3400,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                "71635c0a-1e67-41dd-a232-e5beddb3d31a"
+              ],
+              "memberCount": 2,
+              "lastSeq": 2
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "elapsedMs": 3400,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "elapsedMs": 3400,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "elapsedMs": 3403,
+              "type": "space.snapshot",
+              "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "currentRoomId": "studio",
+              "seq": 2,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "elapsedMs": 3403,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "elapsedMs": 3927,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "elapsedMs": 3931,
+              "type": "space.snapshot",
+              "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "elapsedMs": 4691,
+              "type": "audio.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "elapsedMs": 4691,
+              "type": "audio.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "elapsedMs": 4691,
+              "type": "audio.stream",
+              "generation": 1,
+              "clockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+              "config": {
+                "codec": "opus",
+                "sampleRate": 48000,
+                "channels": 1
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "elapsedMs": 4719,
+              "type": "screen.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "elapsedMs": 4721,
+              "type": "screen.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "elapsedMs": 4724,
+              "type": "screen.stream",
+              "generation": 1,
+              "clockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+              "config": {
+                "codec": "vp8",
+                "width": 320,
+                "height": 180,
+                "frameRate": 15
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "elapsedMs": 5024,
+              "type": "interaction.submit",
+              "kind": "feedback",
+              "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+              "feedback": "like"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "elapsedMs": 5024,
+              "type": "interaction.ack",
+              "roomId": "studio",
+              "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+              "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+              "duplicate": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "elapsedMs": 5024,
+              "type": "interaction.event",
+              "roomId": "studio",
+              "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+              "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+              "kind": "feedback",
+              "feedbackCounts": {
+                "like": 1,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "elapsedMs": 5117,
+              "type": "room.catalogue"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 23,
+              "elapsedMs": 5118,
+              "type": "space.snapshot",
+              "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "openedAt": "2026-11-05T04:16:12.229Z",
+          "openedAtElapsedMs": 6778,
+          "closedAt": "2026-11-05T04:16:12.229Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 3,
+          "openedAt": "2026-11-05T04:16:12.787Z",
+          "openedAtElapsedMs": 7336,
+          "closedAt": "2026-11-05T04:16:12.787Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": []
+        },
+        {
+          "index": 4,
+          "openedAt": "2026-11-05T04:16:13.848Z",
+          "openedAtElapsedMs": 8397,
+          "closedAt": "2026-11-05T04:16:13.849Z",
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 4,
+              "sequence": 1,
+              "elapsedMs": 8397,
+              "type": "session.resume",
+              "tokenPresent": true,
+              "passwordProvided": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 4,
+              "sequence": 2,
+              "elapsedMs": 8397,
+              "type": "protocol.error",
+              "code": "resume_invalid"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "openedAt": "2026-11-05T04:16:14.760Z",
+          "openedAtElapsedMs": 9309,
+          "closedAt": null,
+          "media": {
+            "sent": {
+              "audio": 0,
+              "screen": 0,
+              "other": 0
+            },
+            "received": {
+              "audio": 84,
+              "screen": 22,
+              "other": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 1,
+              "elapsedMs": 9310,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 2,
+              "elapsedMs": 9310,
+              "type": "protocol.error",
+              "code": "room_password_required"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 3,
+              "elapsedMs": 9392,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 4,
+              "elapsedMs": 9424,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true,
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 5,
+              "elapsedMs": 9425,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 6,
+              "elapsedMs": 9425,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "locked": true,
+              "hostControlsEnabled": true,
+              "publishAllowed": false,
+              "memberIds": [
+                "213293b9-0a38-472e-87a6-3dda4d55945f",
+                "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054"
+              ],
+              "memberCount": 2,
+              "lastSeq": 2
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 7,
+              "elapsedMs": 9425,
+              "type": "interaction.snapshot",
+              "roomId": "studio",
+              "historyCount": 0,
+              "historyIds": [],
+              "publicQueueCount": 0,
+              "feedbackCounts": {
+                "like": 0,
+                "want-listen": 0,
+                "useful": 0
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 8,
+              "elapsedMs": 9425,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 9,
+              "elapsedMs": 9425,
+              "type": "space.snapshot",
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "currentRoomId": "studio",
+              "seq": 2,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 10,
+              "elapsedMs": 9425,
+              "type": "host.publishPermission",
+              "enabled": true,
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 11,
+              "elapsedMs": 9774,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 12,
+              "elapsedMs": 9777,
+              "type": "space.snapshot",
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "currentRoomId": "studio",
+              "seq": 3,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 13,
+              "elapsedMs": 10186,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 14,
+              "elapsedMs": 10193,
+              "type": "space.snapshot",
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "currentRoomId": "studio",
+              "seq": 4,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    },
+                    {
+                      "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+                      "x": 11,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 15,
+              "elapsedMs": 10236,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 16,
+              "elapsedMs": 10238,
+              "type": "space.snapshot",
+              "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "currentRoomId": "studio",
+              "seq": 5,
+              "rooms": [
+                {
+                  "id": "lobby",
+                  "playerIds": []
+                },
+                {
+                  "id": "studio",
+                  "playerIds": [
+                    {
+                      "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+                      "x": 2,
+                      "y": 2
+                    },
+                    {
+                      "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+                      "x": 5,
+                      "y": 2
+                    },
+                    {
+                      "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+                      "x": 8,
+                      "y": 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 17,
+              "elapsedMs": 10505,
+              "type": "audio.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 18,
+              "elapsedMs": 10505,
+              "type": "audio.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 19,
+              "elapsedMs": 10505,
+              "type": "audio.stream",
+              "generation": 1,
+              "clockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+              "config": {
+                "codec": "opus",
+                "sampleRate": 48000,
+                "channels": 1
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 5,
+              "sequence": 20,
+              "elapsedMs": 10540,
+              "type": "screen.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 21,
+              "elapsedMs": 10541,
+              "type": "screen.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 5,
+              "sequence": 22,
+              "elapsedMs": 10541,
+              "type": "screen.stream",
+              "generation": 1,
+              "clockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+              "config": {
+                "codec": "vp8",
+                "width": 320,
+                "height": 180,
+                "frameRate": 15
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "snapshots": [
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 1,
+      "elapsedMs": 2762,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 2,
+      "elapsedMs": 2763,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 3,
+      "elapsedMs": 2858,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 4,
+      "elapsedMs": 2892,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 5,
+      "elapsedMs": 2893,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 6,
+      "elapsedMs": 2893,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "ea821329-3f98-4c1d-b535-8bdf20315a25"
+      ],
+      "memberCount": 1,
+      "lastSeq": 1
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 7,
+      "elapsedMs": 2893,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 8,
+      "elapsedMs": 2893,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 9,
+      "elapsedMs": 2893,
+      "type": "space.snapshot",
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "currentRoomId": "studio",
+      "seq": 1,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 10,
+      "elapsedMs": 2894,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 1,
+      "elapsedMs": 3249,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 2,
+      "elapsedMs": 3249,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 3,
+      "elapsedMs": 3367,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 4,
+      "elapsedMs": 3400,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 11,
+      "elapsedMs": 3400,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 5,
+      "elapsedMs": 3400,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 6,
+      "elapsedMs": 3400,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "ea821329-3f98-4c1d-b535-8bdf20315a25",
+        "71635c0a-1e67-41dd-a232-e5beddb3d31a"
+      ],
+      "memberCount": 2,
+      "lastSeq": 2
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 7,
+      "elapsedMs": 3400,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 8,
+      "elapsedMs": 3400,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 9,
+      "elapsedMs": 3403,
+      "type": "space.snapshot",
+      "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "currentRoomId": "studio",
+      "seq": 2,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 10,
+      "elapsedMs": 3403,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 12,
+      "elapsedMs": 3405,
+      "type": "space.snapshot",
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "currentRoomId": "studio",
+      "seq": 2,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 1,
+      "elapsedMs": 3780,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 2,
+      "elapsedMs": 3781,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "revoked",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 3,
+      "elapsedMs": 3895,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 11,
+      "elapsedMs": 3927,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 13,
+      "elapsedMs": 3927,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 14,
+      "elapsedMs": 3930,
+      "type": "space.snapshot",
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 12,
+      "elapsedMs": 3931,
+      "type": "space.snapshot",
+      "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 4,
+      "elapsedMs": 3931,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 5,
+      "elapsedMs": 3931,
+      "type": "control.event"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 6,
+      "elapsedMs": 3931,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "ea821329-3f98-4c1d-b535-8bdf20315a25",
+        "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+        "893bcf69-3986-4956-95d4-32c95da56f9b"
+      ],
+      "memberCount": 3,
+      "lastSeq": 3
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 7,
+      "elapsedMs": 3931,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 8,
+      "elapsedMs": 3931,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 9,
+      "elapsedMs": 3931,
+      "type": "space.snapshot",
+      "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 10,
+      "elapsedMs": 3931,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 15,
+      "elapsedMs": 4052,
+      "type": "host.claim"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 16,
+      "elapsedMs": 4053,
+      "type": "host.claimed",
+      "roomId": "studio",
+      "hostClaimed": true,
+      "publisherGrantIds": []
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 17,
+      "elapsedMs": 4053,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": true
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 18,
+      "elapsedMs": 4121,
+      "type": "host.grantPublisher"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 19,
+      "elapsedMs": 4122,
+      "type": "host.publisherGrants",
+      "publisherGrantIds": [
+        "893bcf69-3986-4956-95d4-32c95da56f9b"
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 11,
+      "elapsedMs": 4122,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 20,
+      "elapsedMs": 4123,
+      "type": "host.actionResult",
+      "action": "grantPublisher",
+      "allowed": true
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 21,
+      "elapsedMs": 4179,
+      "type": "host.revokePublisher"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 22,
+      "elapsedMs": 4179,
+      "type": "host.publisherGrants",
+      "publisherGrantIds": []
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 12,
+      "elapsedMs": 4180,
+      "type": "host.publishRevoked"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 13,
+      "elapsedMs": 4180,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 23,
+      "elapsedMs": 4181,
+      "type": "host.actionResult",
+      "action": "revokePublisher",
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 24,
+      "elapsedMs": 4433,
+      "type": "audio.start",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 25,
+      "elapsedMs": 4433,
+      "type": "audio.started",
+      "generation": 1,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 26,
+      "elapsedMs": 4537,
+      "type": "screen.start",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 27,
+      "elapsedMs": 4537,
+      "type": "screen.started",
+      "generation": 1,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 13,
+      "elapsedMs": 4691,
+      "type": "audio.subscribe",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 14,
+      "elapsedMs": 4691,
+      "type": "audio.subscribed",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 15,
+      "elapsedMs": 4691,
+      "type": "audio.stream",
+      "generation": 1,
+      "clockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+      "config": {
+        "codec": "opus",
+        "sampleRate": 48000,
+        "channels": 1
+      }
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 16,
+      "elapsedMs": 4719,
+      "type": "screen.subscribe",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 28,
+      "elapsedMs": 4721,
+      "type": "screen.keyframeRequest"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 17,
+      "elapsedMs": 4721,
+      "type": "screen.subscribed",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 18,
+      "elapsedMs": 4724,
+      "type": "screen.stream",
+      "generation": 1,
+      "clockId": "fd95b70d-3e5e-4cc1-a7e3-c1b105de526a",
+      "config": {
+        "codec": "vp8",
+        "width": 320,
+        "height": 180,
+        "frameRate": 15
+      }
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 19,
+      "elapsedMs": 5024,
+      "type": "interaction.submit",
+      "kind": "feedback",
+      "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+      "feedback": "like"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 20,
+      "elapsedMs": 5024,
+      "type": "interaction.ack",
+      "roomId": "studio",
+      "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+      "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+      "duplicate": false
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 21,
+      "elapsedMs": 5024,
+      "type": "interaction.event",
+      "roomId": "studio",
+      "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+      "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+      "kind": "feedback",
+      "feedbackCounts": {
+        "like": 1,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 14,
+      "elapsedMs": 5024,
+      "type": "interaction.event",
+      "roomId": "studio",
+      "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+      "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+      "kind": "feedback",
+      "feedbackCounts": {
+        "like": 1,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 29,
+      "elapsedMs": 5024,
+      "type": "interaction.event",
+      "roomId": "studio",
+      "eventId": "ec7de480-6fbf-4620-9a6a-5fef679aa972",
+      "interactionId": "8012b824-8ab2-4ee6-bcd4-5085be707ed6",
+      "kind": "feedback",
+      "feedbackCounts": {
+        "like": 1,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 1,
+      "sequence": 30,
+      "elapsedMs": 5084,
+      "type": "host.setMeetingRoomPassword"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 31,
+      "elapsedMs": 5117,
+      "type": "room.catalogue"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 22,
+      "elapsedMs": 5117,
+      "type": "room.catalogue"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 15,
+      "elapsedMs": 5117,
+      "type": "room.catalogue"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 23,
+      "elapsedMs": 5118,
+      "type": "space.snapshot",
+      "participantId": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 16,
+      "elapsedMs": 5118,
+      "type": "space.snapshot",
+      "participantId": "893bcf69-3986-4956-95d4-32c95da56f9b",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 32,
+      "elapsedMs": 5118,
+      "type": "space.snapshot",
+      "participantId": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "ea821329-3f98-4c1d-b535-8bdf20315a25",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "71635c0a-1e67-41dd-a232-e5beddb3d31a",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "893bcf69-3986-4956-95d4-32c95da56f9b",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 1,
+      "sequence": 33,
+      "elapsedMs": 5119,
+      "type": "host.actionResult",
+      "roomId": "studio",
+      "action": "setMeetingRoomPassword",
+      "isLocked": true
+    },
+    {
+      "client": "revoked",
+      "direction": "sent",
+      "connectionIndex": 4,
+      "sequence": 1,
+      "elapsedMs": 8252,
+      "type": "session.resume",
+      "tokenPresent": true,
+      "passwordProvided": false
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 4,
+      "sequence": 2,
+      "elapsedMs": 8253,
+      "type": "protocol.error",
+      "code": "resume_invalid"
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 4,
+      "sequence": 1,
+      "elapsedMs": 8397,
+      "type": "session.resume",
+      "tokenPresent": true,
+      "passwordProvided": false
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 4,
+      "sequence": 2,
+      "elapsedMs": 8397,
+      "type": "protocol.error",
+      "code": "resume_invalid"
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 4,
+      "sequence": 1,
+      "elapsedMs": 8482,
+      "type": "session.resume",
+      "tokenPresent": true,
+      "passwordProvided": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 4,
+      "sequence": 2,
+      "elapsedMs": 8483,
+      "type": "protocol.error",
+      "code": "resume_invalid"
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 1,
+      "elapsedMs": 8687,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 2,
+      "elapsedMs": 8687,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 3,
+      "elapsedMs": 8773,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 4,
+      "elapsedMs": 8805,
+      "type": "protocol.error",
+      "code": "room_password_incorrect"
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 5,
+      "elapsedMs": 9047,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 6,
+      "elapsedMs": 9079,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 7,
+      "elapsedMs": 9080,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 8,
+      "elapsedMs": 9080,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "213293b9-0a38-472e-87a6-3dda4d55945f"
+      ],
+      "memberCount": 1,
+      "lastSeq": 1
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 9,
+      "elapsedMs": 9082,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 10,
+      "elapsedMs": 9082,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 11,
+      "elapsedMs": 9082,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 1,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 12,
+      "elapsedMs": 9084,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 1,
+      "elapsedMs": 9310,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 2,
+      "elapsedMs": 9310,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 3,
+      "elapsedMs": 9392,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 4,
+      "elapsedMs": 9424,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 13,
+      "elapsedMs": 9425,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 5,
+      "elapsedMs": 9425,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 6,
+      "elapsedMs": 9425,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "213293b9-0a38-472e-87a6-3dda4d55945f",
+        "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054"
+      ],
+      "memberCount": 2,
+      "lastSeq": 2
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 7,
+      "elapsedMs": 9425,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 8,
+      "elapsedMs": 9425,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 9,
+      "elapsedMs": 9425,
+      "type": "space.snapshot",
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "currentRoomId": "studio",
+      "seq": 2,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 10,
+      "elapsedMs": 9425,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 14,
+      "elapsedMs": 9426,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 2,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 1,
+      "elapsedMs": 9656,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": false,
+      "resumable": true
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 2,
+      "elapsedMs": 9656,
+      "type": "protocol.error",
+      "code": "room_password_required"
+    },
+    {
+      "client": "revoked",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 3,
+      "elapsedMs": 9740,
+      "type": "join",
+      "roomId": "studio",
+      "passwordProvided": true,
+      "resumable": true
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 4,
+      "elapsedMs": 9774,
+      "type": "session.issued",
+      "roomId": "studio",
+      "tokenPresent": true,
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "role": "participant",
+      "mode": "watch"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 11,
+      "elapsedMs": 9774,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 15,
+      "elapsedMs": 9774,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 16,
+      "elapsedMs": 9776,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 12,
+      "elapsedMs": 9777,
+      "type": "space.snapshot",
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 5,
+      "elapsedMs": 9778,
+      "type": "control.event"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 6,
+      "elapsedMs": 9778,
+      "type": "room.snapshot",
+      "roomId": "studio",
+      "locked": true,
+      "hostControlsEnabled": true,
+      "publishAllowed": false,
+      "memberIds": [
+        "213293b9-0a38-472e-87a6-3dda4d55945f",
+        "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+        "20f8e4d0-12c1-4736-845d-254f140ca823"
+      ],
+      "memberCount": 3,
+      "lastSeq": 3
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 7,
+      "elapsedMs": 9778,
+      "type": "interaction.snapshot",
+      "roomId": "studio",
+      "historyCount": 0,
+      "historyIds": [],
+      "publicQueueCount": 0,
+      "feedbackCounts": {
+        "like": 0,
+        "want-listen": 0,
+        "useful": 0
+      }
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 8,
+      "elapsedMs": 9778,
+      "type": "participation.self",
+      "roomId": "studio",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "role": "participant",
+      "mode": "watch",
+      "audioSubscribed": false,
+      "screenSubscribed": false
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 9,
+      "elapsedMs": 9778,
+      "type": "space.snapshot",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "currentRoomId": "studio",
+      "seq": 3,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 10,
+      "elapsedMs": 9778,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": false
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 17,
+      "elapsedMs": 9900,
+      "type": "host.claim"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 18,
+      "elapsedMs": 9900,
+      "type": "host.claimed",
+      "roomId": "studio",
+      "hostClaimed": true,
+      "publisherGrantIds": []
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 19,
+      "elapsedMs": 9900,
+      "type": "host.publishPermission",
+      "enabled": true,
+      "allowed": true
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 11,
+      "elapsedMs": 10186,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 20,
+      "elapsedMs": 10186,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 13,
+      "elapsedMs": 10186,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 21,
+      "elapsedMs": 10187,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            },
+            {
+              "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+              "x": 11,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 12,
+      "elapsedMs": 10188,
+      "type": "space.snapshot",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            },
+            {
+              "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+              "x": 11,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 14,
+      "elapsedMs": 10193,
+      "type": "space.snapshot",
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "currentRoomId": "studio",
+      "seq": 4,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            },
+            {
+              "id": "945cbcfa-a78c-4218-99fd-b48371ece9bc",
+              "x": 11,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 15,
+      "elapsedMs": 10236,
+      "type": "control.event"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 13,
+      "elapsedMs": 10236,
+      "type": "control.event"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 16,
+      "elapsedMs": 10238,
+      "type": "space.snapshot",
+      "participantId": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+      "currentRoomId": "studio",
+      "seq": 5,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 14,
+      "elapsedMs": 10238,
+      "type": "space.snapshot",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "currentRoomId": "studio",
+      "seq": 5,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 22,
+      "elapsedMs": 10242,
+      "type": "host.publisherGrants",
+      "publisherGrantIds": []
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 23,
+      "elapsedMs": 10242,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 24,
+      "elapsedMs": 10242,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 5,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "f51ba8c1-ab9f-47d0-ae27-87aa4fe81054",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 25,
+      "elapsedMs": 10391,
+      "type": "audio.start",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 26,
+      "elapsedMs": 10391,
+      "type": "audio.started",
+      "generation": 1,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 27,
+      "elapsedMs": 10437,
+      "type": "screen.start",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 28,
+      "elapsedMs": 10438,
+      "type": "screen.started",
+      "generation": 1,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 17,
+      "elapsedMs": 10505,
+      "type": "audio.subscribe",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 18,
+      "elapsedMs": 10505,
+      "type": "audio.subscribed",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 19,
+      "elapsedMs": 10505,
+      "type": "audio.stream",
+      "generation": 1,
+      "clockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+      "config": {
+        "codec": "opus",
+        "sampleRate": 48000,
+        "channels": 1
+      }
+    },
+    {
+      "client": "watch",
+      "direction": "sent",
+      "connectionIndex": 5,
+      "sequence": 20,
+      "elapsedMs": 10540,
+      "type": "screen.subscribe",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 29,
+      "elapsedMs": 10540,
+      "type": "screen.keyframeRequest"
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 21,
+      "elapsedMs": 10541,
+      "type": "screen.subscribed",
+      "generation": null,
+      "clockId": null
+    },
+    {
+      "client": "watch",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 22,
+      "elapsedMs": 10541,
+      "type": "screen.stream",
+      "generation": 1,
+      "clockId": "e5938425-55d1-417d-9011-fe26391dc92b",
+      "config": {
+        "codec": "vp8",
+        "width": 320,
+        "height": 180,
+        "frameRate": 15
+      }
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 30,
+      "elapsedMs": 12349,
+      "type": "host.publisherGrants",
+      "publisherGrantIds": []
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 15,
+      "elapsedMs": 12349,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 31,
+      "elapsedMs": 12350,
+      "type": "control.event"
+    },
+    {
+      "client": "host",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 32,
+      "elapsedMs": 12350,
+      "type": "space.snapshot",
+      "participantId": "213293b9-0a38-472e-87a6-3dda4d55945f",
+      "currentRoomId": "studio",
+      "seq": 6,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 16,
+      "elapsedMs": 12350,
+      "type": "space.snapshot",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "currentRoomId": "studio",
+      "seq": 6,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "213293b9-0a38-472e-87a6-3dda4d55945f",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 17,
+      "elapsedMs": 12556,
+      "type": "control.event"
+    },
+    {
+      "client": "revoked",
+      "direction": "received",
+      "connectionIndex": 5,
+      "sequence": 18,
+      "elapsedMs": 12558,
+      "type": "space.snapshot",
+      "participantId": "20f8e4d0-12c1-4736-845d-254f140ca823",
+      "currentRoomId": "studio",
+      "seq": 7,
+      "rooms": [
+        {
+          "id": "lobby",
+          "playerIds": []
+        },
+        {
+          "id": "studio",
+          "playerIds": [
+            {
+              "id": "20f8e4d0-12c1-4736-845d-254f140ca823",
+              "x": 8,
+              "y": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [
+      {
+        "client": "host",
+        "connectionIndex": 2,
+        "connectionOpenedAt": "2026-11-05T04:16:12.201Z",
+        "at": "2026-11-05T04:16:12.201Z",
+        "atElapsedMs": 6750,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      },
+      {
+        "client": "watch",
+        "connectionIndex": 2,
+        "connectionOpenedAt": "2026-11-05T04:16:12.229Z",
+        "at": "2026-11-05T04:16:12.229Z",
+        "atElapsedMs": 6778,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      },
+      {
+        "client": "revoked",
+        "connectionIndex": 2,
+        "connectionOpenedAt": "2026-11-05T04:16:12.265Z",
+        "at": "2026-11-05T04:16:12.265Z",
+        "atElapsedMs": 6814,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      },
+      {
+        "client": "revoked",
+        "connectionIndex": 3,
+        "connectionOpenedAt": "2026-11-05T04:16:12.749Z",
+        "at": "2026-11-05T04:16:12.749Z",
+        "atElapsedMs": 7298,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      },
+      {
+        "client": "host",
+        "connectionIndex": 3,
+        "connectionOpenedAt": "2026-11-05T04:16:12.763Z",
+        "at": "2026-11-05T04:16:12.763Z",
+        "atElapsedMs": 7312,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      },
+      {
+        "client": "watch",
+        "connectionIndex": 3,
+        "connectionOpenedAt": "2026-11-05T04:16:12.787Z",
+        "at": "2026-11-05T04:16:12.787Z",
+        "atElapsedMs": 7336,
+        "restartWindowStartElapsedMs": 6514,
+        "restartWindowEndElapsedMs": null,
+        "phase": "server_down",
+        "classification": "expected-owned-server-restart-window"
+      }
+    ],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  }
+}

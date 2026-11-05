@@ -1,7 +1,7 @@
 # POC 至 MVP 方案交接表
 
 - 權威計畫：[POC-PLAN v1.1](plan.md)；實際證據：[執行紀錄](execution-log.md)。
-- 建立日期：2026-11-03；狀態：T01本機基線已有證據，SOL-001／007驗證中；**目前仍無完整階段證據可列穩定可採用**。
+- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18操作重建可行；SOL-007目前記憶體方案需重構／耐久No-Go。**目前仍無完整階段證據可列穩定可採用**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
 ## 候選方案
@@ -14,7 +14,7 @@
 | SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 驗證中（T11桌面核心可行） | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
 | SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12控制＋T13桌面接收恢復核心可行，品質/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
-| SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（盤點完成） | T01／R002盤點；恢復待POC-06 | 本機結果與後續部署耐久性分清，未解限制不能默認忽略 |
+| SOL-007 | 資料分類、保存與程序重啟恢復 | 需重構（T18操作重建可行；目前動態保存No-Go） | T01盤點；POC-06-R001實停重啟／資料遺失 | 必要資料耐久來源與還原未解，完整POC-06及商品Go未通過 |
 | SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
 
 ## 每個方案的交接內容
@@ -46,17 +46,22 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 條件（依DEC-010更新）：T01桌面核心可行及使用方式已確認；不再因固定重跑次數阻擋POC，完整SOL-001仍需對應未測範圍；T02手機／能力矩陣、其後媒體與CloudRun相容仍未測。3項moderate依賴稽核節點及目前未觸及路徑判讀見R001 review.md；改glob／static設定或上MVP前重查修補相容性。
 - MVP前須重構／移除：固定測試房間、合成控制與可見debug活動、以連線代身份；補正式Room／Session／授權、恢復、背壓品質與部署資料方案。不把本機CA或測試profile移入產品部署。
 
-## SOL-007／T01資料風險交接（2026-11-03）
+## SOL-007／資料風險交接清冊（T01建立，T18於2026-11-05更新）
+
+沿用本表作唯一資料分類清冊；[POC-06-R001](evidence/POC-06-R001/README.md)提供實測，不另建第二份盤點。
 
 | 類別 | 現有來源／保存 | 復原與未解風險 |
 |---|---|---|
-| 固定場景／測試房間 | app.ts中lobby常數、原始碼及build | 可從同source重建；未實作動態場景／管理設定 |
-| 啟動設定 | HOST／PORT／TLS_CERT_FILE／TLS_KEY_FILE環境值；本機證書在ignored scratch | 設定可重設，憑證私鑰不可提交；未建立產品密鑰與輪替方案 |
-| 連線成員與顯示名稱 | process-memory、server新UUID | 離線移除該成員；重連無身份恢復，沒有權限或session保證 |
-| 序號／控制事件 | server process序號，page最近20筆 | server重啟序號重設；頁面歷史不耐久；無跨instance協調、歷史／統計持久保存 |
-| POC證據 | 經選擇的JSON/log/PNG持久檔案 | 只供開發追溯，不是產品即時資料或CloudRun保存設計 |
+| 固定場景／房間 | SPACE_ROOMS、原始碼與build的lobby／studio | T18同source實重啟重建；非動態場景耐久保存 |
+| 啟動設定／密鑰 | HOST／PORT／TLS、HOST_CONTROL_TOKEN、MEETING_ROOM_PASSWORD環境；ignored本機TLS檔 | T18同設定重新提供A與token；不是由舊process回復。私鑰/token不提交，產品密鑰管理仍待 |
+| 執行期門禁／主持控制 | process-memory gate revision、密碼hash、host claim、publisher grants | T18 live密碼B遺失，startup A可用；主持需重新claim，defaultdeny非持久撤權名單。需決定哪些設定必須耐久 |
+| 成員／位置／臨時Session | process-memory server UUID、session store/opaque proof、模式與位置 | T12/13同程序短期resume可行；T18舊三proof resume_invalid，手動重入是新UUID/出生位置，首位只有自己。非帳號/耐久身份/ACL |
+| 互動回饋／歷史／去重 | InteractionStore process-memory，bounded TTL/queue/dedup | T18一筆回饋DOM1→0已實測；聊天／彈幕／去重未做重啟測試，僅source可知無耐久來源。短期TTL不能自動等同人類接受任意重啟丟失 |
+| 媒體來源／訂閱／時基 | process-memory relay/controller/queue，page捕捉tracks與接收意圖 | T18來源停止、不auto復活；新身份手動開來源/訂閱可實播，新clock、generation可重設1。非保存媒體或持續Session |
+| 序號／統計／觀測 | process-memory server counters與有限page診斷 | T18首位新房snapshot lastSeq1；其他統計未逐項測，source顯示無耐久保存／跨instance協調，不當產品歷史統計 |
+| POC證據 | 經選擇JSON/log/PNG開發檔案 | 持久供開發追溯，不是產品資料儲存或CloudRun耐久方案 |
 
-盤點通過並不代表恢復成功。沒有引入DB／Redis／VM／額外服務；尚無符合單一CloudRun下耐久資料語意的實測方案，POC-06仍必要。固定可重建與執行期可遺失不能混為人類接受資料遺失。資源／成本／媒體延遲／重啟恢復未測，不預填推估值。
+**操作重建可行，必要動態資料尚無還原來源；目前process-memory候選耐久No-Go，完整T18／POC-06未通過。** 沒有加入DB／Redis／VM／disk snapshot或額外服務，沒有替人類接受資料遺失。固定可重建不等於執行期資料已保存。後續需決定必要保存項目與符合部署條件的耐久來源；No-Go限目前候選，不宣稱所有單一CloudRun架構不可能。平台依官方文件的界線見R001/platform-boundary，本輪只有本機實測。帳號／正式身份不存在，不能用bootstrap token替代。
 
 ## DEC-010後的輕量交接補充
 
@@ -202,3 +207,9 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-005：2專用interaction-only在source前切mode，初始/active self訂閱false/downlink0，整輪raw0；每房各feedback ACK、sameeventId且watch DOM計數0→1，foreign整輪trace同ID0。studio watch切only後已有歷史累計但delta0，回watch不auto，正常手動新metadata/實播恢復，lobby持續。沿T11原語意，不改正式身份/權限或需求。
 - SOL-008：`two-room-mixed-smoke.mjs`支持固定6隔離profile、正常UI、3×400ms採樣、bounded8192 media hashes/每client方向、self/queue、350ms quiet。R002含63/build/首次18,233ms短流程/2圖/root hash與mode/UI讀回/cleanup/37個serverps；執行前ID語意/expectedgate/trace completeness/ACK修正保留。沒有runtime失敗或重跑；T16歷史逾時不抹除。
 - 適用限制：M1Max64GiB共享主機；server RSS104224–122176KiB、CPU lifetimeavg0–37.6%含startup，不是全client負載或穩態容量。未驗50人/20min/手機/真人/Continue/真弱網/p95/品質/完整負載端資源/耐久/雲，完整POC05仍Inconclusive。固定小拓樸/生成來源/診斷須在MVP整理，不整包搬作商品。
+
+## T18／POC-06-R001：SOL-003／006／007／008（2026-11-05）
+
+- SOL-003／006：三舊proof拒絕、不自動匿名加入／重認領／發布／訂閱；重載正常門禁後新UUID、主持人工claim、fresh來源clock與實播可操作。這是程序死亡後新Session，不是T12同程序resume；defaultdeny與偽造角色／未授權發布拒絕不等於持久ACL。
+- SOL-007：上方既有清冊已原位更新；feedback1→0與B失效/A有效是實測缺口。必要資料來源未定，仍No-Go／POC06未過，不能直接移轉記憶體store為商品保存方案。
+- SOL-008：可復用scripts/process-restart-smoke.mjs的owned child真SIGTERM／同config新PID、三真Firefox與兩短WSS probes。build/typecheck/63核心與第三輪完整短browser通過；前兩輪harness失敗與窄修保留，root獨立讀回/兩圖實看與cleanup/指紋見R001。未驗崩潰/強殺、主機替換、手機/真人/弱網、耐久品質或CloudRun；未啟T19/MVP或部署。

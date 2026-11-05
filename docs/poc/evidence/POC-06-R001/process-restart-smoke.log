@@ -1,0 +1,9 @@
+[T18] initial-server-trusted-health-and-fixed-room-catalogue {"persistence":"process-memory","roomIds":["lobby","studio"],"studioLocked":true,"hostControlsEnabled":true}
+[T18] three-firefox-clients-joined-startup-locked-studio {"memberCount":3,"participantIdsRecorded":true,"startupPasswordValueRecorded":false}
+[T18] host-grant-revoke-live-password-feedback-and-media-observed {"grantObserved":true,"revokeObserved":true,"feedbackEventIdRecorded":true,"startupPasswordUnchangedInProcessEnvironment":true,"activeAudioAndScreenRenderSamples":3}
+[T18] owned-process-stopped-while-sources-active {"pid":58035,"stopMode":"SIGTERM","oldHostTracksEnded":true,"downWindowMsAtLeast":1000}
+[T18] restarted-server-trusted-health-and-fixed-room-catalogue {"persistence":"process-memory","roomIds":["lobby","studio"],"studioLocked":true,"hostControlsEnabled":true}
+[T18] manual-normal-join-used-new-identities-and-startup-password {"newIdsDiffer":true,"firstJoinMemberCount":1,"firstJoinHistoryCount":0,"firstJoinStudioLocked":true,"hostClaimedAgain":true,"oldGrantCount":0}
+[T18] manual-host-reclaim-new-sources-and-watch-render {"newClockIds":true,"audioSamples":70976,"videoFrames":19,"sampleCount":3,"revokedPermissionDenied":true}
+[T18] operational-rebuild-pass-with-durable-restoration-explicitly-unresolved {"operationalPass":true,"dynamicStateRestored":false,"productNoGo":true}
+[T18] passed operational=passed: owned-process restart, stale-proof rejection, and manual operational rejoin observed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t18/acceptance/run-2026-11-05T04-16-05.313Z-539c86b4/report.json
