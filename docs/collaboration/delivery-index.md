@@ -51,3 +51,5 @@
 | T14／POC-04-R003 | 慢端隔離／有界佇列／恢復 | `docs/poc/evidence/POC-04-R003/README.md`、root-readback | 63核心/build、最終三Firefox健康持續／慢端恢復；首輪harness失敗保留 | 應用層hold非TCP；手機/真背景/品質/完整階段待補；資源釋出、不push/T15 |
 
 | T15／POC-04-R004 | 兩房整合恢復／主持撤權 | `docs/poc/evidence/POC-04-R004/README.md`、root-readback | 63核心/build、最終四Firefox短流程／健康12採樣／撤權無auto；首輪timer失敗保留 | 65min/真弱網/手機/品質與完整階段待補，資源釋出、不push/T16 |
+
+| T16／POC-05-R001 | 單房1→3接收實際影音fan-out | `docs/poc/evidence/POC-05-R001/README.md`、root-readback | build／短四Firefox通過，退訂隔離／來源停止；全套62/63＋孤立9/9、首輪browser失敗保留 | 10/25/50/長測/手機/品質待；資源釋出，不push/T17 |

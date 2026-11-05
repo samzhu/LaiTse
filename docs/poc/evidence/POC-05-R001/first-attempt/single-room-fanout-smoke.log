@@ -1,0 +1,10 @@
+[T16] publisher-joins-locked-studio-and-claims-host {"room":"studio","lockedManagedRoom":true,"hostClaimedThroughNormalUI":true,"publisherRole":"host and publisher"}
+[T16] single-synthetic-publisher-starts-opus-and-vp8-once {"audioRequests":1,"screenRequests":1,"codecs":{"audio":"opus","video":"vp8"}}
+[T16] stage-1-one-real-firefox-receiver
+[T16] failed: locator.click: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('audio-continue-listening')[22m
+[2m    - locator resolved to <button class="primary-button" data-testid="audio-continue-listening">繼續收聽</button>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enab
+[T16] failed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t16/acceptance/report.json

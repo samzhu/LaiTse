@@ -1,0 +1,3 @@
+Node: v26.13.0
+Syntax: /Users/samzhu/workspace_herdr/LaiTse/.tools/node-v26.13.0-darwin-arm64/bin/node --check scripts/single-room-fanout-smoke.mjs (passed)
+scripts/single-room-fanout-smoke.mjs  d92c8fe9a1279e685fc9d426496ee38248caf304b50a5fa915332361143d1bf0

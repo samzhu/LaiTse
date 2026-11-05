@@ -321,3 +321,11 @@ The four isolated Firefox profiles represent a meeting-room host receiving a gra
 This demonstrates the integrated operations and how to repeat them locally. A controlled application socket close is a timeout simulation, not a measured Cloud Run request timeout or TCP weak network. The short scenario does not establish 65-minute endurance, real phone/background behavior, physical network recovery, human listening, p95, capacity, or full POC-04 acceptance. Use the latest run's evidence under `docs/poc/evidence/` for the actual duration, failures, observations, and remaining work.
 
 `INTEGRATED_HOLD_SECONDS` optionally extends real active-room time (0–4200 seconds, default 0). This run did not execute that extended branch; a 65-minute attempt also needs a suitable external process timeout and additional observation.
+
+### T16: small single-room media fan-out
+
+Start the managed local HTTPS/WSS app with `HOST_CONTROL_TOKEN` and `MEETING_ROOM_PASSWORD`, then run `node scripts/single-room-fanout-smoke.mjs` with matching `FANOUT_TEST_HOST_TOKEN` and `FANOUT_TEST_ROOM_PASSWORD` in the process environment. Use pinned Node 26.13.0, Firefox, `certutil`, and the existing trusted local CA. Optional settings are `FANOUT_BASE_URL` (default `https://localhost:4173`), `FANOUT_CA_CERT` (default `.scratch/t01/tls/local-ca.pem`), `FANOUT_OUTPUT_DIR` (default `.scratch/t16/acceptance`), and `HEADLESS=0`. The runner expects an already running app and cleans up its own Firefox profiles.
+
+The short scenario starts one synthetic Opus/VP8 publisher in the meeting room, first with one real Firefox receiver, then with three. It checks actual decoded AudioWorklet/canvas output and each receiver's traffic, normal unsubscribe without interrupting the other receivers, and publisher stop. Sources are generated oscillator/canvas tracks; the receivers really decode and render. There are no socket-only load clients. Reports distinguish application send counters, received bytes, and rendered media; local queue observations are not end-to-end latency.
+
+This is a small local feasibility check. It does not establish 10/25/50-person capacity, 20-minute stability, physical capture or human listening, phone behavior, p95, or Cloud Run performance. See the latest POC-05 run for the actual participant count, stage times, test results, hardware, and measurement limits.

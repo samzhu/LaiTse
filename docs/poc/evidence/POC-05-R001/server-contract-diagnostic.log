@@ -1,0 +1,17 @@
+✔ the application serves health and a built-in room catalogue (32.535166ms)
+✔ two clients receive the same authoritative members and sequenced reaction (9.614541ms)
+✔ the websocket rejects cross-origin clients before joining (1.358708ms)
+✔ malformed or oversized control frames close without being broadcast (2.58375ms)
+✔ clients cannot select arbitrary rooms (1.121375ms)
+✔ display names longer than the server limit are rejected (1.068375ms)
+✔ control events reject client-supplied fields outside the protocol (1.464708ms)
+✔ the room has a fixed member limit (7.895833ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.407375ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 222.383792

@@ -1,0 +1,7 @@
+[T16] publisher-joins-locked-studio-and-claims-host {"room":"studio","lockedManagedRoom":true,"hostClaimedThroughNormalUI":true,"publisherRole":"host and publisher"}
+[T16] single-synthetic-publisher-starts-opus-and-vp8-once {"audioRequests":1,"screenRequests":1,"codecs":{"audio":"opus","video":"vp8"}}
+[T16] stage-1-one-real-firefox-receiver {"receiverCount":1,"codecs":{"audio":"opus","video":"vp8"},"audioGeneration":1,"screenGeneration":1,"clockId":"05194820-137a-44d9-9ca4-478b61d40ee6","samples":3,"feedbackAck":true}
+[T16] stage-2-add-two-real-firefox-receivers {"receiverCount":3,"allActualFirefoxDecoders":true,"sameAudioGeneration":true,"sameScreenGeneration":true,"sameClockAndConfiguration":true,"codecs":{"audio":"opus","video":"vp8"},"samples":3,"feedbackAcks":3,"screenshots":["three-receivers-c.png","three-receivers-b.png","three-receivers-a.png"],"selfInspectionIncludesDownlinkAndTransport":true}
+[T16] receiver-a-normal-stop-isolated-b-and-c-continue {"receiverAUnsubscribedAndCleared":true,"receiverABinaryStableAfterDrain":true,"receiverBCContinued":true,"receiverBCSamples":3}
+[T16] normal-publisher-stop-ends-media-for-active-receivers {"ordinaryUIStop":true,"audioTracksEnded":true,"screenTracksEnded":true,"activeReceiversStreamEnded":2,"quietDrainMs":350,"screenCleared":true}
+[T16] passed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t16/acceptance/report.json

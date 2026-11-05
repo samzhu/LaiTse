@@ -188,3 +188,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-006：studio receiver模擬deadline1秒close雙端4003後新authority seq2/4/6→subscribe9/12、fresh config/keyframe及實播。host resume失claim，正常重新認領後撤權；被撤者再resume最新publishAllowed=false、700ms無auto start/binary/host claim且capture次數不增。process-memory proof與同頁意圖仍不是耐久/正式身份，沒有CloudRun timeout或實例替換證據。
 - SOL-008：新增`integrated-session-smoke.mjs`，可信隔離CA/四browser/有界白名單trace、兩圖與手動用法；[R004](evidence/POC-04-R004/README.md)保存build/63核心/最終10,069ms短流程、健康12採樣/兩ACK、首輪timer -1ms失敗與root截止確認窄修、source fingerprint/readback/cleanup。未新增重複單元測試，整合腳本本身驗跨步閉環。
 - 採用前限制：只有短桌面核心可行，65min/手機背景/真人/真弱網/p95/全資源/容量/耐久/CloudRun/完整POC04待補。optional hold入口只已syntax/閱讀，長分支未執行，不可預先當耐久工具已驗。測試來源/route與診斷須在MVP整理，不能整包複製稱商品。
+
+## T16／POC-05-R001：SOL-002／008（2026-11-05）
+
+- SOL-002：現有studio relay/Opus/VP8/每socket budget無改；單來源實際編碼1→3真Firefox decode/render可行、late join freshconfig/keyframe沿用，A退訂另兩者持續，publisher stop各streamEnded/清空；各來源只開一次。這是1發布＋3接收、非4個負載發布者，也非空WS容量。
+- SOL-008：新增`single-room-fanout-smoke.mjs`，固定小拓樸/正常UI/3×400ms採樣、媒體bytes分離control、self downlink/transport與本地queue、350ms quiet/兩端持續、live圖。R001保存最終14,877ms完整短流程、source指紋、root核對/A-C實看/cleanup/少量server ps。全套62/63限流訊息逾時＋孤立server9/9結果均保留，根因未定；first-attempt Continue逾時後補診斷，最終無該按鈕，手勢分支未覆蓋。未改app/tests/依賴，不增加鏡像單測。
+- 效能適用範圍：AppleM1Max64GiB共享主機；ps30採樣server RSS104064–117008KiB/CPU lifetimeavg0–47.6%，非各級穩態、全browser資源/飽和或容量曲線。raw bytes含應用media header、不同端累計起點不同；不能直接聲稱精準倍數/bitrate/E2E/p95。
+- 採用前：未驗10/25/50/20min、真mic/display/人耳/手機/跨瀏覽器/品質/完整client資源/耐久/雲；POC05完整Inconclusive。固定3端不是產品上限；MVP須整理合成注入／診斷／硬編碼與測試資產，先沿契約參考，不整包當商品。

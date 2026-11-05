@@ -1,0 +1,359 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "status": "lightweight-fanout-core-pass",
+  "fullT16AndPOC05": "Inconclusive",
+  "automatedChecks": "build/typecheck pass; core62/63 with reaction timeout; isolated server9/9 pass; final Firefox script pass",
+  "durationMs": 14877,
+  "stages": [
+    {
+      "name": "publisher-joins-locked-studio-and-claims-host",
+      "startedAt": "2026-11-05T03:05:59.845Z",
+      "finishedAt": "2026-11-05T03:06:00.635Z",
+      "startedElapsedMs": 3003,
+      "finishedElapsedMs": 3793,
+      "durationMs": 790,
+      "room": "studio",
+      "lockedManagedRoom": true,
+      "hostClaimedThroughNormalUI": true,
+      "publisherRole": "host and publisher"
+    },
+    {
+      "name": "single-synthetic-publisher-starts-opus-and-vp8-once",
+      "startedAt": "2026-11-05T03:06:00.635Z",
+      "finishedAt": "2026-11-05T03:06:00.934Z",
+      "startedElapsedMs": 3793,
+      "finishedElapsedMs": 4092,
+      "durationMs": 299,
+      "audioRequests": 1,
+      "screenRequests": 1,
+      "codecs": {
+        "audio": "opus",
+        "video": "vp8"
+      }
+    },
+    {
+      "name": "stage-1-one-real-firefox-receiver",
+      "startedAt": "2026-11-05T03:06:00.934Z",
+      "finishedAt": "2026-11-05T03:06:03.315Z",
+      "startedElapsedMs": 4092,
+      "finishedElapsedMs": 6473,
+      "durationMs": 2381,
+      "receiverCount": 1,
+      "codecs": {
+        "audio": "opus",
+        "video": "vp8"
+      },
+      "audioGeneration": 1,
+      "screenGeneration": 1,
+      "clockId": "05194820-137a-44d9-9ca4-478b61d40ee6",
+      "samples": 3,
+      "feedbackAck": true
+    },
+    {
+      "name": "stage-2-add-two-real-firefox-receivers",
+      "startedAt": "2026-11-05T03:06:03.315Z",
+      "finishedAt": "2026-11-05T03:06:08.462Z",
+      "startedElapsedMs": 6473,
+      "finishedElapsedMs": 11620,
+      "durationMs": 5147,
+      "receiverCount": 3,
+      "allActualFirefoxDecoders": true,
+      "sameAudioGeneration": true,
+      "sameScreenGeneration": true,
+      "sameClockAndConfiguration": true,
+      "codecs": {
+        "audio": "opus",
+        "video": "vp8"
+      },
+      "samples": 3,
+      "feedbackAcks": 3,
+      "screenshots": [
+        "three-receivers-c.png",
+        "three-receivers-b.png",
+        "three-receivers-a.png"
+      ],
+      "selfInspectionIncludesDownlinkAndTransport": true
+    },
+    {
+      "name": "receiver-a-normal-stop-isolated-b-and-c-continue",
+      "startedAt": "2026-11-05T03:06:08.462Z",
+      "finishedAt": "2026-11-05T03:06:10.331Z",
+      "startedElapsedMs": 11620,
+      "finishedElapsedMs": 13489,
+      "durationMs": 1869,
+      "receiverAUnsubscribedAndCleared": true,
+      "receiverABinaryStableAfterDrain": true,
+      "receiverBCContinued": true,
+      "receiverBCSamples": 3
+    },
+    {
+      "name": "normal-publisher-stop-ends-media-for-active-receivers",
+      "startedAt": "2026-11-05T03:06:10.331Z",
+      "finishedAt": "2026-11-05T03:06:11.189Z",
+      "startedElapsedMs": 13489,
+      "finishedElapsedMs": 14347,
+      "durationMs": 858,
+      "ordinaryUIStop": true,
+      "audioTracksEnded": true,
+      "screenTracksEnded": true,
+      "activeReceiversStreamEnded": 2,
+      "quietDrainMs": 350,
+      "screenCleared": true
+    }
+  ],
+  "configuration": {
+    "audio": {
+      "codec": "opus",
+      "sampleRate": 48000,
+      "channels": 1,
+      "generation": 1,
+      "clockId": "05194820-137a-44d9-9ca4-478b61d40ee6"
+    },
+    "screen": {
+      "codec": "vp8",
+      "width": 320,
+      "height": 180,
+      "frameRate": 15,
+      "generation": 1,
+      "clockId": "05194820-137a-44d9-9ca4-478b61d40ee6"
+    }
+  },
+  "stage2Receivers": [
+    {
+      "client": "receiver-a",
+      "firstLastSamples": [
+        264448,
+        303360
+      ],
+      "firstLastFrames": [
+        76,
+        87
+      ],
+      "mediaBytesInThreeIntervals": 14248,
+      "selfInspection": {
+        "at": "2026-11-05T03:06:06.859Z",
+        "elapsedMs": 10017,
+        "role": "participant",
+        "mode": "watch",
+        "media": {
+          "audioSubscribed": true,
+          "audioDownlinkBytes": 43928,
+          "audioDownlinkFrames": 258,
+          "screenSubscribed": true,
+          "screenDownlinkBytes": 13610,
+          "screenDownlinkFrames": 71
+        },
+        "transport": {
+          "maxPendingBytes": 1572864,
+          "maxPendingCallbackAgeMs": 1000,
+          "pendingCallbackCount": 0,
+          "pendingCallbackBytes": 0,
+          "pendingCallbackHighWaterCount": 7,
+          "pendingCallbackHighWaterBytes": 2824,
+          "oldestPendingCallbackAgeMs": null,
+          "highWaterBufferedBytes": 2850,
+          "closeReason": null,
+          "scope": "application WebSocket send callback; excludes OS/TCP queues and peer receipt"
+        }
+      }
+    },
+    {
+      "client": "receiver-b",
+      "firstLastSamples": [
+        133504,
+        173312
+      ],
+      "firstLastFrames": [
+        11,
+        22
+      ],
+      "mediaBytesInThreeIntervals": 14036,
+      "selfInspection": {
+        "at": "2026-11-05T03:06:06.851Z",
+        "elapsedMs": 10009,
+        "role": "participant",
+        "mode": "watch",
+        "media": {
+          "audioSubscribed": true,
+          "audioDownlinkBytes": 21741,
+          "audioDownlinkFrames": 121,
+          "screenSubscribed": true,
+          "screenDownlinkBytes": 1097,
+          "screenDownlinkFrames": 5
+        },
+        "transport": {
+          "maxPendingBytes": 1572864,
+          "maxPendingCallbackAgeMs": 1000,
+          "pendingCallbackCount": 0,
+          "pendingCallbackBytes": 0,
+          "pendingCallbackHighWaterCount": 7,
+          "pendingCallbackHighWaterBytes": 3008,
+          "oldestPendingCallbackAgeMs": null,
+          "highWaterBufferedBytes": 3034,
+          "closeReason": null,
+          "scope": "application WebSocket send callback; excludes OS/TCP queues and peer receipt"
+        }
+      }
+    },
+    {
+      "client": "receiver-c",
+      "firstLastSamples": [
+        136832,
+        175744
+      ],
+      "firstLastFrames": [
+        38,
+        50
+      ],
+      "mediaBytesInThreeIntervals": 14182,
+      "selfInspection": {
+        "at": "2026-11-05T03:06:06.905Z",
+        "elapsedMs": 10063,
+        "role": "participant",
+        "mode": "watch",
+        "media": {
+          "audioSubscribed": true,
+          "audioDownlinkBytes": 22615,
+          "audioDownlinkFrames": 126,
+          "screenSubscribed": true,
+          "screenDownlinkBytes": 6489,
+          "screenDownlinkFrames": 34
+        },
+        "transport": {
+          "maxPendingBytes": 1572864,
+          "maxPendingCallbackAgeMs": 1000,
+          "pendingCallbackCount": 0,
+          "pendingCallbackBytes": 0,
+          "pendingCallbackHighWaterCount": 7,
+          "pendingCallbackHighWaterBytes": 3193,
+          "oldestPendingCallbackAgeMs": null,
+          "highWaterBufferedBytes": 3219,
+          "closeReason": null,
+          "scope": "application WebSocket send callback; excludes OS/TCP queues and peer receipt"
+        }
+      }
+    }
+  ],
+  "receiverStop": {
+    "client": "receiver-a",
+    "drainMs": 350,
+    "controlMessagesDuringDrain": 0,
+    "beforeBinary": {
+      "audio": 341,
+      "audioBytes": 58980,
+      "screen": 95,
+      "screenBytes": 18013,
+      "all": 436,
+      "bytes": 76993
+    },
+    "afterBinary": {
+      "audio": 341,
+      "audioBytes": 58980,
+      "screen": 95,
+      "screenBytes": 18013,
+      "all": 436,
+      "bytes": 76993
+    },
+    "audioReceivedPackets": 0,
+    "audioRenderRms": 0,
+    "screenReceivedFrames": 95,
+    "screenSize": {
+      "width": 0,
+      "height": 0
+    }
+  },
+  "remainingReceiverSampleCount": 3,
+  "publisherSourceStop": {
+    "audioRequests": 1,
+    "screenRequests": 1,
+    "sources": [
+      {
+        "kind": "audio",
+        "readyState": "ended",
+        "stopCalls": 1
+      },
+      {
+        "kind": "screen",
+        "readyState": "ended",
+        "stopCalls": 1
+      }
+    ]
+  },
+  "publisherStopQuiet": [
+    {
+      "client": "receiver-b",
+      "drainMs": 350,
+      "controlMessagesDuringDrain": 0,
+      "beforeBinary": {
+        "audio": 298,
+        "audioBytes": 53858,
+        "screen": 55,
+        "screenBytes": 10333,
+        "all": 353,
+        "bytes": 64191
+      },
+      "afterBinary": {
+        "audio": 298,
+        "audioBytes": 53858,
+        "screen": 55,
+        "screenBytes": 10333,
+        "all": 353,
+        "bytes": 64191
+      },
+      "audioReceivedPackets": 295,
+      "audioRenderRms": 0,
+      "screenReceivedFrames": 55,
+      "screenSize": {
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "client": "receiver-c",
+      "drainMs": 350,
+      "controlMessagesDuringDrain": 0,
+      "beforeBinary": {
+        "audio": 300,
+        "audioBytes": 54198,
+        "screen": 83,
+        "screenBytes": 15528,
+        "all": 383,
+        "bytes": 69726
+      },
+      "afterBinary": {
+        "audio": 300,
+        "audioBytes": 54198,
+        "screen": 83,
+        "screenBytes": 15528,
+        "all": 383,
+        "bytes": 69726
+      },
+      "audioReceivedPackets": 298,
+      "audioRenderRms": 0,
+      "screenReceivedFrames": 83,
+      "screenSize": {
+        "width": 0,
+        "height": 0
+      }
+    }
+  ],
+  "applicationFingerprintsMatchBuild": true,
+  "serverResources": {
+    "scope": "single application server process only; ps RSS KiB and CPU lifetime average; not all Firefox/client/OS resources or instantaneous CPU",
+    "count": 30,
+    "rssKiBRange": [
+      104064,
+      117008
+    ],
+    "cpuLifetimeAveragePercentRange": [
+      0.0,
+      47.6
+    ]
+  },
+  "imagesActuallyViewed": [
+    "desktop/three-receivers-a.png",
+    "desktop/three-receivers-c.png"
+  ],
+  "uncovered": "Continue gesture not present in passing run; no10/25/50/20min/phone/human/quality/fullresources/CloudRun evidence"
+}
