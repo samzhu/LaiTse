@@ -1,0 +1,52 @@
+{
+  "kind": "owned-SIGKILL-and-advisory-lock-loss-diagnostic",
+  "processes": [
+    {
+      "label": "before-hard-kill",
+      "pid": 10026,
+      "owned": true,
+      "startedAt": "2026-11-05T07:18:34.714Z",
+      "exitCode": null,
+      "exitSignal": "SIGKILL",
+      "endedAt": "2026-11-05T07:18:35.122Z"
+    },
+    {
+      "label": "after-hard-kill",
+      "pid": 10027,
+      "owned": true,
+      "startedAt": "2026-11-05T07:18:35.147Z",
+      "exitCode": 0,
+      "exitSignal": null,
+      "endedAt": "2026-11-05T07:18:35.467Z"
+    }
+  ],
+  "checks": [
+    {
+      "name": "ACKs-already-visible-in-SQL-before-kill",
+      "archiveRows": 2,
+      "chatInteractionId": "d3dc0b79-036b-4f39-82e5-07a36ceddf5e"
+    },
+    {
+      "name": "hard-kill-durable-data-and-same-proof",
+      "sameParticipantId": true,
+      "participantId": "a9d72ba4-3ce4-4fa9-9553-052551936d96",
+      "latestPasswordRequired": true,
+      "feedbackCount": 1,
+      "chatInteractionId": "d3dc0b79-036b-4f39-82e5-07a36ceddf5e",
+      "hostPublishAllowed": false,
+      "duplicate": true,
+      "archiveRowsAfterReplay": 2
+    },
+    {
+      "name": "advisory-backend-loss-stops-idle-app",
+      "databaseBackendPid": 308,
+      "appStopped": true,
+      "healthUnavailable": true
+    }
+  ],
+  "rawTokensRetained": false,
+  "credentialsRetained": false,
+  "fullPOCPass": false,
+  "status": "passed",
+  "finishedAt": "2026-11-05T07:18:35.484Z"
+}

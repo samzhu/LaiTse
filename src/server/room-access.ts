@@ -13,6 +13,13 @@ export type RoomAccessDenial = {
   message: string;
 };
 
+export type PersistedRoomAccess = {
+  locked: boolean;
+  passwordSalt: string | null;
+  passwordVerifier: string | null;
+  admissionRevision: number;
+};
+
 export function isValidRoomPassword(value: string): boolean {
   return Array.from(value).length <= MAX_ROOM_PASSWORD_CODE_POINTS &&
     Buffer.byteLength(value, "utf8") <= MAX_ROOM_PASSWORD_BYTES;
@@ -27,9 +34,20 @@ function createVerifier(password: string): { salt: Buffer; verifier: Buffer } {
   return { salt, verifier };
 }
 
-export function createRoomAccessPolicy(meetingRoomPassword?: string) {
+export function createRoomAccessPolicy(meetingRoomPassword?: string, persisted?: PersistedRoomAccess) {
   let stored = meetingRoomPassword ? createVerifier(meetingRoomPassword) : null;
   let studioRevision = 0;
+  if (persisted) {
+    if (!persisted.locked) stored = null;
+    else {
+      if (!persisted.passwordSalt || !persisted.passwordVerifier) throw new Error("Persisted room password verifier is incomplete.");
+      stored = {
+        salt: Buffer.from(persisted.passwordSalt, "base64"),
+        verifier: Buffer.from(persisted.passwordVerifier, "base64"),
+      };
+    }
+    studioRevision = persisted.admissionRevision;
+  }
   const attemptsByConnection = new WeakMap<object, number[]>();
 
   return {
@@ -76,6 +94,15 @@ export function createRoomAccessPolicy(meetingRoomPassword?: string) {
     setMeetingRoomPassword(password: string | null): void {
       stored = password === null ? null : createVerifier(password);
       studioRevision += 1;
+    },
+
+    snapshot(): PersistedRoomAccess {
+      return {
+        locked: stored !== null,
+        passwordSalt: stored ? stored.salt.toString("base64") : null,
+        passwordVerifier: stored ? stored.verifier.toString("base64") : null,
+        admissionRevision: studioRevision,
+      };
     },
   };
 }

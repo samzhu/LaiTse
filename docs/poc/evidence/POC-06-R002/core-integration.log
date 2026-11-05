@@ -1,0 +1,96 @@
+✔ opaque Opus bytes reach only subscribed room members and stop after publisher stop (203.584042ms)
+✔ audio binary from non-publishers and malformed publisher frames are rejected (166.868292ms)
+✔ subscribers receive identical frames across one receiver unsubscribe and re-subscribe (87.134791ms)
+✔ a capability report is stored against its sending socket and readable by its server ID (124.522375ms)
+✔ invalid capability reports are rejected and not stored (4.910875ms)
+✔ resume store keeps a short idle TTL and never evicts an unexpired proof (1.677375ms)
+✔ resume preserves room identity and interaction dedup while rechecking live gate and host rights (283.862625ms)
+✔ display resumes with its immutable read-only role and expired danmaku stays out of the public queue (8293.214167ms)
+✔ removal invalidates a detached proof and a resumed host must claim again (15.18275ms)
+✔ resume rejects wrong and oversized credentials and keeps session leave within the control-frame bound (6.115041ms)
+✔ managed host claims are separate from room passwords; revoke stops both relays and blocks later frames (471.405667ms)
+✔ host token startup bounds are enforced without copying the configured value to errors (4.81ms)
+✔ host claims have a per-connection rolling attempt limit (4.266416ms)
+✔ interaction snapshots follow the room snapshot and feedback/chat/stickers stay room-scoped (385.321042ms)
+✔ dedup ACK precedes rate checks; event ID collisions and injected room fields are rejected (308.666541ms)
+✔ host pause, block, clear, remove, expiry, and room-switch replay retain separate outcomes (10.167292ms)
+✔ expired public items are pruned and a replay inside dedup TTL is ACK-only (8185.690083ms)
+✔ the bounded dedup store does not evict accepted IDs before their TTL (4.647583ms)
+✔ same-page receive intent stays scoped to its room until an explicit clear (0.814416ms)
+✔ manual stop clears one channel and clears the room binding when none remain (0.106958ms)
+✔ interaction mode and a different resumed room cannot carry prior receive intent (0.087209ms)
+✔ a receive intent never crosses an explicit room selection (0.075667ms)
+✔ display recovery preserves its screen view but never restores audio receive intent (0.071583ms)
+✔ resumed receiver uses fresh subscription metadata and waits for the next VP8 keyframe (482.805084ms)
+✔ publisher disconnect ends old streams; resuming control does not restart them until a new start (242.673958ms)
+✔ receiver graph samples map through a fresh output timestamp pair or an explicit graph estimate (0.804625ms)
+✔ video scheduling never selects a frame newer than a same-clock audio playhead (0.115875ms)
+✔ only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected (0.229584ms)
+✔ pulse diagnostics stay bounded and scoped to the active publisher generation (0.193625ms)
+✔ new future output samples do not hide a due audio-master sample (0.102083ms)
+✔ watch to interaction transition clears subscriptions and retains usable interactions (131.296042ms)
+✔ legacy join defaults to participant watch mode without changing room snapshot fields (3.973083ms)
+✔ display role stays password-gated, receives public projections, and rejects mutations (9060.616958ms)
+✔ decoded video frames are closed and pruned at the 500 ms local-residence boundary (0.834958ms)
+✔ AudioWorklet drops PCM after 500 ms of graph-time residence and reports the local drop (25.799833ms)
+✔ AudioWorklet rejects an oversized PCM block and keeps queued samples within 24,000 (4.565459ms)
+✔ AudioWorklet graph residence follows the graph clock and clear removes prior PCM (3.464792ms)
+✔ room door policy shares one locked server gate for join, switch, and room media (889.346875ms)
+✔ two rooms relay independent media, hide foreign members, and require a fresh subscription after switching (453.57125ms)
+✔ LTA1 audio and LTS1 screen frames share the socket but keep independent subscriptions and stop state (106.098041ms)
+✔ screen relay gates late subscribers until a requested keyframe and rejects invalid publishers/config (169.925291ms)
+✔ text control remains limited to 1 KiB before screen relay dispatch (3.070417ms)
+✔ screen frame payload accepts 512 KiB and the WebSocket parser rejects one byte over (87.91775ms)
+✖ the application serves health and a built-in room catalogue (32.93075ms)
+✔ two clients receive the same authoritative members and sequenced reaction (12.176208ms)
+✔ the websocket rejects cross-origin clients before joining (2.700375ms)
+✔ malformed or oversized control frames close without being broadcast (4.486292ms)
+✔ clients cannot select arbitrary rooms (1.475625ms)
+✔ display names longer than the server limit are rejected (1.425ms)
+✔ control events reject client-supplied fields outside the protocol (1.920042ms)
+✔ the room has a fixed member limit (10.93425ms)
+✔ the server closes a client that exceeds the reaction rate limit (3.191333ms)
+✔ open-area audio follows authoritative distance, including the six-unit edge (303.9955ms)
+✔ meeting-room audio reaches a distant member while staying inside its room (194.163917ms)
+✔ clients cannot supply position, audio policy, range, or participant identity (16.29325ms)
+✔ space snapshots expose member positions only for the recipient's current room (48.409416ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (67.960333ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (110.788792ms)
+✔ one socket shares pending byte accounting across control and media writes (0.791667ms)
+✔ snapshot reports injected budget limits for deterministic seam use (0.104709ms)
+✔ pending callback bytes enforce the shared 1.5 MiB socket cap even if bufferedAmount stays zero (0.394459ms)
+✔ a callback pending beyond one second closes only its slow socket (0.155875ms)
+✔ a callback delivered after the age limit still records a per-socket close (0.088125ms)
+ℹ tests 63
+ℹ suites 0
+ℹ pass 62
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9483.059583
+
+✖ failing tests:
+
+test at tests/server.integration.test.mjs:91:1
+✖ the application serves health and a built-in room catalogue (32.93075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+      persistence: 'process-memory',
+  +   persistenceAvailable: true,
+      status: 'ok'
+    }
+
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/server.integration.test.mjs:94:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'ok', persistence: 'process-memory', persistenceAvailable: true },
+    expected: { status: 'ok', persistence: 'process-memory' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

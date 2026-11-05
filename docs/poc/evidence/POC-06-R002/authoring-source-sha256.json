@@ -1,0 +1,16 @@
+{
+  "src/server/app.ts": "c512a23c59b19825307a930ca0575317b7621598d29318f3d2663fb2e17b1364",
+  "src/server/control-resume.ts": "bf80cbdd9dd2e061a1a4b6d55d6ccf9ebc2f0128e287cb124a5b2624ae8b3a3c",
+  "src/server/interactions.ts": "9a77d29c314568725d3c858312ffa88fff8609c6b4a4dffd6fe52af995429294",
+  "src/server/index.ts": "88bfeb2e9c6fa36b4c8fe10ccacea7ab0587188e010c3bfda3bc9afbf27681df",
+  "src/server/persistence.ts": "2189062d756dfd43de804c75f0a13d91646879b7dc7a904f43e13a2d4b5c26ae",
+  "src/server/room-access.ts": "1aaf5f3f2ac16735d1c0f1e57fdb31f799ef5f57a54c4e94657812da10fa229f",
+  "src/server/serial-executor.ts": "ab997f63f62f5534c39ed31538961fa80a44cb54686acb97891055120378dda9",
+  "src/server/space.ts": "210c137248b5972a4f12b369e4d551dc07acea649b94255faf23096080be777b",
+  "db/migrations/001_system_persistence.sql": "96567869e8b53649e3fbb26e3994dd3c4fd497cb2daa86277fe302285091ae18",
+  "tests/postgres.integration.test.mjs": "54265e88b2530f2802ba63b448b254c7ca9a9998663bd8ea7989d73c6885dcbb",
+  "compose.yaml": "e332b6e9059c22773cb829bd1223fbbaed92714c2183adb3aa650d05fd10963b",
+  ".env.example": "f898ed01244502c74e588e7a194d892ee680076de05e28a430ea17f388f56850",
+  "package.json": "495d54b24d9f9213af262a15b49b2c37e61ab71d56e8fb8f92f401946efe80a1",
+  "package-lock.json": "00cc298a122ec085794e406c3e962326fd608031481a28f4dfe448c76ddb0eb4"
+}

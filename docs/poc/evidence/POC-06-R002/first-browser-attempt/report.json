@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Lightweight trusted-Firefox PostgreSQL persistence slice across a real owned application process restart.",
+  "startedAt": "2026-11-05T07:18:41.870Z",
+  "finishedAt": "2026-11-05T07:18:43.708Z",
+  "durationMs": 1838,
+  "status": "failed",
+  "dataSlicePass": false,
+  "operationalPass": false,
+  "fullPOCPass": false,
+  "productReady": false,
+  "conclusion": "PostgreSQL data slice failed or incomplete; full POC and product readiness remain unproven.",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "not-reported",
+    "headless": true
+  },
+  "tls": {
+    "caCertificate": ".scratch/t01/tls/local-ca.pem",
+    "serverCertificate": ".scratch/t01/tls/localhost-cert.pem",
+    "trust": "trusted CA imported only into isolated Firefox profiles",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "database": {
+    "urlProvided": true,
+    "sourceVariable": "PG_BROWSER_DATABASE_URL",
+    "childReceivedDatabaseUrlInEnvironment": true,
+    "cliArgumentsContainCredentials": false,
+    "urlOrCredentialValueRecorded": false
+  },
+  "topology": {
+    "browsers": [
+      "host",
+      "guest"
+    ],
+    "isolatedFirefoxProfiles": 2,
+    "profilesKeptOpenAcrossRestart": true,
+    "ownedServerProcesses": 2,
+    "serverHost": "127.0.0.1",
+    "serverPort": 4173,
+    "room": "studio",
+    "interaction": "one synthetic chat and one feedback event through the normal browser UI; chat text is never retained",
+    "media": "not exercised in this data persistence slice",
+    "probes": "two separate raw WSS normal-join probes for startup-A rejection and live-B acceptance"
+  },
+  "startupConfiguration": {
+    "sameEnvironmentForBothProcesses": true,
+    "initialMeetingRoomPasswordIsStartupA": true,
+    "hostToken": "provided in process memory; value not recorded",
+    "startupPassword": "provided in process memory; value not recorded",
+    "livePassword": "provided in process memory; value not recorded"
+  },
+  "processRuns": [],
+  "checks": [],
+  "phases": {},
+  "sessions": {
+    "beforeRestart": {},
+    "afterResume": {},
+    "sameParticipantIds": false,
+    "oldProofsPresentInBrowserMemory": true
+  },
+  "interactions": {
+    "syntheticChatSubmitted": false,
+    "chatTextRecorded": false,
+    "chatEventId": null,
+    "chatInteractionId": null,
+    "feedbackSubmitted": false,
+    "feedbackEventId": null,
+    "beforeRestart": {},
+    "afterResume": {},
+    "sameChatEventVisible": false,
+    "feedbackVisibleAtTTL": false
+  },
+  "gate": {
+    "livePasswordChangedToB": false,
+    "resumeFirstRequiredPasswordB": {},
+    "startupARejected": false,
+    "liveBAccepted": false,
+    "rawWssProbeCount": 0
+  },
+  "hostControl": {
+    "claimedBeforeRestart": false,
+    "automaticClaimsAfterRestart": 0,
+    "manuallyClaimedAfterResume": false,
+    "manualActionRoundTrip": false
+  },
+  "movement": {
+    "tested": false,
+    "before": null,
+    "after": null
+  },
+  "screenshots": [],
+  "connections": [],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": "browserType.launchPersistentContext: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/postgres/acceptance/br"
+  },
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "rawChatTextRetained": false,
+    "browserStorageDumped": false,
+    "resumeTokensRetained": false,
+    "databaseUrlRecorded": false,
+    "configuredSecretsInReport": false,
+    "finalSecretScanPassed": true
+  },
+  "limits": {
+    "restart": "the owned child receives SIGTERM, with bounded SIGKILL fallback only for that same child",
+    "persistence": "only this room/session/interaction/gate slice is assessed; full product readiness and complete POC-06 remain false",
+    "browser": "two isolated real Firefox profiles remain open and keep their original session proofs in local browser storage",
+    "media": "no media source, publish, subscription, codec, quality, weak-network, or endurance behavior is tested here",
+    "probes": "two short normal-protocol WSS joins; not a multi-browser or load test"
+  }
+}

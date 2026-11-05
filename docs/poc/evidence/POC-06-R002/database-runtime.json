@@ -1,0 +1,16 @@
+{
+  "container": "laitse-poc06-r002-db",
+  "volume": "laitse-poc06-r002-data",
+  "port": 55433,
+  "binding": "127.0.0.1",
+  "mount": "/var/lib/postgresql",
+  "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+  "databases": [
+    "laitse",
+    "laitse_poc_test",
+    "laitse_poc_browser"
+  ],
+  "credentialsRetainedInEvidence": false,
+  "ownedContainer": true,
+  "initializationDiagnostic": "Initial unix pg_isready observed temporary initdb server; first createdb failed during its planned shutdown. Read back running state and database list, then TCP final-server readiness before creating isolated DBs. No data removed."
+}

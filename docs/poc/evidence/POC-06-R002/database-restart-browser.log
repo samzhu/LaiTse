@@ -1,0 +1,5 @@
+[PG-BROWSER] failed operational=false fullPOC=false report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/postgres/acceptance/browser/run-2026-11-05T07-18-41.718Z-a41e5612/report.json
+[PG-BROWSER] failure: browserType.launchPersistentContext: Failed to launch the browser process.
+Browser logs:
+
+<launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/postgres/acceptance/br

@@ -1,0 +1,37 @@
+{
+  "actions": [
+    {
+      "action": "compose down without volume deletion",
+      "exitCode": 0,
+      "output": " Container laitse-postgres18 Stopping \n Container laitse-postgres18 Stopped \n Container laitse-postgres18 Removing \n Container laitse-postgres18 Removed \n Network laitse-poc06-r002-dev_default Removing \n Network laitse-poc06-r002-dev_default Removed \n"
+    },
+    {
+      "action": "stop owned acceptance database",
+      "exitCode": 0,
+      "output": "laitse-poc06-r002-db\n"
+    }
+  ],
+  "acceptanceContainer": "exited",
+  "devComposeContainerRemoved": true,
+  "namedVolumesRetained": [
+    "laitse-poc06-r002-data",
+    "laitse-poc06-r002-dev_laitse-postgres18-data"
+  ],
+  "volumeDeletionPerformed": false,
+  "otherServicesStopped": false,
+  "portAndBrowserReadback": {
+    "ports": [
+      4173,
+      4174,
+      55432,
+      55433
+    ],
+    "lsofExitCode": 1,
+    "lsofOutput": "",
+    "meaning": "no listeners",
+    "processFilter": "T18 successor database-restart-browser / crash-lock-diagnostic / own .scratch/postgres/acceptance profiles",
+    "psExitCode": 1,
+    "psOutput": "",
+    "allOwnedProcessesStopped": true
+  }
+}

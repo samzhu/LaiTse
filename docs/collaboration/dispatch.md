@@ -298,3 +298,26 @@ T18-SMOKE已saved/readback/STOP釋出script/authoring；root接管唯一writer/r
 ## T18最終紀錄（2026-11-05）
 
 T18輕量評估完成：[POC-06-R001](../poc/evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。
+
+## DEC-012／PostgreSQL持久化整合範圍包（2026-11-05）
+
+人類：「回去調整 把需要儲存的都設計到資料庫, 開發期間可以用 docker」，並已啟動Docker。承接DEC012全部系統資訊可保存，基線7b07341，既有7份未commit決策文件由root持續唯一寫入，不覆蓋T18/R001歷史。
+
+- PG-IMPL／Luna xhigh唯一writer：src/server/**、tests/postgres*.mjs、tests/persistence*.mjs、scripts/postgres*.mjs、db/**、compose.yaml、.env.example、package.json/package-lock.json、README.md；可新增必要持久化型別但不改client/shared協議，其他tests/scripts/docs唯讀。manifest序列由該writer掌管。可安裝pg與型別精確版本，無ORM/其他服務。authoring記錄僅.scratch/postgres/authoring。不得啟Docker/runtime/Git。
+- root：唯一writer docs/**、.gitignore、Git、.scratch/postgres/acceptance與runtime；唯一Docker/瀏覽器操作者，設計/審查/驗收，source STOP後接管。所有既有未追蹤AGENTS.md/.scratch保留。writer無重疊，不修改舊run。
+- 範圍：本機PostgreSQL18 Docker Compose named volume、migrations/pg repository、room/門禁與顯示設定、participants/session proof摘要/位置與mode、互動archive與有界活躍投影/dedup、管理與撤權歷史、累計統計/觀測及事件序號保存。密碼只hash/verifier、proof只digest，無明文host secret、影音內容或transport queues。線上presence與主持/發布權不從舊snapshot自動啟用；有效Session可server重新驗證恢復原ID，過期/撤銷拒絕。房間首次bootstrap後DB設定優先，既有env不覆寫live設定。
+- 不變條件：DB模式成功ACK/broadcast須在commit後；序列化有界控制操作，DB錯誤failclosed不退回memory假成功、不外洩連線字串。append-only或軟刪歷史與即時TTL分開；不將整份bounded memory dump誤稱永久archive。binary media不逐包寫DB。單一active app用PG advisory lock明確拒絕第二writer，非multi-instance已支援。無DATABASE_URL僅既有isolated memory測試/歷史POC相容模式，health準確標示。
+- 驗收：pinnedNode26.13 typecheck/build、既有核心全套一次；真PG18整合驗ACK→重啟／強制中止後讀回門禁/interaction/archive/身份與proof/統計、過期/撤銷/defaultdeny、DB失效不ACK、第二writer拒絕；輕量真瀏覽器保存設定與聊天後實程序重啟/重新驗證收看。源碼/data/權限/rootreadback/操作指引/限制同步SOL007唯一清冊與POC06-R002。不預填Pass。
+- 停止：owner saved/readback/STOP與指紋後root才接管/build；新產品決策/重大範圍衝突回root。無雲部署/遠端票/push/T19/MVP整體開發，完成本機程式+紀錄commit。容器完成停機保留volume，不刪除使用者資料。
+
+### PG-BROWSER獨立範圍（2026-11-05）
+
+PG-BROWSER／Luna xhigh唯一writer `scripts/database-restart-browser.mjs`及`.scratch/postgres/browser-authoring/`，既有scripts/source/docs/manifest唯讀，不runtime/Git。與PG-IMPL的postgres*.mjs檔名不重疊。兩trusted Firefox、正常gate/host/chat/feedback/move，owned app真正SIGTERM重啟同DATABASE_URL、liveB保留、舊有效Session恢復原ID、即時聊天/回饋在TTL內仍可見、host/publisher不auto恢復；重認領可操作。兩短rawWSS驗startupA失效/liveB有效（非多browser負載）。只驗資料，不新增media測試範圍；無rawproof/password/聊天全文保留。Node26.13、source STOP交root驗收；root唯一runtime與文件，若app契約不同回root，不擅改source。
+
+PG-BROWSER已saved/readback/STOP，root接管script唯一writer/runtime；exactNode26.13 syntax已讀回。root另窄修action白名單接受既有interaction.setPaused點號，作者版本與root差異記R002/review，無app/client改動。PG-IMPL仍唯一source writer，尚不build或runtimeapp。
+
+root另備R002/crash-lock-diagnostic.mjs（驗收碼、非產品API）：source STOP/build後，以新建laitse_poc_crash_*獨立DB與自有4174子程序，ACK後SIGKILL、同proof/門禁/去重與archive讀回，再只終止該獨立DB持有advisory lock的backend，確認app失連failclosed。無刪其他DB/schema/volume；不與PG-IMPL源碼writer重疊，未執行前不判通過。
+
+## DEC-012持久化整合最終紀錄（2026-11-05）
+
+DEC-012資料庫整合完成：[POC-06-R002](../poc/evidence/POC-06-R002/README.md)保存PostgreSQL18.6 Docker／pg8.23.1與migration、系統資訊保存及恢復用法。最終build/typecheck/63核心、真PG整合、ACK後SIGKILL、advisory backend失連停止、兩真Firefox同document/原ID/最新B門禁/chat與feedback恢復、13表同volume容器重啟筆數與指紋一致。有效proof恢復不自動復活主持／發布權，畫面TTL與archive分開；SOL007唯一清冊已原位更新。首輪health shape／fixture event count及browser環境/URL事件誤判等失敗保留、窄修後重驗。完整POC06/MVP/備份/HA/多instance/正式保留政策/雲未驗；舊R001 memory No-Go不改判。所有writer已saved/readback/STOP，root驗收，server/Firefox/Docker已停、volume保留；程式與紀錄同一本機commit，不push/遠端票/T19/部署。

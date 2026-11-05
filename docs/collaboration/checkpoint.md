@@ -227,3 +227,23 @@ T17交付（2026-11-05）：[POC-05-R002](../poc/evidence/POC-05-R002/README.md)
 ## T18最終紀錄（2026-11-05）
 
 T18輕量評估完成：[POC-06-R001](../poc/evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。
+
+## DEC-012 已保存（2026-11-05）
+
+人類允許「可使用 **PostgreSQL 18 來儲存系統資訊**」。root已記錄精確原話／範圍／未確認事項，PRD及handoff v0.9、brief、POC plan與SOL-007交接同步。資料庫為DEC004例外，其餘單一app/本機POC限制維持；新整合未啟動，T18既有證據未變。本輪純文件，diff/讀回檢查，不啟服務或跑全套；尚未commit，writer已釋出。
+
+DEC-012範圍補充已保存並讀回（2026-11-05）：人類原話「都可以儲存」，涵蓋前述房間／管理設定、身份／Session、聊天、回饋與統計系統資訊。需求／plan／SOL007交接同步；未將儲存許可擴張為永久保留、無條件恢復權限或影音錄製。純文件檢查，未啟動程式／新run，尚未commit；文件writer釋出。
+
+## DEC-012持久化整合啟動（2026-11-05）
+
+人類要求回頭把必要資料設計入DB、開發可Docker，並已啟動Docker。13fb00e後T18完成基線7b07341；既有7份未commit決策文件保留累積。完整scope在dispatch；PG-IMPL Luna xhigh已啟動唯一寫source/新DBtests/compose/manifest/README，root唯一docs/Git/runtime與驗收。POC06-R002建立，Docker29.8.2已可連；不預填新run通過，不覆寫R001。source STOP後root接管測試。無部署/push/T19。
+
+### PG整合中間狀態
+
+Docker18.6實體容器laitse-poc06-r002-db、volume laitse-poc06-r002-data與三獨立DB已建立，loopback55433，secrets只ignored private scratch。R002 environment/database-runtime保存版本digest與initdb readiness診斷；devcompose port55432，config靜態通過。PG-BROWSER已saved/readback/STOP，root接管scripts/database-restart-browser.mjs，修action點號白名單並exactNode26.13 syntax通過；作者handoff已複製R002。PG-IMPL仍唯一source/manifest/compose writer，尚未build或app runtime。root runner /private/tmp/laitse-pg-accept.py 支援--checks/--pg/--browser，PG測試URL隔離DB，browser每次新DB保留前次，不含secret輸出。待source STOP再rootreview/build/63/PG/browser，未先判Pass。
+
+## DEC-012持久化整合最終紀錄（2026-11-05）
+
+DEC-012資料庫整合完成：[POC-06-R002](../poc/evidence/POC-06-R002/README.md)保存PostgreSQL18.6 Docker／pg8.23.1與migration、系統資訊保存及恢復用法。最終build/typecheck/63核心、真PG整合、ACK後SIGKILL、advisory backend失連停止、兩真Firefox同document/原ID/最新B門禁/chat與feedback恢復、13表同volume容器重啟筆數與指紋一致。有效proof恢復不自動復活主持／發布權，畫面TTL與archive分開；SOL007唯一清冊已原位更新。首輪health shape／fixture event count及browser環境/URL事件誤判等失敗保留、窄修後重驗。完整POC06/MVP/備份/HA/多instance/正式保留政策/雲未驗；舊R001 memory No-Go不改判。所有writer已saved/readback/STOP，root驗收，server/Firefox/Docker已停、volume保留；程式與紀錄同一本機commit，不push/遠端票/T19/部署。
+
+R002最終讀回補充：build inputs44份與最終source/tests/config65份指紋已核對；PG/runtime/browser/容器讀回及artifact掃描保存，127個已安裝package declared license未知0。所有程式與紀錄已準備同一本機commit，既有AGENTS/.scratch不stage；Docker與四port皆無listener，兩named volumes保留，無其他服務變更。root為最後唯一writer，提交後停止本輪修改。

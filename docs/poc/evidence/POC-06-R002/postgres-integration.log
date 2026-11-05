@@ -1,0 +1,29 @@
+✖ PostgreSQL persistence survives app restart and fails closed on transaction errors (609.325292ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 761.122042
+
+✖ failing tests:
+
+test at tests/postgres.integration.test.mjs:97:3
+✖ PostgreSQL persistence survives app restart and fails closed on transaction errors (609.325292ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(eventArchiveBeforeRestart.rows[0].count >= 4)
+
+      at TestContext.<anonymous> (file:///Users/samzhu/workspace_herdr/LaiTse/tests/postgres.integration.test.mjs:245:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

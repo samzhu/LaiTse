@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 export const MAX_INTERACTION_MESSAGE_BYTES = 2_048;
 export const MAX_CHAT_CODE_POINTS = 300;
@@ -53,7 +53,7 @@ type RoomState = {
   danmakuEnabled: boolean;
 };
 
-type DedupRecord = {
+export type DedupRecord = {
   senderId: string;
   eventId: string;
   roomId: string;
@@ -103,7 +103,7 @@ export function parseInteractionInput(message: Record<string, unknown>): {
     return null;
   }
 
-  return { input, eventId: message.eventId, fingerprint: JSON.stringify(input) };
+  return { input, eventId: message.eventId, fingerprint: createHash("sha256").update(JSON.stringify(input)).digest("hex") };
 }
 
 function makeRoomState(): RoomState {
@@ -119,6 +119,60 @@ export class InteractionStore {
   constructor(roomIds: readonly string[], dedupItemLimit = INTERACTION_LIMITS.dedupItems) {
     this.dedupItemLimit = dedupItemLimit;
     for (const roomId of roomIds) this.rooms.set(roomId, makeRoomState());
+  }
+
+  restore(input: {
+    records: readonly InteractionRecord[];
+    publicQueueIds: readonly string[];
+    dedup: readonly DedupRecord[];
+    presentation: Record<string, { paused: boolean; danmakuEnabled: boolean }>;
+    now?: number;
+  }): void {
+    const now = input.now ?? Date.now();
+    const publicQueueIds = new Set(input.publicQueueIds);
+    for (const roomId of this.rooms.keys()) {
+      const room = this.room(roomId);
+      const settings = input.presentation[roomId];
+      if (settings) {
+        room.paused = settings.paused;
+        room.danmakuEnabled = settings.danmakuEnabled;
+      }
+    }
+    for (const record of input.records) {
+      const room = this.rooms.get(record.roomId);
+      if (!room) continue;
+      if (record.kind === "feedback") {
+        if (record.expiresAt > now && now - record.at < INTERACTION_LIMITS.feedbackWindowMs) room.feedback.push({ ...record });
+        continue;
+      }
+      if (now - record.at < INTERACTION_LIMITS.historyTtlMs) room.history.push({ ...record });
+      if (record.kind === "danmaku" && publicQueueIds.has(record.id) && record.expiresAt > now) {
+        room.publicQueue.push({ ...record });
+      }
+    }
+    for (const room of this.rooms.values()) {
+      room.history.sort((a, b) => a.at - b.at);
+      room.history = room.history.slice(-INTERACTION_LIMITS.historyItems);
+      room.feedback.sort((a, b) => a.at - b.at);
+      room.feedback = room.feedback.slice(-INTERACTION_LIMITS.feedbackItems);
+      room.publicQueue.sort((a, b) => a.at - b.at);
+      room.publicQueue = room.publicQueue.slice(-INTERACTION_LIMITS.publicQueueItems);
+    }
+    for (const entry of input.dedup) {
+      if (entry.expiresAt > now && this.dedup.size < this.dedupItemLimit) {
+        this.dedup.set(this.dedupKey(entry.senderId, entry.eventId), { ...entry });
+      }
+    }
+    this.prune(now);
+  }
+
+  durableDedup(now = Date.now()): DedupRecord[] {
+    this.prune(now);
+    return [...this.dedup.values()].map((record) => ({ ...record }));
+  }
+
+  publicQueueRecords(roomId: string): InteractionRecord[] {
+    return this.room(roomId).publicQueue.map((record) => ({ ...record }));
   }
 
   prune(now = Date.now()): string[] {
@@ -200,7 +254,7 @@ export class InteractionStore {
         room.feedback.splice(0, room.feedback.length - INTERACTION_LIMITS.feedbackItems);
       }
     }
-    this.remember(senderId, eventId, roomId, JSON.stringify(input), record.id, now);
+    this.remember(senderId, eventId, roomId, createHash("sha256").update(JSON.stringify(input)).digest("hex"), record.id, now);
     return record;
   }
 

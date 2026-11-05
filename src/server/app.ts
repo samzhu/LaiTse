@@ -13,9 +13,11 @@ import {
 import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES } from "./screen-relay.ts";
 import { createHostControlPolicy } from "./host-control.ts";
-import { createRoomAccessPolicy, isValidRoomPassword } from "./room-access.ts";
+import { createRoomAccessPolicy, isValidRoomPassword, type PersistedRoomAccess } from "./room-access.ts";
 import { createControlResumeStore, type ResumeMode, type ResumeRole } from "./control-resume.ts";
 import { createTransportBudget, MAX_APPLICATION_SEND_BYTES } from "./transport-budget.ts";
+import { createSerialExecutor, QueueFullError } from "./serial-executor.ts";
+import { openSystemPersistence, type ActivityCounters, type DurableSnapshot, type PendingPersistence, type PersistedParticipant, type PersistedRoomSettings, type PersistedSession, type PersistenceBootstrap } from "./persistence.ts";
 import {
   InteractionStore,
   MAX_FEEDBACK_PER_SECOND,
@@ -44,6 +46,8 @@ const REACTIONS = new Set(["wave", "clap", "heart"]);
 const MAX_DISPLAY_NAME_CODE_POINTS = 32;
 const MAX_EVENTS_PER_SECOND = 10;
 const EVENT_WINDOW_MS = 1_000;
+const MAX_CONTROL_OUTBOX_FRAMES = 4_096;
+const MAX_CONTROL_OUTBOX_BYTES = MAX_APPLICATION_SEND_BYTES;
 
 type Member = SpaceMember;
 type ParticipationRole = "participant" | "display";
@@ -52,7 +56,7 @@ type ParticipationMode = "watch" | "interaction";
 type ControlEvent = {
   seq: number;
   kind: "member.joined" | "member.left" | "reaction";
-  roomId: string;
+  roomId: RoomId;
   participantId: string;
   displayName: string;
   reaction?: string;
@@ -93,6 +97,8 @@ type CreateAppOptions = {
   https?: HttpsServerOptions;
   meetingRoomPassword?: string;
   hostControlToken?: string;
+  databaseUrl?: string;
+  databaseSchema?: string;
 };
 
 type MediaMetricCounter = {
@@ -189,19 +195,110 @@ export async function createApp(options: CreateAppOptions = {}) {
   if (options.hostControlToken && options.meetingRoomPassword && options.hostControlToken === options.meetingRoomPassword) {
     throw new Error("HOST_CONTROL_TOKEN must be different from MEETING_ROOM_PASSWORD.");
   }
+  const seedRoomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
+  const hostControl = createHostControlPolicy(options.hostControlToken);
+  const persistence = await openSystemPersistence(options.databaseUrl, options.databaseSchema);
+  let persistenceBootstrap: PersistenceBootstrap | undefined;
+  if (persistence) {
+    const seedSettings = SPACE_ROOMS.map((room): PersistedRoomSettings => {
+      const access = room.id === "studio" ? seedRoomAccess.snapshot() : null;
+      return {
+        roomId: room.id,
+        locked: access?.locked ?? false,
+        passwordSalt: access?.passwordSalt ?? null,
+        passwordVerifier: access?.passwordVerifier ?? null,
+        admissionRevision: access?.admissionRevision ?? 0,
+        interactionPaused: false,
+        danmakuEnabled: true,
+      };
+    });
+    try {
+      persistenceBootstrap = await persistence.initialize({
+        roomIds: SPACE_ROOMS.map(({ id }) => id),
+        initialRoomSettings: seedSettings,
+        managedHostMode: Boolean(options.hostControlToken),
+      });
+      if (persistenceBootstrap.managedHostMode !== Boolean(options.hostControlToken)) {
+        throw new Error("HOST_CONTROL_TOKEN configuration does not match the saved managed-host setting; startup refused to weaken or change room management mode.");
+      }
+    } catch (error) {
+      await persistence.close();
+      throw error;
+    }
+  }
   const app = Fastify({ logger: false, https: options.https ?? null });
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
   const transportBudgets = new WeakMap<import("ws").WebSocket, ReturnType<typeof createTransportBudget>>();
+  type OutboundFrame = { target: import("ws").WebSocket; payload: string | Buffer; sendOptions?: { binary?: boolean; compress?: boolean } };
+  type DeferredClose = { target: import("ws").WebSocket; code?: number; reason?: string };
+  type ControlWriteContext = { outbox: OutboundFrame[]; outboxBytes: number; overflow: boolean; closes: DeferredClose[]; closeTargets: Set<import("ws").WebSocket>; required: boolean; pending: PendingPersistence };
+  let activeWriteContext: ControlWriteContext | null = null;
+  let persistenceFailed = false;
+  let appClosing = false;
+  const controlExecutor = createSerialExecutor();
+  const emptyPendingPersistence = (): PendingPersistence => ({
+    interactions: [], interactionDedup: [], controlEvents: [], tombstones: [], moderation: [], management: [], capabilities: [], revokedSessionDigests: [],
+  });
   const sendTo = (target: import("ws").WebSocket, payload: string | Buffer, sendOptions?: { binary?: boolean; compress?: boolean }) => {
+    if (activeWriteContext && !sendOptions?.binary) {
+      if (activeWriteContext.overflow) return false;
+      const bytes = typeof payload === "string" ? Buffer.byteLength(payload) : payload.byteLength;
+      if (activeWriteContext.outbox.length >= MAX_CONTROL_OUTBOX_FRAMES || activeWriteContext.outboxBytes + bytes > MAX_CONTROL_OUTBOX_BYTES) {
+        activeWriteContext.overflow = true;
+        try { target.close(1013, "Control output backlog"); } catch { /* The socket may already be closing. */ }
+        return false;
+      }
+      activeWriteContext.outbox.push({ target, payload, sendOptions });
+      activeWriteContext.outboxBytes += bytes;
+      return true;
+    }
     return transportBudgets.get(target)?.send(payload, sendOptions) ?? false;
   };
+  const closeSocket = (target: import("ws").WebSocket, code?: number, reason?: string) => {
+    if (activeWriteContext) {
+      if (activeWriteContext.closeTargets.has(target)) return;
+      if (activeWriteContext.closes.length >= MAX_ROOM_MEMBERS * 32) {
+        activeWriteContext.overflow = true;
+        try { target.close(1013, "Control close backlog"); } catch { /* The socket may already be closing. */ }
+        return;
+      }
+      activeWriteContext.closeTargets.add(target);
+      activeWriteContext.closes.push({ target, code, reason });
+      return;
+    }
+    if (code === undefined) target.close();
+    else target.close(code, reason);
+  };
   const members = new Map<string, Member>();
+  const persistedParticipants = new Map<string, PersistedParticipant>((persistenceBootstrap?.participants ?? []).map((participant) => [participant.id, participant]));
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
   const interactions = new InteractionStore(SPACE_ROOMS.map(({ id }) => id));
-  const roomAccess = createRoomAccessPolicy(options.meetingRoomPassword);
-  const resumeSessions = createControlResumeStore();
-  const hostControl = createHostControlPolicy(options.hostControlToken);
+  const settingsByRoom = new Map((persistenceBootstrap?.roomSettings ?? []).map((setting) => [setting.roomId, setting]));
+  const restoredStudio = settingsByRoom.get("studio");
+  const roomAccess: ReturnType<typeof createRoomAccessPolicy> = persistenceBootstrap && restoredStudio
+    ? createRoomAccessPolicy(undefined, {
+      locked: restoredStudio.locked,
+      passwordSalt: restoredStudio.passwordSalt,
+      passwordVerifier: restoredStudio.passwordVerifier,
+      admissionRevision: restoredStudio.admissionRevision,
+    } satisfies PersistedRoomAccess)
+    : seedRoomAccess;
+  const resumeSessions = createControlResumeStore({
+    restored: persistenceBootstrap?.sessions,
+    recentlyExpiredDigests: persistenceBootstrap?.recentlyExpiredSessionDigests,
+  });
+  if (persistenceBootstrap) {
+    interactions.restore({
+      records: persistenceBootstrap.activeInteractions,
+      publicQueueIds: persistenceBootstrap.publicQueueInteractionIds,
+      dedup: persistenceBootstrap.dedup,
+      presentation: Object.fromEntries(persistenceBootstrap.roomSettings.map((setting) => [setting.roomId, {
+        paused: setting.interactionPaused,
+        danmakuEnabled: setting.danmakuEnabled,
+      }])),
+    });
+  }
   const publisherGrants = new Map<RoomId, Set<string>>(SPACE_ROOMS.map(({ id }) => [id, new Set()]));
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
     audio: createAudioRelay({
@@ -241,14 +338,135 @@ export async function createApp(options: CreateAppOptions = {}) {
       if (sendTo(target, payload)) counters.eventsSent += 1;
     }
   };
+  let unassignedControlRejections = 0;
+  let sequence = persistenceBootstrap?.controlSequence ?? 0;
+  let spaceSequence = persistenceBootstrap?.spaceSequence ?? 0;
+  const roomCounters: Record<RoomId, ActivityCounters> = persistenceBootstrap?.roomCounters ?? Object.fromEntries(
+    SPACE_ROOMS.map(({ id }) => [id, { joins: 0, leaves: 0, moves: 0, reactions: 0, interactions: 0, capabilityReports: 0, hostActions: 0 }]),
+  ) as Record<RoomId, ActivityCounters>;
+
+  const recordParticipant = (connection: ClientConnection): void => {
+    if (!connection.member || !connection.currentRoomId) return;
+    const player = space.getPlayer(connection.member.id);
+    if (!player) return;
+    persistedParticipants.set(connection.member.id, {
+      id: connection.member.id,
+      displayName: connection.member.displayName,
+      roomId: connection.currentRoomId,
+      role: connection.role,
+      mode: connection.mode,
+      x: player.x,
+      y: player.y,
+    });
+  };
+
+  const durableSnapshot = (): DurableSnapshot => {
+    const presentation = interactions.snapshot("studio").presentation;
+    const studioAccess = roomAccess.snapshot();
+    const sessions = resumeSessions.snapshot();
+    const retainedParticipantIds = new Set(sessions.map((session) => session.participantId));
+    for (const participantId of persistedParticipants.keys()) {
+      if (!members.has(participantId) && !retainedParticipantIds.has(participantId)) persistedParticipants.delete(participantId);
+    }
+    return {
+      roomSettings: SPACE_ROOMS.map((room): PersistedRoomSettings => {
+        const access = room.id === "studio" ? studioAccess : null;
+        return {
+          roomId: room.id,
+          locked: access?.locked ?? false,
+          passwordSalt: access?.passwordSalt ?? null,
+          passwordVerifier: access?.passwordVerifier ?? null,
+          admissionRevision: access?.admissionRevision ?? 0,
+          interactionPaused: room.id === "studio" ? presentation.paused : interactions.snapshot(room.id).presentation.paused,
+          danmakuEnabled: room.id === "studio" ? presentation.danmakuEnabled : interactions.snapshot(room.id).presentation.danmakuEnabled,
+        };
+      }),
+      participants: [...persistedParticipants.values()].map((participant) => ({ ...participant })),
+      sessions,
+      controlSequence: sequence,
+      spaceSequence,
+      roomCounters: Object.fromEntries(SPACE_ROOMS.map(({ id }) => [id, { ...roomCounters[id] }])) as Record<RoomId, ActivityCounters>,
+    };
+  };
+
+  const flushContext = (context: ControlWriteContext): void => {
+    for (const frame of context.outbox) {
+      if (frame.target.readyState === frame.target.OPEN) transportBudgets.get(frame.target)?.send(frame.payload, frame.sendOptions);
+    }
+    for (const close of context.closes) {
+      if (close.target.readyState !== close.target.CLOSED && close.target.readyState !== close.target.CLOSING) {
+        if (close.code === undefined) close.target.close();
+        else close.target.close(close.code, close.reason);
+      }
+    }
+  };
+
+  const failClosed = (): void => {
+    if (persistenceFailed) return;
+    persistenceFailed = true;
+    activeWriteContext = null;
+    for (const socket of clients.keys()) {
+      try { socket.close(1011, "System persistence unavailable"); } catch { /* Socket may already be closing. */ }
+    }
+    setImmediate(() => { void app.close().catch(() => {}); });
+  };
+
+  const runControl = (operation: () => void, target?: import("ws").WebSocket): void => {
+    void controlExecutor.run(async () => {
+      if (persistenceFailed || appClosing) return;
+      const context: ControlWriteContext = { outbox: [], outboxBytes: 0, overflow: false, closes: [], closeTargets: new Set(), required: false, pending: emptyPendingPersistence() };
+      activeWriteContext = context;
+      try {
+        operation();
+        if (context.overflow) throw new Error("Control outbox capacity exceeded.");
+        if (context.required && persistence) await persistence.save(durableSnapshot(), context.pending);
+        if (context.overflow) throw new Error("Control outbox capacity exceeded.");
+        flushContext(context);
+      } catch {
+        failClosed();
+      } finally {
+        if (activeWriteContext === context) activeWriteContext = null;
+      }
+    }).catch((error: unknown) => {
+      if (error instanceof QueueFullError) {
+        if (target && target.readyState === target.OPEN) {
+          try { target.send(JSON.stringify({ type: "protocol.error", code: "control_queue_full", message: "The control queue is busy. Reconnect and try again." })); } catch { /* The socket may already be closing. */ }
+          target.close(1013, "Control queue is full");
+        }
+      } else if (target || persistence) {
+        failClosed();
+      }
+    });
+  };
+
+  persistence?.onFatal(failClosed);
+
+  const markDurable = (): void => {
+    if (activeWriteContext) activeWriteContext.required = true;
+  };
+
+  const addPending = <K extends keyof PendingPersistence>(key: K, value: PendingPersistence[K][number]): void => {
+    if (!activeWriteContext) return;
+    (activeWriteContext.pending[key] as Array<PendingPersistence[K][number]>).push(value);
+    activeWriteContext.required = true;
+  };
+
+  const bumpCounter = (roomId: RoomId, name: keyof ActivityCounters): void => {
+    roomCounters[roomId][name] += 1;
+    markDurable();
+  };
+
   const interactionPruneTimer = setInterval(() => {
-    interactions.prune();
-    for (const roomId of interactions.drainChangedRooms()) broadcastRoomInteractionState(roomId as RoomId);
+    runControl(() => {
+      interactions.prune();
+      for (const roomId of interactions.drainChangedRooms()) broadcastRoomInteractionState(roomId as RoomId);
+    });
   }, 500);
   interactionPruneTimer.unref();
-  let unassignedControlRejections = 0;
-  let sequence = 0;
-  let spaceSequence = 0;
+  const sessionHeartbeatTimer = setInterval(() => {
+    if (persistence && resumeSessions.hasActive()) runControl(() => markDurable());
+  }, 60_000);
+  sessionHeartbeatTimer.unref();
 
   await app.register(fastifyWebsocket, {
     options: { maxPayload: MAX_SCREEN_FRAME_BYTES },
@@ -265,11 +483,20 @@ export async function createApp(options: CreateAppOptions = {}) {
   }
 
   app.get("/api/health", async () => ({
-    status: "ok",
-    persistence: "process-memory",
+    status: persistenceFailed ? "error" : "ok",
+    persistence: persistence?.mode ?? "process-memory",
+    ...(persistence ? { persistenceAvailable: !persistenceFailed } : {}),
   }));
 
-  app.get("/api/rooms", async () => publicRooms(roomAccess, hostControl.enabled));
+  app.get("/api/rooms", async (_request, reply) => {
+    try {
+      const rooms = await controlExecutor.run(() => persistenceFailed ? null : publicRooms(roomAccess, hostControl.enabled));
+      if (!rooms) return reply.code(503).send({ error: "persistence_unavailable" });
+      return rooms;
+    } catch {
+      return reply.code(503).send({ error: "control_state_unavailable" });
+    }
+  });
 
   app.get("/api/media-diagnostics", async () => ({
     rooms: SPACE_ROOMS.map(({ id }) => ({
@@ -280,7 +507,23 @@ export async function createApp(options: CreateAppOptions = {}) {
   }));
 
   app.get<{ Params: { observationId: string } }>("/api/observations/:observationId", async (request, reply) => {
-    const observation = observations.get(request.params.observationId);
+    let observation = observations.get(request.params.observationId);
+    if (!observation && persistence) {
+      try {
+        const stored = await persistence.getObservation(request.params.observationId);
+        if (stored) observation = {
+          observationId: stored.observationId,
+          observedAtServer: stored.observedAtServer,
+          connectionId: stored.connectionId,
+          roomId: stored.roomId,
+          member: { id: stored.participantId, displayName: stored.displayName },
+          report: stored.report,
+        };
+      } catch {
+        failClosed();
+        return reply.code(503).send({ error: "persistence_unavailable" });
+      }
+    }
     if (!observation) return reply.code(404).send({ error: "observation_not_found" });
     return observation;
   });
@@ -328,7 +571,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
         send({ type: "protocol.error", code, message });
         socket.once("error", () => {});
-        socket.close(closeCode, "Invalid control message");
+        closeSocket(socket, closeCode, "Invalid control message");
       };
 
       const sendProtocolError = (code: string, message: string) => {
@@ -576,6 +819,8 @@ export async function createApp(options: CreateAppOptions = {}) {
       };
 
       const emit = (kind: ControlEvent["kind"], member: Member, roomId: RoomId, reaction?: string) => {
+        markDurable();
+        bumpCounter(roomId, kind === "member.joined" ? "joins" : kind === "member.left" ? "leaves" : "reactions");
         const event: ControlEvent = {
           seq: ++sequence,
           kind,
@@ -585,6 +830,7 @@ export async function createApp(options: CreateAppOptions = {}) {
           at: Date.now(),
           ...(reaction ? { reaction } : {}),
         };
+        addPending("controlEvents", event);
         const message = { type: "control.event", event };
         for (const [target, targetConnection] of clients) {
           if (targetConnection.role === "display" && kind === "reaction") continue;
@@ -622,8 +868,8 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
       };
 
-      socket.on("message", (raw, isBinary) => {
-        if (connection.removed || socket.readyState !== socket.OPEN) return;
+      const handleIncomingMessage = (raw: import("ws").RawData, isBinary: boolean) => {
+        if (persistenceFailed || connection.removed || socket.readyState !== socket.OPEN) return;
         const bytes = Buffer.isBuffer(raw) ? raw : Array.isArray(raw) ? Buffer.concat(raw) : Buffer.from(raw);
         if (isBinary) {
           if (!connection.currentRoomId || !connection.member) {
@@ -675,11 +921,13 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
           if (connection.resumeToken) {
-            resumeSessions.invalidate(connection.resumeToken);
+            markDurable();
+            const digest = resumeSessions.invalidate(connection.resumeToken);
+            if (digest) addPending("revokedSessionDigests", digest);
             connection.resumeToken = undefined;
           }
           send({ type: "session.left" });
-          socket.close(1000, "Session left");
+          closeSocket(socket, 1000, "Session left");
           return;
         }
 
@@ -687,19 +935,19 @@ export async function createApp(options: CreateAppOptions = {}) {
           if (bytes.byteLength > MAX_CONTROL_MESSAGE_BYTES || !hasOnlyKeys(message, ["type", "token", "password"]) || typeof message.token !== "string" ||
               (message.password !== undefined && typeof message.password !== "string") || connection.member) {
             sendProtocolError("invalid_resume", "Resume with the issued session token and, when requested, the current room password.");
-            socket.close(1008, "Invalid resume request");
+            closeSocket(socket, 1008, "Invalid resume request");
             return;
           }
           const lookup = resumeSessions.lookup(message.token);
           if (!lookup.record) {
             sendProtocolError(lookup.expired ? "resume_expired" : "resume_invalid", "This control session can no longer be resumed.");
-            socket.close(1008, "Resume unavailable");
+            closeSocket(socket, 1008, "Resume unavailable");
             return;
           }
           const record = lookup.record;
           if (record.activeConnectionId !== null) {
             sendProtocolError("resume_busy", "This control session is still active; retry after the previous connection closes.");
-            socket.close(4002, "Resume is busy");
+            closeSocket(socket, 4002, "Resume is busy");
             return;
           }
           const currentAdmissionRevision = roomAccess.admissionRevision(record.roomId);
@@ -714,12 +962,13 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
           if (members.size >= MAX_ROOM_MEMBERS) {
             sendProtocolError("room_full", "The local space has reached its eight participant limit.");
-            socket.close(1013, "Room is full");
+            closeSocket(socket, 1013, "Room is full");
             return;
           }
+          markDurable();
           if (!resumeSessions.attach(record, connection.id)) {
             sendProtocolError("resume_busy", "This control session is still active; retry after the previous connection closes.");
-            socket.close(4002, "Resume is busy");
+            closeSocket(socket, 4002, "Resume is busy");
             return;
           }
           if (admissionWasRevalidated) resumeSessions.refreshAdmission(record.token, currentAdmissionRevision);
@@ -734,10 +983,16 @@ export async function createApp(options: CreateAppOptions = {}) {
           connection.resumeToken = record.token;
           publisherGrants.get(record.roomId)!.delete(member.id);
           space.add(member, record.roomId);
+          const restoredParticipant = persistedParticipants.get(member.id);
+          if (restoredParticipant && restoredParticipant.roomId === record.roomId) {
+            space.remove(member.id);
+            space.add(member, record.roomId, { x: restoredParticipant.x, y: restoredParticipant.y });
+          }
           registerMediaConnection(record.roomId);
           mediaRooms.get(record.roomId)!.audio.markJoined(connection.id);
           mediaRooms.get(record.roomId)!.screen.markJoined(connection.id);
           members.set(member.id, member);
+          recordParticipant(connection);
           send({
             type: "session.resumed",
             participantId: member.id,
@@ -788,6 +1043,17 @@ export async function createApp(options: CreateAppOptions = {}) {
             member: { ...connection.member },
             report,
           };
+          markDurable();
+          bumpCounter(observation.roomId as RoomId, "capabilityReports");
+          addPending("capabilities", {
+            observationId: observation.observationId,
+            observedAtServer: observation.observedAtServer,
+            connectionId: observation.connectionId,
+            roomId: observation.roomId as RoomId,
+            participantId: observation.member.id,
+            displayName: observation.member.displayName,
+            report: observation.report,
+          });
           observations.set(observation.observationId, observation);
           while (observations.size > MAX_STORED_CAPABILITY_REPORTS) {
             const oldestObservationId = observations.keys().next().value;
@@ -829,8 +1095,10 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
           const nextMode = message.mode as ParticipationMode;
+          markDurable();
           connection.mode = nextMode;
           resumeSessions.updateMode(connection.resumeToken, nextMode);
+          recordParticipant(connection);
           if (nextMode === "interaction") {
             const relays = mediaRooms.get(connection.currentRoomId)!;
             relays.audio.disableConnection(connection.id);
@@ -898,6 +1166,11 @@ export async function createApp(options: CreateAppOptions = {}) {
           }
           connection.interactionTimes.push(now);
           if (parsed.input.kind === "feedback") connection.feedbackTimes.push(now);
+          markDurable();
+          bumpCounter(roomId, "interactions");
+          const dedupEntry = interactions.durableDedup(now).find((entry) => entry.senderId === connection.member!.id && entry.eventId === parsed.eventId);
+          if (dedupEntry) addPending("interactionDedup", { ...dedupEntry, roomId });
+          addPending("interactions", event);
           send({ type: "interaction.ack", roomId, eventId: parsed.eventId, interactionId: event.id, duplicate: false });
           broadcastInteractionEvent(roomId, event);
           return;
@@ -928,7 +1201,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               : "That host token was not accepted.");
             return;
           }
+          markDurable();
           connection.hostActive = true;
+          addPending("management", { roomId: connection.currentRoomId, actorParticipantId: connection.member.id, action: "host.claimed" });
+          bumpCounter(connection.currentRoomId, "hostActions");
           send({
             type: "host.claimed",
             roomId: connection.currentRoomId,
@@ -967,7 +1243,10 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
 
             if (message.type === "host.grantPublisher") {
+              markDurable();
               publisherGrants.get(roomId)!.add(targetMemberId);
+              addPending("management", { roomId, actorParticipantId: connection.member.id, targetParticipantId: targetMemberId, action: "publisher.granted" });
+              bumpCounter(roomId, "hostActions");
               broadcastHostPublisherGrants(roomId);
               sendPublishPermission(target.socket, target.connection);
               sendHostResult("grantPublisher", { participantId: targetMemberId, allowed: true });
@@ -975,7 +1254,10 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
 
             if (message.type === "host.revokePublisher") {
+              markDurable();
               publisherGrants.get(roomId)!.delete(targetMemberId);
+              addPending("management", { roomId, actorParticipantId: connection.member.id, targetParticipantId: targetMemberId, action: "publisher.revoked" });
+              bumpCounter(roomId, "hostActions");
               broadcastHostPublisherGrants(roomId);
               const relays = mediaRooms.get(roomId)!;
               relays.audio.stopPublishing(target.connection.id, "permission_revoked");
@@ -989,10 +1271,14 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
 
             const removedMember = target.connection.member!;
+            markDurable();
+            recordParticipant(target.connection);
             target.connection.removed = true;
             target.connection.hostActive = false;
-          resumeSessions.invalidateParticipant(targetMemberId);
-          target.connection.resumeToken = undefined;
+            for (const digest of resumeSessions.invalidateParticipant(targetMemberId)) addPending("revokedSessionDigests", digest);
+            target.connection.resumeToken = undefined;
+            addPending("management", { roomId, actorParticipantId: connection.member.id, targetParticipantId: targetMemberId, action: "participant.removed" });
+            bumpCounter(roomId, "hostActions");
             publisherGrants.get(roomId)!.delete(targetMemberId);
             broadcastHostPublisherGrants(roomId);
             members.delete(targetMemberId);
@@ -1006,7 +1292,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             sendHostResult("removeParticipant", { participantId: targetMemberId });
             emit("member.left", removedMember, roomId);
             broadcastSpaceState();
-            target.socket.close(4001, "Removed by host");
+            closeSocket(target.socket, 4001, "Removed by host");
             return;
           }
 
@@ -1027,7 +1313,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_room_password", "The meeting room password must be different from the host token.");
               return;
             }
+            markDurable();
             roomAccess.setMeetingRoomPassword(message.password);
+            addPending("management", { roomId, actorParticipantId: connection.member.id, action: "room.password.changed", details: { revision: roomAccess.admissionRevision(roomId) } });
+            bumpCounter(roomId, "hostActions");
             broadcastRoomCatalogue();
             broadcastSpaceState();
             sendHostResult("setMeetingRoomPassword", { roomId, isLocked: true });
@@ -1043,7 +1332,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("host_wrong_room", "Meeting room lock controls are available only while you are in the meeting room.");
               return;
             }
+            markDurable();
             roomAccess.setMeetingRoomPassword(null);
+            addPending("management", { roomId, actorParticipantId: connection.member.id, action: "room.unlocked", details: { revision: roomAccess.admissionRevision(roomId) } });
+            bumpCounter(roomId, "hostActions");
             broadcastRoomCatalogue();
             broadcastSpaceState();
             sendHostResult("unlockMeetingRoom", { roomId, isLocked: false });
@@ -1055,7 +1347,14 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_host_control", "End session accepts no additional fields.");
               return;
             }
+            markDurable();
+            const endedGrants = [...publisherGrants.get(roomId)!];
             publisherGrants.get(roomId)!.clear();
+            for (const participantId of endedGrants) {
+              addPending("management", { roomId, actorParticipantId: connection.member.id, targetParticipantId: participantId, action: "publisher.revoked", details: { reason: "session_ended" } });
+            }
+            addPending("management", { roomId, actorParticipantId: connection.member.id, action: "host.session_ended", details: { grantCount: endedGrants.length } });
+            bumpCounter(roomId, "hostActions");
             broadcastHostPublisherGrants(roomId);
             const relays = mediaRooms.get(roomId)!;
             for (const [targetSocket, targetConnection] of clients) {
@@ -1077,7 +1376,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_interaction_control", "Set the presentation pause state using a boolean paused field.");
               return;
             }
+            markDurable();
             interactions.setPaused(roomId, message.paused);
+            addPending("moderation", { roomId, actorParticipantId: connection.member.id, action: "presentation.paused", details: { paused: message.paused } });
+            bumpCounter(roomId, "hostActions");
             broadcastInteractionState(roomId);
             sendHostResult("interaction.setPaused", { roomId, paused: message.paused, queueCount: interactions.snapshot(roomId).queueCount });
             return;
@@ -1088,7 +1390,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_interaction_control", "Set public danmaku acceptance using a boolean enabled field.");
               return;
             }
+            markDurable();
             interactions.setDanmakuEnabled(roomId, message.enabled);
+            addPending("moderation", { roomId, actorParticipantId: connection.member.id, action: "danmaku.acceptance.changed", details: { enabled: message.enabled } });
+            bumpCounter(roomId, "hostActions");
             broadcastInteractionState(roomId);
             sendHostResult("interaction.setDanmakuEnabled", { roomId, enabled: message.enabled });
             return;
@@ -1099,7 +1404,12 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_interaction_control", "Clear the public queue without extra fields.");
               return;
             }
+            markDurable();
+            const queueItems = interactions.publicQueueRecords(roomId);
             const clearedCount = interactions.clearPublicQueue(roomId);
+            for (const item of queueItems) addPending("tombstones", { interactionId: item.id, roomId, action: "clearQueue", actorParticipantId: connection.member.id });
+            addPending("moderation", { roomId, actorParticipantId: connection.member.id, action: "public_queue.cleared", itemCount: clearedCount });
+            bumpCounter(roomId, "hostActions");
             broadcastInteractionState(roomId);
             sendHostResult("interaction.clearQueue", { roomId, clearedCount });
             return;
@@ -1110,7 +1420,13 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("invalid_interaction_control", "Remove one current room item using its server-issued interaction ID.");
               return;
             }
+            markDurable();
             const removed = interactions.remove(roomId, message.interactionId);
+            if (removed) {
+              addPending("tombstones", { interactionId: message.interactionId, roomId, action: "remove", actorParticipantId: connection.member.id });
+              addPending("moderation", { roomId, actorParticipantId: connection.member.id, action: "interaction.removed", itemCount: 1, details: { interactionId: message.interactionId } });
+            }
+            bumpCounter(roomId, "hostActions");
             if (removed) broadcastInteractionState(roomId);
             sendHostResult("interaction.remove", { roomId, interactionId: message.interactionId, removed });
             return;
@@ -1186,6 +1502,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
 
+          markDurable();
           const member = { id: randomUUID(), displayName };
           const role = (message.role as ParticipationRole | undefined) ?? "participant";
           const mode = (message.mode as ParticipationMode | undefined) ?? "watch";
@@ -1223,6 +1540,7 @@ export async function createApp(options: CreateAppOptions = {}) {
           mediaRooms.get(roomId)!.audio.markJoined(connection.id);
           mediaRooms.get(roomId)!.screen.markJoined(connection.id);
           members.set(member.id, member);
+          recordParticipant(connection);
           const event = emit("member.joined", member, roomId);
           sendAuthoritativeRoomState(roomId, event.seq);
           return;
@@ -1245,6 +1563,9 @@ export async function createApp(options: CreateAppOptions = {}) {
             sendProtocolError("movement_out_of_bounds", "That step is outside this room. Your position was not changed.");
             return;
           }
+          markDurable();
+          bumpCounter(connection.currentRoomId!, "moves");
+          recordParticipant(connection);
           mediaRooms.get(connection.currentRoomId!)!.audio.reconcileRecipients();
           broadcastSpaceState();
           return;
@@ -1267,10 +1588,18 @@ export async function createApp(options: CreateAppOptions = {}) {
               send({ type: "protocol.error", ...denial });
               return;
             }
+            markDurable();
+            if (publisherGrants.get(previousRoomId)!.delete(connection.member.id)) {
+              addPending("management", { roomId: previousRoomId, actorParticipantId: null, targetParticipantId: connection.member.id, action: "publisher.revoked", details: { reason: "room_switched" } });
+              bumpCounter(previousRoomId, "hostActions");
+            }
+            if (connection.hostActive) {
+              addPending("management", { roomId: previousRoomId, actorParticipantId: connection.member.id, action: "host.disconnected", details: { reason: "room_switched" } });
+              bumpCounter(previousRoomId, "hostActions");
+            }
             resumeSessions.updateRoom(connection.resumeToken, nextRoomId, roomAccess.admissionRevision(nextRoomId));
           }
           if (previousRoomId !== nextRoomId) {
-            publisherGrants.get(previousRoomId)!.delete(connection.member.id);
             broadcastHostPublisherGrants(previousRoomId);
             connection.hostActive = false;
             mediaRooms.get(previousRoomId)!.audio.disconnect(connection.id);
@@ -1281,6 +1610,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             mediaRooms.get(nextRoomId)!.screen.markJoined(connection.id);
             emit("member.left", connection.member, previousRoomId);
             space.switchRoom(connection.member.id, nextRoomId);
+            recordParticipant(connection);
             emit("member.joined", connection.member, nextRoomId);
           }
           sendAuthoritativeRoomState(nextRoomId, sequence);
@@ -1305,24 +1635,48 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
         connection.eventTimes.push(now);
         emit("reaction", connection.member, connection.currentRoomId!, message.reaction);
+      };
+
+      socket.on("message", (raw, isBinary) => {
+        if (isBinary) {
+          handleIncomingMessage(raw, true);
+          return;
+        }
+        runControl(() => handleIncomingMessage(raw, false), socket);
       });
 
       socket.on("close", () => {
-        clients.delete(socket);
-        resumeSessions.detach(connection.resumeToken, connection.id);
-        for (const relays of mediaRooms.values()) {
-          relays.audio.disconnect(connection.id);
-          relays.screen.disconnect(connection.id);
-        }
-        if (!connection.member) return;
-        if (connection.currentRoomId) {
-          publisherGrants.get(connection.currentRoomId)!.delete(connection.member.id);
-          broadcastHostPublisherGrants(connection.currentRoomId);
-        }
-        members.delete(connection.member.id);
-        space.remove(connection.member.id);
-        emit("member.left", connection.member, connection.currentRoomId!);
-        broadcastSpaceState();
+        runControl(() => {
+          clients.delete(socket);
+          if (connection.resumeToken) {
+            markDurable();
+            resumeSessions.detach(connection.resumeToken, connection.id);
+          }
+          for (const relays of mediaRooms.values()) {
+            relays.audio.disconnect(connection.id);
+            relays.screen.disconnect(connection.id);
+          }
+          const leavingMember = connection.member;
+          const leavingRoom = connection.currentRoomId;
+          if (!leavingMember || !leavingRoom) return;
+          recordParticipant(connection);
+          if (connection.hostActive) {
+            addPending("management", { roomId: leavingRoom, actorParticipantId: leavingMember.id, action: "host.disconnected" });
+            bumpCounter(leavingRoom, "hostActions");
+          }
+          if (publisherGrants.get(leavingRoom)!.delete(leavingMember.id)) {
+            addPending("management", { roomId: leavingRoom, actorParticipantId: null, targetParticipantId: leavingMember.id, action: "publisherGrant.revoked", details: { reason: "participant_disconnected" } });
+            bumpCounter(leavingRoom, "hostActions");
+          }
+          broadcastHostPublisherGrants(leavingRoom);
+          members.delete(leavingMember.id);
+          space.remove(leavingMember.id);
+          connection.hostActive = false;
+          connection.member = undefined;
+          connection.currentRoomId = undefined;
+          emit("member.left", leavingMember, leavingRoom);
+          broadcastSpaceState();
+        }, socket);
       });
 
       socket.on("error", () => {
@@ -1332,7 +1686,53 @@ export async function createApp(options: CreateAppOptions = {}) {
   );
 
   app.addHook("onClose", async () => {
+    appClosing = true;
     clearInterval(interactionPruneTimer);
+    clearInterval(sessionHeartbeatTimer);
+    await controlExecutor.drain();
+    if (persistence && !persistenceFailed && clients.size > 0) {
+      const context: ControlWriteContext = { outbox: [], outboxBytes: 0, overflow: false, closes: [], closeTargets: new Set(), required: false, pending: emptyPendingPersistence() };
+      activeWriteContext = context;
+      try {
+        for (const [socket, connection] of clients) {
+          if (connection.resumeToken) resumeSessions.detach(connection.resumeToken, connection.id);
+          const leavingMember = connection.member;
+          const leavingRoom = connection.currentRoomId;
+          if (leavingMember && leavingRoom) {
+            recordParticipant(connection);
+            if (connection.hostActive) {
+              addPending("management", { roomId: leavingRoom, actorParticipantId: leavingMember.id, action: "host.disconnected", details: { reason: "app_shutdown" } });
+              bumpCounter(leavingRoom, "hostActions");
+            }
+            if (publisherGrants.get(leavingRoom)!.delete(leavingMember.id)) {
+              addPending("management", { roomId: leavingRoom, actorParticipantId: null, targetParticipantId: leavingMember.id, action: "publisherGrant.revoked", details: { reason: "app_shutdown" } });
+              bumpCounter(leavingRoom, "hostActions");
+            }
+            const shutdownEvent: ControlEvent = {
+              seq: ++sequence,
+              kind: "member.left",
+              roomId: leavingRoom,
+              participantId: leavingMember.id,
+              displayName: leavingMember.displayName,
+              at: Date.now(),
+            };
+            addPending("controlEvents", shutdownEvent);
+            bumpCounter(leavingRoom, "leaves");
+            members.delete(leavingMember.id);
+            space.remove(leavingMember.id);
+            connection.member = undefined;
+            connection.currentRoomId = undefined;
+            connection.hostActive = false;
+          }
+          try { socket.close(1001, "Server shutting down"); } catch { /* Socket may already be closing. */ }
+        }
+        if (context.required) await persistence.save(durableSnapshot(), context.pending);
+      } catch {
+        persistenceFailed = true;
+      } finally {
+        activeWriteContext = null;
+      }
+    }
     clients.clear();
     members.clear();
     for (const grants of publisherGrants.values()) grants.clear();
@@ -1342,6 +1742,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       relays.audio.close();
       relays.screen.close();
     }
+    await persistence?.close();
   });
 
   return app;

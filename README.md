@@ -2,7 +2,7 @@
 
 One Fastify process serves the React page, health and room APIs, and one WebSocket endpoint. The local POC now has two rooms, server-backed pixel avatars, bounded room controls, Opus audio, and VP8 screen sharing.
 
-This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Its state is volatile process memory.
+This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Without `DATABASE_URL`, it keeps state in volatile process memory; local development can opt into PostgreSQL 18 for system information.
 
 ## Runtime and exact dependencies
 
@@ -24,7 +24,7 @@ npm ci --cache "$PWD/.cache/npm"
 
 The implementation environment is macOS arm64. On another operating system or CPU architecture, use the matching archive name and verify its entry in the same official checksum file. The package lock keeps direct and transitive package versions, registry URLs, and integrity hashes fixed. `npm run licenses` writes an ignored inventory with the installed package versions and package-declared licenses to `.scratch/t01/dependency-inventory.json`.
 
-Direct runtime packages are `fastify@5.12.8`, `@fastify/websocket@11.3.6`, `@fastify/static@10.1.8`, `react@19.3.1`, `react-dom@19.3.1`, and `phaser@4.2.1` (MIT). The client build, type checking, integration harness, and Playwright browser script use pinned development packages in `package.json`. Project metadata declares Apache-2.0 to match the existing `LICENSE` file.
+Direct runtime packages are `fastify@5.12.8`, `@fastify/websocket@11.3.6`, `@fastify/static@10.1.8`, `react@19.3.1`, `react-dom@19.3.1`, and `phaser@4.2.1` (MIT); PostgreSQL mode also uses `pg@8.23.1`. The client build, type checking, integration harness, and Playwright browser script use pinned development packages in `package.json`. Project metadata declares Apache-2.0 to match the existing `LICENSE` file.
 
 ## Build and run
 
@@ -33,11 +33,43 @@ With the pinned Node runtime on `PATH`:
 ```sh
 npm run typecheck
 npm run test:integration
+npm run test:persistence # optional; requires PG_TEST_DATABASE_URL
 npm run build
 npm start
 ```
 
 By default the app listens on `http://127.0.0.1:4173`. It serves the built page at `/`, a health response at `/api/health`, the fixed room catalogue at `/api/rooms`, and the control WebSocket at `/ws`. `HOST` and `PORT` can change the listen address. The default binds only to loopback.
+
+## PostgreSQL 18 local development
+
+For a local database, copy `.env.example` to `.env`, set the same local-only password in `POSTGRES_PASSWORD` and `DATABASE_URL`, replace the sample `HOST_CONTROL_TOKEN`, then start the database and app:
+
+```sh
+cp .env.example .env
+docker compose up -d --wait postgres
+npm run build
+npm start
+```
+
+The Compose service uses the official `postgres:18.6-bookworm` image, binds only to `127.0.0.1:55432`, and stores data in the named `laitse-postgres18-data` volume mounted at PostgreSQL 18's `/var/lib/postgresql` directory. Stop it with `docker compose down`; that leaves the named volume in place. The checked-in `.env.example` credentials are local samples and must be changed before use. `.env` is ignored by Git.
+
+Set `DATABASE_URL` to enable database mode. Without it, `/api/health` reports `process-memory`; with it, health reports `postgresql` and the actual availability state. The first database startup seeds the current fixed rooms, startup meeting-room verifier, interaction presentation defaults, and whether managed host controls are enabled. Later startup environment values do not overwrite saved room passwords or the managed-host setting. The same host-token-enabled state must be present at every startup; the token value itself is never saved, so it can be rotated while host controls remain enabled. A mismatch fails startup instead of changing the saved management mode.
+
+PostgreSQL stores room lock verifier and revision, participant identity/role/mode and last room position, resumable session digests and expiry, chat/danmaku/sticker/feedback archive, interaction deduplication, moderation tombstones, host grant/revoke audit, capability observations, control event history, and durable room activity counters. A session resume restores a participant only after its proof and current room admission are validated. It restores the same participant ID, mode, and last position. Boot clears active connection ownership and starts with no online members, host claim, or publisher grant. For crash recovery, an active session has a ten-minute lease refreshed every minute; it can resume after restart only while that saved lease is still valid. A deliberate session leave and host removal revoke its proof.
+
+Live interaction windows follow the existing in-memory limits: short public danmaku and feedback projections expire while the separate archive remains. Clearing the public queue marks those items as cleared in that projection while keeping their history; removing an item writes a moderation tombstone so it is excluded from later projections without deleting its archive row. No archive retention or cleanup policy is configured yet. Media payloads, raw session tokens, passwords, host tokens, and transport queues are not stored. The lightweight `/api/media-diagnostics` counters remain process-local and reset at startup; they are not durable activity statistics.
+
+Text control operations run through a bounded serial executor. In database mode, each durable state transaction commits before its ACK or broadcast is sent. The app holds one PostgreSQL advisory lock; a second active app for the same database is rejected. A failed transaction or lost lock fails the app closed and drops staged output rather than claiming success. Binary media continues to relay without per-packet database writes.
+
+The opt-in database integration test refuses any database except the dedicated `laitse_poc_test` database, creates a random per-run schema, and drops only that schema during cleanup:
+
+```sh
+PG_TEST_DATABASE_URL='postgresql://user:password@127.0.0.1:55433/laitse_poc_test' npm run test:persistence
+```
+
+That test is local POC evidence. It does not validate PostgreSQL hosting, production backup/retention, capacity, or Cloud Run deployment.
+
+[POC-06-R002](docs/poc/evidence/POC-06-R002/README.md) records the verified local persistence slice: core tests, actual PostgreSQL integration, an ACK-before-SIGKILL diagnostic, same-volume container restart, and two trusted Firefox pages restoring their original identities, chat, feedback and current password gate. Its browser reproduction uses `node scripts/database-restart-browser.mjs` with the `PG_BROWSER_*` environment values documented there; the runner owns its application processes and expects a fresh disposable test database. Full POC and production readiness remain separate.
 
 To use local HTTPS and WSS, create an isolated development CA and localhost certificate, then start the same application with both certificate paths:
 
@@ -84,7 +116,7 @@ The server exposes two fixed rooms: `lobby` (`Local test room`) and `studio`. A 
 
 WebSocket connections must have an Origin matching the request's scheme and host. Malformed, unknown, or invalid control frames close the connection. Regular text controls remain limited to 1 KiB, capability reports keep their separate 8 KiB limit, accepted reactions are limited to 10 per connection per second, and the shared outbound socket queue is capped at 1.5 MiB. Audio keeps its 24-byte LTA1 header and 4 KiB Opus payload limit. Screen video uses a separate 24-byte LTS1 header with a maximum 512 KiB payload; the WebSocket parser allows that bounded frame size while application checks preserve the smaller text limits. Screen publication is limited to one publisher, VP8, 1280×720, 15 fps, and 1.5 Mbit/s. The page keeps only the most recent 20 room events for display.
 
-Capability reports use a separate, fixed schema and an application-level 8 KiB limit; regular room controls remain limited to 1 KiB. A joined connection can explicitly send one report, which the server associates with its own connection ID, joined member, room, observation ID, and server time. The server validates and stores at most the latest 64 reports in process memory. `GET /api/observations/:id` is unauthenticated in this local POC; the random observation ID is a lookup key, not an authorization system. Keep this server on a private development LAN and stop it after the test. The codec and API values are browser-reported; the server does not independently verify them.
+Capability reports use a separate, fixed schema and an application-level 8 KiB limit; regular room controls remain limited to 1 KiB. A joined connection can explicitly send one report, which the server associates with its own connection ID, joined member, room, observation ID, and server time. The server validates reports and keeps the latest 64 in a process-local read cache; PostgreSQL mode also archives each accepted observation and resolves it by ID after restart. `GET /api/observations/:id` is unauthenticated in this local POC; the random observation ID is a lookup key, not an authorization system. Keep this server on a private development LAN and stop it after the test. The codec and API values are browser-reported; the server does not independently verify them.
 
 ## T02 browser capability check and phone setup
 
@@ -211,11 +243,11 @@ For a short managed-mode browser run, start the server with the same private `HO
 
 After joining a room, the interaction panel separates three official feedback buttons (**👍 讚**, **👂 我想聽**, **💡 這個實用**), plain-text chat, fixed emoji stickers, and the separate **公開彈幕** form. Only an explicit public-danmaku submission appears in the public presentation area. Chat and stickers remain in the room history. The legacy `wave`, `clap`, and `heart` room-presence events remain available for the earlier protocol check; they are separate from these three feedback types.
 
-The server derives the room and participant from the current WebSocket membership. `interaction.submit` accepts only the selected kind and its corresponding content fields; client-supplied room or role fields are rejected. Chat is limited to 300 Unicode code points, public danmaku to 60, and the fixed sticker set is `✨`, `👏`, `❤️`, `🎉`, and `🌱`. Text is rendered as React text; this slice does not accept HTML or uploaded images. These are local POC rules, not durable accounts or stored chat history.
+The server derives the room and participant from the current WebSocket membership. `interaction.submit` accepts only the selected kind and its corresponding content fields; client-supplied room or role fields are rejected. Chat is limited to 300 Unicode code points, public danmaku to 60, and the fixed sticker set is `✨`, `👏`, `❤️`, `🎉`, and `🌱`. Text is rendered as React text; this slice does not accept HTML or uploaded images. These are local POC rules, not durable accounts; PostgreSQL mode archives chat history as described above.
 
 In managed mode, the current connection's T09 host claim exposes four separate controls: pause or resume public display, allow or block new public danmaku, clear the public queue, and remove one item from both the room history and public queue. Pausing hides display while accepting new items into the bounded queue; blocking rejects new danmaku while chat and feedback continue. Resume only exposes unexpired items. Hosts use the existing T09 token field; there is no second host credential or display route.
 
-The deliberately small local limits are: 50 history items retained for 5 minutes, 20 public items with an 8-second expiry, rolling feedback counts and distinct participants over 60 seconds with at most 512 retained feedback records per room, and 2,048 deduplication records held for 10 minutes. A connection may send up to 10 interactions per second and one feedback event per second. Duplicate sender/event-ID payloads return an ACK without rebroadcasting or recounting; reusing an ID with different content or in another room is rejected. If the bounded deduplication cache is full, new events are rejected until retained IDs expire rather than evicting a still-valid ID. These fixture values are adjustable engineering choices, not approved product defaults. All state clears when the server process stops.
+The deliberately small local limits are: 50 history items retained for 5 minutes, 20 public items with an 8-second expiry, rolling feedback counts and distinct participants over 60 seconds with at most 512 retained feedback records per room, and 2,048 deduplication records held for 10 minutes. A connection may send up to 10 interactions per second and one feedback event per second. Duplicate sender/event-ID payloads return an ACK without rebroadcasting or recounting; reusing an ID with different content or in another room is rejected. If the bounded deduplication cache is full, new events are rejected until retained IDs expire rather than evicting a still-valid ID. These fixture values are adjustable engineering choices, not approved product defaults. In process-memory mode all state clears when the server process stops; PostgreSQL mode restores active projections within these same TTL and item bounds while retaining the separate archive.
 
 The display uses the server timestamp in each state update with elapsed local monotonic time to hide expired items while waiting for the next server update. This is a local display estimate, not a cross-device clock calibration or latency measurement.
 
@@ -223,10 +255,10 @@ For focused server contracts, run `node --test tests/interactions.integration.te
 
 ## Data classification and limitations
 
-- **Fixed, versioned setup:** the lobby/studio catalogue and room names are source constants in `src/server/space.ts`; a build from the same source reconstructs them.
-- **Execution-time data:** current room members, avatar room/grid positions, connection membership, event/space sequences, per-room audio and screen publisher generations, explicit subscriptions, bounded media counters, bounded chat history, public-danmaku queues, rolling feedback aggregates, and deduplication records exist in server process memory. A disconnect removes that participant and stops their streams. These values clear when the server process stops or is replaced. Visible recent events, interaction lists and presentation items, the Phaser render report, playback counters, screen frame counters, and screen preview pixels exist only in the page and clear when the page reloads or the participant leaves.
-- **Not durable:** there is no database, file persistence, verified account identity or role authorization, durable event history, or cross-process coordination. A future multi-instance Cloud Run deployment would give instances separate memory and can lose all current state on replacement. This local result does not establish a persistence or Cloud Run recovery design.
-- **Not implemented in this POC:** authenticated accounts, account-bound private access, verified human roles, production capacity, phone verification, multi-instance media routing, durable interaction history, or durable media storage. T08/T09/T10 enforce room membership and temporary host/publisher/interaction controls by server-created connection state within this one process; they do not verify that a connection belongs to a particular person. Physical A/V quality and mobile support remain untested.
+- **Fixed, versioned setup:** the lobby/studio catalogue, room names, movement grid, and media routing policies are source constants in `src/server/space.ts`; PostgreSQL stores current door/password verifier and interaction presentation settings, not an editable room catalogue.
+- **PostgreSQL system information:** when `DATABASE_URL` is set, room gate revisions, participant ID/role/mode/last room position, short-lived proof digests, interaction archive/dedup/moderation state, control events, capability observations, and activity counters persist in PostgreSQL. On boot, only a participant who later presents a valid unexpired proof becomes online; other saved participant rows do not appear as ghosts. Host claims and publisher grants always start inactive.
+- **Execution-time media and diagnostics:** current sockets, subscriptions, audio/screen publisher generations, transport budgets, byte/frame diagnostics, playback counters, and screen preview pixels remain process- or page-local. Raw media payloads are not stored. A disconnect stops its streams; the app restart does not restore a publisher or subscription automatically.
+- **Not implemented in this POC:** authenticated accounts, account-bound private access, verified human roles, production backup/retention, capacity guarantees, phone verification, multi-instance media routing, or durable media storage. A single-app advisory lock rejects a second active PostgreSQL-backed process; this is not multi-instance support. Physical A/V quality and mobile support remain untested.
 
 ## Focused commands
 
@@ -278,7 +310,7 @@ T11 desktop core evidence is saved in [POC-03-R007](docs/poc/evidence/POC-03-R00
 
 ### T12: control connection recovery
 
-After a participant or read-only display joins, the server may issue a short-lived opaque control-session token. The browser keeps it in that tab's `sessionStorage`; it is not added to a URL or QR code. If `sessionStorage` is unavailable, recovery works only while the current page remains open. The server holds the session in process memory and expires it ten minutes after its WebSocket disconnects; a server restart discards it. The local store is capped at 512 sessions and refuses new resumable joins when full rather than evicting an unexpired session.
+After a participant or read-only display joins, the server may issue a short-lived opaque control-session token. The browser keeps it in that tab's `sessionStorage`; it is not added to a URL or QR code. If `sessionStorage` is unavailable, recovery works only while the current page remains open. In memory mode the server holds the session in process memory and expires it ten minutes after its WebSocket disconnects. In PostgreSQL mode it saves only a SHA-256 proof digest and a ten-minute active lease refreshed every minute; after restart the lease is cleared from active ownership and the same proof can resume only while its saved expiry is still valid. The local store is capped at 512 sessions and refuses new resumable joins when full rather than evicting an unexpired session.
 
 An unexpected control-socket close triggers up to eight retries, starting near 250 ms and capped near two seconds with jitter. The participant or display status shows the reconnect state and offers manual retry after the automatic attempts stop. Refreshing the same tab also attempts recovery. The server chooses the saved participant ID, room, role, and participation mode, then sends a fresh room and interaction snapshot. A direct room URL that does not match the saved entry context clears that local recovery candidate and uses the normal join flow instead. The browser updates the room URL after an accepted room switch so a later refresh points to the latest room.
 
@@ -342,4 +374,4 @@ Build the app first with pinned Node 26.13.0. `node scripts/process-restart-smok
 
 The three-browser scenario observes active synthetic Opus/VP8 and room control across a real application stop and a new process start with the same startup configuration. It distinguishes fixed scene reconstruction, rejection of old resume credentials, new participant identities, fresh host claims, manually restarted sources, and data that is absent after restart. Changing the live room password before the restart makes the difference between startup configuration and unsaved runtime state observable.
 
-The current application stores dynamic room/session/interaction state in memory. Rejoining and starting a new session is an operational recovery path; it does not mean old identities, runtime settings, grants, or history were restored. See the POC-06 run and SOL-007 in `docs/poc/mvp-handoff.md` for the verified data classification and unresolved durability decision. This runner does not add storage, change the product's data-loss policy, or test Cloud Run. Keep credentials out of command history and retained evidence.
+This describes the historical 2026-11-05 T18/R001 run, before PostgreSQL persistence was implemented: that run observed process-memory loss and remains valid evidence of its tested build. The PostgreSQL 18 local path is documented above; it does not rewrite T18's result or establish production backups, database hosting, or Cloud Run recovery. Keep credentials out of command history and retained evidence.

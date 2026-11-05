@@ -92,8 +92,11 @@ export function createSpaceModel() {
   const players = new Map<string, SpacePlayer>();
 
   return {
-    add(member: SpaceMember, roomId: RoomId): SpacePlayer {
-      const spawn = spawnPosition(roomId, players);
+    add(member: SpaceMember, roomId: RoomId, restoredPosition?: Position): SpacePlayer {
+      const spawn = restoredPosition && Number.isInteger(restoredPosition.x) && Number.isInteger(restoredPosition.y) &&
+        restoredPosition.x >= 0 && restoredPosition.x < SPACE_GRID.width && restoredPosition.y >= 0 && restoredPosition.y < SPACE_GRID.height
+        ? restoredPosition
+        : spawnPosition(roomId, players);
       const player = { ...member, roomId, ...spawn };
       players.set(member.id, player);
       return { ...player };

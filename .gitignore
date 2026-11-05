@@ -42,3 +42,7 @@ dist/
 .scratch/t17/
 
 .scratch/t18/
+
+.scratch/postgres/
+.env
+.env.local

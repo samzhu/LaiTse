@@ -1,7 +1,7 @@
 # POC 至 MVP 方案交接表
 
-- 權威計畫：[POC-PLAN v1.1](plan.md)；實際證據：[執行紀錄](execution-log.md)。
-- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18操作重建可行；SOL-007目前記憶體方案需重構／耐久No-Go。**目前仍無完整階段證據可列穩定可採用**。
+- 權威計畫：[POC-PLAN v1.3](plan.md)；實際證據：[執行紀錄](execution-log.md)。
+- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**目前仍無完整階段證據可列穩定可採用**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
 ## 候選方案
@@ -14,7 +14,7 @@
 | SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
 | SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 驗證中（T11桌面核心可行） | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
 | SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12控制＋T13桌面接收恢復核心可行，品質/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
-| SOL-007 | 資料分類、保存與程序重啟恢復 | 需重構（T18操作重建可行；目前動態保存No-Go） | T01盤點；POC-06-R001實停重啟／資料遺失 | 必要資料耐久來源與還原未解，完整POC-06及商品Go未通過 |
+| SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（PostgreSQL18本機保存／恢復核心可行） | R001記憶體No-Go；R002 PG整合／SIGKILL／雙Firefox／同volume重啟 | 部署／備份／保留政策及完整POC06待；不整包視為商品完成 |
 | SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
 
 ## 每個方案的交接內容
@@ -46,22 +46,27 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - 條件（依DEC-010更新）：T01桌面核心可行及使用方式已確認；不再因固定重跑次數阻擋POC，完整SOL-001仍需對應未測範圍；T02手機／能力矩陣、其後媒體與CloudRun相容仍未測。3項moderate依賴稽核節點及目前未觸及路徑判讀見R001 review.md；改glob／static設定或上MVP前重查修補相容性。
 - MVP前須重構／移除：固定測試房間、合成控制與可見debug活動、以連線代身份；補正式Room／Session／授權、恢復、背壓品質與部署資料方案。不把本機CA或測試profile移入產品部署。
 
-## SOL-007／資料風險交接清冊（T01建立，T18於2026-11-05更新）
+## SOL-007／資料保存與恢復清冊（T01建立，DEC-012／R002於2026-11-05更新）
 
-沿用本表作唯一資料分類清冊；[POC-06-R001](evidence/POC-06-R001/README.md)提供實測，不另建第二份盤點。
+本表為唯一資料分類清冊；[R001](evidence/POC-06-R001/README.md)保存舊memory反例，[R002](evidence/POC-06-R002/README.md)是新PostgreSQL候選證據。SQL權威實作在 `db/migrations/001_system_persistence.sql`，12張領域表加schema_migrations。
 
-| 類別 | 現有來源／保存 | 復原與未解風險 |
+| 類別 | 現有來源／保存（DATABASE_URL模式） | 復原與未解風險 |
 |---|---|---|
-| 固定場景／房間 | SPACE_ROOMS、原始碼與build的lobby／studio | T18同source實重啟重建；非動態場景耐久保存 |
-| 啟動設定／密鑰 | HOST／PORT／TLS、HOST_CONTROL_TOKEN、MEETING_ROOM_PASSWORD環境；ignored本機TLS檔 | T18同設定重新提供A與token；不是由舊process回復。私鑰/token不提交，產品密鑰管理仍待 |
-| 執行期門禁／主持控制 | process-memory gate revision、密碼hash、host claim、publisher grants | T18 live密碼B遺失，startup A可用；主持需重新claim，defaultdeny非持久撤權名單。需決定哪些設定必須耐久 |
-| 成員／位置／臨時Session | process-memory server UUID、session store/opaque proof、模式與位置 | T12/13同程序短期resume可行；T18舊三proof resume_invalid，手動重入是新UUID/出生位置，首位只有自己。非帳號/耐久身份/ACL |
-| 互動回饋／歷史／去重 | InteractionStore process-memory，bounded TTL/queue/dedup | T18一筆回饋DOM1→0已實測；聊天／彈幕／去重未做重啟測試，僅source可知無耐久來源。短期TTL不能自動等同人類接受任意重啟丟失 |
-| 媒體來源／訂閱／時基 | process-memory relay/controller/queue，page捕捉tracks與接收意圖 | T18來源停止、不auto復活；新身份手動開來源/訂閱可實播，新clock、generation可重設1。非保存媒體或持續Session |
-| 序號／統計／觀測 | process-memory server counters與有限page診斷 | T18首位新房snapshot lastSeq1；其他統計未逐項測，source顯示無耐久保存／跨instance協調，不當產品歷史統計 |
-| POC證據 | 經選擇JSON/log/PNG開發檔案 | 持久供開發追溯，不是產品資料儲存或CloudRun耐久方案 |
+| 固定場景／房間 | SPACE_ROOMS原始碼與build，可重建的lobby／studio；room_settings保存既有房間可變設定 | 場景編輯器／動態新增房間未實作，不假稱地圖可由DB自由編輯 |
+| 啟動設定／密鑰 | DB URL／TLS／host bootstrap token留環境或本機ignored檔；application_settings保存managed_host_mode | 初次seed後不允許缺token降成unmanaged；token可輪替，值不存DB。正式密鑰管理與託管未定 |
+| 門禁／顯示設定 | room_settings：密碼salt/verifier、鎖定/revision、presentation pause、danmaku enabled | DB已有設定優先於env seed。R002兩真browser驗B仍有效、A被拒絕；無明文密碼 |
+| 參與者／位置／模式 | participants：UUID、名稱、role/mode、最後房間/位置與last_seen_at | PG整合驗原ID/interaction模式/位置恢復；不等於正式帳號／跨裝置認證。boot不載入ghost在線成員 |
+| Session／撤銷 | control_sessions：SHA256 proof digest、門禁revision、到期/撤銷、active connection；bearer只在browser/短期memory | active lease10分鐘、每分鐘續租，crash從最近commit的lease判斷；正常斷線後10分鐘。有效proof仍核最新gate；expired/leave/kick不復活。無永久Session承諾 |
+| 聊天／彈幕／貼圖／回饋 | interaction_archive追加原始互動，history/live到期時間、remove tombstone、public_cleared_at；interaction_dedup另存摘要與TTL | archive與畫面TTL分開：history50/5分鐘、公開20/8秒、feedback60秒；clear公開不刪history，remove不在恢復投影重現。重啟與去重已驗，archive未設自動清理／正式保留期限，歷史查詢UI未新增 |
+| 管理／授撤權／活動歷史 | management_audit、moderation_audit、control_event_archive保存host/主講/門禁/管理與join/leave/reaction事件 | 保存audit不等於舊host/publisher有效權限自動恢復；舊權清空、需正常重認領／重授權。正式帳號ACL仍待 |
+| 序號／業務統計／能力觀測 | application_counters、room_counters累計join/leave/move/reaction/interaction/capability/host action；capability_observations保存已清理client自報 | PG重啟驗序號/累計不重置、去重不重複計數與觀測ID讀回。觀測仍屬POC診斷、非正式產品統計與授權API完成 |
+| 即時媒體／傳輸診斷 | relay/socket/PCM/video queue、stream clock/generation、/api/media-diagnostics counters仍process-local | 不錄影錄音、不逐包寫DB；sources須手動重開，接收沿既有意圖規則。queue/callback/RMS不是耐久業務統計，本輪browser只驗資料、未重做真影音 |
+| 本機草稿／播放選擇 | 未送出draft、音量、捕捉權限仍在原page/browser，沒有新增上傳介面 | 本輪保存伺服器已接受系統資料，不把未送出內容或瀏覽器媒體權限寫成DB功能 |
+| POC證據 | 選擇的JSON/log/PNG與程式指紋作開發檔案 | 不當成產品儲存或備份方案；private env/CA/profile不提交 |
 
-**操作重建可行，必要動態資料尚無還原來源；目前process-memory候選耐久No-Go，完整T18／POC-06未通過。** 沒有加入DB／Redis／VM／disk snapshot或額外服務，沒有替人類接受資料遺失。固定可重建不等於執行期資料已保存。後續需決定必要保存項目與符合部署條件的耐久來源；No-Go限目前候選，不宣稱所有單一CloudRun架構不可能。平台依官方文件的界線見R001/platform-boundary，本輪只有本機實測。帳號／正式身份不存在，不能用bootstrap token替代。
+**R002已解決本輪已提交系統資料隨app死亡遺失的核心缺口，PostgreSQL候選可延續；R001記憶體候選No-Go保留，完整POC-06與MVP Go仍未宣告通過。** 有DATABASE_URL時失敗failclosed，不悄悄轉memory；未設URL的舊memory路徑只供隔離／歷史POC相容。當前是單active app writer＋PG advisory lock，非多instance架構；每次控制提交保存當前狀態與增量archive，尚未做大量寫入優化或容量驗證。
+
+本機Docker18.6 compose與named volume已驗，同volume容器重啟13表筆數/row fingerprints一致。這不等於備份還原／主機替換／HA／CloudRun與資料庫託管已驗；資料保留期限、清理、正式身份/ACL及備份需後續設計，沒有擅自加入Redis/其他影音服務或接受資料遺失。
 
 ## DEC-010後的輕量交接補充
 
@@ -213,3 +218,24 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-003／006：三舊proof拒絕、不自動匿名加入／重認領／發布／訂閱；重載正常門禁後新UUID、主持人工claim、fresh來源clock與實播可操作。這是程序死亡後新Session，不是T12同程序resume；defaultdeny與偽造角色／未授權發布拒絕不等於持久ACL。
 - SOL-007：上方既有清冊已原位更新；feedback1→0與B失效/A有效是實測缺口。必要資料來源未定，仍No-Go／POC06未過，不能直接移轉記憶體store為商品保存方案。
 - SOL-008：可復用scripts/process-restart-smoke.mjs的owned child真SIGTERM／同config新PID、三真Firefox與兩短WSS probes。build/typecheck/63核心與第三輪完整短browser通過；前兩輪harness失敗與窄修保留，root獨立讀回/兩圖實看與cleanup/指紋見R001。未驗崩潰/強殺、主機替換、手機/真人/弱網、耐久品質或CloudRun；未啟T19/MVP或部署。
+
+## DEC-012／SOL-007 選型更新（2026-11-05）
+
+人類已允許 PostgreSQL 18 保存系統資訊，解除原禁止另加資料庫的限制；現有SOL-007清冊仍是唯一資料分類來源。PostgreSQL為已授權、尚未整合驗證的持久化候選；表中process-memory描述仍是當前實作事實。人類後續確認「都可以儲存」：既有SOL-007清冊中的房間／門禁、身份／Session與互動／統計系統資料均獲准納入PostgreSQL，表內記憶體現況尚未改變。房間／門禁設定可作下一個最小切片；保存期限與跨程序身份／權限恢復規則另行設計，不包含影音錄製或封包歸檔。T18/R001原No-Go不追溯改為Pass；須以新run讀回證據更新方案。未選託管商、未部署。
+
+### DEC-012持久化設計不變條件（實作中，2026-11-05）
+
+以PostgreSQL18為已提交系統資料的來源：房間與門禁/顯示設定、參與者與Session摘要/最後位置及模式、互動與回饋archive/去重、管理/授撤權歷史及累計統計/能力觀測。表與migration以實際交接後讀回填入上方SOL007清冊，不另建資料占用清冊。
+
+- 資料庫提交成功後才回覆或廣播成功，控制操作有界序列化。DB啟動/執行失敗應明示並拒絕繼續寫入，不能悄悄退回memory。無DATABASE_URL的memory模式只保留舊隔離測試/歷史POC相容，health標明模式。
+- 啟動環境的房間密碼僅初次建資料時seed；之後資料庫已有門禁優先。只存salt/verifier、Session proof摘要，host bootstrap secret不存入紀錄。
+- 互動歷史保存與即時顯示TTL分開：過期彈幕不重播、過期feedback不灌入當前60秒畫面，但archive仍可保存；刪除/管理動作保留tombstone以免重啟重現已移除內容。未建立永久保留承諾或正式管理查詢介面。
+- 重啟先視所有連線離線，不載入ghost線上成員；只有有效proof經server核對門禁後恢復臨時身份/模式/位置。已撤銷或過期不得復活。管理授權歷史可保存，舊host/publisher有效權限不自動恢復；捕捉需手動重開。
+- 影音封包、PCM/video解碼queue、socket/sendbudget只在程序；不逐包寫DB。以單一active app advisory lock保護目前候選，不把資料庫存在當成多instance協調已實作。
+- 開發使用Docker named volume；停止/重新啟動容器不等於刪volume。部署/備份/HA/正式保留政策仍在後續階段。本輪尚未驗收，不預填Pass。
+
+## DEC-012／POC-06-R002移轉結論（2026-11-05）
+
+- 可延續：pg8.23.1 repository、具版本transaction migration、單active app lock、bounded control executor/commit後outbox、room/session/interaction/管理與累計保存語意；compose18.6 local development與現有memory test adapter。不將整份POC診斷UI/固定房間視為完成商品。
+- 證據：build/typecheck、最終63核心、真PG整合、ACK後SIGKILL與advisory backend失連停止、兩Firefox原document/sameID/B密碼/chat/feedback恢復、13表同volume重啟一致。首輪memory health相容與PG fixture count錯誤、browser SIGABRT/URL事件誤判均保留修正紀錄。
+- 限制：目前同步全狀態寫入/有界控制排隊只驗少量參與者；未設archive retention/備份/HA/正式帳號/多instance/雲，完整POC06和商品Go仍待。server/Firefox/Docker容器已停止，保留測試volume。程式+紀錄本機commit，不push/T19/部署。

@@ -1,0 +1,10 @@
+[PG-BROWSER] failed operational=false fullPOC=false report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/postgres/acceptance/browser/run-2026-11-05T07-19-40.065Z-d1ca606e/report.json
+[PG-BROWSER] failure: Firefox pages should stay on their original navigation across restart.
++ actual - expected
+
+  {
++   guest: 2,
++   host: 2
+-   guest: 1,
+-   host: 1
+  }

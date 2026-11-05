@@ -1,10 +1,10 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
-- 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T17桌面核心依執行紀錄判定，T18操作重建可行、動態耐久No-Go；完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
-- 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
-- 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
-- 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
+- 識別碼：POC-PLAN；版本：v1.3；日期：2026-11-05。
+- 狀態：T01～T17桌面核心依執行紀錄判定，T18舊memory候選No-Go；DEC012/R002 PostgreSQL18本機保存恢復核心已驗，完整階段未通過；v1.3補DB／Docker路徑。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.3承接DEC-011並依DEC-012同步本機PRD v0.9與資料庫計畫，不改母Issue或遠端票。
+- 權威界線：產品目標依來坐 PRD v0.9、DEC-001～012；本計畫只定義技術驗證，不取代產品需求。
+- 執行環境：本機單一應用伺服器＋Docker PostgreSQL18、真實瀏覽器；手機仍待補，本輪不部署 Cloud Run。
 - 發布方式：GitHub Issues 為本計畫的發布鏡像，套用 `ready-for-agent`；標籤不表示已開始開發或已通過驗收。
 
 ## DEC-011新增驗證範圍（2026-11-04）
@@ -45,7 +45,7 @@
 
 主要驗證邊界為 **真實瀏覽器 → 本機單一應用的公開介面 → 另一個真實瀏覽器**。此完整流程邊界已由人類確認；原提議中的 Cloud Run 端點依人類後續指示改為本機端點。編解碼能力探測、解析器或狀態機單元測試只作必要診斷與防回歸，不替代端到端證據。
 
-POC 可使用最薄的操作介面與預設場景，不提前建造正式 MVP。測試驅動器、負載產生器和手機都是測試端，不是額外產品服務；不得為了讓方案成功，偷偷加入外部影音 SaaS、Redis、資料庫或其他部署服務。
+POC 可使用最薄的操作介面與預設場景，不提前建造正式 MVP。測試驅動器、負載產生器和手機都是測試端，不是額外產品服務；依 DEC-012 允許本機 PostgreSQL 18 儲存系統資訊；不得擅自加入外部影音 SaaS、Redis 或其他未授權部署服務。資料庫託管／正式部署未定，選型不等於恢復已驗。
 
 ### 分階段路線與進出條件
 
@@ -299,3 +299,15 @@ T17交付（2026-11-05）：[POC-05-R002](evidence/POC-05-R002/README.md)保存b
 ## T18最終紀錄（2026-11-05）
 
 T18輕量評估完成：[POC-06-R001](evidence/POC-06-R001/README.md)保存build/typecheck/63核心與第三輪三Firefox12,837ms真程序重啟流程。PID58035→58041、三舊proof拒絕且無自動操作；重載正常入房得新UUID、重新claim/手動來源與訂閱可實播。feedback1→0、live密碼B失效而startup A有效，**動態資料未恢復，目前process-memory候選耐久No-Go；完整T18/POC-06及MVP Go未通過**。兩個rawWSS越權拒絕、6個server-down預期socket錯誤已核對；前兩次harness缺陷/修正保留。root獨立讀回/兩圖實看、source指紋未變、cleanup完成。SOL-007既有清冊原位更新，未新增保存方案或接受資料遺失；app/tests/依賴未改，新增重啟驗測script與操作紀錄。writer/runtime停止釋出，程式與紀錄同一本機commit；不push/遠端票/T19/MVP/部署。
+
+## DEC-012／後續資料恢復切片（2026-11-05）
+
+已允許 PostgreSQL 18 系統資訊儲存，原禁止額外資料庫限制由此例外取代。候選最小驗測：本機 app＋PostgreSQL18，保存房間門禁變更→重啟 app→讀回相同設定→兩真瀏覽器驗原密碼／鎖定。應用程序與資料庫生命週期分開觀測；不先擴張到媒體保存或跨程序Session。精確schema／保存範圍待設計，未啟動新run；T18/R001結果不覆寫。
+
+DEC-012範圍已補充（人類原話「都可以儲存」）：房間／管理設定、身份／Session、聊天／回饋／統計皆獲准保存；可依相依分小步驗證，第一切片仍以門禁設定重啟讀回為候選。允許保存不等於所有類別已實作、永久保留或舊權限可直接復活；影音資料不列此儲存範圍。
+
+DEC-012最新執行範圍（2026-11-05）：人類已要求實際調整全部必要保存類別，Docker開發可用。POC-06-R002驗整合schema與repository、房間門禁、Session/身份/位置/模式、互動archive/liveTTL/去重、管理撤權歷史、累計統計與觀測；不只原單一門禁提案。資料庫狀態與程序狀態分開驗，舊R001不覆寫，後續依實際交付判定。
+
+## DEC-012持久化整合最終紀錄（2026-11-05）
+
+DEC-012資料庫整合完成：[POC-06-R002](evidence/POC-06-R002/README.md)保存PostgreSQL18.6 Docker／pg8.23.1與migration、系統資訊保存及恢復用法。最終build/typecheck/63核心、真PG整合、ACK後SIGKILL、advisory backend失連停止、兩真Firefox同document/原ID/最新B門禁/chat與feedback恢復、13表同volume容器重啟筆數與指紋一致。有效proof恢復不自動復活主持／發布權，畫面TTL與archive分開；SOL007唯一清冊已原位更新。首輪health shape／fixture event count及browser環境/URL事件誤判等失敗保留、窄修後重驗。完整POC06/MVP/備份/HA/多instance/正式保留政策/雲未驗；舊R001 memory No-Go不改判。所有writer已saved/readback/STOP，root驗收，server/Firefox/Docker已停、volume保留；程式與紀錄同一本機commit，不push/遠端票/T19/部署。

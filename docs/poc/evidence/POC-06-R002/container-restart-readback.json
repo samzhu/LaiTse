@@ -1,0 +1,118 @@
+{
+  "database": "laitse_poc_browser_152108",
+  "container": "laitse-poc06-r002-db",
+  "volume": "laitse-poc06-r002-data",
+  "before": {
+    "application_counters": {
+      "rows": 1,
+      "fingerprint": "2df838d649a0dcf1b3c89ebb35a0f924"
+    },
+    "application_settings": {
+      "rows": 1,
+      "fingerprint": "2b925687e7a0ae16d5efe8e20e0874a5"
+    },
+    "capability_observations": {
+      "rows": 0,
+      "fingerprint": "d751713988987e9331980363e24189ce"
+    },
+    "control_event_archive": {
+      "rows": 10,
+      "fingerprint": "bc8763bc6b11a0203dcf18155ab0c4ae"
+    },
+    "control_sessions": {
+      "rows": 2,
+      "fingerprint": "d81258b883e8043229096a0ed512a9ef"
+    },
+    "interaction_archive": {
+      "rows": 2,
+      "fingerprint": "fa8da2bfceb4db11cbcde8df5505cb3f"
+    },
+    "interaction_dedup": {
+      "rows": 2,
+      "fingerprint": "80076e372d45c92d612de47f9cef952f"
+    },
+    "management_audit": {
+      "rows": 5,
+      "fingerprint": "183b79e3db60641c0716d9348c7b43c4"
+    },
+    "moderation_audit": {
+      "rows": 2,
+      "fingerprint": "5c25d28a9896924c05321879fdfec361"
+    },
+    "participants": {
+      "rows": 3,
+      "fingerprint": "d87f3bb95b8d045c4e728a5f41558622"
+    },
+    "room_counters": {
+      "rows": 2,
+      "fingerprint": "523894bdafd4b174b644806c693ca930"
+    },
+    "room_settings": {
+      "rows": 2,
+      "fingerprint": "377c29c56496a2d80bf6c3c454166632"
+    },
+    "schema_migrations": {
+      "rows": 1,
+      "fingerprint": "17e9ef092455f47ce50550c971bcaddd"
+    }
+  },
+  "after": {
+    "application_counters": {
+      "rows": 1,
+      "fingerprint": "2df838d649a0dcf1b3c89ebb35a0f924"
+    },
+    "application_settings": {
+      "rows": 1,
+      "fingerprint": "2b925687e7a0ae16d5efe8e20e0874a5"
+    },
+    "capability_observations": {
+      "rows": 0,
+      "fingerprint": "d751713988987e9331980363e24189ce"
+    },
+    "control_event_archive": {
+      "rows": 10,
+      "fingerprint": "bc8763bc6b11a0203dcf18155ab0c4ae"
+    },
+    "control_sessions": {
+      "rows": 2,
+      "fingerprint": "d81258b883e8043229096a0ed512a9ef"
+    },
+    "interaction_archive": {
+      "rows": 2,
+      "fingerprint": "fa8da2bfceb4db11cbcde8df5505cb3f"
+    },
+    "interaction_dedup": {
+      "rows": 2,
+      "fingerprint": "80076e372d45c92d612de47f9cef952f"
+    },
+    "management_audit": {
+      "rows": 5,
+      "fingerprint": "183b79e3db60641c0716d9348c7b43c4"
+    },
+    "moderation_audit": {
+      "rows": 2,
+      "fingerprint": "5c25d28a9896924c05321879fdfec361"
+    },
+    "participants": {
+      "rows": 3,
+      "fingerprint": "d87f3bb95b8d045c4e728a5f41558622"
+    },
+    "room_counters": {
+      "rows": 2,
+      "fingerprint": "523894bdafd4b174b644806c693ca930"
+    },
+    "room_settings": {
+      "rows": 2,
+      "fingerprint": "377c29c56496a2d80bf6c3c454166632"
+    },
+    "schema_migrations": {
+      "rows": 1,
+      "fingerprint": "17e9ef092455f47ce50550c971bcaddd"
+    }
+  },
+  "sameCountsAndRowFingerprints": true,
+  "containerRestarted": true,
+  "volumeDeleted": false,
+  "databaseDeleted": false,
+  "covers": "controlled restart on same local Docker engine and same named volume; not backup restore, host replacement, or HA"
+}

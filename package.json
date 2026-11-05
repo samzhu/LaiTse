@@ -10,8 +10,9 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit",
     "build": "npm run typecheck && vite build && tsc -p tsconfig.server.json",
-    "start": "node dist/server/index.js",
+    "start": "node --env-file-if-exists=.env dist/server/index.js",
     "test:integration": "node --test tests/server.integration.test.mjs",
+    "test:persistence": "node --test tests/postgres.integration.test.mjs",
     "test:e2e": "node scripts/e2e.mjs",
     "tls:dev": "node scripts/setup-local-tls.mjs",
     "licenses": "node scripts/dependency-inventory.mjs"
@@ -20,6 +21,7 @@
     "@fastify/static": "10.1.8",
     "@fastify/websocket": "11.3.6",
     "fastify": "5.12.8",
+    "pg": "8.23.1",
     "phaser": "4.2.1",
     "qrcode-generator": "2.0.4",
     "react": "19.3.1",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "26.6.6",
+    "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/ws": "8.18.2",

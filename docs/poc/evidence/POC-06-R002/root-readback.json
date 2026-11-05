@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "method": "independent assertions over per-connection allowlist, PID lifecycle, same-document identity/timeOrigin, DOM identifiers and direct SQL metadata after container restart; no extra bearer replay or chat content retained",
+  "processPids": [
+    10761,
+    10764
+  ],
+  "ownedSigtermExit0": true,
+  "sameDocuments": true,
+  "frameUrlEventsAreNotDocumentReloads": true,
+  "sessionReadback": [
+    {
+      "client": "host",
+      "participantId": "1aff969a-3c22-4ffb-b2d0-72613b9cd42f",
+      "sameId": true,
+      "resumePasswordPresentSequence": [
+        false,
+        true
+      ],
+      "anonymousJoinCount": 0,
+      "mediaStartOrSubscribeCount": 0,
+      "autoHostClaimCount": 0,
+      "chatInteractionId": "64301264-9342-4ced-81e1-5d7e76fb00dd",
+      "feedbackCount": 1
+    },
+    {
+      "client": "guest",
+      "participantId": "6e34667c-f2b0-45f9-8e5c-31f6df4f1f00",
+      "sameId": true,
+      "resumePasswordPresentSequence": [
+        false,
+        true
+      ],
+      "anonymousJoinCount": 0,
+      "mediaStartOrSubscribeCount": 0,
+      "autoHostClaimCount": 0,
+      "chatInteractionId": "64301264-9342-4ced-81e1-5d7e76fb00dd",
+      "feedbackCount": 1
+    }
+  ],
+  "startupARejectedLiveBAccepted": true,
+  "manualHostReclaimAndPauseRoundTrip": true,
+  "expectedSocketErrors": 4,
+  "allSocketErrorsBetweenOldExitAndNewStart": true,
+  "unexpectedErrors": 0,
+  "database": "laitse_poc_browser_152108",
+  "sqlArchiveIdentifiers": [
+    {
+      "interactionId": "64301264-9342-4ced-81e1-5d7e76fb00dd",
+      "eventId": "34fe83b4-4fa3-43ee-af3f-1fd9e47d4652",
+      "kind": "chat"
+    },
+    {
+      "interactionId": "a9086af5-c795-417b-ae82-7cec50733dd8",
+      "eventId": "e441a1ba-25c3-452b-8579-a5eba47f7194",
+      "kind": "feedback"
+    }
+  ],
+  "sqlRooms": [
+    {
+      "room": "lobby",
+      "locked": false,
+      "revision": 0,
+      "saltBytes": null,
+      "verifierBytes": null
+    },
+    {
+      "room": "studio",
+      "locked": true,
+      "revision": 1,
+      "saltBytes": 16,
+      "verifierBytes": 32
+    }
+  ],
+  "sqlSessions": {
+    "count": 2,
+    "digest32": true,
+    "allDisconnected": true
+  },
+  "sqlActivityCounters": {
+    "joins": 5,
+    "moves": 0,
+    "leaves": 5,
+    "reactions": 0,
+    "host_actions": 7,
+    "interactions": 2,
+    "capability_reports": 0
+  },
+  "screenshotsActuallyInspected": [
+    "desktop/after-resume-chat-and-feedback.png"
+  ],
+  "visualReadback": "Two studio members/locked door, PostgreSQL health, one masked chat row, like1 and MANAGED unclaimed host, audio/video idle controls visible; no media tested. Before image opened and its sent-status difference observed; full before visual proof not separately claimed.",
+  "hardCrashAndLockLoss": "passed",
+  "containerRestartRowsMatch": true,
+  "localPersistenceCore": "passed",
+  "fullPOCPass": false,
+  "productReady": false
+}

@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-05",
+  "jsonParsedBeforeThisFile": 19,
+  "fingerprintsVerified": 65,
+  "realDatabaseUrlOrPasswordOrPrivateKeyFound": false,
+  "runtimeBrowserSecretScan": true,
+  "whitespaceNormalizedFiles": [
+    "build-152133.log",
+    "database-restart-browser-151951.log",
+    "postgres-integration.log",
+    "core-integration.log",
+    "build-151725.log",
+    "build.log",
+    "first-browser-attempt/README.md",
+    "second-browser-attempt/README.md"
+  ],
+  "newDependencies": {
+    "installedPackages": 127,
+    "unknownDeclaredLicenses": 0,
+    "runtimePg": "8.23.1"
+  },
+  "scope": "app persistence, Docker development, tests and records; no client/shared protocol, deployment, push, remote issue or T19 changes",
+  "remainingUntrackedExcluded": [
+    "AGENTS.md",
+    ".scratch/"
+  ]
+}

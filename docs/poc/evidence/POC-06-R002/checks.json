@@ -1,0 +1,200 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T07:16:52.670571+00:00",
+    "finishedAt": "2026-11-05T07:16:54.201838+00:00",
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/playback-queue.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs",
+      "tests/transport-budget.test.mjs"
+    ],
+    "startedAt": "2026-11-05T07:16:54.202011+00:00",
+    "finishedAt": "2026-11-05T07:17:03.730201+00:00",
+    "exitCode": 1,
+    "log": "core-integration.log"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T07:17:24.494756+00:00",
+    "finishedAt": "2026-11-05T07:17:25.911375+00:00",
+    "exitCode": 0,
+    "log": "build-151725.log"
+  },
+  {
+    "name": "postgres-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/postgres.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-05T07:17:39.804817+00:00",
+    "finishedAt": "2026-11-05T07:17:40.605855+00:00",
+    "exitCode": 1,
+    "log": "postgres-integration.log"
+  },
+  {
+    "name": "postgres-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/postgres.integration.test.mjs"
+    ],
+    "startedAt": "2026-11-05T07:18:03.251747+00:00",
+    "finishedAt": "2026-11-05T07:18:04.494604+00:00",
+    "exitCode": 0,
+    "log": "postgres-integration-151804.log"
+  },
+  {
+    "name": "crash-lock-diagnostic",
+    "command": [
+      "node",
+      "docs/poc/evidence/POC-06-R002/crash-lock-diagnostic.mjs"
+    ],
+    "startedAt": "2026-11-05T07:18:34.654267+00:00",
+    "finishedAt": "2026-11-05T07:18:35.495459+00:00",
+    "exitCode": 0,
+    "log": "crash-lock-diagnostic.log"
+  },
+  {
+    "name": "browser-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:18:41.629672+00:00",
+    "finishedAt": "2026-11-05T07:18:41.668996+00:00",
+    "exitCode": 0,
+    "log": "browser-syntax.log"
+  },
+  {
+    "name": "database-restart-browser",
+    "command": [
+      "node",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:18:41.669254+00:00",
+    "finishedAt": "2026-11-05T07:18:44.023803+00:00",
+    "exitCode": 1,
+    "log": "database-restart-browser.log"
+  },
+  {
+    "name": "browser-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:19:39.978531+00:00",
+    "finishedAt": "2026-11-05T07:19:40.017318+00:00",
+    "exitCode": 0,
+    "log": "browser-syntax-151940.log"
+  },
+  {
+    "name": "database-restart-browser",
+    "command": [
+      "node",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:19:40.017636+00:00",
+    "finishedAt": "2026-11-05T07:19:51.952080+00:00",
+    "exitCode": 1,
+    "log": "database-restart-browser-151951.log"
+  },
+  {
+    "name": "browser-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:21:08.293091+00:00",
+    "finishedAt": "2026-11-05T07:21:08.332116+00:00",
+    "exitCode": 0,
+    "log": "browser-syntax-152108.log"
+  },
+  {
+    "name": "database-restart-browser",
+    "command": [
+      "node",
+      "scripts/database-restart-browser.mjs"
+    ],
+    "startedAt": "2026-11-05T07:21:08.332408+00:00",
+    "finishedAt": "2026-11-05T07:21:21.012629+00:00",
+    "exitCode": 0,
+    "log": "database-restart-browser-152121.log"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T07:21:31.886296+00:00",
+    "finishedAt": "2026-11-05T07:21:33.371772+00:00",
+    "exitCode": 0,
+    "log": "build-152133.log"
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/playback-queue.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs",
+      "tests/transport-budget.test.mjs"
+    ],
+    "startedAt": "2026-11-05T07:21:33.372022+00:00",
+    "finishedAt": "2026-11-05T07:21:42.979679+00:00",
+    "exitCode": 0,
+    "log": "core-integration-152142.log"
+  }
+]

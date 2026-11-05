@@ -1,0 +1,1 @@
+{"status":"passed","checks":["ACKs-already-visible-in-SQL-before-kill","hard-kill-durable-data-and-same-proof","advisory-backend-loss-stops-idle-app"],"error":null}
