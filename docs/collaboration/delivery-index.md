@@ -68,3 +68,7 @@
 GitHub進度同步（2026-11-05）：母#1及T01～T19/#2～20最新段已保存、20/20精確讀回，保留原AC/open/labels；憑據[POC07-R002](../poc/evidence/POC-07-R002/github-progress-readback.json)，程式未push。
 
 | MVP-DESKTOP-PLAN／DEC-013 | 桌機MVP範圍／開發計畫 | `docs/laitse-prd.md` v0.10第6/9/11節、`docs/collaboration/decisions.md` | 桌機優先／手機後續已確認；F/M/D計畫已保存，其他方案待決、未開發 | D01～03集中討論；技術移轉仍沿既有SOL表 |
+
+DEC-014：PRD v0.11沿既有MVP-DESKTOP-PLAN調整免登入／人人鎖房／人數政策；D07控制歸屬待決，程式未修改。
+
+DEC-015：房間管理權／轉交／離線隨機接任／無人自動解鎖已確認並保存，D07鎖房部分收斂；其他活動主持映射仍待。

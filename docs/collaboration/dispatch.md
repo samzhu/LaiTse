@@ -367,3 +367,13 @@ root唯一writer/操作者：本次docs協作checkpoint/dispatch及POC07-R002記
 已授權：桌機優先／手機後續、文件規劃與既有GitHub進度偏好下母#1／手機#3／審查#20同步；每票寫後精確讀回、保留原正文/AC/state/labels，憑據POC07-R002/mvp-scope-progress-readback.json。未授權決定：正式首批OS/瀏覽器、人數／並發發布、登入／邀請、活動與資料政策；以穩定待決ID列提案，不能當人類接受。既有NoGo是舊桌面＋手機範圍結論；手機移後不等於歷史實測Pass或全面technicalGo。此次只規劃，不開發MVP／新POC／發布新票／push／部署。src/tests/deps與人類Edge唯讀，不停止既有manual服務。交付功能邊界、相依順序、逐步示範／驗收、採用及風險、集中待決項，文件檢查及本機commit後停止writer。
 
 MVP-DESKTOP-PLAN交付已保存／讀回（2026-11-05）：PRD v0.10第11節為唯一計畫入口，DEC-013精確原話／範圍已同步；GitHub母#1／手機#3／審查#20更新並3/3正文精確讀回、原正文／AC／open／labels保留，憑據POC07-R002/mvp-scope-progress-readback.json。計畫F/M/D識別、單一第11節、4份主要文件本機連結及diff檢查通過；純規劃未跑新程式／瀏覽器測試。無產品／依賴修改，未開始MVP或部署／push；本機commit紀錄，writer結束，既有manual服務與人類Edge未操作／未停止。下一步集中討論D01～03，建議不當已確認。
+
+## DEC-014／免登入與開放鎖房規劃（2026-11-05）
+
+人類指定MVP先不做認證、任意名字產生虛擬形象入場，任何人可選會議室上鎖；「連線先不鎖上線」按不設固定連線人數上限理解並已向人類明示。root唯一writer：PRD第6/9/11節、collaboration/{decisions,project-brief,checkpoint,dispatch,delivery-index}、ai-handoff、poc/mvp-handoff；GitHub母#1／權限#10／審查#20追加最新範圍並讀回，憑據POC07-R002/anonymous-mvp-progress-readback.json。保留既有功能ID、SOL資料清冊及歷史證據，不新增競爭規格／身份資料清冊。免帳號不取消server匿名成員識別、房間密碼與隔離；不將人人可鎖房擴為人人能解鎖別人的房間或所有主持權。已用非阻塞問題詢問解鎖／改密碼者，未答前該細節保留待決，不實作依賴行為。正式人數上限提案撤回，POC程式8人尚待開發調整、實測6人，不聲稱無限容量。只改規劃／紀錄，不改程式／操作人類Edge或既有服務、不部署／push／關票；文件與遠端讀回檢查後本機commit交付。
+
+本輪後續人類確認DEC-015：上鎖詢問密碼／現任管理者控制並可轉交／離線隨機在線房內人接任／無人自動解鎖已定案，原非阻塞問題均已收到答覆；未答的只剩其他活動主持權映射。同步同一PRD／既有文件與#1/#10/#20，新增讀回憑據同本輪紀錄，不實作。
+
+一致性補充：poc/plan只同步現行PRD v0.11／DEC015索引，不修改POC歷史版本或證據。
+
+DEC-014／015本輪交付完成（2026-11-05）：PRD v0.11與既有MVP計畫已同步免登入、任意暱稱產生人物、人人鎖房；上鎖詢問密碼、現任管理者可更改／解鎖／轉交、離線隨機房內在線成員接任、無人自動解鎖。精確人類原話在decisions；D01已定、D03產品人數上限不設（原話「上線」按上限解讀）、D07鎖房部分已定，其他活動主持／並發發布／桌機環境仍待決。GitHub#1/#10/#20已保存且3/3正文精確讀回、原正文/AC/open/labels保持，憑據POC07-R002/anonymous-mvp-progress-readback.json。文件ID／主要連結／JSON／diff檢查通過；未跑新程式測試、無src/deps變更、8人程式限制未移除，未開發MVP或push／部署。writer結束，既有manual服務與Edge未操作／未停止，紀錄同本機commit。

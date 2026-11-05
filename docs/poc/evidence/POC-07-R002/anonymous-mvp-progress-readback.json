@@ -1,0 +1,47 @@
+{
+  "decisions": [
+    "DEC-014",
+    "DEC-015"
+  ],
+  "date": "2026-11-05",
+  "mvpCodeChanged": false,
+  "codePushed": false,
+  "issues": [
+    {
+      "number": 1,
+      "url": "https://github.com/samzhu/LaiTse/issues/1",
+      "beforeBodySHA256": "9e050190a8d01a7d2a39a3771f7a8f1ae71cd324cf7c4b9618c1a8cad1e934ab",
+      "expectedBodySHA256": "b7fc0fa09a4d5d368299abb275ca8641d0c601196e68102b9150a59fff51d586",
+      "readbackBodySHA256": "b7fc0fa09a4d5d368299abb275ca8641d0c601196e68102b9150a59fff51d586",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:28:12.650743+00:00"
+    },
+    {
+      "number": 10,
+      "url": "https://github.com/samzhu/LaiTse/issues/10",
+      "beforeBodySHA256": "26aa9803bf23d51f296ca138035726110cf79c89fc976566d627b583fe45a0e2",
+      "expectedBodySHA256": "0ca2e97a2f02a892d8fad7553d3898aabf720caa1ce78dcd83546d6ec973dd5e",
+      "readbackBodySHA256": "0ca2e97a2f02a892d8fad7553d3898aabf720caa1ce78dcd83546d6ec973dd5e",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:28:15.121966+00:00"
+    },
+    {
+      "number": 20,
+      "url": "https://github.com/samzhu/LaiTse/issues/20",
+      "beforeBodySHA256": "564b5a8fbc128550cebfeed1ab178ea55e6a5ffbf62d21377c1940d064b31b24",
+      "expectedBodySHA256": "246cefcbee372c765117de57373a67378cb0629bd8062347715fa77040d76bb0",
+      "readbackBodySHA256": "246cefcbee372c765117de57373a67378cb0629bd8062347715fa77040d76bb0",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:28:17.659682+00:00"
+    }
+  ]
+}

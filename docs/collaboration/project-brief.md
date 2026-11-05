@@ -1,16 +1,16 @@
 # 專案 brief
 
-**狀態：DEC-013桌機MVP優先、手機後續；範圍與開發計畫已整理，待集中討論首批支援／身份／容量；未開發MVP。2026-11-05更新。**
+**狀態：DEC-013桌機MVP優先、手機後續；範圍與開發計畫已整理，免登入任意暱稱入場、人人可鎖會議室；人數不設固定產品上限，鎖房管理權已定、其他主持權／發布數待決；未開發MVP。2026-11-05更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。
-- 目前工作範圍：19票已發布並讀回；本機POC至T17有桌面核心與用法證據；T18/R001已驗舊memory缺口；DEC012/R002補PostgreSQL18保存與程序／容器重啟恢復核心。T19補同候選PG短整合與雙房混合回歸，完整進場判定NoGo；Edge桌機真人語音與兩端啟停已確認；DEC-013將手機移後，不再作桌機規劃前置。PRD v0.10第11節整理範圍／順序／待決項，未啟動MVP程式開發或部署；T19原NoGo為舊範圍歷史判定。
+- 目前工作範圍：19票已發布並讀回；本機POC至T17有桌面核心與用法證據；T18/R001已驗舊memory缺口；DEC012/R002補PostgreSQL18保存與程序／容器重啟恢復核心。T19補同候選PG短整合與雙房混合回歸，完整進場判定NoGo；Edge桌機真人語音與兩端啟停已確認；DEC-013將手機移後，不再作桌機規劃前置。PRD v0.11第11節整理範圍／順序／待決項，未啟動MVP程式開發或部署；T19原NoGo為舊範圍歷史判定。
 - 目前技術與相關路徑：自研，不採用 WorkAdventure；人物像素圖。已有 Git 儲存庫與需求文件，T01程式基線已建置及本機雙瀏覽器驗收；核心功能須可獨立部署、不強制綁供應商 SaaS；應用與影音轉送維持單一 Cloud Run，DEC-012另允許 PostgreSQL 18 儲存系統資訊；Node.js 26 LTS已指定為專案標準，React/Vite/Fastify/ws在T01作本機候選驗證，影音已有本機候選，耐久儲存選用 PostgreSQL 18，本機整合／恢復核心已驗，部署／備份／保留待設計。POC僅本機開發測試、不部署CloudRun；後續部署目標維持。原交接的「尚無 repo」為歷史狀態。
 - 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T17核心與T18操作重建／資料缺口見execution-log，GitHub母#1與子#2～20於2026-11-05補最新進度；保留原AC與open，正文保存／讀回見POC-07-R002。程式／本機紀錄未push，Issue更新不等於程式發布。
 - GitHub進度同步偏好（2026-11-05）：人類要求「要記得更新進度」。後續相關POC與真人驗測保存後，同步母議題與相關子票的核心成果、未驗項及Go/NoGo；不再只留本機紀錄。此授權不包含push/部署或無證據地全勾/關閉；本次同步#1～20，後續只更新相關票。
-- MVP規劃唯一入口：`docs/laitse-prd.md`第11節（MVP-DESKTOP-PLAN）；技術採用沿`docs/poc/mvp-handoff.md`，不另建第二份功能／資料清冊。MVP-D01～03先討論，D04～06到對應切片前確認。
+- MVP規劃唯一入口：`docs/laitse-prd.md`第11節（MVP-DESKTOP-PLAN）；技術採用沿`docs/poc/mvp-handoff.md`，不另建第二份功能／資料清冊。DEC-014已收斂D01免登入及D03不設產品人數上限，D02桌機環境／D03並發發布／D07其他活動主持控制仍待，D04～06到對應切片前確認。
 - POC權威入口：`docs/poc/plan.md`；執行紀錄 `docs/poc/execution-log.md`；MVP可用方案 `docs/poc/mvp-handoff.md`；Issue為計畫發布鏡像，不建平行PRD；發布入口 https://github.com/samzhu/LaiTse/issues/1 。
-- 權威需求／決策來源：`docs/laitse-prd.md` v0.10、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009／DEC-010／DEC-011／DEC-012／DEC-013；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
+- 權威需求／決策來源：`docs/laitse-prd.md` v0.11、`docs/laitse-ai-handoff.md`，並以最新人類指示優先。研究見 `docs/research/technology-landscape.md` 及 `media-options.md`；研究建議不等於已確認決策；人類決策見 `decisions.md` DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009／DEC-010／DEC-011／DEC-012／DEC-013／DEC-014；本輪比較 `docs/research/framework-maturity-popularity.md`、`protocol-support-comparison.md`；前輪整合入口 `docs/research/single-cloud-run-framework-assessment.md`，瀏覽器專題 `docs/research/browser-media-pipeline.md`；平台研究 `docs/research/cloud-run-media-feasibility.md`，影音替代見 `docs/research/self-hosted-media-alternatives.md`；補充研究見 `docs/research/pixel-phaser-assessment.md` 與 `framework-maintenance-licenses.md`。
 - 穩定項目 ID：TECH-001／TECH-001-MEDIA 為初輪研究；TECH-002／TECH-002-LICENSE 為維護與授權查核；TECH-003／TECH-003-ALT 為獨立部署影音研究；TECH-004／TECH-004-RUN 為單一 Cloud Run 研究；TECH-005／TECH-005-CODEC 為整合框架與瀏覽器影音研究；TECH-006／TECH-006-PROTOCOL 為成熟度及協議比較；DEC-001／DEC-002／DEC-003／DEC-004／DEC-005／DEC-006／DEC-007／DEC-008／DEC-009 為人類決策；後續項目沿用既有 ID，退役不重用。未為 PRD 功能補造人類確認 ID。
 - 委派偏好（2026-11-03人類指示）：大量爬蟲／程式開發等耗token工作可交給Luna xhigh；主代理負責思考、範圍與驗收。本輪依此以gpt-6-luna／xhigh實作及診斷，主代理獨占紀錄並負責檢視／瀏覽器驗收；雙方writer均已交接。
 - 可用工具／能力與限制：Markdown／GitHub CLI及本機瀏覽器工具；桌面Firefox可信HTTPS/WSS與合成影音原生編解碼已驗，T05另有Chrome原生分頁擷取。Edge桌機真人語音已確認；手機/量化聽感品質、容量與CloudRun仍未驗。手動服務保留運作（見POC07-R002/runtime），人類自行操作Edge，代理不碰分頁/麥克風；自動化Firefox已停。
@@ -118,3 +118,7 @@ T19／#20審查交付完成：[POC-07-R001](../poc/evidence/POC-07-R001/README.m
 ## 桌機真人語音核心確認（2026-11-05）
 
 GATE-001-DESKTOP-AUDIO／[POC-07-R002](../poc/evidence/POC-07-R002/README.md)已保存人類確認：對耳機是否聽見回答「OK」；再對主講停麥/重開及接收停聽/重開回答「兩端都測過，正常」。本輪Edge桌機兩頁真人語音核心Pass，Edge版本未回報，不以指南Chrome當實測。appshot計數僅佐證管線，不以RMS瞬間值推斷人耳或量化品質；原話/範圍分開保存。手機由人類指定先不做，仍待；完整進場NoGo/MVP未開工保持。服務繼續localhost:4173與專用PG運作，root不操作人類Edge或收音，無程式改動／新合成測試／部署。
+
+- DEC-014（2026-11-05）：免登入填任意暱稱即產生像素人物，人人可選會議室上鎖；「連線先不鎖上線」按不設固定人數上限解讀，程式仍8人／實測6人，未宣稱無限容量。鎖房管理權依DEC-015已定，其他活動主持歸屬待D07；只規劃未開發。
+
+DEC-015最新確認（2026-11-05）：上鎖時詢問密碼；上鎖者為管理者，只有現任管理者能解鎖／改密碼並可轉交。離線由server隨機交給仍在線的房內人；無人接任則自動解鎖，下一位重新上鎖。轉交後原人重連不自動取回權限，以匿名成員ID而非暱稱核對。房間鎖管理已定，其他活動主持／發布權映射仍待；PRD v0.11第6/11節為現行規劃，未實作。
