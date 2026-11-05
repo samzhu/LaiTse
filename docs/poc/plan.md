@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T16桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 狀態：T01～T17桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
 - 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
 - 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
@@ -291,3 +291,7 @@ T15交付（2026-11-05）：[POC-04-R004](evidence/POC-04-R004/README.md)保存6
 ## T16本輪結果（2026-11-05）
 
 T16交付（2026-11-05）：[POC-05-R001](evidence/POC-05-R001/README.md)以1發布／1→3真Firefox接收完成14,877ms短fanout。三端同config/clock、3採樣實播增長；A退訂350ms無新media而B/C繼續，publisher正常停2來源/其餘streamEnded清空。build/typecheck與browser通過；既有全套62/63限流訊息逾時，單檔9/9通過但根因未定；首輪Continue點擊失敗及窄診斷保留，最終無gesture，該分支未覆蓋。source/依賴未改；root讀回/A-C實看、server30ps採樣僅診斷，SOL/操作/需求狀態/計畫/票面同步。10/25/50／20min／手機／真人／品質/完整負載端資源/完整POC05未驗；writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T17/部署。
+
+## T17本輪結果（2026-11-05）
+
+T17交付（2026-11-05）：[POC-05-R002](evidence/POC-05-R002/README.md)保存build/typecheck/63核心與首次六Firefox18,233ms短流程。每房1source/1watch/1only，兩房實播；專用only初始/活動self0且整輪raw0、回饋同房DOM0→1/異房0。studio watch→only零增量→watch不auto直到manual新config實播，lobby持續。root全hash重算source668/669→ownreceipts643/411，foreign/unknown/ambiguous0、count-byte完整；2圖實看/cleanup。app/依賴未變，SOL/操作/需求狀態/計畫/票面同步；50/20min/手機/真人/品質/全client資源/雲/完整POC05待，無Continue分支。writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T18/部署。

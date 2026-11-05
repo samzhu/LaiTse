@@ -1,0 +1,191 @@
+{
+  "scope": "single application server process only; ps RSS KiB and CPU lifetime average; not all Firefox/client/OS resources or instantaneous CPU",
+  "intervalTargetMs": 500,
+  "samples": [
+    {
+      "at": "2026-11-05T03:29:54.491967+00:00",
+      "rssKiB": 104224,
+      "cpuPercentLifetimeAverage": 37.6
+    },
+    {
+      "at": "2026-11-05T03:29:55.000883+00:00",
+      "rssKiB": 104224,
+      "cpuPercentLifetimeAverage": 5.6
+    },
+    {
+      "at": "2026-11-05T03:29:55.510738+00:00",
+      "rssKiB": 104224,
+      "cpuPercentLifetimeAverage": 0.7
+    },
+    {
+      "at": "2026-11-05T03:29:56.019344+00:00",
+      "rssKiB": 104224,
+      "cpuPercentLifetimeAverage": 0.1
+    },
+    {
+      "at": "2026-11-05T03:29:56.528299+00:00",
+      "rssKiB": 104224,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:29:57.034161+00:00",
+      "rssKiB": 104288,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:29:57.542430+00:00",
+      "rssKiB": 104304,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:29:58.049841+00:00",
+      "rssKiB": 104304,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:29:58.559088+00:00",
+      "rssKiB": 104304,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:29:59.067018+00:00",
+      "rssKiB": 116272,
+      "cpuPercentLifetimeAverage": 16.7
+    },
+    {
+      "at": "2026-11-05T03:29:59.588001+00:00",
+      "rssKiB": 116704,
+      "cpuPercentLifetimeAverage": 5.9
+    },
+    {
+      "at": "2026-11-05T03:30:00.099038+00:00",
+      "rssKiB": 116864,
+      "cpuPercentLifetimeAverage": 21.2
+    },
+    {
+      "at": "2026-11-05T03:30:00.609680+00:00",
+      "rssKiB": 117264,
+      "cpuPercentLifetimeAverage": 3.7
+    },
+    {
+      "at": "2026-11-05T03:30:01.118478+00:00",
+      "rssKiB": 117312,
+      "cpuPercentLifetimeAverage": 2.1
+    },
+    {
+      "at": "2026-11-05T03:30:01.631181+00:00",
+      "rssKiB": 117392,
+      "cpuPercentLifetimeAverage": 3.4
+    },
+    {
+      "at": "2026-11-05T03:30:02.140304+00:00",
+      "rssKiB": 117408,
+      "cpuPercentLifetimeAverage": 3.7
+    },
+    {
+      "at": "2026-11-05T03:30:02.653471+00:00",
+      "rssKiB": 117440,
+      "cpuPercentLifetimeAverage": 3.7
+    },
+    {
+      "at": "2026-11-05T03:30:03.163869+00:00",
+      "rssKiB": 117472,
+      "cpuPercentLifetimeAverage": 3.5
+    },
+    {
+      "at": "2026-11-05T03:30:03.671404+00:00",
+      "rssKiB": 117600,
+      "cpuPercentLifetimeAverage": 3.9
+    },
+    {
+      "at": "2026-11-05T03:30:04.183969+00:00",
+      "rssKiB": 117856,
+      "cpuPercentLifetimeAverage": 2.8
+    },
+    {
+      "at": "2026-11-05T03:30:04.697668+00:00",
+      "rssKiB": 118320,
+      "cpuPercentLifetimeAverage": 3.4
+    },
+    {
+      "at": "2026-11-05T03:30:05.206987+00:00",
+      "rssKiB": 118704,
+      "cpuPercentLifetimeAverage": 2.5
+    },
+    {
+      "at": "2026-11-05T03:30:05.728113+00:00",
+      "rssKiB": 119008,
+      "cpuPercentLifetimeAverage": 2.2
+    },
+    {
+      "at": "2026-11-05T03:30:06.240906+00:00",
+      "rssKiB": 119344,
+      "cpuPercentLifetimeAverage": 2.1
+    },
+    {
+      "at": "2026-11-05T03:30:06.751908+00:00",
+      "rssKiB": 119648,
+      "cpuPercentLifetimeAverage": 1.9
+    },
+    {
+      "at": "2026-11-05T03:30:07.262614+00:00",
+      "rssKiB": 119984,
+      "cpuPercentLifetimeAverage": 1.8
+    },
+    {
+      "at": "2026-11-05T03:30:07.775805+00:00",
+      "rssKiB": 120448,
+      "cpuPercentLifetimeAverage": 2.9
+    },
+    {
+      "at": "2026-11-05T03:30:08.290686+00:00",
+      "rssKiB": 120896,
+      "cpuPercentLifetimeAverage": 2.6
+    },
+    {
+      "at": "2026-11-05T03:30:08.800757+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.5
+    },
+    {
+      "at": "2026-11-05T03:30:09.311480+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.4
+    },
+    {
+      "at": "2026-11-05T03:30:09.820451+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.4
+    },
+    {
+      "at": "2026-11-05T03:30:10.329989+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.5
+    },
+    {
+      "at": "2026-11-05T03:30:10.838449+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.4
+    },
+    {
+      "at": "2026-11-05T03:30:11.347160+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 2.5
+    },
+    {
+      "at": "2026-11-05T03:30:11.863386+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 0.4
+    },
+    {
+      "at": "2026-11-05T03:30:12.374655+00:00",
+      "rssKiB": 121008,
+      "cpuPercentLifetimeAverage": 0.0
+    },
+    {
+      "at": "2026-11-05T03:30:12.898055+00:00",
+      "rssKiB": 122176,
+      "cpuPercentLifetimeAverage": 2.0
+    }
+  ]
+}

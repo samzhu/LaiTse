@@ -1,0 +1,2 @@
+471a77ca22c552b1c69ddcd0295c19b2bf257ad70d2cd4e11eba9e83694b2b20  scripts/two-room-mixed-smoke.mjs
+471a77ca22c552b1c69ddcd0295c19b2bf257ad70d2cd4e11eba9e83694b2b20  .scratch/t17/authoring/two-room-mixed-smoke.mjs

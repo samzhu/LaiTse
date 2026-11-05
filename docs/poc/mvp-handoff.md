@@ -195,3 +195,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-008：新增`single-room-fanout-smoke.mjs`，固定小拓樸/正常UI/3×400ms採樣、媒體bytes分離control、self downlink/transport與本地queue、350ms quiet/兩端持續、live圖。R001保存最終14,877ms完整短流程、source指紋、root核對/A-C實看/cleanup/少量server ps。全套62/63限流訊息逾時＋孤立server9/9結果均保留，根因未定；first-attempt Continue逾時後補診斷，最終無該按鈕，手勢分支未覆蓋。未改app/tests/依賴，不增加鏡像單測。
 - 效能適用範圍：AppleM1Max64GiB共享主機；ps30採樣server RSS104064–117008KiB/CPU lifetimeavg0–47.6%，非各級穩態、全browser資源/飽和或容量曲線。raw bytes含應用media header、不同端累計起點不同；不能直接聲稱精準倍數/bitrate/E2E/p95。
 - 採用前：未驗10/25/50/20min、真mic/display/人耳/手機/跨瀏覽器/品質/完整client資源/耐久/雲；POC05完整Inconclusive。固定3端不是產品上限；MVP須整理合成注入／診斷／硬編碼與測試資產，先沿契約參考，不整包當商品。
+
+## T17／POC-05-R002：SOL-002／005／008（2026-11-05）
+
+- SOL-002：既有兩房relay/Opus/VP8無改，每房單source/單實解碼receiver；6真Firefox小混合可行。root重算668/669 source messages→643/411 own receipt、foreign/unknown/ambiguous0，SHA保存無原始media；hash count/bytes與raw counter各方向完整。來源ACK/trackended/quiet後audit，未把晚加入/gate/mode少收當丟包品質。
+- SOL-005：2專用interaction-only在source前切mode，初始/active self訂閱false/downlink0，整輪raw0；每房各feedback ACK、sameeventId且watch DOM計數0→1，foreign整輪trace同ID0。studio watch切only後已有歷史累計但delta0，回watch不auto，正常手動新metadata/實播恢復，lobby持續。沿T11原語意，不改正式身份/權限或需求。
+- SOL-008：`two-room-mixed-smoke.mjs`支持固定6隔離profile、正常UI、3×400ms採樣、bounded8192 media hashes/每client方向、self/queue、350ms quiet。R002含63/build/首次18,233ms短流程/2圖/root hash與mode/UI讀回/cleanup/37個serverps；執行前ID語意/expectedgate/trace completeness/ACK修正保留。沒有runtime失敗或重跑；T16歷史逾時不抹除。
+- 適用限制：M1Max64GiB共享主機；server RSS104224–122176KiB、CPU lifetimeavg0–37.6%含startup，不是全client負載或穩態容量。未驗50人/20min/手機/真人/Continue/真弱網/p95/品質/完整負載端資源/耐久/雲，完整POC05仍Inconclusive。固定小拓樸/生成來源/診斷須在MVP整理，不整包搬作商品。

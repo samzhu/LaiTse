@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-05",
+  "baseline": "7c80a14",
+  "node": "26.13.0",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "cpu": "Apple M1 Max",
+  "logicalCpus": 10,
+  "memoryBytes": "68719476736",
+  "limits": "all browsers and server share this workstation; no extrapolation to Cloud Run or other machines",
+  "hardwareSource": "same workstation as POC-05-R001; OS/hardware unchanged in this session"
+}

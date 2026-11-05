@@ -1,0 +1,1188 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "status": "lightweight-mixed-core-pass",
+  "fullT17AndPOC05": "Inconclusive",
+  "durationMs": 18233,
+  "independentHashReconciliation": {
+    "lobby-watch": {
+      "receivedFrames": 643,
+      "receivedMediaBytes": 101869,
+      "foreignUnknownAmbiguous": 0
+    },
+    "studio-interaction": {
+      "receivedFrames": 0,
+      "receivedMediaBytes": 0,
+      "foreignUnknownAmbiguous": 0
+    },
+    "lobby-host": {
+      "receivedFrames": 0,
+      "receivedMediaBytes": 0,
+      "foreignUnknownAmbiguous": 0,
+      "sourceFrames": 668,
+      "sourceMediaBytes": 105160
+    },
+    "studio-watch": {
+      "receivedFrames": 411,
+      "receivedMediaBytes": 72149,
+      "foreignUnknownAmbiguous": 0
+    },
+    "lobby-interaction": {
+      "receivedFrames": 0,
+      "receivedMediaBytes": 0,
+      "foreignUnknownAmbiguous": 0
+    },
+    "studio-host": {
+      "receivedFrames": 0,
+      "receivedMediaBytes": 0,
+      "foreignUnknownAmbiguous": 0,
+      "sourceFrames": 669,
+      "sourceMediaBytes": 117469
+    }
+  },
+  "onlyServerObservationScope": "initial and active-media self snapshots; raw receipt zero over full run",
+  "modeSwitch": {
+    "serverDownlinkDelta": {
+      "audioBytes": 0,
+      "audioFrames": 0,
+      "screenBytes": 0,
+      "screenFrames": 0
+    },
+    "rawStable": true,
+    "noAutoSubscribe": true,
+    "manualReceiveRender": {
+      "audio": {
+        "receiveIntent": true,
+        "subscribed": true,
+        "listenerState": "ready",
+        "renderedSamples": 117376,
+        "decodedFrames": 124,
+        "receivedPackets": 124,
+        "renderRms": 0.15549694074921566,
+        "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+        "queuedSamples": 1664,
+        "queueOldestGraphResidenceMs": 13.334,
+        "decodeQueueHighWater": 1
+      },
+      "screen": {
+        "receiveIntent": true,
+        "subscribed": true,
+        "receiverState": "rendering",
+        "renderedFrames": 33,
+        "decodedFrames": 33,
+        "receivedFrames": 34,
+        "width": 320,
+        "height": 180,
+        "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+        "queuedDecodedFrameCount": 0,
+        "queuedDecodedFrameOldestResidenceMs": 0,
+        "residenceDrops": 0,
+        "decodeQueueHighWater": 0,
+        "pixel": [
+          50,
+          196,
+          106,
+          255
+        ]
+      }
+    }
+  },
+  "feedbackEvidence": [
+    {
+      "sender": "lobby-interaction",
+      "roomId": "lobby",
+      "eventId": "871dfb54-9408-4455-8184-83a236d32c68",
+      "kind": "feedback",
+      "acknowledged": true,
+      "sameRoomReceiver": "lobby-watch",
+      "sameRoomEventObserved": true,
+      "visibleFeedbackCountBefore": 0,
+      "visibleFeedbackCountAfter": 1,
+      "foreignEventIdMatches": 0
+    },
+    {
+      "sender": "studio-interaction",
+      "roomId": "studio",
+      "eventId": "297d0b6c-50a8-48c5-a5d3-718a9a83c89f",
+      "kind": "feedback",
+      "acknowledged": true,
+      "sameRoomReceiver": "studio-watch",
+      "sameRoomEventObserved": true,
+      "visibleFeedbackCountBefore": 0,
+      "visibleFeedbackCountAfter": 1,
+      "foreignEventIdMatches": 0
+    }
+  ],
+  "mediaSamples": [
+    {
+      "label": "both rooms active",
+      "samples": [
+        {
+          "index": 1,
+          "at": "2026-11-05T03:30:02.134Z",
+          "elapsedMs": 7459,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 40576,
+                  "decodedFrames": 44,
+                  "receivedPackets": 44,
+                  "renderRms": 0.1560671672762357,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 1664,
+                  "queueOldestGraphResidenceMs": 18.666,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 11,
+                  "decodedFrames": 11,
+                  "receivedFrames": 12,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 48,
+                "audioBytes": 6343,
+                "screen": 12,
+                "screenBytes": 2279,
+                "all": 60,
+                "bytes": 8622
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 3660
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 41088,
+                  "decodedFrames": 44,
+                  "receivedPackets": 44,
+                  "renderRms": 0.15589990948150687,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 1152,
+                  "queueOldestGraphResidenceMs": 24,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 11,
+                  "decodedFrames": 12,
+                  "receivedFrames": 13,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 1,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    51,
+                    196,
+                    104,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 49,
+                "audioBytes": 7205,
+                "screen": 13,
+                "screenBytes": 2339,
+                "all": 62,
+                "bytes": 9544
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 4179
+              }
+            }
+          }
+        },
+        {
+          "index": 2,
+          "at": "2026-11-05T03:30:02.547Z",
+          "elapsedMs": 7872,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 60032,
+                  "decodedFrames": 64,
+                  "receivedPackets": 64,
+                  "renderRms": 0.1567267891225607,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 1408,
+                  "queueOldestGraphResidenceMs": 26.667,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 17,
+                  "decodedFrames": 17,
+                  "receivedFrames": 18,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 68,
+                "audioBytes": 9064,
+                "screen": 18,
+                "screenBytes": 3490,
+                "all": 86,
+                "bytes": 12554
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 3932
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 60352,
+                  "decodedFrames": 65,
+                  "receivedPackets": 65,
+                  "renderRms": 0.15541700741183498,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 1088,
+                  "queueOldestGraphResidenceMs": 26.667,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 17,
+                  "decodedFrames": 17,
+                  "receivedFrames": 19,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    50,
+                    197,
+                    104,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 70,
+                "audioBytes": 10457,
+                "screen": 19,
+                "screenBytes": 3358,
+                "all": 89,
+                "bytes": 13815
+              },
+              "delta": {
+                "audioFrames": 21,
+                "screenFrames": 6,
+                "binaryFrames": 27,
+                "bytes": 4271
+              }
+            }
+          }
+        },
+        {
+          "index": 3,
+          "at": "2026-11-05T03:30:02.958Z",
+          "elapsedMs": 8283,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 79488,
+                  "decodedFrames": 85,
+                  "receivedPackets": 85,
+                  "renderRms": 0.1562556155403249,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 1152,
+                  "queueOldestGraphResidenceMs": 26.667,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 22,
+                  "decodedFrames": 22,
+                  "receivedFrames": 23,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    222,
+                    53,
+                    44,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 89,
+                "audioBytes": 11922,
+                "screen": 23,
+                "screenBytes": 4381,
+                "all": 112,
+                "bytes": 16303
+              },
+              "delta": {
+                "audioFrames": 21,
+                "screenFrames": 5,
+                "binaryFrames": 26,
+                "bytes": 3749
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 79808,
+                  "decodedFrames": 85,
+                  "receivedPackets": 85,
+                  "renderRms": 0.15541383196591904,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 832,
+                  "queueOldestGraphResidenceMs": 10.667,
+                  "decodeQueueHighWater": 0
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 23,
+                  "decodedFrames": 23,
+                  "receivedFrames": 24,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    38,
+                    185,
+                    94,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 90,
+                "audioBytes": 13550,
+                "screen": 24,
+                "screenBytes": 4279,
+                "all": 114,
+                "bytes": 17829
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 4014
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "lobby while studio watch is interaction-only",
+      "samples": [
+        {
+          "index": 1,
+          "at": "2026-11-05T03:30:04.403Z",
+          "elapsedMs": 9728,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 141952,
+                  "decodedFrames": 157,
+                  "receivedPackets": 157,
+                  "renderRms": 0.15405805026281502,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 7808,
+                  "queueOldestGraphResidenceMs": 120,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 41,
+                  "decodedFrames": 43,
+                  "receivedFrames": 44,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 74,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 161,
+                "audioBytes": 21728,
+                "screen": 44,
+                "screenBytes": 8453,
+                "all": 205,
+                "bytes": 30181
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 3955
+              }
+            }
+          }
+        },
+        {
+          "index": 2,
+          "at": "2026-11-05T03:30:04.815Z",
+          "elapsedMs": 10140,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 161408,
+                  "decodedFrames": 175,
+                  "receivedPackets": 175,
+                  "renderRms": 0.15487710135963415,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 5632,
+                  "queueOldestGraphResidenceMs": 160,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 46,
+                  "decodedFrames": 48,
+                  "receivedFrames": 49,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 113,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 179,
+                "audioBytes": 24261,
+                "screen": 49,
+                "screenBytes": 9328,
+                "all": 228,
+                "bytes": 33589
+              },
+              "delta": {
+                "audioFrames": 18,
+                "screenFrames": 5,
+                "binaryFrames": 23,
+                "bytes": 3408
+              }
+            }
+          }
+        },
+        {
+          "index": 3,
+          "at": "2026-11-05T03:30:05.217Z",
+          "elapsedMs": 10542,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 180864,
+                  "decodedFrames": 197,
+                  "receivedPackets": 197,
+                  "renderRms": 0.15503236556860817,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8256,
+                  "queueOldestGraphResidenceMs": 162.666,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 52,
+                  "decodedFrames": 54,
+                  "receivedFrames": 55,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 85,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 202,
+                "audioBytes": 27606,
+                "screen": 55,
+                "screenBytes": 10635,
+                "all": 257,
+                "bytes": 38241
+              },
+              "delta": {
+                "audioFrames": 23,
+                "screenFrames": 6,
+                "binaryFrames": 29,
+                "bytes": 4652
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "lobby while studio watch has no auto-subscription",
+      "samples": [
+        {
+          "index": 1,
+          "at": "2026-11-05T03:30:06.455Z",
+          "elapsedMs": 11780,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 240256,
+                  "decodedFrames": 260,
+                  "receivedPackets": 260,
+                  "renderRms": 0.15530344902199106,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8384,
+                  "queueOldestGraphResidenceMs": 170.667,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 69,
+                  "decodedFrames": 71,
+                  "receivedFrames": 72,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 128,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    222,
+                    53,
+                    44,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 264,
+                "audioBytes": 37143,
+                "screen": 72,
+                "screenBytes": 13908,
+                "all": 336,
+                "bytes": 51051
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 3960
+              }
+            }
+          }
+        },
+        {
+          "index": 2,
+          "at": "2026-11-05T03:30:06.857Z",
+          "elapsedMs": 12182,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 259712,
+                  "decodedFrames": 280,
+                  "receivedPackets": 280,
+                  "renderRms": 0.1546628267746632,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8128,
+                  "queueOldestGraphResidenceMs": 176,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 75,
+                  "decodedFrames": 77,
+                  "receivedFrames": 78,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 102,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 284,
+                "audioBytes": 40272,
+                "screen": 78,
+                "screenBytes": 15021,
+                "all": 362,
+                "bytes": 55293
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 4242
+              }
+            }
+          }
+        },
+        {
+          "index": 3,
+          "at": "2026-11-05T03:30:07.263Z",
+          "elapsedMs": 12588,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 279168,
+                  "decodedFrames": 300,
+                  "receivedPackets": 300,
+                  "renderRms": 0.1541158974006963,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8832,
+                  "queueOldestGraphResidenceMs": 178.666,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 80,
+                  "decodedFrames": 82,
+                  "receivedFrames": 83,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 131,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    65,
+                    59,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 304,
+                "audioBytes": 43412,
+                "screen": 83,
+                "screenBytes": 16037,
+                "all": 387,
+                "bytes": 59449
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 4156
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "both rooms after manual studio receive",
+      "samples": [
+        {
+          "index": 1,
+          "at": "2026-11-05T03:30:10.374Z",
+          "elapsedMs": 15699,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 428672,
+                  "decodedFrames": 456,
+                  "receivedPackets": 456,
+                  "renderRms": 0.15450256585229596,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8128,
+                  "queueOldestGraphResidenceMs": 176,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 124,
+                  "decodedFrames": 126,
+                  "receivedFrames": 127,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 84,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 460,
+                "audioBytes": 67981,
+                "screen": 127,
+                "screenBytes": 24852,
+                "all": 587,
+                "bytes": 92833
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 4398
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 139904,
+                  "decodedFrames": 147,
+                  "receivedPackets": 147,
+                  "renderRms": 0.15607455682356552,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 1216,
+                  "queueOldestGraphResidenceMs": 24,
+                  "decodeQueueHighWater": 1
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 39,
+                  "decodedFrames": 39,
+                  "receivedFrames": 40,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    50,
+                    196,
+                    106,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 278,
+                "audioBytes": 47001,
+                "screen": 75,
+                "screenBytes": 14516,
+                "all": 353,
+                "bytes": 61517
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 4607
+              }
+            }
+          }
+        },
+        {
+          "index": 2,
+          "at": "2026-11-05T03:30:10.780Z",
+          "elapsedMs": 16105,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 448128,
+                  "decodedFrames": 476,
+                  "receivedPackets": 476,
+                  "renderRms": 0.15470231044689625,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 7872,
+                  "queueOldestGraphResidenceMs": 181.333,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 129,
+                  "decodedFrames": 131,
+                  "receivedFrames": 132,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 129,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    222,
+                    53,
+                    44,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 480,
+                "audioBytes": 71143,
+                "screen": 132,
+                "screenBytes": 25679,
+                "all": 612,
+                "bytes": 96822
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 5,
+                "binaryFrames": 25,
+                "bytes": 3989
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 159360,
+                  "decodedFrames": 167,
+                  "receivedPackets": 167,
+                  "renderRms": 0.1553441060371894,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 960,
+                  "queueOldestGraphResidenceMs": 5.333,
+                  "decodeQueueHighWater": 1
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 45,
+                  "decodedFrames": 45,
+                  "receivedFrames": 46,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 0,
+                  "queuedDecodedFrameOldestResidenceMs": 0,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    38,
+                    185,
+                    92,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 299,
+                "audioBytes": 50799,
+                "screen": 81,
+                "screenBytes": 15701,
+                "all": 380,
+                "bytes": 66500
+              },
+              "delta": {
+                "audioFrames": 21,
+                "screenFrames": 6,
+                "binaryFrames": 27,
+                "bytes": 4983
+              }
+            }
+          }
+        },
+        {
+          "index": 3,
+          "at": "2026-11-05T03:30:11.187Z",
+          "elapsedMs": 16512,
+          "intervalMs": 400,
+          "receivers": {
+            "lobby-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 467584,
+                  "decodedFrames": 496,
+                  "receivedPackets": 496,
+                  "renderRms": 0.1543604879566944,
+                  "playbackClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedSamples": 8576,
+                  "queueOldestGraphResidenceMs": 162.667,
+                  "decodeQueueHighWater": 6
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 135,
+                  "decodedFrames": 137,
+                  "receivedFrames": 138,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "6a3df808-3165-47d3-af5a-bc4eed0d2625",
+                  "queuedDecodedFrameCount": 2,
+                  "queuedDecodedFrameOldestResidenceMs": 109,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    235,
+                    66,
+                    57,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 500,
+                "audioBytes": 74291,
+                "screen": 138,
+                "screenBytes": 26681,
+                "all": 638,
+                "bytes": 100972
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 4150
+              }
+            },
+            "studio-watch": {
+              "media": {
+                "audio": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "listenerState": "ready",
+                  "renderedSamples": 178816,
+                  "decodedFrames": 188,
+                  "receivedPackets": 188,
+                  "renderRms": 0.15475973644146143,
+                  "playbackClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedSamples": 1664,
+                  "queueOldestGraphResidenceMs": 10.667,
+                  "decodeQueueHighWater": 1
+                },
+                "screen": {
+                  "receiveIntent": true,
+                  "subscribed": true,
+                  "receiverState": "rendering",
+                  "renderedFrames": 50,
+                  "decodedFrames": 51,
+                  "receivedFrames": 52,
+                  "width": 320,
+                  "height": 180,
+                  "syncClockId": "a7e6057e-6f8e-40a3-af09-d212cccd971d",
+                  "queuedDecodedFrameCount": 1,
+                  "queuedDecodedFrameOldestResidenceMs": 5,
+                  "residenceDrops": 0,
+                  "decodeQueueHighWater": 0,
+                  "pixel": [
+                    50,
+                    197,
+                    104,
+                    255
+                  ]
+                }
+              },
+              "receivedBinary": {
+                "audio": 319,
+                "audioBytes": 54439,
+                "screen": 87,
+                "screenBytes": 16731,
+                "all": 406,
+                "bytes": 71170
+              },
+              "delta": {
+                "audioFrames": 20,
+                "screenFrames": 6,
+                "binaryFrames": 26,
+                "bytes": 4670
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "scope": "single application server process only; ps RSS KiB and CPU lifetime average; not all Firefox/client/OS resources or instantaneous CPU",
+    "samples": 37,
+    "rssKiB": [
+      104224,
+      122176
+    ],
+    "cpuLifetimeAveragePercent": [
+      0.0,
+      37.6
+    ]
+  },
+  "applicationFingerprintsMatchBuild": true,
+  "imagesActuallyViewed": [
+    "desktop/lobby-watch-live.png",
+    "desktop/studio-watch-live.png"
+  ],
+  "limits": "six isolated Firefox instances; synthetic sources; no50people/20min/phone/human/realweaknetwork/p95/fullclientresources/CloudRun; noContinuegestureobserved"
+}

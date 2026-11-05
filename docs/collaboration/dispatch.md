@@ -255,3 +255,24 @@ T16-SMOKE明確saved/readback/STOP釋出新script/authoring，root現唯一write
 ## T16最終紀錄
 
 T16交付（2026-11-05）：[POC-05-R001](../poc/evidence/POC-05-R001/README.md)以1發布／1→3真Firefox接收完成14,877ms短fanout。三端同config/clock、3採樣實播增長；A退訂350ms無新media而B/C繼續，publisher正常停2來源/其餘streamEnded清空。build/typecheck與browser通過；既有全套62/63限流訊息逾時，單檔9/9通過但根因未定；首輪Continue點擊失敗及窄診斷保留，最終無gesture，該分支未覆蓋。source/依賴未改；root讀回/A-C實看、server30ps採樣僅診斷，SOL/操作/需求狀態/計畫/票面同步。10/25/50／20min／手機／真人／品質/完整負載端資源/完整POC05未驗；writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T17/部署。
+
+## T17／POC-05-R002 範圍包（2026-11-05）
+
+人類：「繼續做 T17，驗測維持輕量，先用少量參與者確認雙房影音與只互動混合模式的核心功能可行跟使用方式就好，完成後把程式和驗測紀錄一起 commit。」基線7c80a14，#18雙房混合媒體負載已讀回；6隔離Firefox，非50人/20分鐘。
+
+- T17-SMOKE／Luna xhigh唯一writer：`scripts/two-room-mixed-smoke.mjs`、`.scratch/t17/authoring/`；其餘source/scripts/tests/docs/README/manifest/Git唯讀，不啟runtime。沿T15/T16已驗入口/helpers，必要copy精簡，無新框架/服務/依賴；saved/readback/syntax/指紋/STOP後交root。
+- root唯一writer：權威docs、README/.gitignore、`docs/poc/evidence/POC-05-R002/`、暫存runner/Git；獨占服務/瀏覽器驗收。既有AGENTS/.scratch不stage。
+- 最小閉環：每房(lobby/studio)1host合成Opus/VP8 publisher＋1實解碼watch＋1interaction-only，共6真Firefox；lobby固定鄰近位置。只互動頁在publisher開始前切換並取得server self mode/subscriptions；活動來源期間raw media bytes/frames與server self downlink兩種證據都0，feedback ACK與同房呈現/異房隔離。兩watch同時實播不同clock/config與色碼。
+- 除metadata/色碼，bounded SHA256 media-message source/receipt比對可核對crossroom：來源各發送hash對應自己房接收subset、foreign-only0；任何ambiguous/collector cap須如實判無法支持完整audit，不可當排除證據。不保存payload或原始token，停止來源ACK/等穩定後再finalaudit避免尾包缺來源；source hash collector caps且fail，不收空socket充數。
+- studio watch正常切interaction-only，等mode ACK/stop清理後350ms以上raw/server downlink delta0；原兩only者仍0，lobby watch多次正增。再watch mode只改資格、不auto subscribe/來源；先窗口0，再正常點收聽/觀看、freshconfig/keyframe/實播。回饋使用普通UI，明列同房event/foreign0觀測範圍；不把ACK當顯示或把全control流量當media。
+- 正常stop兩publisher，各track ended；raw collector/source停穩定後保存報告、各stage真時間/實際拓樸/queue/downlink/bytes/播放counter/hashaudit/2張代表圖。root外部少量server ps與硬體僅診斷，不宣稱全client資源/p95/容量。手勢race沿T16保守處理：只有ready且實播才繼續，仍需增長；無autoplay/fakeprefs，isolatedCA/browserenv去secret/finalreportscanredact。
+- 檢查：Node26.13語法、build/typecheck/完整核心一次（T16曾62/63限流逾時、孤立9/9，歷史不覆蓋）；root獨立讀回與實看、cleanup/指紋/操作/SOL002/005/008。失敗保存後一次最小診斷，同錯再現停該操作；source若需變更先報root。無50人/20min/手機/真人/真弱網/品質/全client資源/雲/完整POC05，無T18/push/部署/遠端票改動。
+- 狀態：scope已保存，待agent啟動，不先判通過。
+
+### T17 script交接
+
+T17-SMOKE明確saved/readback/STOP釋出script與authoring，root接管唯一writer/runtime。exactNode26.13兩份script syntax通過且hash一致，預期初始gate/事件ID分離/trace count-byte completeness/stop ACK修正已交接；authoring紀錄複製R002。root開始最終review與首次六Firefox短驗，agent未runtime。
+
+## T17最終紀錄
+
+T17交付（2026-11-05）：[POC-05-R002](../poc/evidence/POC-05-R002/README.md)保存build/typecheck/63核心與首次六Firefox18,233ms短流程。每房1source/1watch/1only，兩房實播；專用only初始/活動self0且整輪raw0、回饋同房DOM0→1/異房0。studio watch→only零增量→watch不auto直到manual新config實播，lobby持續。root全hash重算source668/669→ownreceipts643/411，foreign/unknown/ambiguous0、count-byte完整；2圖實看/cleanup。app/依賴未變，SOL/操作/需求狀態/計畫/票面同步；50/20min/手機/真人/品質/全client資源/雲/完整POC05待，無Continue分支。writer/runtime釋出、程式+紀錄本機commit，不push/遠端票/T18/部署。

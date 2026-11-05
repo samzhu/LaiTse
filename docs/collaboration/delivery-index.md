@@ -53,3 +53,5 @@
 | T15／POC-04-R004 | 兩房整合恢復／主持撤權 | `docs/poc/evidence/POC-04-R004/README.md`、root-readback | 63核心/build、最終四Firefox短流程／健康12採樣／撤權無auto；首輪timer失敗保留 | 65min/真弱網/手機/品質與完整階段待補，資源釋出、不push/T16 |
 
 | T16／POC-05-R001 | 單房1→3接收實際影音fan-out | `docs/poc/evidence/POC-05-R001/README.md`、root-readback | build／短四Firefox通過，退訂隔離／來源停止；全套62/63＋孤立9/9、首輪browser失敗保留 | 10/25/50/長測/手機/品質待；資源釋出，不push/T17 |
+
+| T17／POC-05-R002 | 少量雙房影音／只互動混合 | `docs/poc/evidence/POC-05-R002/README.md`、root-readback | build/63核心/首次六Firefox通過，兩only0／mode切換／來源hash隔離與UI回饋 | 50人/20min/手機/品質/完整階段待，資源釋出、不push/T18 |
