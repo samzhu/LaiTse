@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "status": "lightweight-core-pass",
+  "fullT15AndPOC04": "Inconclusive",
+  "report": "desktop/report.json",
+  "durationMs": 10069,
+  "freshAuthoritySequence": 6,
+  "subscriptionSequences": [
+    9,
+    12
+  ],
+  "connections": {
+    "lobby-host": 1,
+    "lobby-receiver": 1,
+    "studio-publisher": 2,
+    "studio-host": 2
+  },
+  "distinctSourceClocks": {
+    "studio": "c9f67506-efe9-44c2-888a-ce371a5a9fda",
+    "lobby": "d235d872-ab19-4361-b19b-64e6e99ec281"
+  },
+  "recovery": {
+    "client": "studio-host receiver",
+    "simulation": {
+      "kind": "local application-driver deadline",
+      "deadlineMs": 1000,
+      "scheduledAt": "2026-11-05T02:15:44.730Z",
+      "scheduledAtElapsedMs": 5064,
+      "scheduledFor": "2026-11-05T02:15:45.730Z",
+      "oldConnectionIndex": 1,
+      "actualCloseAt": "2026-11-05T02:15:45.732Z",
+      "actualCloseElapsedMs": 6066,
+      "deadlineLatenessMs": 2,
+      "closeCode": 4003,
+      "closeEndpoints": [
+        "browser-route",
+        "server-route"
+      ],
+      "interactionAckAtElapsedMs": 5222,
+      "interactionAckPhase": "during-local-timeout-window"
+    },
+    "connectionIndex": 2,
+    "resumeRequest": {
+      "tokenPresent": true,
+      "passwordProvided": false
+    },
+    "authority": {
+      "resumedAtElapsedMs": 6364,
+      "roomSnapshotAtElapsedMs": 6365,
+      "participationAtElapsedMs": 6365,
+      "roomId": "studio",
+      "role": "participant",
+      "publishAllowed": false
+    },
+    "subscriptions": {
+      "audio": {
+        "sentAtElapsedMs": 6388,
+        "acknowledgedAtElapsedMs": 6390,
+        "codec": "opus",
+        "generation": 1
+      },
+      "screen": {
+        "sentAtElapsedMs": 6375,
+        "acknowledgedAtElapsedMs": 6382,
+        "codec": "vp8",
+        "generation": 1
+      },
+      "keyframeRequestAtElapsedMs": 6380,
+      "keyframeGeneration": 1
+    },
+    "render": {
+      "audio": {
+        "renderedSamples": 12608,
+        "decodedFrames": 15,
+        "receivedPackets": 15,
+        "renderRms": 0.15570194802316603,
+        "listenerState": "ready",
+        "playbackClockId": "c9f67506-efe9-44c2-888a-ce371a5a9fda"
+      },
+      "screen": {
+        "renderedFrames": 3,
+        "decodedFrames": 3,
+        "receivedFrames": 4,
+        "width": 320,
+        "height": 180,
+        "syncClockId": "c9f67506-efe9-44c2-888a-ce371a5a9fda",
+        "pixel": [
+          38,
+          185,
+          94,
+          255
+        ]
+      }
+    },
+    "newConnectionBinaryCounts": {
+      "audio": 16,
+      "screen": 4,
+      "all": 20
+    },
+    "hostClaimAfterResume": {
+      "visibleState": "MANAGED",
+      "automaticClaimControls": 0
+    }
+  },
+  "healthyFirstLast": [
+    {
+      "at": "2026-11-05T02:15:44.332Z",
+      "elapsedMs": 4666,
+      "renderedSamples": 11584,
+      "renderedFrames": 3,
+      "audioPackets": 15,
+      "screenPackets": 4
+    },
+    {
+      "at": "2026-11-05T02:15:48.756Z",
+      "elapsedMs": 9090,
+      "renderedSamples": 224576,
+      "renderedFrames": 63,
+      "audioPackets": 234,
+      "screenPackets": 64,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    }
+  ],
+  "healthySampleCount": 12,
+  "interactionAcks": [
+    {
+      "phase": "during-local-studio-timeout-window-or-recovery",
+      "atElapsedMs": 5222,
+      "duplicate": false
+    },
+    {
+      "phase": "after-studio-receiver-media-recovery",
+      "atElapsedMs": 6731,
+      "duplicate": false
+    }
+  ],
+  "revocation": {
+    "hostAction": {
+      "action": "revokePublisher",
+      "atElapsedMs": 6901
+    },
+    "audioStreamEndedAtElapsedMs": 6900,
+    "screenStreamEndedAtElapsedMs": 6900,
+    "permissionAllowedAfterRevoke": false,
+    "revokedSignalReason": "permission_revoked",
+    "sourceTrackCount": 2,
+    "tracksEnded": true,
+    "publisherBinaryAfterDrain": {
+      "audio": 127,
+      "screen": 35,
+      "all": 162
+    },
+    "studioReceiverBinaryAfterDrain": {
+      "audio": 26,
+      "screen": 7,
+      "all": 33
+    },
+    "boundedDrainMs": 900,
+    "receiverAtEndSignal": {
+      "audioReceivedPackets": 25,
+      "screenReceivedFrames": 7
+    },
+    "receiverAfterDrain": {
+      "audioReceivedPackets": 25,
+      "audioRenderRms": 0,
+      "screenReceivedFrames": 7,
+      "screenRenderedFrames": 6,
+      "screenWidth": 0,
+      "screenHeight": 0
+    },
+    "publisherResume": {
+      "connectionIndex": 2,
+      "authorityAtElapsedMs": 8062,
+      "publishAllowed": false,
+      "role": "participant",
+      "automaticStartControls": {
+        "audio": 0,
+        "screen": 0
+      },
+      "automaticBinaryFrames": {
+        "audio": 0,
+        "screen": 0,
+        "all": 0
+      },
+      "audioCaptureRequests": 1,
+      "screenCaptureRequests": 1,
+      "tracksStillEnded": true,
+      "hostClaimControls": 0
+    }
+  },
+  "applicationFingerprintsMatchBuild": true,
+  "imagesActuallyViewed": [
+    "desktop/lobby-receiver-final.png",
+    "desktop/studio-host-final.png"
+  ],
+  "limits": "short local synthetic sources; no65min/TCP weaknetwork/phone/background/human/p95/capacity/durability/CloudRun claim"
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T01:57:13.424439+00:00",
+    "finishedAt": "2026-11-05T01:57:14.846095+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/playback-queue.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs",
+      "tests/transport-budget.test.mjs"
+    ],
+    "startedAt": "2026-11-05T01:57:14.846882+00:00",
+    "finishedAt": "2026-11-05T01:57:24.393806+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/integrated-session-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T02:14:59.710529+00:00",
+    "finishedAt": "2026-11-05T02:14:59.751381+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "integrated-session-smoke",
+    "command": [
+      "node",
+      "scripts/integrated-session-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T02:14:59.982573+00:00",
+    "finishedAt": "2026-11-05T02:15:07.266595+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "smoke-syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/integrated-session-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T02:15:39.211019+00:00",
+    "finishedAt": "2026-11-05T02:15:39.252007+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "integrated-session-smoke",
+    "command": [
+      "node",
+      "scripts/integrated-session-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T02:15:39.486178+00:00",
+    "finishedAt": "2026-11-05T02:15:49.761277+00:00",
+    "exitCode": 0
+  }
+]

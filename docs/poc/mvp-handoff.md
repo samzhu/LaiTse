@@ -181,3 +181,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-006：audio pending8自關4003沿T12/13重建；三Firefox以單接收test route4003驗fresh authority/config/keyframe/實播，主講來源不重捕。恢復共享原publisher generation/clock為正確，不虛造新source。未測真CPU飽和自恢復或所有壓力情境。
 - SOL-008：[R003](evidence/POC-04-R003/README.md)含63核心/build、9個新seam、最終完整短browser、兩圖/讀回/cleanup；首輪只關serverRoute失敗及兩端close窄修保留。driver bounded256KiB/128msgs/500ms，實測501ms後丟棄0replay；健康5+3實播觀測/ACK，慢端新controller實播成功。測試注入不進商品，正常browser流量不當server真背壓證據。
 - 復用限制：無依賴/codec/來源格式變更；真弱網/手機背景/人耳/資源全面量測/20次p95/耐久/容量/完整POC-04/CloudRun仍待，不能整包當MVP。
+
+## T15／POC-04-R004：SOL-002／003／006／008（2026-11-05）
+
+- SOL-002／003：同一現有app四真Firefox、兩房獨立合成Opus/VP8實播；各房stream clock／canvas色碼與健康持續可核對，非完整payload hash audit。T09主持grant/revoke接T13/14；撤權清來源與streamEnded、900ms無新binary/接收計數不增/RMS0/空畫面，其他房不被停止。現有app與codec/依賴未改。
+- SOL-006：studio receiver模擬deadline1秒close雙端4003後新authority seq2/4/6→subscribe9/12、fresh config/keyframe及實播。host resume失claim，正常重新認領後撤權；被撤者再resume最新publishAllowed=false、700ms無auto start/binary/host claim且capture次數不增。process-memory proof與同頁意圖仍不是耐久/正式身份，沒有CloudRun timeout或實例替換證據。
+- SOL-008：新增`integrated-session-smoke.mjs`，可信隔離CA/四browser/有界白名單trace、兩圖與手動用法；[R004](evidence/POC-04-R004/README.md)保存build/63核心/最終10,069ms短流程、健康12採樣/兩ACK、首輪timer -1ms失敗與root截止確認窄修、source fingerprint/readback/cleanup。未新增重複單元測試，整合腳本本身驗跨步閉環。
+- 採用前限制：只有短桌面核心可行，65min/手機背景/真人/真弱網/p95/全資源/容量/耐久/CloudRun/完整POC04待補。optional hold入口只已syntax/閱讀，長分支未執行，不可預先當耐久工具已驗。測試來源/route與診斷須在MVP整理，不能整包複製稱商品。

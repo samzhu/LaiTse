@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-05",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "node": "v26.13.0",
+  "baseline": "eb58084",
+  "deployment": "local only"
+}

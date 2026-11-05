@@ -1,0 +1,13 @@
+[T15] four-isolated-firefox-clients-joined-two-rooms
+[T15] both-rooms-opus-vp8-actually-rendered-with-distinct-source-clocks {"clockIdsDistinct":true,"codecs":{"audio":"opus","video":"vp8"},"studioRenderedSamples":11008,"studioRenderedFrames":3,"lobbyRenderedSamples":11584,"lobbyRenderedFrames":3}
+[T15] studio-receiver-application-timeout-scheduled {"deadlineMs":1000,"connectionIndex":1}
+[T15] healthy-lobby-interaction-acknowledged {"phase":"during-local-studio-timeout-window-or-recovery","atElapsedMs":5222,"duplicate":false}
+[T15] studio-receiver-route-closed-on-local-deadline {"oldConnectionIndex":1,"closeCode":4003,"deadlineLatenessMs":2,"endpoints":["browser-route","server-route"]}
+[T15] studio-receiver-resumed-authority-restored-before-media-subscriptions {"connectionIndex":2,"roomId":"studio","publishAllowed":false,"audioSubscribeAck":true,"screenSubscribeAck":true,"freshConfig":true,"keyframeRequested":true,"renderedSamples":12608,"renderedFrames":3,"hostClaimLost":true}
+[T15] healthy-lobby-interaction-acknowledged {"phase":"after-studio-receiver-media-recovery","atElapsedMs":6731,"duplicate":false}
+[T15] studio-host-reclaimed-through-normal-host-ui {"roomId":"studio"}
+[T15] studio-publisher-revoked-tracks-ended-and-receiver-settled {"tracksEnded":true,"streamEndedControls":2,"boundedDrainMs":900,"publisherBinaryAfterDrain":162,"receiverBinaryAfterDrain":33}
+[T15] revoked-publisher-route-closed-after-track-stop {"connectionIndex":1,"closeCode":4003,"endpoints":["browser-route","server-route"]}
+[T15] revoked-publisher-resumed-without-auto-capture-or-publish {"publishAllowed":false,"automaticStartControls":0,"automaticBinaryFrames":0,"tracksStillEnded":true}
+[T15] healthy-lobby-audio-video-and-interaction-remained-live-across-studio-fault {"sampleCount":12,"audioSamplesAdvancedAtEveryObservation":true,"videoFramesAdvancedAtEveryObservation":true,"audioPacketsAdvancedAtEveryObservation":true,"videoPacketsAdvancedAtEveryObservation":true,"interactionAckedDuringFaultAndAfterRecovery":true,"finalRenderedSamples":209216,"finalRenderedFrames":59}
+[T15] passed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t15/acceptance/report.json

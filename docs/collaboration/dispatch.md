@@ -217,3 +217,22 @@ T14-SMOKE已saved/readback/STOP釋出slow-receiver-smoke與smoke-authoring，exa
 ## T14最終紀錄
 
 T14交付（2026-11-05）：[POC-04-R003](../poc/evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。
+
+## T15／POC-04-R004 範圍包（2026-11-05）
+
+人類原話：「繼續做 T15，驗測維持輕量，確認核心功能可行跟使用方式就好，完成後把程式和驗測紀錄一起 commit。」基線 eb58084，#16 [T15] 長時間整合與弱網回歸已讀回。DEC-010／plan v1.1優先，短整合場次而非強制65分鐘；完整品質仍Inconclusive。
+
+- T15-SMOKE／Luna xhigh唯一writer：`scripts/integrated-session-smoke.mjs`、`.scratch/t15/authoring/`；讀現有source/tests/scripts/README。不得改既有script/source/manifest/lock/docs/README/Git，不啟runtime。交付syntax/讀回/指紋/操作筆記後明確STOP釋出。
+- root唯一writer：權威collaboration/poc/需求狀態文件、`README.md`、`.gitignore`、`docs/poc/evidence/POC-04-R004/`、暫存accept runner、Git；root獨占4173測試服務/瀏覽器與最終驗收。既有AGENTS.md/.scratch未追蹤不stage。
+- 最小閉環：同一可信HTTPS/WSS app四獨立真Firefox，studio host兼receiver＋受grant publisher、lobby host兼publisher＋receiver；兩房合成Opus/VP8同時實播。studio receiver受控應用route close模擬連線到期，最新authority/config/keyframe實播恢復；reclaim host後撤publisher權，tracks停止／房內停止下送，再close被撤權publisher，resume無auto來源/發布/權限。lobby在故障與撤權前後多次samples/frames增長且互動ACK正常，distinct room/source clocks防混流。
+- 不變條件：不新增公開故障API、不改商品語意/codec/queue/安全政策/依賴。test-only route明確雙端4003，非CloudRun timeout、TCP弱網或真背景。憑證僅env/臨時記憶，不保存token/rawpayload/真媒體；bounded白名單控制與byte計數，cap到達即fail，isolated CA profile、正常播放手勢，不改系統信任。短採樣與實際起訖明列，可選duration延長入口但本輪不驗65min。
+- 驗收：exact Node26.13 syntax、production build/typecheck、現有完整核心一次；root跑短四Firefox，讀回fresh authority→subscribe/config與new render、撤權tracks ended/觀察安靜窗口、無auto publish、健康房持續；代表圖實看、cleanup與指紋。失敗先保存，最小診斷一次，相同問題再現停止該操作。交付SOL-002/003/006/008與操作。無手機/人耳/真弱網/65min/p95/全資源/雲/完整POC04證據，不啟T16/遠端票/push/部署。
+- 狀態：範圍已保存，agent待啟動，不先宣稱實作或驗收。
+
+### T15 script交接
+
+T15-SMOKE明確saved/readback/STOP釋出新script與authoring；root接管唯一writer/runtime。交接指紋與筆記已複製R004，exact26.13語法通過，未runtime；pre-review selector/undefined/baseline/env/drain/ACK已修正。root進行最後source核對與首次四Firefox短驗。
+
+## T15最終紀錄
+
+T15交付（2026-11-05）：[POC-04-R004](../poc/evidence/POC-04-R004/README.md)保存63核心/build/typecheck與最終四Firefox10,069ms完整短整合。兩房合成音畫同時實播、studio本地1s deadline關線後fresh authority/config/keyframe恢復、主持不auto需重新認領；撤權tracks ended/900ms無新增，被撤者再resume無來源/權限復活。lobby12採樣持續與2ACK成功。首輪timer提前1ms斷言失敗/harness窄修保留，app/source/依賴未改。root兩圖/讀回完成，SOL/操作/需求狀態/計畫/票面同步；65min/手機/真背景/真弱網/品質/資源/耐久/完整POC04仍待。writer/runtime已停止釋出，程式+紀錄同一本機commit，不push/遠端票/T16/部署。

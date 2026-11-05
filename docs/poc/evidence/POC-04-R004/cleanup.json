@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-05",
+  "port4173Listeners": 0,
+  "ownedT15ProfileProcesses": 0,
+  "serverProcesses": 0,
+  "method": "lsof/ps narrow readback",
+  "profileFoldersRemaining": [],
+  "systemTrustChanged": false,
+  "agent": "explicit saved/readback/STOP received"
+}
