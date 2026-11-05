@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "itemId": "GATE-001-DESKTOP-AUDIO",
+  "date": "2026-11-05",
+  "timezone": "Asia/Taipei",
+  "codeBaseline": "1647fa2",
+  "execution": "completed by human",
+  "desktopAudioCore": "Pass (human reported)",
+  "browser": {
+    "name": "Microsoft Edge",
+    "nameSource": "user-provided appshot com.microsoft.edgemac",
+    "version": "not reported"
+  },
+  "source": "normal microphone controls in two desktop pages; no generated audio injected by agent",
+  "confirmation": [
+    {
+      "quote": "OK",
+      "context": "Answer to whether the headphones could hear the speaker-page voice",
+      "acceptedScope": [
+        "human heard voice at receiving page"
+      ],
+      "excludedScope": [
+        "stop/restart until separately confirmed",
+        "phone",
+        "latency/quality thresholds",
+        "full MVP acceptance"
+      ]
+    },
+    {
+      "question": "主講端「停止麥克風→重新開始」及收聽端「停止收聽→重新開始」，聲音是否都能停止並恢復？",
+      "quote": "兩端都測過，正常",
+      "acceptedScope": [
+        "publisher stop and restart stops/restores sound",
+        "receiver stop and restart mutes/restores sound"
+      ]
+    }
+  ],
+  "observedScreenshot": {
+    "timestampUTC": "2026-11-05T08:22:29.376Z",
+    "app": "Microsoft Edge",
+    "url": "http://localhost:4173/?room=studio",
+    "receivedPackets": 1082,
+    "decodedFrames": 1082,
+    "renderedSamples": 1035776,
+    "renderRmsAtSnapshot": 0.0,
+    "basis": "user-provided screenshot; values at one instant, not a latency or hearing measurement",
+    "unrelatedTabsOrParticipantNamesRetained": false
+  },
+  "notTested": [
+    "physical phone",
+    "cross-device playback",
+    "screen share/human A-V sync",
+    "weak network/background/endurance",
+    "measured latency/quality",
+    "host/password behavior in this unmanaged fixture"
+  ],
+  "gateEffect": {
+    "desktopHearingGap": "closed within this Edge/two-page scope",
+    "mobile": "pending; user deferred to desktop only",
+    "technicalGo": false,
+    "mvpStarted": false
+  },
+  "service": "left running for human use, no user tab/microphone/volume operated by agent"
+}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-05",
+  "baseline": "1647fa2",
+  "pid": 16778,
+  "database": "laitse_poc_manual_desktop_20261105161746",
+  "container": "laitse-poc06-r002-db",
+  "databaseInitialState": "exited",
+  "host": "127.0.0.1",
+  "port": 4173,
+  "url": "http://localhost:4173/?room=studio",
+  "protocol": "HTTP/WS loopback only",
+  "room": "studio",
+  "roomLocked": false,
+  "hostControlsEnabled": false,
+  "fixture": "dedicated manual audio test, no generated audio or fake capture",
+  "humanHearing": "confirmed by human: desktop Edge",
+  "mobile": "deferred by user",
+  "keepRunningForHuman": true,
+  "credentialsRecorded": false,
+  "execSessionId": 3388,
+  "publisherStopRestart": "confirmed normal",
+  "receiverStopRestart": "confirmed normal"
+}

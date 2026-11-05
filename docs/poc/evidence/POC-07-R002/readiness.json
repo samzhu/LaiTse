@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-05T08:19:07.743606+00:00",
+  "health": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "meetingRoom": {
+    "id": "studio",
+    "name": "Meeting room",
+    "kind": "meeting-room",
+    "audioPolicy": "room",
+    "audioRadiusGridUnits": null,
+    "isLocked": false,
+    "hostControlsEnabled": false
+  },
+  "pageHTTPStatus": 200,
+  "publicURL": "http://localhost:4173/?room=studio",
+  "verificationScope": "server/database/routes only; no microphone permission or human hearing asserted",
+  "humanResult": "pending",
+  "serviceLeftRunning": true
+}

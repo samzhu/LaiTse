@@ -308,3 +308,13 @@ DEC-012資料庫整合完成：[POC-06-R002](evidence/POC-06-R002/README.md)保�
 T19／#20審查交付完成：[POC-07-R001](evidence/POC-07-R001/README.md)固定8b5fc43與同版65指紋、重新build/typecheck，沿用R002的63核心/PG恢復證據，另在PG重驗四Firefox短整合10,394ms、六Firefox混合19,021ms。root重算來源隔離/only0/authority與撤權、實看PG實播畫面；原T15 Continue逾時與私有port probe TIME_WAIT診斷保留，僅測試副本窄修，產品與原腳本不改。既有mvp-handoff原位整理SOL001～008狀態、逐階段證據、GATE001～006、測試工具移出項與MVP順序。
 
 執行紀錄完成／完整資格Inconclusive／technicalGo=false（NoGo）：真mic至另一端真人聽見與目標實機手機加入/選房/只互動證據仍缺，首批支援範圍未確認。不是要求補50人長測/全面QA或本輪CloudRun部署；容量硬上限8、實測6明示，PG保存缺口已解，不重新要求批准資料庫。尚未開始MVP，不推定人類接受品質。source/deps未改，資料volume/test DB保留、server/browser/DB回復停止，紀錄同本機commit，不push/遠端票/部署。
+
+## 桌機真人語音核心確認（2026-11-05）
+
+GATE-001-DESKTOP-AUDIO／[POC-07-R002](evidence/POC-07-R002/README.md)已保存人類確認：對耳機是否聽見回答「OK」；再對主講停麥/重開及接收停聽/重開回答「兩端都測過，正常」。本輪Edge桌機兩頁真人語音核心Pass，Edge版本未回報，不以指南Chrome當實測。appshot計數僅佐證管線，不以RMS瞬間值推斷人耳或量化品質；原話/範圍分開保存。手機由人類指定先不做，仍待；完整進場NoGo/MVP未開工保持。服務繼續localhost:4173與專用PG運作，root不操作人類Edge或收音，無程式改動／新合成測試／部署。
+
+## GitHub進度同步完成（2026-11-05）
+
+依人類「要記得更新進度」，[母議題#1](https://github.com/samzhu/LaiTse/issues/1)及T01～T19（#2～20）已加入最新進度段，說明核心已驗／未驗、DEC-010輕量範圍、DEC-011空間門禁與DEC-012 PostgreSQL18例外；桌機Edge真人語音與兩端啟停已確認，手機仍待、technicalGo=false。保留原AC、open與labels，沒有推送程式、關票或部署。20張寫入後均讀回正文完全一致，before／expected／readback SHA256見POC-07-R002/github-progress-readback.json。後續相關POC保存後同步相關票的偏好已記入brief。
+
+本輪只有紀錄變更；JSON解析、20張Issue精確讀回／原文與狀態保持、證據路徑及git diff檢查通過，不重跑既有程式測試。R001歷史結果不覆寫。文件writer／GitHub寫入已結束；localhost:4173及專用PG容器繼續運作供人類，未接管Edge／麥克風，未做手機或MVP。

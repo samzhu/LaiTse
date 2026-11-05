@@ -337,3 +337,25 @@ root單一writer/操作者：docs/poc/mvp-handoff.md（沿用唯一SOL007資料�
 T19／#20審查交付完成：[POC-07-R001](../poc/evidence/POC-07-R001/README.md)固定8b5fc43與同版65指紋、重新build/typecheck，沿用R002的63核心/PG恢復證據，另在PG重驗四Firefox短整合10,394ms、六Firefox混合19,021ms。root重算來源隔離/only0/authority與撤權、實看PG實播畫面；原T15 Continue逾時與私有port probe TIME_WAIT診斷保留，僅測試副本窄修，產品與原腳本不改。既有mvp-handoff原位整理SOL001～008狀態、逐階段證據、GATE001～006、測試工具移出項與MVP順序。
 
 執行紀錄完成／完整資格Inconclusive／technicalGo=false（NoGo）：真mic至另一端真人聽見與目標實機手機加入/選房/只互動證據仍缺，首批支援範圍未確認。不是要求補50人長測/全面QA或本輪CloudRun部署；容量硬上限8、實測6明示，PG保存缺口已解，不重新要求批准資料庫。尚未開始MVP，不推定人類接受品質。source/deps未改，資料volume/test DB保留、server/browser/DB回復停止，紀錄同本機commit，不push/遠端票/部署。
+
+## GATE-001／桌機真人收聽準備（2026-11-05）
+
+人類要求先補真人收聽/手機核心、啟本機服務並教測，之後明確釐清「在桌機就好」。本輪只做桌機真人聲音，手機延後；不推定原手機P0被取消。
+
+root唯一writer/操作者：本次docs協作checkpoint/dispatch及POC07-R002記錄、.scratch/t19/manual-desktop runtime與Git唯讀；src/db/package/scripts原檔唯讀，不開MVP。只啟原自有PG測試容器、新建獨立manual DB，不刪舊資料；app 127.0.0.1:4173 HTTP loopback，無LAN/憑證安裝需求。不再延續剛才讀取的LAN資訊或修改網路。
+
+為減少操作，本輪fixture為未鎖會議室/未啟主持管理，兩普通頁面可發布/收聽；不等於商品門禁或權限政策變更，也不改其他DB既存managed模式。root機器只核對app/DB健康與入口；真人親口說話/耳機實際聽見/停開結果由人類提供，準備完成不當Pass。交付可點URL與兩分頁最短步驟，服務明確保留運作供人類測；收到測試結果後再保存精確範圍，不把沉默當通過。無手機/部署/push/正式Go承諾。
+
+真人結果已明確收到並保存：root仍唯一文件writer，原scope Git唯讀屬服務準備階段；確認後沿用既有POC紀錄同版本本機提交約定，將本輪真人結果及交接紀錄一起commit，排除private runtime/AGENTS/scratch，不改程式。服務留用不是資源釋出，不停止或改動人類Edge操作。
+
+## GitHub進度同步授權（2026-11-05）
+
+人類明確提供issues連結並要求「要記得更新進度」。root唯一writer，讀回samzhu/LaiTse母#1及T01～T19（#2～20），以可重複替換的最新進度段同步本機已驗核心、證據路徑/本機commit、限制與手機待測及NoGo。原AC/state/labels保留，不把全部core完成寫成全階段通過；不推送程式或部署，也不發其他通訊。每issue寫後讀回body核對，原票正文作歷史保留且最新DEC010/011/012差異明列；GitHub正文不貼本機未推送的假可讀證據URL、私密env或無關appshot。
+
+本輪保存before/after hash與readback在POC07-R002，並將未來相關POC/真人驗測需同步GitHub的偏好寫入brief，覆蓋先前各輪「不改遠端票」的本次範圍，不擴張為push/部署/自動關閉授權。完成後本機紀錄同commit，服務維持人類使用。
+
+## GitHub進度同步完成（2026-11-05）
+
+依人類「要記得更新進度」，[母議題#1](https://github.com/samzhu/LaiTse/issues/1)及T01～T19（#2～20）已加入最新進度段，說明核心已驗／未驗、DEC-010輕量範圍、DEC-011空間門禁與DEC-012 PostgreSQL18例外；桌機Edge真人語音與兩端啟停已確認，手機仍待、technicalGo=false。保留原AC、open與labels，沒有推送程式、關票或部署。20張寫入後均讀回正文完全一致，before／expected／readback SHA256見POC-07-R002/github-progress-readback.json。後續相關POC保存後同步相關票的偏好已記入brief。
+
+本輪只有紀錄變更；JSON解析、20張Issue精確讀回／原文與狀態保持、證據路徑及git diff檢查通過，不重跑既有程式測試。R001歷史結果不覆寫。文件writer／GitHub寫入已結束；localhost:4173及專用PG容器繼續運作供人類，未接管Edge／麥克風，未做手機或MVP。

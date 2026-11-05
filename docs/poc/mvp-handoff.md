@@ -11,7 +11,7 @@
 | ID | 方案責任／採用建議 | 證據與可用範圍 | MVP移轉條件／限制 |
 |---|---|---|---|
 | SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
-| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | 合成來源真編解碼不等於真人收聽；實體麥克風/目標手機/播放手勢核心待補。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
+| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標手機/跨裝置與原生畫面核心仍待驗。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
 | SOL-003 | **需重構**：server權威Room/控制Session/門禁/授撤權核心保留 | [POC03-R004](evidence/POC-03-R004/README.md)／[R005](evidence/POC-03-R005/README.md)、[PG資料恢復](evidence/POC-06-R002/README.md)、[T19撤權/恢復](evidence/POC-07-R001/README.md) | 臨時匿名身份與全域bootstrap token不是正式帳號/Room ACL；活動Session與control_sessions須分清，授權歷史不自動恢復有效權限 |
 | SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
 | SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
@@ -36,7 +36,7 @@
 
 **審查紀錄交付完成；technicalGo=false，結論NoGo；完整候選資格結果Inconclusive。** [本輪證據與狀態](evidence/POC-07-R001/README.md)將執行完成、核心可用、完整階段、人類接受與發布分開記錄。本輪沒有啟動MVP或變更產品範圍。
 
-NoGo的主要理由是：仍缺實體麥克風→另一端真人實際聽見、目標實機手機加入/選房/只互動等必要核心證據，且尚未確認首批裝置/試用界線；不能用桌面合成或縮小視窗代替。**不把50人、20/65分鐘、全面QA或所有p95數值當本輪輕量完成的硬門檻，也不以本輪明確不部署CloudRun來判本機實驗失敗。** PG已解除R001的本機已提交資料遺失缺口，不能繼續把「不准資料庫」或「尚無保存方案」當成未決。
+NoGo的主要理由是：桌機Edge真人收聽及兩端停止/重開已在[POC07-R002](evidence/POC-07-R002/README.md)獲人類確認；仍缺目標實機手機加入/選房/只互動等必要核心證據，首批具體裝置/試用界線尚待。手機不能用桌面合成或縮小視窗代替。**不把50人、20/65分鐘、全面QA或所有p95數值當本輪輕量完成的硬門檻，也不以本輪明確不部署CloudRun來判本機實驗失敗。** PG已解除R001的本機已提交資料遺失缺口，不能繼續把「不准資料庫」或「尚無保存方案」當成未決。
 
 ### 固定候選與本輪回歸
 
@@ -49,7 +49,7 @@ NoGo的主要理由是：仍缺實體麥克風→另一端真人實際聽見、�
 | 階段 | 已有核心證據／可學會的操作 | 剩餘範圍與完整判定 |
 |---|---|---|
 | POC-00 | [R002](evidence/POC-00-R002/README.md)/[R004](evidence/POC-00-R004/README.md)：單一本機app/可信HTTPS-WSS、桌面能力探測與讀回；T19重建與同版指紋 | 桌面核心可行；實機手機可信LAN/能力仍未測，完整Inconclusive |
-| POC-01 | [R001/R002](evidence/POC-01-R002/README.md)：Opus送收、AudioWorklet真渲染/雙接收；T19 PG兩房RMS/samples持續 | 合成管線可行；真mic/真人聽見與目標手機仍待，完整Inconclusive |
+| POC-01 | [R001/R002](evidence/POC-01-R002/README.md)：Opus送收、AudioWorklet真渲染/雙接收；T19 PG兩房RMS/samples持續 | 桌機Edge真人收聽與兩端啟停已由人類確認；目標手機/跨裝置仍待，完整Inconclusive |
 | POC-02 | [R001](evidence/POC-02-R001/README.md)：歷史Chrome原生分頁擷取；[R002](evidence/POC-02-R002/README.md)：晚加入/同publisher同步；T19 PG VP8實播 | 桌面合成與歷史單次原生證據，不假稱本輪重驗原生擷取；裝置/真人音畫品質未齊，完整Inconclusive |
 | POC-03 | [R001～R007](evidence/POC-03-R007/README.md)：人物、空間/門禁、server隔離、主持、互動、QR/展示；T19 PG only0/回饋/切mode/撤權 | 桌面核心可延續；手機實機缺口。自動走路跨門/正式身份/商品彈幕展示等列MVP工作，非假稱已實作；完整未宣告Pass |
 | POC-04 | [R001～R004](evidence/POC-04-R004/README.md)：重連/解碼/慢端有界/整合；T19同候選PG新authority→訂閱→真render、撤權後不復活 | 輕量核心Pass；route hold/close不當TCP/實體背景證據，長測/弱網品質待需要時補，完整未宣告Pass |
@@ -62,7 +62,7 @@ NoGo的主要理由是：仍缺實體麥克風→另一端真人實際聽見、�
 
 | ID／類別 | 目前事實 | 下一個小步／需確認內容 |
 |---|---|---|
-| GATE-001／核心證據 | 未有真mic→另一端人耳與實機手機完整核心操作證據 | 先一次真人收聽/停止重開，以及一台目標手機可信連線→選房→只互動/回饋/QR。首批具體瀏覽器/機型與測試順序由人類確認，既有桌面＋手機P0不取消；不先要求長測與全矩陣 |
+| GATE-001／核心證據 | 桌機Edge真人聽見與兩端啟停已確認；實機手機核心仍未測 | 下一步是一台目標手機可信連線→選房→只互動/回饋/QR，桌機已通過範圍不重開。首批具體瀏覽器/機型與測試順序由人類確認，既有桌面＋手機P0不取消；不先要求長測與全矩陣 |
 | GATE-002／產品決策 | 正式主辦者/訪客/邀請及Space→Room→活動Session管理尚未定；目前control_sessions只是連線恢復 | 確認登入/訪客准入與主持授權方式；沿已驗server權威與PG新增正式domain，不能把bootstrap token當成帳號 |
 | GATE-003／容量與品質 | 硬上限8人、實測最多6；每房/channel單publisher，媒體同WS、DB同步控制寫入 | 確認首批人數/裝置/畫質與延遲目標；50人是原建議未達標，若保留須先擴配置/測資源與背壓。不是直接把8改50就算支持 |
 | GATE-004／互動細節 | 開放距離6格是示範；門可點/Enter，走路自動跨門未做；公開文字目前頁內區域 | 確認正式距離/進出邊界行為，MVP補門口操作與展示；維持已確認的會議室全房/未鎖直入/鎖房密碼，不重新詢問已確認規則 |
@@ -80,7 +80,7 @@ GATE-001是目前進場證據缺口；GATE-002～006分別是下一步產品設�
 
 ### 有證據支持的MVP順序（提案，尚未開工）
 
-0. 先補GATE-001最小真人/手機流程並確認首批支援範圍，再更新進場判定；技術Go與人類明確開工指示分開。
+0. GATE-001桌機真人流程已完成，接著補手機核心並確認首批具體支援範圍，再更新進場判定；技術Go與人類明確開工指示分開。
 1. 整理單一app＋PG基底：正式Space/Room/活動與身份/授權，migration/secret/保留/備份設計，延續commit後ACK；先完成一個可操作活動的縱向切片。
 2. 入場與空間：房間連結/QR、像素人物、手機替代控制、門/密碼/鎖房與開放距離規則；用同server權威驗私密邊界，不先做完整地圖編輯器。
 3. 授權音畫：一主講的mic/畫面獨立啟停、晚加入/接收恢復/撤權，沿已驗Opus/VP8候選，依目標實機選播放與不支援提示，sources仍須user操作。
