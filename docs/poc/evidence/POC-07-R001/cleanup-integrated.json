@@ -1,0 +1,23 @@
+{
+  "initialDatabaseContainerState": "exited",
+  "ownedServers": [
+    {
+      "label": "integrated_confirmed",
+      "pid": 13287,
+      "owned": true,
+      "database": "laitse_poc_gate_integrated_confirmed_155330",
+      "health": {
+        "status": "ok",
+        "persistence": "postgresql",
+        "persistenceAvailable": true
+      },
+      "stopMode": "SIGTERM",
+      "exitCode": 0
+    }
+  ],
+  "databaseVolumeDeleted": false,
+  "testDatabasesRetained": [
+    "laitse_poc_gate_integrated_confirmed_155330"
+  ],
+  "finalDatabaseContainerState": "exited"
+}

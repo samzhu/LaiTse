@@ -1,0 +1,9 @@
+[T15] four-isolated-firefox-clients-joined-two-rooms
+[T15] both-rooms-opus-vp8-actually-rendered-with-distinct-source-clocks {"clockIdsDistinct":true,"codecs":{"audio":"opus","video":"vp8"},"studioRenderedSamples":14272,"studioRenderedFrames":3,"lobbyRenderedSamples":15232,"lobbyRenderedFrames":3}
+[T15] studio-receiver-application-timeout-scheduled {"deadlineMs":1000,"connectionIndex":1}
+[T15] healthy-lobby-interaction-acknowledged {"phase":"during-local-studio-timeout-window-or-recovery","atElapsedMs":5878,"duplicate":false}
+[T15] studio-receiver-route-closed-on-local-deadline {"oldConnectionIndex":1,"closeCode":4003,"deadlineLatenessMs":0,"endpoints":["browser-route","server-route"]}
+[T15] failed report=/Users/samzhu/workspace_herdr/LaiTse/.scratch/t15/t19-155056/report.json
+[T15] failed: locator.click: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('audio-continue-listening')[22m

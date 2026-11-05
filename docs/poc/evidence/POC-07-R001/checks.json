@@ -1,0 +1,43 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T07:50:55.140178+00:00",
+    "finishedAt": "2026-11-05T07:50:56.577251+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "integrated-browser",
+    "command": [
+      "node",
+      "scripts/integrated-session-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T07:50:57.223009+00:00",
+    "finishedAt": "2026-11-05T07:51:13.751702+00:00",
+    "exitCode": 1
+  },
+  {
+    "name": "integrated_confirmed-browser",
+    "command": [
+      "node",
+      ".scratch/t19/integrated-driver.mjs"
+    ],
+    "startedAt": "2026-11-05T07:53:30.956469+00:00",
+    "finishedAt": "2026-11-05T07:53:41.553418+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "mixed-browser",
+    "command": [
+      "node",
+      "scripts/two-room-mixed-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T07:56:00.441185+00:00",
+    "finishedAt": "2026-11-05T07:56:19.671777+00:00",
+    "exitCode": 0
+  }
+]

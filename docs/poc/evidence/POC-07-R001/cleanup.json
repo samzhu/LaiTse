@@ -1,0 +1,39 @@
+{
+  "initialDatabaseContainerState": "exited",
+  "ownedServers": [
+    {
+      "label": "mixed",
+      "pid": 13488,
+      "owned": true,
+      "database": "laitse_poc_gate_mixed_155600",
+      "health": {
+        "status": "ok",
+        "persistence": "postgresql",
+        "persistenceAvailable": true
+      },
+      "stopMode": "SIGTERM",
+      "exitCode": 0
+    }
+  ],
+  "databaseVolumeDeleted": false,
+  "testDatabasesRetained": [
+    "laitse_poc_gate_mixed_155600"
+  ],
+  "finalDatabaseContainerState": "exited",
+  "additionalFlowCleanup": "cleanup-integrated.json",
+  "originalFailedFlowCleanupErrors": [],
+  "finalPortReadback": {
+    "ports": [
+      4173,
+      55433
+    ],
+    "exitCode": 1,
+    "output": ""
+  },
+  "finalBrowserReadback": {
+    "psFilter": "own .scratch/t15|t17/t19-* profiles and root acceptance/driver",
+    "exitCode": 1,
+    "output": "",
+    "noMatches": true
+  }
+}

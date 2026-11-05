@@ -1,21 +1,23 @@
 # POC 至 MVP 方案交接表
 
 - 權威計畫：[POC-PLAN v1.3](plan.md)；實際證據：[執行紀錄](execution-log.md)。
-- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**目前仍無完整階段證據可列穩定可採用**。
+- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19已完成範圍化採用建議，整體進場NoGo；可採用基底不等於完整階段通過**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
-## 候選方案
+## 候選方案（T19審查，2026-11-05）
 
-| ID | 方案責任 | 狀態 | 必要證據 | MVP 移轉條件 |
-|---|---|---|---|---|
-| SOL-001 | Node26／單一本機應用與工具鏈 | 驗證中（T01 Pass） | R001反例／R002成功；完整POC-00待T02 | 可重現建置、版本與授權鎖定；後續雲端仍待驗證 |
-| SOL-002 | 音訊／畫面編碼、轉送與播放 | 驗證中（桌面晚加入與同步排程核心可行） | POC-01／02／04／05 | codec／裝置／規模符合，初始化、晚加入、背壓及恢復有證據 |
-| SOL-003 | 權威 Room／Session／事件與權限 | 驗證中（T09臨時主持/主講及即時門禁核心，正式帳號/耐久待補） | POC-03／04／06 | 跨房、撤權、去重及重啟語意正確，無client自證權限 |
-| SOL-004 | Phaser 像素角色與操作橋接 | 驗證中（T07桌面核心／T08異房隱藏） | POC-03／05 | 多人同步、手機替代入口與減少動態效果可用 |
-| SOL-005 | 只互動／觀看／展示的狀態與媒體訂閱 | 驗證中（T11桌面核心可行） | POC-02／03／04 | 零媒體訂閱、切換保留草稿及房間、展示無管理權 |
-| SOL-006 | 重連、時基、快照與解碼恢復 | 驗證中（T12控制＋T13桌面接收恢復核心可行，品質/耐久待補） | POC-04／06 | 依最新權限恢復、不播過期資料、不恢復過期主講權 |
-| SOL-007 | 資料分類、保存與程序重啟恢復 | 驗證中（PostgreSQL18本機保存／恢復核心可行） | R001記憶體No-Go；R002 PG整合／SIGKILL／雙Firefox／同volume重啟 | 部署／備份／保留政策及完整POC06待；不整包視為商品完成 |
-| SOL-008 | 可重現測試、量測與回歸資產 | 驗證中（桌面核心資產） | 全階段／POC-07 | 清楚區分真實與合成負載；測試工具不混入產品流程 |
+「可採用」是**已驗範圍內的MVP開發基底採用建議**，不等於整個階段通過、正式環境穩定、產品驗收或MVP開工授權。「需重構」保留可用核心但不可整包搬入商品；「待驗」缺少必要實際使用證據，並非已證明不可行。
+
+| ID | 方案責任／採用建議 | 證據與可用範圍 | MVP移轉條件／限制 |
+|---|---|---|---|
+| SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
+| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | 合成來源真編解碼不等於真人收聽；實體麥克風/目標手機/播放手勢核心待補。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
+| SOL-003 | **需重構**：server權威Room/控制Session/門禁/授撤權核心保留 | [POC03-R004](evidence/POC-03-R004/README.md)／[R005](evidence/POC-03-R005/README.md)、[PG資料恢復](evidence/POC-06-R002/README.md)、[T19撤權/恢復](evidence/POC-07-R001/README.md) | 臨時匿名身份與全域bootstrap token不是正式帳號/Room ACL；活動Session與control_sessions須分清，授權歷史不自動恢復有效權限 |
+| SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
+| SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
+| SOL-006 | **可採用**：接收意圖/最新authority/config/keyframe恢復與有界背壓策略 | [POC04-R002](evidence/POC-04-R002/README.md)／[R003](evidence/POC-04-R003/README.md)、[T19短整合](evidence/POC-07-R001/integrated_confirmed/report.json)；PG模式下實播/撤權不復活 | route close不是TCP弱網或雲timeout；500ms本地queue與1s callback等是候選參數，非E2E/產品品質承諾，手機/背景待驗 |
+| SOL-007 | **可採用**：PostgreSQL18、migration、commit後ACK、Docker開發環境 | [POC06-R002](evidence/POC-06-R002/README.md)、T19同候選PG音畫/互動整合；詳細資料分類只維護下方唯一清冊 | 單active app/advisory lock、每次control保存狀態，未驗大量寫入；正式身份/保留/備份/託管與部署singleton策略待設計，不把dev volume當備份 |
+| SOL-008 | **需重構**：可重現測試方法與證據資產保留 | [T19回讀/失敗診斷](evidence/POC-07-R001/review.md)、既有bounded traces/原生decode/SQL反例 | 腳本與故障注入留開發端；T15 Continue瞬時按鈕helper需回整到維護版本，商品UI移除POC診斷面板。不能以空socket/ACK代替真人/畫面證據 |
 
 ## 每個方案的交接內容
 
@@ -30,11 +32,60 @@
 - 資源量測、成本輸入、授權與資產權利、限制及採用前條件。
 - 暫時無解、只在本機成立或尚未測試的部分；不以「可採用」掩蓋必要限制。
 
-## MVP 進場審查
+## MVP 進場審查（T19／POC-07-R001）
 
-目前判定：**尚未審查，不能視為 Go。**
+**審查紀錄交付完成；technicalGo=false，結論NoGo；完整候選資格結果Inconclusive。** [本輪證據與狀態](evidence/POC-07-R001/README.md)將執行完成、核心可用、完整階段、人類接受與發布分開記錄。本輪沒有啟動MVP或變更產品範圍。
 
-POC-07 需逐項核對：必要階段通過、可採用項目具可重現證據、核心 No-Go 已解決、產品條件沒有偷減、回歸可執行、資料方案符合決策、殘餘風險與待決事項已揭露。工程 Go、使用者接受與正式開發／部署分別記錄。
+NoGo的主要理由是：仍缺實體麥克風→另一端真人實際聽見、目標實機手機加入/選房/只互動等必要核心證據，且尚未確認首批裝置/試用界線；不能用桌面合成或縮小視窗代替。**不把50人、20/65分鐘、全面QA或所有p95數值當本輪輕量完成的硬門檻，也不以本輪明確不部署CloudRun來判本機實驗失敗。** PG已解除R001的本機已提交資料遺失缺口，不能繼續把「不准資料庫」或「尚無保存方案」當成未決。
+
+### 固定候選與本輪回歸
+
+同一程式基線8b5fc43、Node26.13.0、React19.3.1、Vite8.3.5、TypeScript7.0.2、Fastify5.12.8、ws8.22.1、Phaser4.2.1、pg8.23.1、PostgreSQL18.6-bookworm。app提供SPA/API/WSS，控制與媒體queue在單一app，系統資料存PG；沒有新增外部影音服務。12張領域表與schema_migrations沿用SOL007清冊，不另建DB盤點。
+
+65份source/tests/config與R002指紋完全一致，T19重新build/typecheck；同版R002的63核心與PG恢復/SIGKILL/同volume重啟證據按hash讀回重用，不無故重跑。另在新建獨立DB補兩段真Firefox：四頁兩房影音/重連/撤權10,394ms、六頁雙房只互動混合19,021ms。原T15 helper Continue消失逾時的失敗與保守測試副本修正保留；產品程式和原腳本未改。
+
+### POC-00～06證據對照
+
+| 階段 | 已有核心證據／可學會的操作 | 剩餘範圍與完整判定 |
+|---|---|---|
+| POC-00 | [R002](evidence/POC-00-R002/README.md)/[R004](evidence/POC-00-R004/README.md)：單一本機app/可信HTTPS-WSS、桌面能力探測與讀回；T19重建與同版指紋 | 桌面核心可行；實機手機可信LAN/能力仍未測，完整Inconclusive |
+| POC-01 | [R001/R002](evidence/POC-01-R002/README.md)：Opus送收、AudioWorklet真渲染/雙接收；T19 PG兩房RMS/samples持續 | 合成管線可行；真mic/真人聽見與目標手機仍待，完整Inconclusive |
+| POC-02 | [R001](evidence/POC-02-R001/README.md)：歷史Chrome原生分頁擷取；[R002](evidence/POC-02-R002/README.md)：晚加入/同publisher同步；T19 PG VP8實播 | 桌面合成與歷史單次原生證據，不假稱本輪重驗原生擷取；裝置/真人音畫品質未齊，完整Inconclusive |
+| POC-03 | [R001～R007](evidence/POC-03-R007/README.md)：人物、空間/門禁、server隔離、主持、互動、QR/展示；T19 PG only0/回饋/切mode/撤權 | 桌面核心可延續；手機實機缺口。自動走路跨門/正式身份/商品彈幕展示等列MVP工作，非假稱已實作；完整未宣告Pass |
+| POC-04 | [R001～R004](evidence/POC-04-R004/README.md)：重連/解碼/慢端有界/整合；T19同候選PG新authority→訂閱→真render、撤權後不復活 | 輕量核心Pass；route hold/close不當TCP/實體背景證據，長測/弱網品質待需要時補，完整未宣告Pass |
+| POC-05 | [R001](evidence/POC-05-R001/README.md)1→3接收，[R002](evidence/POC-05-R002/README.md)雙房6人；T19 PG雙房6人/only0/hash隔離 | 小規模核心Pass，非容量承諾；目前MAX_SPACE_MEMBERS=8全空間上限，50人建議要先改容量配置並實測，完整未宣告Pass |
+| POC-06 | [R001](evidence/POC-06-R001/README.md)memory反例拒絕；[R002](evidence/POC-06-R002/README.md)PG app/容器重啟、digest/門禁/互動保存與SIGKILL | 本機恢復核心Pass；不是正式帳號/備份/主機替換或雲部署證據，完整未宣告Pass；T19另補PG與媒體整合 |
+
+歷史失敗不能被本輪成功覆蓋：T01首次Firefox失敗、T13分段驗收/最後full未整跑、T16全套62/63逾時但isolated9/9，以及各run記錄的harness修正均保留。R002同版63/63與T19新回歸只支持各自時點/範圍，不追溯將歷史run寫成全綠。
+
+### 剩餘限制與待確認事項
+
+| ID／類別 | 目前事實 | 下一個小步／需確認內容 |
+|---|---|---|
+| GATE-001／核心證據 | 未有真mic→另一端人耳與實機手機完整核心操作證據 | 先一次真人收聽/停止重開，以及一台目標手機可信連線→選房→只互動/回饋/QR。首批具體瀏覽器/機型與測試順序由人類確認，既有桌面＋手機P0不取消；不先要求長測與全矩陣 |
+| GATE-002／產品決策 | 正式主辦者/訪客/邀請及Space→Room→活動Session管理尚未定；目前control_sessions只是連線恢復 | 確認登入/訪客准入與主持授權方式；沿已驗server權威與PG新增正式domain，不能把bootstrap token當成帳號 |
+| GATE-003／容量與品質 | 硬上限8人、實測最多6；每房/channel單publisher，媒體同WS、DB同步控制寫入 | 確認首批人數/裝置/畫質與延遲目標；50人是原建議未達標，若保留須先擴配置/測資源與背壓。不是直接把8改50就算支持 |
+| GATE-004／互動細節 | 開放距離6格是示範；門可點/Enter，走路自動跨門未做；公開文字目前頁內區域 | 確認正式距離/進出邊界行為，MVP補門口操作與展示；維持已確認的會議室全房/未鎖直入/鎖房密碼，不重新詢問已確認規則 |
+| GATE-005／資料運維 | 系統資訊可存PG已確認且核心已驗；archive無清理期限，無備份還原/HA證據 | 決定保存期限、刪除/查看權限、資料庫託管與備份還原方式。沒有要求重新核准PostgreSQL或保存類別 |
+| GATE-006／部署與商品整合 | app只容許單active writer；未做CloudRun容器/正式配置，POC debug UI/API/固定fixture仍在 | 後續處理singleton/版本切換與DB連線生命週期、secret/診斷授權、正式UI；本輪不部署，不能將單一service自動當成可多instance |
+
+GATE-001是目前進場證據缺口；GATE-002～006分別是下一步產品設計、容量/部署與MVP工作，不一律要求先做完整MVP才能開始MVP。若人類之後調整首批範圍，保存精確決策再用對應證據復審，不能從一般「OK」推成全部風險接受。
+
+### 必須保留、移出或重構的POC資產
+
+- 保留：codec/header與權威校驗、隔離/撤權/receive-intent、明確user gesture、模式/QR/展示降權、PG migrations/交易後ACK、反例與重現測試。不要移除正常麥克風/分享/門禁操作或有用test selectors來假裝已商品化。
+- 只在開發端：oscillator/animated canvas/fake device、Playwright route hold/close、SIGKILL/DB trigger/terminate_backend、profile與開發CA、packet hash採樣與私有env；不得打包成商品的隱藏故障API或假即時資料。
+- 商品前重構：POC能力/下載/隊列統計面板與未授權diagnostic API的正式可見性；固定pixel fixture/房間配置、全域host密鑰、匿名身份模型；T15瞬時Continue helper回整維護腳本/統一重現入口。保留bounded trace與錯誤但避免記錄密碼/token/聊天全文。
+- 明確拒絕：WorkAdventure產品基底（DEC001）；強制供應商影音SaaS綁定（DEC003）；process-memory作系統持久化（R001）；把mock/空socket/ACK/codec probe當實播或真人證據。未選其他框架不代表其授權或技術不合法。
+
+### 有證據支持的MVP順序（提案，尚未開工）
+
+0. 先補GATE-001最小真人/手機流程並確認首批支援範圍，再更新進場判定；技術Go與人類明確開工指示分開。
+1. 整理單一app＋PG基底：正式Space/Room/活動與身份/授權，migration/secret/保留/備份設計，延續commit後ACK；先完成一個可操作活動的縱向切片。
+2. 入場與空間：房間連結/QR、像素人物、手機替代控制、門/密碼/鎖房與開放距離規則；用同server權威驗私密邊界，不先做完整地圖編輯器。
+3. 授權音畫：一主講的mic/畫面獨立啟停、晚加入/接收恢復/撤權，沿已驗Opus/VP8候選，依目標實機選播放與不支援提示，sources仍須user操作。
+4. 互動與展示：持久事件/去重/TTL、商品彈幕與只互動、唯讀展示、主持治理，完成手機→同房展示的完整流程。
+5. 依首批人數調整8人上限/控制寫入與資源，跑必要短跨裝置/斷線/容量回歸；後續獨立安排CloudRun＋資料庫部署/備份還原，不把本機成功當已發布。
 
 T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張為影音／耐久／MVP證據。
 

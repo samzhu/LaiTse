@@ -1,0 +1,1688 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T15 two-room integrated synthetic media, receiver recovery, and revoked-publisher resume smoke.",
+  "startedAt": "2026-11-05T07:50:57.418Z",
+  "finishedAt": "2026-11-05T07:51:13.743Z",
+  "durationMs": 16326,
+  "status": "failed",
+  "baseURL": "https://localhost:4173",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "caCertificate": ".scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into isolated Firefox NSS profiles; certificate errors are not ignored",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "rooms": [
+      "lobby",
+      "studio"
+    ],
+    "browsers": [
+      "studio-host",
+      "studio-publisher",
+      "lobby-host",
+      "lobby-receiver"
+    ],
+    "isolatedFirefoxProfiles": 4,
+    "roles": {
+      "studio-host": "studio host and receiver",
+      "studio-publisher": "studio participant granted publishing by the studio host UI",
+      "lobby-host": "lobby host and synthetic publisher",
+      "lobby-receiver": "lobby participant and healthy receiver"
+    },
+    "network": "one externally running managed local HTTPS/WSS application"
+  },
+  "credentials": {
+    "hostToken": "provided in process memory; value not recorded",
+    "roomPassword": "provided in process memory; value not recorded",
+    "resumeTokens": "observed only as presence flags; values not retained"
+  },
+  "syntheticSources": {
+    "audio": "per-room oscillator routed through AudioContext MediaStreamDestination; no physical microphone",
+    "video": "per-room animated canvas returned by test-only getDisplayMedia replacement; no physical display capture",
+    "frequenciesHz": {
+      "lobby": 523,
+      "studio": 997
+    },
+    "colorsRgb": {
+      "lobby": [
+        224,
+        52,
+        46
+      ],
+      "studio": [
+        38,
+        184,
+        92
+      ]
+    },
+    "mediaPayloadsRetained": false
+  },
+  "disturbance": {
+    "kind": "test-only Playwright WebSocketRoute close on the studio host receiver connection",
+    "deadlineMs": 1000,
+    "schedule": {
+      "kind": "local application-driver deadline",
+      "deadlineMs": 1000,
+      "scheduledAt": "2026-11-05T07:51:03.112Z",
+      "scheduledAtElapsedMs": 5695,
+      "scheduledFor": "2026-11-05T07:51:04.112Z",
+      "oldConnectionIndex": 1,
+      "actualCloseAt": "2026-11-05T07:51:04.113Z",
+      "actualCloseElapsedMs": 6696,
+      "deadlineLatenessMs": 0,
+      "closeCode": 4003,
+      "closeEndpoints": [
+        "browser-route",
+        "server-route"
+      ],
+      "interactionAckAtElapsedMs": 5878,
+      "interactionAckPhase": "during-local-timeout-window"
+    },
+    "closeCode": 4003,
+    "closeEndpoints": [
+      "browser-route",
+      "server-route"
+    ],
+    "claim": "controlled application connection close only; not a Cloud Run timeout, TCP shaping, packet loss, or real background transition"
+  },
+  "optionalActiveHold": {
+    "requestedSeconds": 0,
+    "completedSeconds": 0,
+    "startedAt": null,
+    "finishedAt": null,
+    "sampleIntervalMaxSeconds": 30,
+    "samples": [],
+    "executed": false
+  },
+  "checks": [
+    {
+      "name": "four-isolated-firefox-clients-joined-two-rooms",
+      "at": "2026-11-05T07:51:01.561Z",
+      "elapsedMs": 4144
+    },
+    {
+      "name": "both-rooms-opus-vp8-actually-rendered-with-distinct-source-clocks",
+      "at": "2026-11-05T07:51:02.711Z",
+      "elapsedMs": 5294,
+      "clockIdsDistinct": true,
+      "codecs": {
+        "audio": "opus",
+        "video": "vp8"
+      },
+      "studioRenderedSamples": 14272,
+      "studioRenderedFrames": 3,
+      "lobbyRenderedSamples": 15232,
+      "lobbyRenderedFrames": 3
+    },
+    {
+      "name": "studio-receiver-application-timeout-scheduled",
+      "at": "2026-11-05T07:51:03.112Z",
+      "elapsedMs": 5695,
+      "deadlineMs": 1000,
+      "connectionIndex": 1
+    },
+    {
+      "name": "healthy-lobby-interaction-acknowledged",
+      "at": "2026-11-05T07:51:03.312Z",
+      "elapsedMs": 5895,
+      "phase": "during-local-studio-timeout-window-or-recovery",
+      "atElapsedMs": 5878,
+      "duplicate": false
+    },
+    {
+      "name": "studio-receiver-route-closed-on-local-deadline",
+      "at": "2026-11-05T07:51:04.118Z",
+      "elapsedMs": 6701,
+      "oldConnectionIndex": 1,
+      "closeCode": 4003,
+      "deadlineLatenessMs": 0,
+      "endpoints": [
+        "browser-route",
+        "server-route"
+      ]
+    }
+  ],
+  "controlObservations": [
+    {
+      "client": "studio-publisher",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T07:51:00.984Z",
+          "openedAtElapsedMs": 3567,
+          "closedAt": null,
+          "closeCode": null,
+          "closeReason": null,
+          "bytes": {
+            "sent": {
+              "frames": 703,
+              "bytes": 125274,
+              "binaryFrames": 698,
+              "audioFrames": 548,
+              "screenFrames": 150
+            },
+            "received": {
+              "frames": 19,
+              "bytes": 5923,
+              "binaryFrames": 0,
+              "audioFrames": 0,
+              "screenFrames": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "at": "2026-11-05T07:51:01.016Z",
+              "elapsedMs": 3599,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "at": "2026-11-05T07:51:01.050Z",
+              "elapsedMs": 3633,
+              "type": "protocol.error"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "at": "2026-11-05T07:51:01.215Z",
+              "elapsedMs": 3798,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "at": "2026-11-05T07:51:01.281Z",
+              "elapsedMs": 3864,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "at": "2026-11-05T07:51:01.281Z",
+              "elapsedMs": 3864,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "at": "2026-11-05T07:51:01.281Z",
+              "elapsedMs": 3864,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "publishAllowed": false,
+              "hostControlsEnabled": true,
+              "locked": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "at": "2026-11-05T07:51:01.283Z",
+              "elapsedMs": 3866,
+              "type": "interaction.snapshot",
+              "roomId": "studio"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "at": "2026-11-05T07:51:01.284Z",
+              "elapsedMs": 3867,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "6d9f87ce-f2d5-4dca-b99b-a2a13b9b742a",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "at": "2026-11-05T07:51:01.284Z",
+              "elapsedMs": 3867,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "at": "2026-11-05T07:51:01.284Z",
+              "elapsedMs": 3867,
+              "type": "host.publishPermission",
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "at": "2026-11-05T07:51:01.482Z",
+              "elapsedMs": 4065,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "at": "2026-11-05T07:51:01.483Z",
+              "elapsedMs": 4066,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "at": "2026-11-05T07:51:01.767Z",
+              "elapsedMs": 4350,
+              "type": "host.publishPermission",
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "at": "2026-11-05T07:51:02.285Z",
+              "elapsedMs": 4868,
+              "type": "audio.start"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "at": "2026-11-05T07:51:02.290Z",
+              "elapsedMs": 4873,
+              "type": "audio.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "at": "2026-11-05T07:51:02.389Z",
+              "elapsedMs": 4972,
+              "type": "screen.start"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "at": "2026-11-05T07:51:02.396Z",
+              "elapsedMs": 4979,
+              "type": "screen.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "at": "2026-11-05T07:51:04.145Z",
+              "elapsedMs": 6728,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "at": "2026-11-05T07:51:04.146Z",
+              "elapsedMs": 6729,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "at": "2026-11-05T07:51:04.469Z",
+              "elapsedMs": 7052,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "at": "2026-11-05T07:51:04.470Z",
+              "elapsedMs": 7053,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "at": "2026-11-05T07:51:04.503Z",
+              "elapsedMs": 7086,
+              "type": "screen.keyframeRequest",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 23,
+              "at": "2026-11-05T07:51:13.269Z",
+              "elapsedMs": 15852,
+              "type": "screen.stop"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 24,
+              "at": "2026-11-05T07:51:13.272Z",
+              "elapsedMs": 15855,
+              "type": "screen.stopped"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "lobby-receiver",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T07:51:01.045Z",
+          "openedAtElapsedMs": 3628,
+          "closedAt": null,
+          "closeCode": null,
+          "closeReason": null,
+          "bytes": {
+            "sent": {
+              "frames": 4,
+              "bytes": 287,
+              "binaryFrames": 0,
+              "audioFrames": 0,
+              "screenFrames": 0
+            },
+            "received": {
+              "frames": 718,
+              "bytes": 119769,
+              "binaryFrames": 700,
+              "audioFrames": 549,
+              "screenFrames": 151
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "at": "2026-11-05T07:51:01.070Z",
+              "elapsedMs": 3653,
+              "type": "join",
+              "roomId": "lobby",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "at": "2026-11-05T07:51:01.124Z",
+              "elapsedMs": 3707,
+              "type": "session.issued",
+              "roomId": "lobby",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "at": "2026-11-05T07:51:01.129Z",
+              "elapsedMs": 3712,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "at": "2026-11-05T07:51:01.136Z",
+              "elapsedMs": 3719,
+              "type": "room.snapshot",
+              "roomId": "lobby",
+              "publishAllowed": false,
+              "hostControlsEnabled": true,
+              "locked": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "at": "2026-11-05T07:51:01.137Z",
+              "elapsedMs": 3720,
+              "type": "interaction.snapshot",
+              "roomId": "lobby"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "at": "2026-11-05T07:51:01.137Z",
+              "elapsedMs": 3720,
+              "type": "participation.self",
+              "roomId": "lobby",
+              "participantId": "db213de3-6595-4b0a-a53d-171b418691e9",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "at": "2026-11-05T07:51:01.138Z",
+              "elapsedMs": 3721,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "at": "2026-11-05T07:51:01.138Z",
+              "elapsedMs": 3721,
+              "type": "host.publishPermission",
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "at": "2026-11-05T07:51:01.280Z",
+              "elapsedMs": 3863,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "at": "2026-11-05T07:51:01.483Z",
+              "elapsedMs": 4066,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "at": "2026-11-05T07:51:01.981Z",
+              "elapsedMs": 4564,
+              "type": "audio.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "at": "2026-11-05T07:51:01.989Z",
+              "elapsedMs": 4572,
+              "type": "audio.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "at": "2026-11-05T07:51:02.015Z",
+              "elapsedMs": 4598,
+              "type": "screen.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "at": "2026-11-05T07:51:02.020Z",
+              "elapsedMs": 4603,
+              "type": "screen.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "at": "2026-11-05T07:51:02.303Z",
+              "elapsedMs": 4886,
+              "type": "audio.stream",
+              "generation": 1,
+              "clockId": "4bf5c09a-377d-42ad-8be7-835d26919664",
+              "config": {
+                "codec": "opus",
+                "sampleRate": 48000,
+                "channels": 1
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "at": "2026-11-05T07:51:02.410Z",
+              "elapsedMs": 4993,
+              "type": "screen.stream",
+              "generation": 1,
+              "clockId": "4bf5c09a-377d-42ad-8be7-835d26919664",
+              "config": {
+                "codec": "vp8",
+                "width": 320,
+                "height": 180,
+                "frameRate": 15
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "at": "2026-11-05T07:51:03.260Z",
+              "elapsedMs": 5843,
+              "type": "interaction.submit"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "at": "2026-11-05T07:51:03.295Z",
+              "elapsedMs": 5878,
+              "type": "interaction.ack",
+              "roomId": "lobby",
+              "acknowledged": true,
+              "duplicate": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "at": "2026-11-05T07:51:03.295Z",
+              "elapsedMs": 5878,
+              "type": "interaction.event",
+              "roomId": "lobby"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "at": "2026-11-05T07:51:04.149Z",
+              "elapsedMs": 6732,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "at": "2026-11-05T07:51:04.457Z",
+              "elapsedMs": 7040,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "at": "2026-11-05T07:51:13.298Z",
+              "elapsedMs": 15881,
+              "type": "screen.streamEnded",
+              "generation": 1,
+              "clockId": null,
+              "reason": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "lobby-host",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T07:51:00.967Z",
+          "openedAtElapsedMs": 3550,
+          "closedAt": null,
+          "closeCode": null,
+          "closeReason": null,
+          "bytes": {
+            "sent": {
+              "frames": 705,
+              "bytes": 113046,
+              "binaryFrames": 700,
+              "audioFrames": 549,
+              "screenFrames": 151
+            },
+            "received": {
+              "frames": 19,
+              "bytes": 7730,
+              "binaryFrames": 0,
+              "audioFrames": 0,
+              "screenFrames": 0
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "at": "2026-11-05T07:51:00.987Z",
+              "elapsedMs": 3570,
+              "type": "join",
+              "roomId": "lobby",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "at": "2026-11-05T07:51:01.056Z",
+              "elapsedMs": 3639,
+              "type": "session.issued",
+              "roomId": "lobby",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "at": "2026-11-05T07:51:01.056Z",
+              "elapsedMs": 3639,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "at": "2026-11-05T07:51:01.058Z",
+              "elapsedMs": 3641,
+              "type": "room.snapshot",
+              "roomId": "lobby",
+              "publishAllowed": false,
+              "hostControlsEnabled": true,
+              "locked": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "at": "2026-11-05T07:51:01.058Z",
+              "elapsedMs": 3641,
+              "type": "interaction.snapshot",
+              "roomId": "lobby"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "at": "2026-11-05T07:51:01.058Z",
+              "elapsedMs": 3641,
+              "type": "participation.self",
+              "roomId": "lobby",
+              "participantId": "e96be93a-c56c-4e23-961f-db3abddaa15c",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "at": "2026-11-05T07:51:01.058Z",
+              "elapsedMs": 3641,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "at": "2026-11-05T07:51:01.061Z",
+              "elapsedMs": 3644,
+              "type": "host.publishPermission",
+              "allowed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "at": "2026-11-05T07:51:01.114Z",
+              "elapsedMs": 3697,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "at": "2026-11-05T07:51:01.114Z",
+              "elapsedMs": 3697,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "at": "2026-11-05T07:51:01.281Z",
+              "elapsedMs": 3864,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "at": "2026-11-05T07:51:01.484Z",
+              "elapsedMs": 4067,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "at": "2026-11-05T07:51:01.640Z",
+              "elapsedMs": 4223,
+              "type": "host.claim",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "at": "2026-11-05T07:51:01.662Z",
+              "elapsedMs": 4245,
+              "type": "host.claimed",
+              "roomId": "lobby",
+              "hostClaimed": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "at": "2026-11-05T07:51:01.664Z",
+              "elapsedMs": 4247,
+              "type": "host.publishPermission",
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "at": "2026-11-05T07:51:02.300Z",
+              "elapsedMs": 4883,
+              "type": "audio.start"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "at": "2026-11-05T07:51:02.303Z",
+              "elapsedMs": 4886,
+              "type": "audio.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "at": "2026-11-05T07:51:02.403Z",
+              "elapsedMs": 4986,
+              "type": "screen.start"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "at": "2026-11-05T07:51:02.409Z",
+              "elapsedMs": 4992,
+              "type": "screen.started",
+              "generation": 1,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "at": "2026-11-05T07:51:03.295Z",
+              "elapsedMs": 5878,
+              "type": "interaction.event",
+              "roomId": "lobby"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "at": "2026-11-05T07:51:04.146Z",
+              "elapsedMs": 6729,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "at": "2026-11-05T07:51:04.459Z",
+              "elapsedMs": 7042,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 23,
+              "at": "2026-11-05T07:51:13.293Z",
+              "elapsedMs": 15876,
+              "type": "screen.stop"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 24,
+              "at": "2026-11-05T07:51:13.298Z",
+              "elapsedMs": 15881,
+              "type": "screen.stopped"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "studio-host",
+      "connections": [
+        {
+          "index": 1,
+          "openedAt": "2026-11-05T07:51:01.148Z",
+          "openedAtElapsedMs": 3731,
+          "closedAt": "2026-11-05T07:51:04.113Z",
+          "closeCode": 4003,
+          "closeReason": "receiver-application-timeout-simulation",
+          "bytes": {
+            "sent": {
+              "frames": 6,
+              "bytes": 487,
+              "binaryFrames": 0,
+              "audioFrames": 0,
+              "screenFrames": 0
+            },
+            "received": {
+              "frames": 130,
+              "bytes": 20399,
+              "binaryFrames": 114,
+              "audioFrames": 90,
+              "screenFrames": 24
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 1,
+              "at": "2026-11-05T07:51:01.173Z",
+              "elapsedMs": 3756,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": false,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 2,
+              "at": "2026-11-05T07:51:01.209Z",
+              "elapsedMs": 3792,
+              "type": "protocol.error"
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 3,
+              "at": "2026-11-05T07:51:01.416Z",
+              "elapsedMs": 3999,
+              "type": "join",
+              "roomId": "studio",
+              "passwordProvided": true,
+              "resumable": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 4,
+              "at": "2026-11-05T07:51:01.488Z",
+              "elapsedMs": 4071,
+              "type": "session.issued",
+              "roomId": "studio",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 5,
+              "at": "2026-11-05T07:51:01.488Z",
+              "elapsedMs": 4071,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 6,
+              "at": "2026-11-05T07:51:01.488Z",
+              "elapsedMs": 4071,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "publishAllowed": false,
+              "hostControlsEnabled": true,
+              "locked": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 7,
+              "at": "2026-11-05T07:51:01.489Z",
+              "elapsedMs": 4072,
+              "type": "interaction.snapshot",
+              "roomId": "studio"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 8,
+              "at": "2026-11-05T07:51:01.489Z",
+              "elapsedMs": 4072,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "9f0a75f3-c582-47ea-9504-d2ea6f5a94ce",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 9,
+              "at": "2026-11-05T07:51:01.489Z",
+              "elapsedMs": 4072,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 10,
+              "at": "2026-11-05T07:51:01.490Z",
+              "elapsedMs": 4073,
+              "type": "host.publishPermission",
+              "allowed": false
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 11,
+              "at": "2026-11-05T07:51:01.660Z",
+              "elapsedMs": 4243,
+              "type": "host.claim",
+              "tokenPresent": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 12,
+              "at": "2026-11-05T07:51:01.687Z",
+              "elapsedMs": 4270,
+              "type": "host.claimed",
+              "roomId": "studio",
+              "hostClaimed": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 13,
+              "at": "2026-11-05T07:51:01.688Z",
+              "elapsedMs": 4271,
+              "type": "host.publishPermission",
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 14,
+              "at": "2026-11-05T07:51:01.751Z",
+              "elapsedMs": 4334,
+              "type": "host.grantPublisher"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 15,
+              "at": "2026-11-05T07:51:01.767Z",
+              "elapsedMs": 4350,
+              "type": "host.publisherGrants"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 16,
+              "at": "2026-11-05T07:51:01.767Z",
+              "elapsedMs": 4350,
+              "type": "host.actionResult",
+              "action": "grantPublisher",
+              "allowed": true
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 17,
+              "at": "2026-11-05T07:51:01.983Z",
+              "elapsedMs": 4566,
+              "type": "audio.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 18,
+              "at": "2026-11-05T07:51:01.986Z",
+              "elapsedMs": 4569,
+              "type": "audio.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 1,
+              "sequence": 19,
+              "at": "2026-11-05T07:51:02.034Z",
+              "elapsedMs": 4617,
+              "type": "screen.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 20,
+              "at": "2026-11-05T07:51:02.036Z",
+              "elapsedMs": 4619,
+              "type": "screen.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 21,
+              "at": "2026-11-05T07:51:02.288Z",
+              "elapsedMs": 4871,
+              "type": "audio.stream",
+              "generation": 1,
+              "clockId": "0cc78389-3fe2-401f-b4b6-17c8801bd706",
+              "config": {
+                "codec": "opus",
+                "sampleRate": 48000,
+                "channels": 1
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 1,
+              "sequence": 22,
+              "at": "2026-11-05T07:51:02.395Z",
+              "elapsedMs": 4978,
+              "type": "screen.stream",
+              "generation": 1,
+              "clockId": "0cc78389-3fe2-401f-b4b6-17c8801bd706",
+              "config": {
+                "codec": "vp8",
+                "width": 320,
+                "height": 180,
+                "frameRate": 15
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "openedAt": "2026-11-05T07:51:04.413Z",
+          "openedAtElapsedMs": 6996,
+          "closedAt": null,
+          "closeCode": null,
+          "closeReason": null,
+          "bytes": {
+            "sent": {
+              "frames": 3,
+              "bytes": 132,
+              "binaryFrames": 0,
+              "audioFrames": 0,
+              "screenFrames": 0
+            },
+            "received": {
+              "frames": 570,
+              "bytes": 106823,
+              "binaryFrames": 558,
+              "audioFrames": 438,
+              "screenFrames": 120
+            }
+          },
+          "controls": [
+            {
+              "direction": "sent",
+              "connectionIndex": 2,
+              "sequence": 1,
+              "at": "2026-11-05T07:51:04.421Z",
+              "elapsedMs": 7004,
+              "type": "session.resume",
+              "tokenPresent": true,
+              "passwordProvided": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 2,
+              "at": "2026-11-05T07:51:04.457Z",
+              "elapsedMs": 7040,
+              "type": "session.resumed",
+              "roomId": "studio",
+              "participantId": "9f0a75f3-c582-47ea-9504-d2ea6f5a94ce",
+              "role": "participant",
+              "mode": "watch"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 3,
+              "at": "2026-11-05T07:51:04.457Z",
+              "elapsedMs": 7040,
+              "type": "control.event"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 4,
+              "at": "2026-11-05T07:51:04.457Z",
+              "elapsedMs": 7040,
+              "type": "room.snapshot",
+              "roomId": "studio",
+              "publishAllowed": false,
+              "hostControlsEnabled": true,
+              "locked": true
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 5,
+              "at": "2026-11-05T07:51:04.457Z",
+              "elapsedMs": 7040,
+              "type": "interaction.snapshot",
+              "roomId": "studio"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 6,
+              "at": "2026-11-05T07:51:04.461Z",
+              "elapsedMs": 7044,
+              "type": "participation.self",
+              "roomId": "studio",
+              "participantId": "9f0a75f3-c582-47ea-9504-d2ea6f5a94ce",
+              "role": "participant",
+              "mode": "watch",
+              "audioSubscribed": false,
+              "screenSubscribed": false
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 7,
+              "at": "2026-11-05T07:51:04.461Z",
+              "elapsedMs": 7044,
+              "type": "space.snapshot"
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 8,
+              "at": "2026-11-05T07:51:04.463Z",
+              "elapsedMs": 7046,
+              "type": "host.publishPermission",
+              "allowed": false
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 2,
+              "sequence": 9,
+              "at": "2026-11-05T07:51:04.486Z",
+              "elapsedMs": 7069,
+              "type": "screen.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 10,
+              "at": "2026-11-05T07:51:04.501Z",
+              "elapsedMs": 7084,
+              "type": "screen.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 11,
+              "at": "2026-11-05T07:51:04.501Z",
+              "elapsedMs": 7084,
+              "type": "screen.stream",
+              "generation": 1,
+              "clockId": "0cc78389-3fe2-401f-b4b6-17c8801bd706",
+              "config": {
+                "codec": "vp8",
+                "width": 320,
+                "height": 180,
+                "frameRate": 15
+              }
+            },
+            {
+              "direction": "sent",
+              "connectionIndex": 2,
+              "sequence": 12,
+              "at": "2026-11-05T07:51:04.509Z",
+              "elapsedMs": 7092,
+              "type": "audio.subscribe",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 13,
+              "at": "2026-11-05T07:51:04.511Z",
+              "elapsedMs": 7094,
+              "type": "audio.subscribed",
+              "generation": null,
+              "clockId": null
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 14,
+              "at": "2026-11-05T07:51:04.511Z",
+              "elapsedMs": 7094,
+              "type": "audio.stream",
+              "generation": 1,
+              "clockId": "0cc78389-3fe2-401f-b4b6-17c8801bd706",
+              "config": {
+                "codec": "opus",
+                "sampleRate": 48000,
+                "channels": 1
+              }
+            },
+            {
+              "direction": "received",
+              "connectionIndex": 2,
+              "sequence": 15,
+              "at": "2026-11-05T07:51:13.273Z",
+              "elapsedMs": 15856,
+              "type": "screen.streamEnded",
+              "generation": 1,
+              "clockId": null,
+              "reason": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "streamClockIds": {
+    "studio": "0cc78389-3fe2-401f-b4b6-17c8801bd706",
+    "lobby": "4bf5c09a-377d-42ad-8be7-835d26919664"
+  },
+  "recoveries": [],
+  "interactionAcks": [
+    {
+      "phase": "during-local-studio-timeout-window-or-recovery",
+      "atElapsedMs": 5878,
+      "duplicate": false
+    }
+  ],
+  "revocation": null,
+  "healthyLobbySamples": [
+    {
+      "at": "2026-11-05T07:51:02.716Z",
+      "elapsedMs": 5299,
+      "renderedSamples": 16256,
+      "renderedFrames": 3,
+      "audioPackets": 20,
+      "screenPackets": 4
+    },
+    {
+      "at": "2026-11-05T07:51:03.118Z",
+      "elapsedMs": 5701,
+      "renderedSamples": 35712,
+      "renderedFrames": 8,
+      "audioPackets": 40,
+      "screenPackets": 10,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:03.520Z",
+      "elapsedMs": 6103,
+      "renderedSamples": 54144,
+      "renderedFrames": 14,
+      "audioPackets": 60,
+      "screenPackets": 15,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:03.927Z",
+      "elapsedMs": 6510,
+      "renderedSamples": 73600,
+      "renderedFrames": 19,
+      "audioPackets": 80,
+      "screenPackets": 21,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:04.328Z",
+      "elapsedMs": 6911,
+      "renderedSamples": 93056,
+      "renderedFrames": 25,
+      "audioPackets": 101,
+      "screenPackets": 27,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:04.729Z",
+      "elapsedMs": 7312,
+      "renderedSamples": 112512,
+      "renderedFrames": 31,
+      "audioPackets": 121,
+      "screenPackets": 32,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:05.132Z",
+      "elapsedMs": 7715,
+      "renderedSamples": 131968,
+      "renderedFrames": 36,
+      "audioPackets": 141,
+      "screenPackets": 38,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:05.535Z",
+      "elapsedMs": 8118,
+      "renderedSamples": 151424,
+      "renderedFrames": 42,
+      "audioPackets": 161,
+      "screenPackets": 43,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:05.936Z",
+      "elapsedMs": 8519,
+      "renderedSamples": 170880,
+      "renderedFrames": 47,
+      "audioPackets": 181,
+      "screenPackets": 49,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:06.338Z",
+      "elapsedMs": 8921,
+      "renderedSamples": 189312,
+      "renderedFrames": 53,
+      "audioPackets": 200,
+      "screenPackets": 54,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:06.748Z",
+      "elapsedMs": 9331,
+      "renderedSamples": 201856,
+      "renderedFrames": 56,
+      "audioPackets": 216,
+      "screenPackets": 59,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:07.186Z",
+      "elapsedMs": 9769,
+      "renderedSamples": 222016,
+      "renderedFrames": 61,
+      "audioPackets": 241,
+      "screenPackets": 65,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:07.589Z",
+      "elapsedMs": 10172,
+      "renderedSamples": 242496,
+      "renderedFrames": 67,
+      "audioPackets": 263,
+      "screenPackets": 71,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:07.992Z",
+      "elapsedMs": 10575,
+      "renderedSamples": 261952,
+      "renderedFrames": 73,
+      "audioPackets": 284,
+      "screenPackets": 77,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:08.393Z",
+      "elapsedMs": 10976,
+      "renderedSamples": 281408,
+      "renderedFrames": 79,
+      "audioPackets": 304,
+      "screenPackets": 83,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:08.794Z",
+      "elapsedMs": 11377,
+      "renderedSamples": 300864,
+      "renderedFrames": 84,
+      "audioPackets": 324,
+      "screenPackets": 88,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:09.195Z",
+      "elapsedMs": 11778,
+      "renderedSamples": 319296,
+      "renderedFrames": 89,
+      "audioPackets": 344,
+      "screenPackets": 94,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:09.598Z",
+      "elapsedMs": 12181,
+      "renderedSamples": 338752,
+      "renderedFrames": 95,
+      "audioPackets": 364,
+      "screenPackets": 99,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:10.000Z",
+      "elapsedMs": 12583,
+      "renderedSamples": 358208,
+      "renderedFrames": 100,
+      "audioPackets": 384,
+      "screenPackets": 105,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:10.402Z",
+      "elapsedMs": 12985,
+      "renderedSamples": 377664,
+      "renderedFrames": 106,
+      "audioPackets": 404,
+      "screenPackets": 111,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:10.806Z",
+      "elapsedMs": 13389,
+      "renderedSamples": 397120,
+      "renderedFrames": 111,
+      "audioPackets": 424,
+      "screenPackets": 116,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:11.208Z",
+      "elapsedMs": 13791,
+      "renderedSamples": 416576,
+      "renderedFrames": 117,
+      "audioPackets": 444,
+      "screenPackets": 122,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:11.612Z",
+      "elapsedMs": 14195,
+      "renderedSamples": 436032,
+      "renderedFrames": 123,
+      "audioPackets": 465,
+      "screenPackets": 128,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:12.018Z",
+      "elapsedMs": 14601,
+      "renderedSamples": 454464,
+      "renderedFrames": 129,
+      "audioPackets": 485,
+      "screenPackets": 133,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    },
+    {
+      "at": "2026-11-05T07:51:12.419Z",
+      "elapsedMs": 15002,
+      "renderedSamples": 474944,
+      "renderedFrames": 134,
+      "audioPackets": 505,
+      "screenPackets": 139,
+      "audioAdvanced": true,
+      "videoAdvanced": true,
+      "audioPacketsAdvanced": true,
+      "videoPacketsAdvanced": true
+    }
+  ],
+  "screenshots": [
+    "studio-host-final.png",
+    "lobby-receiver-final.png"
+  ],
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "packetHashesRetained": false,
+    "browserStorageDumped": false,
+    "configuredSecretEchoObserved": false,
+    "tokenPasswordOrResumeValuesWritten": false
+  },
+  "limits": {
+    "streamSeparation": "room/source clock IDs, stream configuration and synthetic decoded pixel colors are checked; no raw media hash audit is performed",
+    "disturbance": "route close simulates a local application connection drop; it is not a real weak network or server timeout",
+    "devices": "no phone, physical microphone, physical display, human listening, real backgrounding, packet loss, p95, capacity, durability, or Cloud Run result",
+    "productStatus": "this short feasibility smoke does not establish full POC-04 completion or deployment readiness"
+  },
+  "errors": {
+    "pageErrors": [],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('audio-continue-listening')\u001b[22m\n"
+  }
+}

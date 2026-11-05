@@ -1,10 +1,10 @@
 # 專案 brief
 
-**狀態：DEC-012 PostgreSQL18本機持久化／恢復核心已驗（POC-06-R002）；完整階段與MVP未通過。2026-11-05 更新。**
+**狀態：T19審查紀錄完成；已列MVP基底採用建議，完整進場NoGo（真人／實機核心證據未齊）。2026-11-05 更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。
-- 目前工作範圍：19票已發布並讀回；本機POC至T17有桌面核心與用法證據；T18/R001已驗舊memory缺口；DEC012/R002補PostgreSQL18保存與程序／容器重啟恢復核心。完整階段／手機／真人／品質仍依執行紀錄判定，尚未啟動MVP或部署。
+- 目前工作範圍：19票已發布並讀回；本機POC至T17有桌面核心與用法證據；T18/R001已驗舊memory缺口；DEC012/R002補PostgreSQL18保存與程序／容器重啟恢復核心。T19補同候選PG短整合與雙房混合回歸，完整進場判定NoGo；手機／真人與首批範圍尚待，未啟動MVP或部署。
 - 目前技術與相關路徑：自研，不採用 WorkAdventure；人物像素圖。已有 Git 儲存庫與需求文件，T01程式基線已建置及本機雙瀏覽器驗收；核心功能須可獨立部署、不強制綁供應商 SaaS；應用與影音轉送維持單一 Cloud Run，DEC-012另允許 PostgreSQL 18 儲存系統資訊；Node.js 26 LTS已指定為專案標準，React/Vite/Fastify/ws在T01作本機候選驗證，影音已有本機候選，耐久儲存選用 PostgreSQL 18，本機整合／恢復核心已驗，部署／備份／保留待設計。POC僅本機開發測試、不部署CloudRun；後續部署目標維持。原交接的「尚無 repo」為歷史狀態。
 - 拆票索引：`docs/poc/ticket-breakdown.md`、`ticket-publication.json`及`ticket-verification.json`；T01～T17核心與T18操作重建／資料缺口見execution-log，GitHub子票本輪未改、仍open且未push，不能將本機交付混稱發布。
 - POC權威入口：`docs/poc/plan.md`；執行紀錄 `docs/poc/execution-log.md`；MVP可用方案 `docs/poc/mvp-handoff.md`；Issue為計畫發布鏡像，不建平行PRD；發布入口 https://github.com/samzhu/LaiTse/issues/1 。
@@ -106,3 +106,9 @@ DEC-012範圍補充（2026-11-05）：人類確認「都可以儲存」，房間
 ## DEC-012持久化整合最終紀錄（2026-11-05）
 
 DEC-012資料庫整合完成：[POC-06-R002](../poc/evidence/POC-06-R002/README.md)保存PostgreSQL18.6 Docker／pg8.23.1與migration、系統資訊保存及恢復用法。最終build/typecheck/63核心、真PG整合、ACK後SIGKILL、advisory backend失連停止、兩真Firefox同document/原ID/最新B門禁/chat與feedback恢復、13表同volume容器重啟筆數與指紋一致。有效proof恢復不自動復活主持／發布權，畫面TTL與archive分開；SOL007唯一清冊已原位更新。首輪health shape／fixture event count及browser環境/URL事件誤判等失敗保留、窄修後重驗。完整POC06/MVP/備份/HA/多instance/正式保留政策/雲未驗；舊R001 memory No-Go不改判。所有writer已saved/readback/STOP，root驗收，server/Firefox/Docker已停、volume保留；程式與紀錄同一本機commit，不push/遠端票/T19/部署。
+
+## T19最終紀錄（2026-11-05）
+
+T19／#20審查交付完成：[POC-07-R001](../poc/evidence/POC-07-R001/README.md)固定8b5fc43與同版65指紋、重新build/typecheck，沿用R002的63核心/PG恢復證據，另在PG重驗四Firefox短整合10,394ms、六Firefox混合19,021ms。root重算來源隔離/only0/authority與撤權、實看PG實播畫面；原T15 Continue逾時與私有port probe TIME_WAIT診斷保留，僅測試副本窄修，產品與原腳本不改。既有mvp-handoff原位整理SOL001～008狀態、逐階段證據、GATE001～006、測試工具移出項與MVP順序。
+
+執行紀錄完成／完整資格Inconclusive／technicalGo=false（NoGo）：真mic至另一端真人聽見與目標實機手機加入/選房/只互動證據仍缺，首批支援範圍未確認。不是要求補50人長測/全面QA或本輪CloudRun部署；容量硬上限8、實測6明示，PG保存缺口已解，不重新要求批准資料庫。尚未開始MVP，不推定人類接受品質。source/deps未改，資料volume/test DB保留、server/browser/DB回復停止，紀錄同本機commit，不push/遠端票/部署。

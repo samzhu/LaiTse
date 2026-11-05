@@ -1,0 +1,76 @@
+{
+  "candidateCommit": "8b5fc43",
+  "reviewer": "root",
+  "integrated": {
+    "durationMs": 10394,
+    "freshAuthorityBeforeSubscriptions": true,
+    "renderAfterRecovery": {
+      "audioSamples": 10688,
+      "videoFrames": 3
+    },
+    "revokedSourcesEndedAndNoAutoRevival": true,
+    "healthyRoomSamples": 12,
+    "continueCatchBranchExercised": false
+  },
+  "mixed": {
+    "durationMs": 19021,
+    "isolatedBrowsers": 6,
+    "sourceMessages": {
+      "lobby-host": 703,
+      "studio-host": 703
+    },
+    "receiptRecalculation": {
+      "lobby-host": {
+        "receiptCount": 0,
+        "bytes": 0,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      },
+      "studio-host": {
+        "receiptCount": 0,
+        "bytes": 0,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      },
+      "studio-watch": {
+        "receiptCount": 439,
+        "bytes": 76859,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      },
+      "lobby-interaction": {
+        "receiptCount": 0,
+        "bytes": 0,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      },
+      "lobby-watch": {
+        "receiptCount": 673,
+        "bytes": 107049,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      },
+      "studio-interaction": {
+        "receiptCount": 0,
+        "bytes": 0,
+        "foreignOnly": 0,
+        "unknown": 0,
+        "ambiguous": 0
+      }
+    },
+    "onlyMediaZero": true,
+    "feedbackDOM0to1BothRooms": true,
+    "eachRecordedPlaybackSampleGroupGrows": true
+  },
+  "unexpectedErrors": 0,
+  "actualImageInspected": "mixed/lobby-watch-live.png",
+  "visualReadback": "PostgreSQL health/open-area 3members/meeting room hidden/positive RMS and85504 audio samples/redVP8 image with23 rendered frames; screenshot feedback0 is before later feedback actions.",
+  "originalIntegratedFailurePreserved": true,
+  "sourceFilesUnchanged": true,
+  "limits": "short synthetic Firefox media; not physical capture, human listening, phones, TCP weak network, 50person or cloud evidence"
+}

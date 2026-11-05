@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-05",
+  "candidate": "8b5fc43",
+  "previousCandidateHashesMatched": 65,
+  "productSourceAndOriginalScriptsChanged": false,
+  "localLinksChecked": 55,
+  "jsonParsedBeforeThisFile": 11,
+  "actualDatabaseUrlOrPasswordOrPrivateKeyFound": false,
+  "whitespaceNormalizedFiles": [
+    "integrated-browser.log",
+    "build.log",
+    "integrated/README.md"
+  ],
+  "runtimeReports": "first integrated failure retained; confirmed integrated and mixed passed",
+  "technicalDecision": "NoGo",
+  "reviewExecution": "complete",
+  "fullQualification": "Inconclusive",
+  "diffCheck": "git diff --cached --check passed",
+  "untrackedExcluded": [
+    "AGENTS.md",
+    ".scratch/"
+  ]
+}

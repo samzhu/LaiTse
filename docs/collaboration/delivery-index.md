@@ -62,3 +62,4 @@
 |---|---|---|---|---|
 | T18／POC-06-R001 | 真程序重啟／資料恢復語意 | `docs/poc/evidence/POC-06-R001/README.md`、root-readback | build/63核心/三Firefox操作重建通過；feedback/live密碼遺失，耐久No-Go | 完整T18/POC06未過；必要資料來源待決、資源釋出，不push/T19 |
 | DEC012／POC-06-R002 | PostgreSQL18系統資料保存與Docker開發 | `docs/poc/evidence/POC-06-R002/README.md`、SOL007、root-readback | 最終63/build/真PG/SIGKILL/雙Firefox／容器13表一致 | 完整階段/備份/保留/雲待，volume保留、資源釋出、不push/T19 |
+| T19／POC-07-R001 | POC成果、SOL採用與MVP進場審查 | `docs/poc/mvp-handoff.md`、R001/verdict/root-readback | 重建/同候選PG四頁整合＋六頁混合；審查交付完成 | 完整資格Inconclusive/technicalNoGo，真人/手機核心待；資源釋出、未開MVP |
