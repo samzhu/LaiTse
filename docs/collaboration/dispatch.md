@@ -377,3 +377,9 @@ MVP-DESKTOP-PLAN交付已保存／讀回（2026-11-05）：PRD v0.10第11節為�
 一致性補充：poc/plan只同步現行PRD v0.11／DEC015索引，不修改POC歷史版本或證據。
 
 DEC-014／015本輪交付完成（2026-11-05）：PRD v0.11與既有MVP計畫已同步免登入、任意暱稱產生人物、人人鎖房；上鎖詢問密碼、現任管理者可更改／解鎖／轉交、離線隨機房內在線成員接任、無人自動解鎖。精確人類原話在decisions；D01已定、D03產品人數上限不設（原話「上線」按上限解讀）、D07鎖房部分已定，其他活動主持／並發發布／桌機環境仍待決。GitHub#1/#10/#20已保存且3/3正文精確讀回、原正文/AC/open/labels保持，憑據POC07-R002/anonymous-mvp-progress-readback.json。文件ID／主要連結／JSON／diff檢查通過；未跑新程式測試、無src/deps變更、8人程式限制未移除，未開發MVP或push／部署。writer結束，既有manual服務與Edge未操作／未停止，紀錄同本機commit。
+
+## DEC-016／會議室多人同時語音（2026-11-05）
+
+人類要求「希望像真實會議室，大家都可以同時開麥聊天，畫面分享先一個人就好。」root唯一writer：PRD第6/8/9/11節、collaboration/{decisions,brief,checkpoint,dispatch,delivery-index}、ai-handoff、poc/{plan,mvp-handoff}；Github母#1／音訊#4／權限#10／審查#20同步差異並精確讀回，憑據POC07-R002/multi-speaker-progress-readback.json。src/server/audio-relay.ts等唯讀現況核對，原音訊單publisher與目前8人限制不改；不啟MVP／POC實作、不改依賴、不部署／push、不操作manual服務／人類Edge。已確認會議室人人可自行開麥多人交談＋同時一畫面；不推定開放區多來源／攝影機／分享搶占或管理者靜音政策已確認。補多人語音最小驗證計畫，不宣稱既有fanout證據已覆蓋多人上行。保存原話、版本、scope與GitHub讀回，文件檢查／本機commit後停止writer。
+
+DEC-016交付讀回（2026-11-05）：人類原話、會議室人人自行同時開麥／同時單人畫面已保存PRD v0.12及decisions；M03/D03／驗收與POC-MA-01增量流程已同步。Github#1/#4/#10/#20保存後4/4正文精確讀回，原正文／AC／open／labels保留，憑據POC07-R002/multi-speaker-progress-readback.json。主要本機文件連結、單一計畫／版本／新增範圍與JSON／diff檢查通過；只規劃無新測試或src/deps更動，單音訊publisher尚未改造。紀錄同本機commit、不push／部署；writer結束、既有manual服務及人類Edge未操作／未停止。

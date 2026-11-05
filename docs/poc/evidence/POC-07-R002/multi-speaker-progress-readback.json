@@ -1,0 +1,56 @@
+{
+  "decision": "DEC-016",
+  "date": "2026-11-05",
+  "codeChanged": false,
+  "newPOCExecuted": false,
+  "issues": [
+    {
+      "number": 1,
+      "url": "https://github.com/samzhu/LaiTse/issues/1",
+      "beforeBodySHA256": "b7fc0fa09a4d5d368299abb275ca8641d0c601196e68102b9150a59fff51d586",
+      "expectedBodySHA256": "cca8011cfd5179ac007cd163e5c37d45eb6e04f547945ace57d7f03bcad42f3b",
+      "readbackBodySHA256": "cca8011cfd5179ac007cd163e5c37d45eb6e04f547945ace57d7f03bcad42f3b",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:35:51.114782+00:00"
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/samzhu/LaiTse/issues/4",
+      "beforeBodySHA256": "2dc8fc8c7fb7c064ac8d51fd00bc8f615963d45b62a8160d8fc91aa5678170be",
+      "expectedBodySHA256": "914067f0fed36f4f74c54c232f1b483c18efe9e959f7bb5ef75faf87908554e7",
+      "readbackBodySHA256": "914067f0fed36f4f74c54c232f1b483c18efe9e959f7bb5ef75faf87908554e7",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:35:53.392377+00:00"
+    },
+    {
+      "number": 10,
+      "url": "https://github.com/samzhu/LaiTse/issues/10",
+      "beforeBodySHA256": "0ca2e97a2f02a892d8fad7553d3898aabf720caa1ce78dcd83546d6ec973dd5e",
+      "expectedBodySHA256": "ea677ba507fd796ed341a5bf47917973643ac2afd8e4303c063a9591c2d4939c",
+      "readbackBodySHA256": "ea677ba507fd796ed341a5bf47917973643ac2afd8e4303c063a9591c2d4939c",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:35:56.251974+00:00"
+    },
+    {
+      "number": 20,
+      "url": "https://github.com/samzhu/LaiTse/issues/20",
+      "beforeBodySHA256": "246cefcbee372c765117de57373a67378cb0629bd8062347715fa77040d76bb0",
+      "expectedBodySHA256": "06eba64c334702d1e05958bf3366daf54e5d99a94dd2a7cf488d5c08f8ad2961",
+      "readbackBodySHA256": "06eba64c334702d1e05958bf3366daf54e5d99a94dd2a7cf488d5c08f8ad2961",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:35:58.481617+00:00"
+    }
+  ]
+}
