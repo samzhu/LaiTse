@@ -1,0 +1,14 @@
+{
+  "baseline": "ff672f0",
+  "unchanged": {
+    "package.json": "4c3838eb5b32fb54216449a4cceb55b49aa9b889be58ea4484b9a90fb67f3542",
+    "package-lock.json": "ea1e69322427ed0addf4f45252a69de119b58e8726faf46c3724ca67600cef1d",
+    "src/client/App.tsx": "54d00978e247600d37f487e607feb63df51c451b8b82124ef329ba46c89948c6",
+    "src/client/DisplayApp.tsx": "d5f26400dbdfdef81a8028b60ad52f2e25233c898a3947c3ef8176d2f4424174",
+    "src/client/media-recovery.ts": "f89e2707070c6038cfec2f1c8298563c5407992d030819a90c47eb07a4060932",
+    "src/client/media-timeline.ts": "e951df562348ab57b574ae1426d51e1425a8f75b087731b9492892bdf1a5d227",
+    "src/server/control-resume.ts": "c0f0e6000024bf5fb717d0c155c53e29e924a79552227bf32a255b89425bec59",
+    "src/server/audio-relay.ts": "7454687f49492c0bcfd700d5a5a289efee856d53630493af2ea6c4b6c61a3b9d",
+    "src/server/screen-relay.ts": "6e3111d696626375cdd9d3df39c1aefe539048fe68ec99d93e559c88b9f900e5"
+  }
+}

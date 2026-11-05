@@ -47,3 +47,5 @@
 | T11／POC-03-R007 | 直接入房、只互動與唯讀展示 | `docs/poc/evidence/POC-03-R007/README.md`、execution-log、mvp-handoff | 42核心/build/三Firefox通過，活動來源server+raw0、保留狀態、展示實播/公開、QR像素解碼及9唯讀拒絕；失敗/修正保留 | 手機相機/真人/耐久/品質/完整POC-03待補；未push/部署/T12 |
 | T12／POC-04-R001 | 控制通道自動重連與刷新恢復 | `docs/poc/evidence/POC-04-R001/README.md`、execution-log、mvp-handoff | 47核心/build/首次三Firefox通過，原房/身份/最新gate與權限/去重TTL，摘要與兩圖已讀回 | 媒體/弱網/手機/耐久/完整POC-04待補；未push/部署/T13，資源釋出 |
 | T13／POC-04-R002 | 同頁影音接收/解碼恢復 | `docs/poc/evidence/POC-04-R002/README.md`、execution-log、mvp-handoff | 54核心/build；接收段與發布窄驗分段實播通過，原full失敗/修正/3圖/白名單trace保留 | 最終full未整段重跑，gesture/20次p95/手機/完整POC-04待補；不push/T14/部署，資源釋出 |
+
+| T14／POC-04-R003 | 慢端隔離／有界佇列／恢復 | `docs/poc/evidence/POC-04-R003/README.md`、root-readback | 63核心/build、最終三Firefox健康持續／慢端恢復；首輪harness失敗保留 | 應用層hold非TCP；手機/真背景/品質/完整階段待補；資源釋出、不push/T15 |

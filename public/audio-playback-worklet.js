@@ -1,4 +1,5 @@
 const MAX_QUEUED_SAMPLES = 24_000;
+const MAX_QUEUE_GRAPH_RESIDENCY_US = 500_000;
 const STATS_INTERVAL_SAMPLES = 960;
 
 class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
@@ -8,6 +9,9 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     this.queuedSamples = 0;
     this.renderedSamples = 0;
     this.overflowResets = 0;
+    this.queueStaleDropBatches = 0;
+    this.queueOversizeDropBatches = 0;
+    this.queueOldestGraphResidenceMs = 0;
     this.epoch = 0;
     this.generation = null;
     this.clockId = null;
@@ -26,6 +30,7 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
       this.clockId = typeof message.clockId === "string" ? message.clockId : null;
       this.queue = [];
       this.queuedSamples = 0;
+      this.queueOldestGraphResidenceMs = 0;
       this.resetStatsWindow();
       return;
     }
@@ -40,6 +45,14 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     ) return;
     const samples = message.samples;
     if (samples.length === 0) return;
+    const graphNowUs = Math.round(currentFrame * 1_000_000 / sampleRate);
+    this.pruneStaleQueue(graphNowUs);
+    if (samples.length > MAX_QUEUED_SAMPLES) {
+      this.queueOversizeDropBatches += 1;
+      this.updateOldestGraphResidence(graphNowUs);
+      this.port.postMessage(this.statsMessage(null, null, 0, false, 0));
+      return;
+    }
     if (this.queuedSamples + samples.length > MAX_QUEUED_SAMPLES) {
       this.queue = [];
       this.queuedSamples = 0;
@@ -47,8 +60,27 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
       this.resetStatsWindow();
       this.port.postMessage(this.statsMessage(null, null, 0, true, 0));
     }
-    this.queue.push({ samples, offset: 0, timestampUs: message.timestampUs });
+    this.queue.push({ samples, offset: 0, timestampUs: message.timestampUs, enqueuedGraphTimestampUs: graphNowUs });
     this.queuedSamples += samples.length;
+    this.updateOldestGraphResidence(graphNowUs);
+  }
+
+  pruneStaleQueue(graphNowUs) {
+    while (this.queue.length > 0) {
+      const head = this.queue[0];
+      if (graphNowUs - head.enqueuedGraphTimestampUs < MAX_QUEUE_GRAPH_RESIDENCY_US) break;
+      this.queue.shift();
+      this.queuedSamples -= head.samples.length - head.offset;
+      this.queueStaleDropBatches += 1;
+    }
+    this.updateOldestGraphResidence(graphNowUs);
+  }
+
+  updateOldestGraphResidence(graphNowUs) {
+    const oldest = this.queue[0];
+    this.queueOldestGraphResidenceMs = oldest
+      ? Math.max(0, (graphNowUs - oldest.enqueuedGraphTimestampUs) / 1_000)
+      : 0;
   }
 
   process(_inputs, outputs) {
@@ -59,6 +91,7 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     for (const channel of output) channel.fill(0);
 
     const graphStartUs = Math.round(currentFrame * 1_000_000 / sampleRate);
+    this.pruneStaleQueue(graphStartUs);
     let outputOffset = 0;
     let intervalPlayheadUs = null;
     let intervalGraphTimestampUs = null;
@@ -86,6 +119,7 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
     }
 
     this.statsFrameCount += frameCount;
+    this.updateOldestGraphResidence(Math.round(currentFrame * 1_000_000 / sampleRate));
     if (this.statsPlayheadTimestampUs === null && intervalPlayheadUs !== null) {
       this.statsPlayheadTimestampUs = intervalPlayheadUs;
       this.statsGraphTimestampUs = intervalGraphTimestampUs;
@@ -113,6 +147,9 @@ class LaiTsePlaybackProcessor extends AudioWorkletProcessor {
       renderedSamples: this.renderedSamples,
       queuedSamples: this.queuedSamples,
       overflowResets: this.overflowResets,
+      queueOldestGraphResidenceMs: this.queueOldestGraphResidenceMs,
+      queueStaleDropBatches: this.queueStaleDropBatches,
+      queueOversizeDropBatches: this.queueOversizeDropBatches,
       rms,
       playheadTimestampUs,
       graphTimestampUs,

@@ -1,0 +1,9 @@
+[T14] trusted-local-catalogue-confirms-locked-managed-studio {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T14] host-started-synthetic-opus-and-vp8-before-receiver-subscriptions {"audioSources":1,"screenSources":1}
+[T14] host-and-two-real-firefox-receivers-joined-through-normal-room-controls {"roomId":"studio","hostRole":"participant","receivers":2}
+[T14] both-real-receivers-start-with-positive-opus-and-vp8-render {"healthySamples":26496,"healthyFrames":5,"slowSamples":10496,"slowFrames":1,"sharedClockId":"3a002c71-9f3b-4a61-b03f-30b6f7b9da80"}
+[T14] bounded-slow-only-downlink-hold-started {"client":"slow","connectionIndex":1,"transportLayer":"Playwright WebSocketRoute server-to-browser application layer","queueLimitBytes":262144,"queueLimitMessages":128,"oldestAgeLimitMs":500}
+[T14] driver-hit-500ms-age-cap-closed-only-slow-route-and-discarded-held-buffer {"closeCode":4003,"closeReason":"oldest_queued_message_age_limit","heldBytes":17171,"heldMessages":33,"queueHighWaterBytes":17171,"ageHighWaterMs":501}
+[T14] slow-receiver-reconnected-with-fresh-config-keyframe-and-real-playback {"oldConnectionIndex":1,"newConnectionIndex":2,"audioGeneration":1,"screenGeneration":1,"clockId":"3a002c71-9f3b-4a61-b03f-30b6f7b9da80","audioRenderedSamples":39744,"screenRenderedFrames":10,"decodedResidenceDrops":0}
+[T14] bounded-secret-safe-report-and-final-assertions {"connectionCount":4,"healthyDuringHoldSamples":5,"healthyAfterRecoverySamples":3,"slowInitialSamples":10496,"slowRecoveredSamples":39744,"slowInitialFrames":1,"slowRecoveredFrames":10,"resumeTokensRetained":false,"rawMediaRetained":false}
+[T14] report /Users/samzhu/workspace_herdr/LaiTse/.scratch/t14/acceptance/slow-receiver-report.json

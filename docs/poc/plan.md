@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.2；日期：2026-11-04。
-- 狀態：T01～T13桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
+- 狀態：T01～T14桌面核心依執行紀錄判定，完整階段未通過；v1.2補DEC-011空間規則。沿用v1.1輕量驗測，不要求完整品質驗收。
 - 版本界線：GitHub母Issue仍為v1.0發布鏡像；v1.2依DEC-011同步本機PRD v0.8與計畫，不改母Issue或遠端票。
 - 權威界線：產品目標依來坐 PRD v0.8、DEC-001～011；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器、真實桌面／手機瀏覽器；本輪不部署 Cloud Run。
@@ -279,3 +279,7 @@ GitHub Issue 是這份 POC 計畫的發布鏡像；修改本計畫時同步 Issu
 ### T13本輪結果（2026-11-04）
 
 [R002](evidence/POC-04-R002/README.md)以分段證據判桌面同頁媒體恢復核心可行：54核心/build/typecheck、third接收音畫/display與stop/source不auto已通，最後publisher-only窄驗手動新generation/clock實播成功。三次full腳本失敗與最小診斷保存，最終full未整段重跑，不能稱完整自動化通過。此次無需audio gesture，其分支未另測；原20次/p95≤5秒/真裝置/弱網/耐久/完整POC-04保持Inconclusive，門檻不降低。無依賴/server協議變更，T14待人類指示，遠端票不改。
+
+## T14本輪結果（2026-11-05）
+
+T14交付（2026-11-05）：[POC-04-R003](evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。

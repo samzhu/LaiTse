@@ -11,10 +11,11 @@ import {
   type SanitizedCapabilityReport,
 } from "./capabilities.ts";
 import { createAudioRelay } from "./audio-relay.ts";
-import { createScreenRelay, MAX_SCREEN_FRAME_BYTES, MAX_SCREEN_SOCKET_BUFFERED_BYTES } from "./screen-relay.ts";
+import { createScreenRelay, MAX_SCREEN_FRAME_BYTES } from "./screen-relay.ts";
 import { createHostControlPolicy } from "./host-control.ts";
 import { createRoomAccessPolicy, isValidRoomPassword } from "./room-access.ts";
 import { createControlResumeStore, type ResumeMode, type ResumeRole } from "./control-resume.ts";
+import { createTransportBudget, MAX_APPLICATION_SEND_BYTES } from "./transport-budget.ts";
 import {
   InteractionStore,
   MAX_FEEDBACK_PER_SECOND,
@@ -36,7 +37,7 @@ import {
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
 export const MAX_ROOM_MEMBERS = MAX_SPACE_MEMBERS;
-export const MAX_SOCKET_BUFFERED_BYTES = MAX_SCREEN_SOCKET_BUFFERED_BYTES;
+export const MAX_SOCKET_BUFFERED_BYTES = MAX_APPLICATION_SEND_BYTES;
 
 const DEFAULT_ROOM = SPACE_ROOMS[0];
 const REACTIONS = new Set(["wave", "clap", "heart"]);
@@ -190,6 +191,10 @@ export async function createApp(options: CreateAppOptions = {}) {
   }
   const app = Fastify({ logger: false, https: options.https ?? null });
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
+  const transportBudgets = new WeakMap<import("ws").WebSocket, ReturnType<typeof createTransportBudget>>();
+  const sendTo = (target: import("ws").WebSocket, payload: string | Buffer, sendOptions?: { binary?: boolean; compress?: boolean }) => {
+    return transportBudgets.get(target)?.send(payload, sendOptions) ?? false;
+  };
   const members = new Map<string, Member>();
   const observations = new Map<string, CapabilityObservation>();
   const space = createSpaceModel();
@@ -233,14 +238,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       });
       const counters = roomMetrics.get(roomId)!.control;
       counters.guardedSendChecks += 1;
-      if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
-        target.close(1013, "Receiver is too slow");
-        continue;
-      }
-      counters.eventsSent += 1;
-      target.send(payload, (error) => {
-        if (error) target.terminate();
-      });
+      if (sendTo(target, payload)) counters.eventsSent += 1;
     }
   };
   const interactionPruneTimer = setInterval(() => {
@@ -305,42 +303,22 @@ export async function createApp(options: CreateAppOptions = {}) {
         eventTimes: [], interactionTimes: [], feedbackTimes: [], moveTimes: [],
       };
       clients.set(socket, connection);
+      const transportBudget = createTransportBudget(socket);
+      transportBudgets.set(socket, transportBudget);
+      socket.once("close", () => {
+        transportBudget.dispose();
+        transportBudgets.delete(socket);
+      });
 
       const send = (message: unknown): boolean => {
         if (socket.readyState !== socket.OPEN) return false;
         const payload = JSON.stringify(message);
-        if (socket.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
-          socket.close(1013, "Receiver is too slow");
-          return false;
-        }
-        socket.send(payload, (error) => {
-          if (error) socket.terminate();
-        });
-        return true;
+        return sendTo(socket, payload);
       };
 
       const sendBinary = (message: Buffer): boolean => {
         if (socket.readyState !== socket.OPEN) return false;
-        if (socket.bufferedAmount + message.byteLength > MAX_SOCKET_BUFFERED_BYTES) {
-          socket.close(1013, "Receiver is too slow");
-          return false;
-        }
-        socket.send(message, { binary: true, compress: false }, (error) => {
-          if (error) socket.terminate();
-        });
-        return true;
-      };
-
-      const sendScreenBinary = (message: Buffer): boolean => {
-        if (socket.readyState !== socket.OPEN) return false;
-        if (socket.bufferedAmount + message.byteLength > MAX_SCREEN_SOCKET_BUFFERED_BYTES) {
-          socket.close(1013, "Screen receiver is too slow");
-          return false;
-        }
-        socket.send(message, { binary: true, compress: false }, (error) => {
-          if (error) socket.terminate();
-        });
-        return true;
+        return sendTo(socket, message, { binary: true, compress: false });
       };
 
       const rejectControl = (code: string, message: string, closeCode = 1008, countControlRejection = true) => {
@@ -373,19 +351,15 @@ export async function createApp(options: CreateAppOptions = {}) {
           enabled: hostControl.enabled,
           allowed: canPublish(targetConnection),
         });
-        if (target.readyState !== target.OPEN || target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) return;
-        target.send(payload, (error) => {
-          if (error) target.terminate();
-        });
+        if (target.readyState !== target.OPEN) return;
+        sendTo(target, payload);
       };
 
       const broadcastRoomCatalogue = () => {
         const message = JSON.stringify({ type: "room.catalogue", rooms: publicRooms(roomAccess, hostControl.enabled) });
         for (const target of clients.keys()) {
-          if (target.readyState !== target.OPEN || target.bufferedAmount + Buffer.byteLength(message) > MAX_SOCKET_BUFFERED_BYTES) continue;
-          target.send(message, (error) => {
-            if (error) target.terminate();
-          });
+          if (target.readyState !== target.OPEN) continue;
+          sendTo(target, message);
         }
       };
 
@@ -430,7 +404,7 @@ export async function createApp(options: CreateAppOptions = {}) {
                 metrics.rejected += 1;
                 return;
               }
-              if (sendScreenBinary(message)) {
+              if (sendBinary(message)) {
                 metrics.binaryFramesSent += 1;
                 connection.downlink.screen.bytes += message.byteLength;
                 connection.downlink.screen.frames += 1;
@@ -463,14 +437,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         }
         if (target.readyState !== target.OPEN) return;
         const payload = JSON.stringify(message);
-        if (target.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) {
-          target.close(1013, "Receiver is too slow");
-          return;
-        }
-        counters[metric] += 1;
-        target.send(payload, (error) => {
-          if (error) target.terminate();
-        });
+        if (sendTo(target, payload)) counters[metric] += 1;
       };
 
       const participationSnapshot = () => {
@@ -494,6 +461,7 @@ export async function createApp(options: CreateAppOptions = {}) {
               downlinkFrames: connection.downlink.screen.frames,
             },
           },
+          transport: transportBudget.snapshot(),
           downlinkScope: "server WebSocket enqueue counters for this connection lifetime; not peer receipt or decode evidence",
         };
       };
@@ -650,10 +618,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         const payload = JSON.stringify({ type: "host.publisherGrants", participantIds: [...publisherGrants.get(roomId)!] });
         for (const [targetSocket, targetConnection] of clients) {
           if (!targetConnection.hostActive || targetConnection.currentRoomId !== roomId || targetSocket.readyState !== targetSocket.OPEN) continue;
-          if (targetSocket.bufferedAmount + Buffer.byteLength(payload) > MAX_SOCKET_BUFFERED_BYTES) continue;
-          targetSocket.send(payload, (error) => {
-            if (error) targetSocket.terminate();
-          });
+          sendTo(targetSocket, payload);
         }
       };
 
@@ -1015,8 +980,8 @@ export async function createApp(options: CreateAppOptions = {}) {
               const relays = mediaRooms.get(roomId)!;
               relays.audio.stopPublishing(target.connection.id, "permission_revoked");
               relays.screen.stopPublishing(target.connection.id, "permission_revoked");
-              if (target.socket.readyState === target.socket.OPEN && target.socket.bufferedAmount + 96 < MAX_SOCKET_BUFFERED_BYTES) {
-                target.socket.send(JSON.stringify({ type: "host.publishRevoked", reason: "permission_revoked" }));
+              if (target.socket.readyState === target.socket.OPEN) {
+                sendTo(target.socket, JSON.stringify({ type: "host.publishRevoked", reason: "permission_revoked" }));
               }
               sendPublishPermission(target.socket, target.connection);
               sendHostResult("revokePublisher", { participantId: targetMemberId, allowed: false });
@@ -1097,9 +1062,9 @@ export async function createApp(options: CreateAppOptions = {}) {
               if (!targetConnection.member || targetConnection.currentRoomId !== roomId || targetConnection.removed) continue;
               relays.audio.stopPublishing(targetConnection.id, "session_ended");
               relays.screen.stopPublishing(targetConnection.id, "session_ended");
-              if (targetSocket.readyState === targetSocket.OPEN && targetSocket.bufferedAmount + 96 < MAX_SOCKET_BUFFERED_BYTES) {
-                targetSocket.send(JSON.stringify({ type: "host.publishRevoked", reason: "session_ended" }));
-                targetSocket.send(JSON.stringify({ type: "host.sessionEnded", roomId }));
+              if (targetSocket.readyState === targetSocket.OPEN) {
+                sendTo(targetSocket, JSON.stringify({ type: "host.publishRevoked", reason: "session_ended" }));
+                sendTo(targetSocket, JSON.stringify({ type: "host.sessionEnded", roomId }));
               }
               sendPublishPermission(targetSocket, targetConnection);
             }

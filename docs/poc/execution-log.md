@@ -258,3 +258,11 @@ production build/typecheck、完整54/54一次通過，7新恢復＋5既有timel
 [R002](evidence/POC-04-R002/README.md)保留三次full腳本失敗（初次keyframe等待順序、Continue locator、最後sender同類等待順序）及停止整套後publisher-only窄驗Pass。third接收段已實證connection2 authority後audio/screen subscribe，samples0→4672／frames0→1、display3→4、audio-master同clock；手動停止再close connection3無subscribe，sender tracks ended/無auto capture/start/host。窄驗正常claim/手動新來源generation1→2/新clock，participant13568samples/2frames、display7frames。核心分段可行，不宣稱最終full腳本整段通過。
 
 root由白名單control序列獨立讀回9～10ms authority、單次163/325/533ms觀測render（非p95/E2E）；看中斷/恢復/新來源三圖，指紋一致。這次Firefox自動恢復無需gesture，手勢分支/第二輪locator瞬間原因未獨立驗證；20次/5s門檻、手機/真人/弱網/耐久/完整POC-04仍Inconclusive。應用source未latepatch，server/relay/協定/依賴/Phaser未改。SOL-002/006/008與README/需求狀態/計畫/票面/協作同步，runtime/writer停止釋出，程式+紀錄本機commit，不push/遠端票/T14/部署。
+
+## T14／POC-04-R003：慢端隔離（2026-11-05）
+
+人類「繼續」接#15，維持輕量核心與程式+紀錄commit；R003配發，基線ff672f0。新增每socket send budget與client local queue界線候選，少量Node seam＋三Firefox健康/單慢接收對照及T13恢復；root設計驗收，兩Luna xhigh分程式與腳本。進行中無Pass判定；driver壓力與serverbudget分列，不將應用注入/graph本地age當TCP或E2E延遲。
+
+## T14本輪結果（2026-11-05）
+
+T14交付（2026-11-05）：[POC-04-R003](evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。

@@ -174,3 +174,10 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 - SOL-002：AudioPanel/ScreenPanel新建controller/timeline及訂閱，AudioController以當前stream config/generation/clock初始化decoder；worklet準備與resume promise分離，suspended提供Continue不遞迴/不掛住、不改autoplay政策。Screen沿既有relay keyframe gate，新時鐘/尺寸重建；sender持續時generation/clock可相同，不能要求每次receiver重連都換source。sender斷線tracks結束，需正常權限與手動來源，新的generation/clock才能再次實播。
 - SOL-008：[R002](evidence/POC-04-R002/README.md)含54核心/build、third接收段actual4672samples/VP8及display、manual stop不重訂閱、sender不auto；最後publisher-only窄驗generation2/新clock/實播通過。原3 full腳本失敗/窄修保留，最終full未再整段跑；core以分段證據判定。root-readback從保留的connection白名單control/seq/clock/config與render數據核對，3圖實際看過，不只以WS open算播放。
 - 復用限制：測試用合成oscillator/canvas，Node payload為fixture，非真mic/畫面/人耳/手機證據；此次Firefox自動播放，gesture分支仍待實測。單次route-release觀測非校準E2E/p95，原20次/≤5s不改判。T14弱網/慢端、長測、耐久/CloudRun/完整POC-04仍待；server/relay/時基module/互動/Phaser/依賴未變，不把POC診斷與test route/provider帶入商品。
+
+## T14／POC-04-R003：SOL-002／006／008（2026-11-05）
+
+- SOL-002：per-socket transport-budget 共用 control/audio/video byte cap，pending callback age1000ms只關慢端1013；不是OS/TCP/receipt。PCM拒超大batch、graph residence500ms，video helper local performance residence500ms關過期frame。age為候選；graph凍結非wall background age，VP8 decode飽和仍停看/手動重啟。
+- SOL-006：audio pending8自關4003沿T12/13重建；三Firefox以單接收test route4003驗fresh authority/config/keyframe/實播，主講來源不重捕。恢復共享原publisher generation/clock為正確，不虛造新source。未測真CPU飽和自恢復或所有壓力情境。
+- SOL-008：[R003](evidence/POC-04-R003/README.md)含63核心/build、9個新seam、最終完整短browser、兩圖/讀回/cleanup；首輪只關serverRoute失敗及兩端close窄修保留。driver bounded256KiB/128msgs/500ms，實測501ms後丟棄0replay；健康5+3實播觀測/ACK，慢端新controller實播成功。測試注入不進商品，正常browser流量不當server真背壓證據。
+- 復用限制：無依賴/codec/來源格式變更；真弱網/手機背景/人耳/資源全面量測/20次p95/耐久/容量/完整POC-04/CloudRun仍待，不能整包當MVP。

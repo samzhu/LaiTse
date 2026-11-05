@@ -1,0 +1,9 @@
+{
+  "date": "2026-11-05",
+  "port4173Listeners": 0,
+  "ownedT14ProfileProcesses": 0,
+  "serverProcesses": 0,
+  "method": "lsof/ps readback; excluded diagnostic shell and rg processes",
+  "systemTrustChanged": false,
+  "agents": "explicit STOP and resource release received"
+}

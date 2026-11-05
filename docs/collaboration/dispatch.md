@@ -191,3 +191,29 @@ root build/typecheck/完整54一次通過，source交接後無變。script三次
 全部agent明確STOP，root最後唯一writer，SOL-002/006/008與README/需求/計畫/票面/協作同步。server/browser/profile已清理且cleanup讀回4173/自有process無殘留；本機commit程式+紀錄後writer釋出，AGENTS/.scratch原未追蹤保留不stage，不push/遠端票/T14/部署。手勢分支/手機/真人/20次p95/弱網/耐久/完整POC-04待補。
 
 T13 regression腳本相依：root為唯一writer追加`scripts/control-reconnect-smoke.mjs`窄修，原T12 smoke斷言display重連不subscribe已被本步同頁video意圖恢復取代；改只驗fresh新socket恢復一次screen.subscribe，仍不宣稱T12媒體decode。Node契約/server不變。T13 third的display sequence/實render已覆新行為，舊smoke僅語法檢查，不額外重跑完整T12流程；既有R001歷史證據不改。
+
+## T14／POC-04-R003（2026-11-05）
+
+人類「繼續」接已說明T14慢端隔離，沿用輕量核心/用法、程式+紀錄本機commit。#15「慢速接收者隔離」已讀回，基線ff672f0。root設計/驗收/docs/Git/runtime；依既有人類授權以Luna xhigh處理大量程式。完整弱網品質/手機/資源/POC-04不可因小示範宣稱通過。
+
+- **writer**：T14-IMPL唯一寫src/server/app.ts、新增src/server/transport-budget.ts（若需）、src/client/audio.ts、screen.ts、AudioPanel.tsx、ScreenPanel.tsx、public/audio-playback-worklet.js、tests/slow-receiver.integration.test.mjs、tests/transport-budget.test.mjs（若需）、tests/playback-queue.test.mjs（若需）、README.md、.scratch/t14/implementation-checks/。server relay/控制resume/身份/房門/時基/App/DisplayApp預設唯讀，若必需修改先具體patch建議回root；manifest/lock/vendor不變無新依賴。T14-SMOKE唯一寫scripts/slow-receiver-smoke.mjs與.scratch/t14/smoke-authoring/，唯讀source/舊scripts，不改source/docs/README/Git，不跑standalone server/browser。root唯一寫docs/poc/collaboration/需求/.gitignore/Git/runtime。
+- **最小方案**：保留總WS pending1.5MiB、單VP8 frame512KiB、PCM24000samples(500ms)、video decode pending8/decoded queue16既有上限。補明確audio pending decode8（超限時關閉自己的socket1013，走T12/13，不默默壞解碼）與decoded video本地residency500ms（紀錄enqueue performance.now，render前/入隊prune舊frames並close，只留fresh；不得將performance與source timestamp混算網路age）。PCM除了samples上限補audio graph-time本地residency500ms，重啟graph後丟舊PCM，不播放背景積累；worklet graph clock非實體網路年齡。這兩個age數字是本輪補的POC候選，既有文件沒有可核對的POC00 age設定，不補造已預鎖/品質結論。
+- **server界線**：提取/補每socket共用send budget守衛涵蓋控制/audio/screen，超1.5MiB或應用write callback仍pending超1000ms就只關慢端1013；禁止全域await或一慢拖全部。追蹤pending callback筆數/bytes/oldest age與highwater/close reason，有界記錄、close清timer，不能把OS/TCPbuffer或接收端全部資料算成這些值。若現有框架send callback不足代表完整transport，就如實只稱application send budget。可由既有participation.self/inspect加自己的transport觀測（strict1KiB請求不變、不曝光別人的身份/secret），server memory/CPU僅process可選health觀測或測試runner，不擴新管理API。具體接口與腳本作者協調。
+- **client恢復**：超界可安全清可恢復資料或只關自己的連線再走T13重驗身份/房間/權限、取新config/keyframe/clock。不能丟任意VP8 delta繼續解碼當沒事；已解碼frame可丟且close。手動stop/interaction/切房/leave仍不復活，publisher權限/來源不auto；無新capture/重連協議。對新計數在既有observation/DOM增加明確local queue含義，不加假的E2E age。
+- **驗測**：少量Node seam以延遲send callback/可控bufferedAmount觸發byte/age cap，只關慢peer健康peer仍送，control/media同budget；worklet用VM fake graph clock驗樣本/居留age/恢復丟舊，不假稱真裝置。browser三Firefox host持續合成Opus/VP8、healthy/slow兩真接收，同一run。只對slow的Playwright WS route用明確200ms延遲/約64KiB/s候選（若做）或hold，driver總queue<=256KiB/age500ms/筆數界線；到界線close該route1013、丟driver舊buffer而非重播，reconnect放行真app，T13恢復實samples/frames。healthy在擾動期間實際samples/frames持續正增且至少數次採樣，不只前後各一張；control互動ACK也需可用。保存driver實設定/作用層/bytes/age/highwater/drop/close原因、新connection控制/config/clock/實播、健康對照及代表圖。可受控暫停slow RAF/AudioContext測本地queue，但不假稱真OS背景，手機/真背景/CPU全量/p95仍Inconclusive。無20次/65min/容量/CloudRun。
+- **交付**：pinned Node26.13絕對path /Users/samzhu/workspace_herdr/LaiTse/.tools/node-v26.13.0-darwin-arm64/bin/node +repo npm cache。source/tests先saved/readback/STOP精確交root後root build/fullNode一次，兩agent可留README/checks/script最後釋出；禁止late patch。root獨占runtime/看圖/讀回/cleanup，失敗保留後窄診斷，同錯停止全套改最小驗證。敏感token/password/host/sourcepayload不寫log/report/Git，隔離CA profiles刪除、不改系統TLS。資源全STOP後commit，不push/遠端票/T15/部署。無Skill工具則以seam tests/root source review代替，不宣稱已呼叫。
+- **狀態**：scope已保存，待兩位agent啟動，尚未實作/驗收結果。
+
+T14關閉碼修正：browser發起WebSocket.close只用1000或應用4xxx，client audio decode超界採4003；server budget與測試route close可1013。root已通知owner，避免InvalidAccessError。其餘scope不變。
+
+T14 scope補記：root檢視screen.ts時發現owner已引入/建立`src/client/media-queue.ts`（原精確清單未列），現明確接受這個隔離pure video-residency helper並指定T14-IMPL唯一writer，無其他writer衝突；不是原派工已列。已要求其他新資源先報再寫。helper可沿既有tests/playback-queue.test.mjs驗close/prune語意，不增加依賴或產品範圍。
+
+### T14 source/tests交接
+
+T14-IMPL明確saved/readback/STOP釋出server app/transport-budget、client audio/screen/media-queue/AudioPanel/ScreenPanel、public playback worklet及transport-budget/playback-queue tests，root現為唯一writer。final9聚焦/兩typecheck/diff通過，initial10留存但刪鏡照predicate test；未建立slow-receiver.integration，既有server契約與browser核對實wiring。交接fingerprints保存R003，root開始production build/full Node；第一位只保留README/checks，第二位仍script/smoke-authoring，不latepatch。
+
+T14-SMOKE已saved/readback/STOP釋出slow-receiver-smoke與smoke-authoring，exact26.13語法通過且未runtime；root接管script並開始可信HTTPS三Firefox一次輕量驗收。source指紋對build未變、完整63通過；第一位僅保留README/checks。
+
+## T14最終紀錄
+
+T14交付（2026-11-05）：[POC-04-R003](../poc/evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。

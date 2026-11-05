@@ -1,0 +1,18 @@
+✔ decoded video frames are closed and pruned at the 500 ms local-residence boundary (0.799292ms)
+✔ AudioWorklet drops PCM after 500 ms of graph-time residence and reports the local drop (2.775333ms)
+✔ AudioWorklet rejects an oversized PCM block and keeps queued samples within 24,000 (2.237583ms)
+✔ AudioWorklet graph residence follows the graph clock and clear removes prior PCM (0.656583ms)
+✔ audio pending decode guard trips at eight queued frames (0.115208ms)
+✔ one socket shares pending byte accounting across control and media writes (1.058875ms)
+✔ snapshot reports injected budget limits for deterministic seam use (0.101209ms)
+✔ pending callback bytes enforce the shared 1.5 MiB socket cap even if bufferedAmount stays zero (0.433083ms)
+✔ a callback pending beyond one second closes only its slow socket (0.16ms)
+✔ a callback delivered after the age limit still records a per-socket close (0.086667ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 98.468375

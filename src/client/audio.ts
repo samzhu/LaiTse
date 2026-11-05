@@ -7,6 +7,7 @@ const AUDIO_FRAME_DURATION_US = 20_000;
 const AUDIO_FRAME_HEADER_BYTES = 24;
 const MAX_OPUS_PACKET_BYTES = 4_096;
 const MAX_SOCKET_BUFFERED_BYTES = 1_536 * 1_024;
+const MAX_PENDING_AUDIO_DECODES = 8;
 const AUDIO_MAGIC = [0x4c, 0x54, 0x41, 0x31];
 
 const PUBLISH_CONFIG: Record<string, unknown> = {
@@ -43,6 +44,7 @@ type AudioEncoderLike = {
 
 type AudioDecoderLike = {
   readonly state: "unconfigured" | "configured" | "closed";
+  readonly decodeQueueSize: number;
   configure(config: Record<string, unknown>): void;
   decode(chunk: EncodedAudioChunkLike): void;
   close(): void;
@@ -110,6 +112,11 @@ export type AudioSnapshot = {
   decodedFrames: number;
   renderedSamples: number;
   queuedSamples: number;
+  queueOldestGraphResidenceMs: number;
+  queueStaleDropBatches: number;
+  queueOversizeDropBatches: number;
+  decodeQueueHighWater: number;
+  decodeQueueSaturationCloses: number;
   renderRms: number;
   queueOverflowResets: number;
 };
@@ -142,6 +149,11 @@ export type AudioObservation = {
     decodedFrames: number;
     renderedSamples: number;
     queuedSamples: number;
+    queueOldestGraphResidenceMs: number;
+    queueStaleDropBatches: number;
+    queueOversizeDropBatches: number;
+    decodeQueueHighWater: number;
+    decodeQueueSaturationCloses: number;
     sampleRateHz: number;
     receiverBufferMs: number;
     packetGapCount: number;
@@ -192,6 +204,11 @@ const INITIAL_STATE: AudioSnapshot = {
   decodedFrames: 0,
   renderedSamples: 0,
   queuedSamples: 0,
+  queueOldestGraphResidenceMs: 0,
+  queueStaleDropBatches: 0,
+  queueOversizeDropBatches: 0,
+  decodeQueueHighWater: 0,
+  decodeQueueSaturationCloses: 0,
   renderRms: 0,
   queueOverflowResets: 0,
 };
@@ -350,6 +367,11 @@ export class AudioController {
         decodedFrames: state.decodedFrames,
         renderedSamples: state.renderedSamples,
         queuedSamples: state.queuedSamples,
+        queueOldestGraphResidenceMs: state.queueOldestGraphResidenceMs,
+        queueStaleDropBatches: state.queueStaleDropBatches,
+        queueOversizeDropBatches: state.queueOversizeDropBatches,
+        decodeQueueHighWater: state.decodeQueueHighWater,
+        decodeQueueSaturationCloses: state.decodeQueueSaturationCloses,
         sampleRateHz: AUDIO_SAMPLE_RATE,
         receiverBufferMs: Number((state.queuedSamples / AUDIO_SAMPLE_RATE * 1_000).toFixed(2)),
         packetGapCount: this.packetGapCount,
@@ -359,7 +381,7 @@ export class AudioController {
         counterScope: {
           receiveDecodeRender: "receivedPackets, decodedFrames, renderedSamples, and queueOverflowResets accumulate during this listening session across stream generations.",
           packetGaps: "packetGapCount is scoped to packetGapGeneration; it counts only missing sequence values between accepted consecutive packets after that generation's first accepted packet.",
-          queue: "queuedSamples, renderRms, and receiverBufferMs are the latest playback worklet observation; receiverBufferMs is an instantaneous queuedSamples / 48000 Hz estimate.",
+          queue: "queuedSamples and renderRms are the latest playback worklet observation; receiverBufferMs is an instantaneous queuedSamples / 48000 Hz estimate. queueOldestGraphResidenceMs is local AudioWorklet graph-time residence, not wall-background, network, source, or end-to-end age; stale batch drops and oversize drops are local queue counters.",
         },
       },
       evidence: {
@@ -370,6 +392,7 @@ export class AudioController {
         notes: [
           "播放計數與 RMS 是此瀏覽器解碼／AudioWorklet 輸出管線的樣本觀測，不代表音訊硬體已輸出或真人已聽見。",
           "接收緩衝是 queuedSamples ÷ 48000 Hz 的本機佇列估計，不是端到端延遲。",
+          "播放佇列居留時間使用 AudioWorklet graph clock；暫停時 graph time 停止，暫停／恢復時舊 decoder 與 PCM queue 會清除。此值不是牆鐘背景時間、網路年齡或來源到播放延遲。",
           "封包序號缺口只計算第一個已接受封包之後，相鄰已接受封包間缺少的序號；晚加入前的歷史不計入。",
           "封包序號缺口不代表音訊掉音或真人可聽見的中斷；送出計數是此頁存續期間累計，接收／解碼／渲染計數則跨此 listening session 的 stream generations 累計。",
           "streamGeneration 只在目前 server process 內有意義；報告沒有持久的 run 或 session ID。",
@@ -522,6 +545,11 @@ export class AudioController {
       decodedFrames: 0,
       renderedSamples: 0,
       queuedSamples: 0,
+      queueOldestGraphResidenceMs: 0,
+      queueStaleDropBatches: 0,
+      queueOversizeDropBatches: 0,
+      decodeQueueHighWater: 0,
+      decodeQueueSaturationCloses: 0,
       renderRms: 0,
       queueOverflowResets: 0,
     });
@@ -910,6 +938,16 @@ export class AudioController {
       return;
     }
     if (frame.generation !== this.streamGeneration || frame.sequence <= this.lastReceivedSequence || !this.decoder) return;
+    if (this.decoder.decodeQueueSize >= MAX_PENDING_AUDIO_DECODES) {
+      if (this.socket.readyState !== this.socket.OPEN) return;
+      this.set({
+        listenerMessage: "Opus 解碼器待處理已達 8 個影格；正在重連以取得新的媒體時基。",
+        decodeQueueHighWater: Math.max(this.state.decodeQueueHighWater, this.decoder.decodeQueueSize),
+        decodeQueueSaturationCloses: this.state.decodeQueueSaturationCloses + 1,
+      });
+      this.socket.close(4003, "Audio decode queue exceeded 8");
+      return;
+    }
     const Chunk = (window as unknown as AudioWindow).EncodedAudioChunk;
     if (!Chunk) {
       this.set({ listenerState: "error", listenerMessage: "此瀏覽器缺少 WebCodecs EncodedAudioChunk。" });
@@ -918,6 +956,7 @@ export class AudioController {
     try {
       const chunk = new Chunk({ type: "key", timestamp: frame.timestampUs, duration: frame.durationUs, data: frame.packet });
       this.decoder.decode(chunk);
+      this.set({ decodeQueueHighWater: Math.max(this.state.decodeQueueHighWater, this.decoder.decodeQueueSize) });
       if (this.lastReceivedSequence >= 0 && frame.sequence > this.lastReceivedSequence + 1) {
         this.packetGapCount += frame.sequence - this.lastReceivedSequence - 1;
       }
@@ -1029,6 +1068,9 @@ export class AudioController {
       queuedSamples: Number.isFinite(stats.queuedSamples) ? Number(stats.queuedSamples) : this.state.queuedSamples,
       renderRms: Number.isFinite(stats.rms) ? Number(stats.rms) : this.state.renderRms,
       queueOverflowResets: overflowResets,
+      queueOldestGraphResidenceMs: Number.isFinite(stats.queueOldestGraphResidenceMs) ? Number(stats.queueOldestGraphResidenceMs) : 0,
+      queueStaleDropBatches: Number.isFinite(stats.queueStaleDropBatches) ? Number(stats.queueStaleDropBatches) : this.state.queueStaleDropBatches,
+      queueOversizeDropBatches: Number.isFinite(stats.queueOversizeDropBatches) ? Number(stats.queueOversizeDropBatches) : this.state.queueOversizeDropBatches,
     });
     if (overflowResets > this.lastOverflowResets || stats.overflowReset === true) {
       this.lastOverflowResets = overflowResets;
@@ -1129,6 +1171,7 @@ export class AudioController {
     this.streamGeneration = null;
     this.activeAudioClockId = null;
     this.lastReceivedSequence = -1;
+    this.set({ queuedSamples: 0, queueOldestGraphResidenceMs: 0 });
     this.audioPulseActive = false;
     this.audioPulseQuietSinceMs = null;
     const decoder = this.decoder;

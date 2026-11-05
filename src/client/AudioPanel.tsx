@@ -115,6 +115,11 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
       data-decoded-frames={state.decodedFrames}
       data-rendered-samples={state.renderedSamples}
       data-queued-samples={state.queuedSamples}
+      data-queue-oldest-graph-residence-ms={state.queueOldestGraphResidenceMs}
+      data-queue-stale-drop-batches={state.queueStaleDropBatches}
+      data-queue-oversize-drop-batches={state.queueOversizeDropBatches}
+      data-audio-decode-queue-high-water={state.decodeQueueHighWater}
+      data-audio-decode-queue-saturation-closes={state.decodeQueueSaturationCloses}
       data-render-rms={state.renderRms}
       data-queue-overflow-resets={state.queueOverflowResets}
       data-publisher-generation={currentObservation?.publisher.streamGeneration ?? ""}
@@ -201,11 +206,14 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
         <span><strong>解碼影格</strong><output data-testid="audio-decoded-frames">{state.decodedFrames}</output></span>
         <span><strong>播放樣本</strong><output data-testid="audio-rendered-samples">{state.renderedSamples}</output></span>
         <span><strong>播放佇列</strong><output data-testid="audio-queued-samples">{state.queuedSamples}</output></span>
+        <span><strong>PCM 佇列 graph 居留</strong><output data-testid="audio-queue-oldest-graph-residence">{state.queueOldestGraphResidenceMs.toFixed(2)} ms</output></span>
+        <span><strong>PCM 過期丟棄／超大批次丟棄</strong><output data-testid="audio-queue-drops">{state.queueStaleDropBatches} / {state.queueOversizeDropBatches}</output></span>
+        <span><strong>音訊解碼佇列峰值</strong><output data-testid="audio-decode-queue-high-water">{state.decodeQueueHighWater}</output></span>
         <span><strong>接收緩衝（非端到端延遲）</strong><output data-testid="audio-receiver-buffer-ms">{currentObservation?.receiver.receiverBufferMs.toFixed(2) ?? "0.00"} ms</output></span>
         <span><strong>封包序號缺口</strong><output data-testid="audio-packet-gap-count">{currentObservation?.receiver.packetGapCount ?? 0}</output></span>
         <span><strong>播放RMS</strong><output data-testid="audio-render-rms">{state.renderRms.toFixed(4)}</output></span>
       </div>
-      <p className="audio-limit-note">播放樣本與RMS由接收端 AudioWorklet 實際輸出的PCM計算；它們不代表真人已聽見或量得端到端延遲。</p>
+      <p className="audio-limit-note">播放樣本與RMS由接收端 AudioWorklet 實際輸出的PCM計算；graph 居留時間是本機排隊時間，不是背景牆鐘或網路年齡；這些值不代表真人已聽見或量得端到端延遲。</p>
       <div className="audio-observation-actions">
         <button className="quiet-button" onClick={downloadObservation}>下載音訊觀測</button>
         <span>報告只含此頁播放器管線計數；來源裝置與真人收聽狀態不由應用推斷。</span>

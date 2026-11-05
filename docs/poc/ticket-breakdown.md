@@ -174,3 +174,7 @@ T11直接入房/只互動/展示端桌面核心已於[POC-03-R007](evidence/POC-
 T12控制通道重連桌面核心已於[POC-04-R001](evidence/POC-04-R001/README.md)保存：47核心/build/typecheck與首次三Firefox受控中斷/refresh/原房身份/最新gate與權限/去重TTL可行。程式與紀錄本機commit；媒體恢復、手機/實體弱網/耐久及完整POC-04未驗，不改遠端票/不push、不自動啟動T13。
 
 T13同頁影音恢復桌面核心已有[POC-04-R002](evidence/POC-04-R002/README.md)分段證據：54核心/build、receiver/display fresh config/clock實播、manual stop/來源權限不auto，publisher-only新世代手動重開成功。原full腳本3次失敗保留，停止整套後窄驗、最終full未再整段跑；20次/p95/手機/完整POC-04未驗，不改遠端票、不push/T14。
+
+## T14本輪結果（2026-11-05）
+
+T14交付（2026-11-05）：[POC-04-R003](evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。

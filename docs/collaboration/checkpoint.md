@@ -187,3 +187,11 @@ root為最後唯一writer，server/Firefox/profiles已停止清理，cleanup讀�
 人類T13輕量core/用法+程式紀錄commit已完成分段驗收，基線0ade7c9，R002。54核心/typecheck/build一次通過，交接source指紋未變；third接收恢復實播/stop不復活/sender無auto已證明，最後publisher-only正常claim與generation2/新clock實播通過。3次full腳本失敗與窄修保留，停止整套後不重做receiver，最終full僅syntax未整段再跑。root seq/config/clock/render讀回/3圖實看完成。
 
 兩Luna都STOP釋出，root完成SOL/需求/計畫/票面/README/協作同步，server/Firefox/profile已清理，4173無listener。程式+紀錄同一本機commit，既有AGENTS/.scratch未stage，不push/遠端票/T14/部署；gesture/手機/真人/20次p95/弱網/耐久/完整POC-04待補。下一項仍由人類指定。
+
+## T14啟動checkpoint（2026-11-05）
+
+人類接續T14輕量/用法+commit；ff672f0基線，R003/#15已讀回。完整scope/writer/界線在dispatch，T14-IMPL與T14-SMOKE兩Luna xhigh已啟動；root獨占docs/Git/runtime。舊queue上限沿用，新增local residency/sendcallback age為候選，不補造POC00既定設定。driver只單頁應用hold不是TCP弱網，真手機/背景/品質/完整POC-04待補；source/tests STOP後才rootbuild，未驗收。AGENTS/.scratch既有未追蹤保留不stage。
+
+## T14最終紀錄
+
+T14交付（2026-11-05）：[POC-04-R003](../poc/evidence/POC-04-R003/README.md)保存63核心/build/typecheck與最終完整三Firefox輕量流程。per-socket共享byte/callback budget、PCM/video local residence有界；慢端bounded應用hold後新連線/config/keyframe與實播，健康端hold5次/恢復後3次及ACK持續。首輪route close未到page的失敗與harness兩端4003修正保留；server policy仍1013。500ms目標實測501ms，非TCP/端到端age；手機/真背景/弱網/品質/完整POC-04仍待。README/SOL/需求狀態/計畫/票面同步，writer/runtime已停止釋出，程式+紀錄本機commit，不push/遠端票/T15/部署。

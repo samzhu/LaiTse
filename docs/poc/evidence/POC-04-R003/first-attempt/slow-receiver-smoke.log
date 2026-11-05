@@ -1,0 +1,7 @@
+[T14] trusted-local-catalogue-confirms-locked-managed-studio {"roomId":"studio","locked":true,"hostControlsEnabled":true}
+[T14] host-started-synthetic-opus-and-vp8-before-receiver-subscriptions {"audioSources":1,"screenSources":1}
+[T14] host-and-two-real-firefox-receivers-joined-through-normal-room-controls {"roomId":"studio","hostRole":"participant","receivers":2}
+[T14] both-real-receivers-start-with-positive-opus-and-vp8-render {"healthySamples":23168,"healthyFrames":5,"slowSamples":14592,"slowFrames":2,"sharedClockId":"7f822f17-b92d-44c0-8639-c97c42b6ebdc"}
+[T14] bounded-slow-only-downlink-hold-started {"client":"slow","connectionIndex":1,"transportLayer":"Playwright WebSocketRoute server-to-browser application layer","queueLimitBytes":262144,"queueLimitMessages":128,"oldestAgeLimitMs":500}
+[T14] driver-hit-500ms-age-cap-closed-only-slow-route-and-discarded-held-buffer {"closeCode":1013,"closeReason":"oldest_queued_message_age_limit","heldBytes":19410,"heldMessages":34,"queueHighWaterBytes":19410,"ageHighWaterMs":501}
+[T14] failed Timed out waiting for slow receiver's new pass-through WebSocket.

@@ -96,6 +96,9 @@ export function ScreenPanel({ socket, timeline, roomId = "", publishAllowed = tr
       data-sync-clock-id={state.syncClockId ?? ""}
       data-scheduled-source-clock-offset-ms={state.scheduledSourceClockOffsetMs ?? ""}
       data-dropped-decoded-frames={state.droppedDecodedFrames}
+      data-queued-decoded-frame-count={state.queuedDecodedFrameCount}
+      data-queued-decoded-frame-oldest-residence-ms={state.queuedDecodedFrameOldestResidenceMs}
+      data-queued-decoded-frame-residence-drops={state.decodedFrameResidenceDrops}
     >
       <div className="panel-heading">
         <div>
@@ -157,8 +160,9 @@ export function ScreenPanel({ socket, timeline, roomId = "", publishAllowed = tr
         <span><strong>同步模式</strong><output data-testid="screen-sync-mode">{state.syncMode === "audio-master" ? "同發布者音訊播放時鐘" : state.syncMode === "standalone" ? "獨立畫面時鐘" : "等待可解碼影格"}</output></span>
         <span><strong>排程時間差</strong><output data-testid="screen-source-clock-offset">{state.scheduledSourceClockOffsetMs === null ? "尚無樣本" : `${state.scheduledSourceClockOffsetMs.toFixed(2)} ms`}</output></span>
         <span><strong>解碼影格丟棄</strong><output data-testid="screen-dropped-decoded-frames">{state.droppedDecodedFrames}</output></span>
+        <span><strong>待呈現影格／最老本機居留／過期丟棄</strong><output data-testid="screen-decoded-frame-residence">{state.queuedDecodedFrameCount} / {state.queuedDecodedFrameOldestResidenceMs.toFixed(1)} ms / {state.decodedFrameResidenceDrops}</output></span>
       </div>
-      <p className="screen-limit-note">同發布者且音訊播放樣本新鮮時，畫面依 AudioWorklet 樣本時間排程；沒有可用的同源時鐘時回到獨立畫面。排程時間差是兩個編碼時間戳的差，不是實測人耳／人眼偏移；畫面時間戳表示本機複製至編碼畫布的時刻，不是實體擷取時刻。fps 是最近 5 秒 render 計數，來源實體性不由應用推斷。</p>
+      <p className="screen-limit-note">同發布者且音訊播放樣本新鮮時，畫面依 AudioWorklet 樣本時間排程；沒有可用的同源時鐘時回到獨立畫面。待呈現影格在本機 performance clock 居留滿 500 ms 會關閉並丟棄；此值不是來源、網路或端到端年齡。排程時間差是兩個編碼時間戳的差，不是實測人耳／人眼偏移；畫面時間戳表示本機複製至編碼畫布的時刻，不是實體擷取時刻。fps 是最近 5 秒 render 計數，來源實體性不由應用推斷。</p>
       <div className="screen-observation-actions">
         <button className="quiet-button" onClick={() => controllerRef.current?.downloadObservation()}>下載畫面觀測</button>
         <span>觀測不含桌面影像內容；伺服器 CPU／記憶體需由外部執行環境另行量測。</span>

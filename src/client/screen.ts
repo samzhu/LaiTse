@@ -1,4 +1,5 @@
 import { MediaTimeline, selectVideoFrameIndex } from "./media-timeline";
+import { MAX_DECODED_VIDEO_FRAME_RESIDENCY_MS, pruneExpiredDecodedFrames, type ResidentFrame } from "./media-queue";
 
 const SCREEN_FRAME_HEADER_BYTES = 24;
 const MAX_SCREEN_FRAME_PAYLOAD_BYTES = 512 * 1_024;
@@ -108,6 +109,9 @@ export type ScreenSnapshot = {
   syncClockId: string | null;
   scheduledSourceClockOffsetMs: number | null;
   droppedDecodedFrames: number;
+  queuedDecodedFrameCount: number;
+  queuedDecodedFrameOldestResidenceMs: number;
+  decodedFrameResidenceDrops: number;
 };
 
 export type ScreenObservation = {
@@ -158,6 +162,9 @@ export type ScreenObservation = {
     recentAudioPulseEvents: ReturnType<MediaTimeline["getPulseEvents"]>;
     queuedDecodedFrames: number;
     maximumQueuedDecodedFrames: number;
+    oldestQueuedDecodedFrameResidenceMs: number;
+    decodedFrameResidenceDrops: number;
+    queueResidenceScope: "local performance.now time from decoded enqueue; not source, network, or end-to-end age";
   };
   resources: {
     browserJsHeapBytes: { used: number; total: number; limit: number } | null;
@@ -195,6 +202,9 @@ export const INITIAL_SCREEN_STATE: ScreenSnapshot = {
   syncClockId: null,
   scheduledSourceClockOffsetMs: null,
   droppedDecodedFrames: 0,
+  queuedDecodedFrameCount: 0,
+  queuedDecodedFrameOldestResidenceMs: 0,
+  decodedFrameResidenceDrops: 0,
 };
 
 type StartWaiter = {
@@ -285,7 +295,7 @@ export class ScreenController {
   private decodeGeneration: number | null = null;
   private decoderEpoch = 0;
   private activeClockId: string | null = null;
-  private readonly decodedFrameQueue: VideoFrameLike[] = [];
+  private readonly decodedFrameQueue: ResidentFrame<VideoFrameLike>[] = [];
   private receivedFrames = 0;
   private readonly renderedAt: number[] = [];
 
@@ -357,6 +367,9 @@ export class ScreenController {
         recentAudioPulseEvents: this.activeClockId ? this.timeline.getPulseEvents(this.activeClockId) : [],
         queuedDecodedFrames: this.decodedFrameQueue.length,
         maximumQueuedDecodedFrames: MAX_DECODED_VIDEO_FRAMES,
+        oldestQueuedDecodedFrameResidenceMs: state.queuedDecodedFrameOldestResidenceMs,
+        decodedFrameResidenceDrops: state.decodedFrameResidenceDrops,
+        queueResidenceScope: "local performance.now time from decoded enqueue; not source, network, or end-to-end age",
       },
       resources: {
         browserJsHeapBytes: browserJsHeapSample(),
@@ -396,6 +409,9 @@ export class ScreenController {
       syncClockId: null,
       scheduledSourceClockOffsetMs: null,
       droppedDecodedFrames: 0,
+      queuedDecodedFrameCount: 0,
+      queuedDecodedFrameOldestResidenceMs: 0,
+      decodedFrameResidenceDrops: 0,
     });
     this.socket.send(JSON.stringify({ type: "screen.subscribe" }));
   }
@@ -416,6 +432,8 @@ export class ScreenController {
       syncMode: "waiting",
       syncClockId: null,
       scheduledSourceClockOffsetMs: null,
+      queuedDecodedFrameCount: 0,
+      queuedDecodedFrameOldestResidenceMs: 0,
     });
   }
 
@@ -883,6 +901,9 @@ export class ScreenController {
         syncClockId: clockId,
         scheduledSourceClockOffsetMs: null,
         droppedDecodedFrames: 0,
+        queuedDecodedFrameCount: 0,
+        queuedDecodedFrameOldestResidenceMs: 0,
+        decodedFrameResidenceDrops: 0,
       });
     } catch (error) {
       this.set({ receiverState: "error", receiverMessage: `無法設定 VP8 解碼器：${errorMessage(error)}` });
@@ -940,12 +961,16 @@ export class ScreenController {
       this.set({ receiverState: "error", receiverMessage: "VP8 解碼影格沒有有效時間戳；已略過。" });
       return;
     }
-    this.decodedFrameQueue.push(frame);
-    this.decodedFrameQueue.sort((left, right) => left.timestamp - right.timestamp);
+    const now = performance.now();
+    this.pruneExpiredDecodedFrames(now);
+    this.decodedFrameQueue.push({ frame, enqueuedAtPerformanceMs: now });
+    this.decodedFrameQueue.sort((left, right) => left.frame.timestamp - right.frame.timestamp);
+    let capacityDrops = 0;
     while (this.decodedFrameQueue.length > MAX_DECODED_VIDEO_FRAMES) {
-      this.decodedFrameQueue.shift()?.close();
-      this.set({ droppedDecodedFrames: this.state.droppedDecodedFrames + 1 });
+      this.decodedFrameQueue.shift()?.frame.close();
+      capacityDrops += 1;
     }
+    this.updateDecodedQueueMetrics(now, 0, capacityDrops);
     this.set({ decodedFrames: this.state.decodedFrames + 1 });
     this.scheduleRenderFrames();
   }
@@ -957,25 +982,29 @@ export class ScreenController {
 
   private readonly renderQueuedFrames = (): void => {
     this.renderAnimationFrameId = null;
-    if (this.decodedFrameQueue.length === 0 || this.state.receiverState === "off") return;
     const now = performance.now();
+    this.pruneExpiredDecodedFrames(now);
+    this.updateDecodedQueueMetrics(now);
+    if (this.decodedFrameQueue.length === 0 || this.state.receiverState === "off") return;
     const audioMaster = this.timeline.getAudioMaster(this.activeClockId, now);
     if (audioMaster && audioMaster.receiverPerformanceTimeMs > now) {
       this.scheduleRenderFrames();
       return;
     }
     const selectedIndex = selectVideoFrameIndex(
-      this.decodedFrameQueue.map((frame) => frame.timestamp),
+      this.decodedFrameQueue.map((frame) => frame.frame.timestamp),
       audioMaster?.sourceTimestampUs ?? null,
     );
 
     if (selectedIndex >= 0) {
+      let syncDrops = 0;
       for (let index = 0; index < selectedIndex; index += 1) {
-        this.decodedFrameQueue.shift()?.close();
-        this.set({ droppedDecodedFrames: this.state.droppedDecodedFrames + 1 });
+        this.decodedFrameQueue.shift()?.frame.close();
+        syncDrops += 1;
       }
       const frame = this.decodedFrameQueue.shift();
-      if (frame) this.renderFrame(frame, audioMaster);
+      this.updateDecodedQueueMetrics(now, 0, syncDrops);
+      if (frame) this.renderFrame(frame.frame, audioMaster);
     }
     this.scheduleRenderFrames();
   };
@@ -1020,13 +1049,36 @@ export class ScreenController {
     this.decoderEpoch += 1;
     if (this.renderAnimationFrameId !== null) cancelAnimationFrame(this.renderAnimationFrameId);
     this.renderAnimationFrameId = null;
-    while (this.decodedFrameQueue.length > 0) this.decodedFrameQueue.shift()?.close();
+    while (this.decodedFrameQueue.length > 0) this.decodedFrameQueue.shift()?.frame.close();
+    this.updateDecodedQueueMetrics(performance.now());
     const decoder = this.decoder;
     this.decoder = null;
     this.decodeGeneration = null;
     this.activeClockId = null;
     if (!decoder || decoder.state === "closed") return;
     try { decoder.close(); } catch { /* Decoder may have closed after an error callback. */ }
+  }
+
+  private pruneExpiredDecodedFrames(nowPerformanceMs: number): void {
+    const dropped = pruneExpiredDecodedFrames(this.decodedFrameQueue, nowPerformanceMs, MAX_DECODED_VIDEO_FRAME_RESIDENCY_MS);
+    if (dropped > 0) this.updateDecodedQueueMetrics(nowPerformanceMs, dropped, dropped);
+  }
+
+  private updateDecodedQueueMetrics(nowPerformanceMs: number, residenceDrops = 0, droppedFrames = 0): void {
+    let oldestEnqueuedAt: number | null = null;
+    for (const item of this.decodedFrameQueue) {
+      if (oldestEnqueuedAt === null || item.enqueuedAtPerformanceMs < oldestEnqueuedAt) oldestEnqueuedAt = item.enqueuedAtPerformanceMs;
+    }
+    const oldestResidenceMs = oldestEnqueuedAt === null
+      ? 0
+      : Number(Math.max(0, nowPerformanceMs - oldestEnqueuedAt).toFixed(1));
+    const queuedCount = this.decodedFrameQueue.length;
+    const patch: Partial<ScreenSnapshot> = {};
+    if (this.state.queuedDecodedFrameCount !== queuedCount) patch.queuedDecodedFrameCount = queuedCount;
+    if (this.state.queuedDecodedFrameOldestResidenceMs !== oldestResidenceMs) patch.queuedDecodedFrameOldestResidenceMs = oldestResidenceMs;
+    if (residenceDrops > 0) patch.decodedFrameResidenceDrops = this.state.decodedFrameResidenceDrops + residenceDrops;
+    if (droppedFrames > 0) patch.droppedDecodedFrames = this.state.droppedDecodedFrames + droppedFrames;
+    if (Object.keys(patch).length > 0) this.set(patch);
   }
 
   private clearCanvas(): void {

@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-05",
+  "reviewer": "root",
+  "status": "lightweight-core-pass",
+  "report": "desktop/slow-receiver-report.json",
+  "healthyConnections": 1,
+  "slowConnections": 2,
+  "freshAuthoritySequence": 6,
+  "subscribeSequences": [
+    9,
+    12
+  ],
+  "healthySamples": {
+    "healthyDuringHold": [
+      [
+        7425,
+        33664,
+        7
+      ],
+      [
+        7517,
+        38784,
+        8
+      ],
+      [
+        7689,
+        46976,
+        10
+      ],
+      [
+        7780,
+        51072,
+        12
+      ],
+      [
+        7872,
+        55168,
+        13
+      ]
+    ],
+    "healthyAfterRecovery": [
+      [
+        9364,
+        124544,
+        33
+      ],
+      [
+        9530,
+        132736,
+        36
+      ],
+      [
+        9693,
+        140928,
+        38
+      ]
+    ]
+  },
+  "driver": {
+    "client": "slow",
+    "connectionIndex": 1,
+    "transportLayer": "Playwright WebSocketRoute server-to-browser application layer; not TCP packet shaping",
+    "holdStartedAtMs": 7424,
+    "closeAtMs": 7926,
+    "closeCode": 4003,
+    "closeReason": "oldest_queued_message_age_limit",
+    "queueLimitBytes": 262144,
+    "queueLimitMessages": 128,
+    "oldestAgeLimitMs": 500,
+    "queueHighWaterBytes": 17171,
+    "queueHighWaterMessages": 33,
+    "queueAgeHighWaterMs": 501,
+    "receivedDownlinkMessages": 33,
+    "receivedDownlinkBytes": 17171,
+    "queuedMessagesAtClose": 33,
+    "queuedBytesAtClose": 17171,
+    "queuedBinaryMessagesAtClose": 32,
+    "overflowTriggerMessages": 0,
+    "overflowTriggerBytes": 0,
+    "messagesAfterCloseBeforeReconnect": 0,
+    "bytesAfterCloseBeforeReconnect": 0,
+    "replayedMessages": 0,
+    "heldPayloadsRetainedAfterClose": 0
+  },
+  "recovery": {
+    "client": "slow",
+    "oldConnectionIndex": 1,
+    "newConnectionIndex": 2,
+    "closeCode": 4003,
+    "freshAuthority": {
+      "sessionResumed": true,
+      "roomId": "studio",
+      "role": "participant",
+      "mode": "watch"
+    },
+    "audioSubscribeAfterFreshAuthority": true,
+    "screenSubscribeAfterFreshAuthority": true,
+    "audioStream": {
+      "direction": "received",
+      "connectionIndex": 2,
+      "sequence": 14,
+      "atMs": 8259,
+      "type": "audio.stream",
+      "generation": 1,
+      "clockId": "3a002c71-9f3b-4a61-b03f-30b6f7b9da80",
+      "config": {
+        "codec": "opus",
+        "sampleRate": 48000,
+        "channels": 1
+      }
+    },
+    "screenStream": {
+      "direction": "received",
+      "connectionIndex": 2,
+      "sequence": 11,
+      "atMs": 8243,
+      "type": "screen.stream",
+      "generation": 1,
+      "clockId": "3a002c71-9f3b-4a61-b03f-30b6f7b9da80",
+      "config": {
+        "codec": "vp8",
+        "width": 1280,
+        "height": 720,
+        "frameRate": 15
+      }
+    },
+    "audioRenderedSamplesBeforeRecoveryRender": 0,
+    "audioRenderedSamplesAfter": 39744,
+    "screenRenderedFramesBeforeRecoveryRender": 0,
+    "screenRenderedFramesAfter": 10,
+    "newDecoderRenderedFrames": 10
+  },
+  "applicationFingerprintsMatchBuild": true,
+  "imagesActuallyViewed": [
+    "first-attempt/desktop/slow-failure.png",
+    "desktop/slow-after-recovery.png",
+    "desktop/healthy-after-slow-recovery.png"
+  ],
+  "limitations": {
+    "transportClaim": "The injected hold is an application-layer Playwright route. It is not TCP shaping, packet loss, physical network age, or a real browser background transition.",
+    "networkAndDeviceClaims": "No physical microphone, human listening, phone, OS backgrounding, packet-loss, bandwidth, p95, endurance, capacity, or Cloud Run claim.",
+    "serverBuffer": "The route driver queue is separate from the server application send budget; server policy is covered by its Node contract seam.",
+    "autoplay": "No autoplay preferences are changed. If playback is suspended, the visible ordinary continue-listening button is clicked and actual AudioWorklet samples are still required."
+  }
+}

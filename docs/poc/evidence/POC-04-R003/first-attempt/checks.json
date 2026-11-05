@@ -1,0 +1,50 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "startedAt": "2026-11-05T01:45:08.768244+00:00",
+    "finishedAt": "2026-11-05T01:45:10.494080+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "core-integration",
+    "command": [
+      "node",
+      "--test",
+      "--test-timeout=30000",
+      "tests/audio.integration.test.mjs",
+      "tests/capabilities.integration.test.mjs",
+      "tests/control-reconnect.integration.test.mjs",
+      "tests/host-control.integration.test.mjs",
+      "tests/interactions.integration.test.mjs",
+      "tests/media-recovery.integration.test.mjs",
+      "tests/media-timeline.test.mjs",
+      "tests/participation.integration.test.mjs",
+      "tests/playback-queue.test.mjs",
+      "tests/room-access.integration.test.mjs",
+      "tests/room-isolation.integration.test.mjs",
+      "tests/screen.integration.test.mjs",
+      "tests/server.integration.test.mjs",
+      "tests/space-policy.integration.test.mjs",
+      "tests/space.integration.test.mjs",
+      "tests/transport-budget.test.mjs"
+    ],
+    "startedAt": "2026-11-05T01:45:10.494790+00:00",
+    "finishedAt": "2026-11-05T01:45:20.048636+00:00",
+    "exitCode": 0
+  },
+  {
+    "name": "slow-receiver-smoke",
+    "command": [
+      "node",
+      "scripts/slow-receiver-smoke.mjs"
+    ],
+    "startedAt": "2026-11-05T01:46:38.296563+00:00",
+    "finishedAt": "2026-11-05T01:47:03.763469+00:00",
+    "exitCode": 1
+  }
+]
