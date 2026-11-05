@@ -1,6 +1,6 @@
 # 工作階段 checkpoint
 
-**狀態：DEC011-A兩類空間收聽桌面核心完成；門禁與真實裝置品質待補；2026-11-04。**
+**狀態：DEC-013桌機MVP規劃已整理，手機後續；待集中討論D01～03，未開始MVP程式開發；2026-11-05。以下保留歷史紀錄，最新事項見文末。**
 
 - 人類原話「開始」並指定implement；按當時唯一無阻擋前沿執行T01。Luna xhigh實作，主代理思考、獨立檢視、最終完整檢查及紀錄；未切到其他票或MVP。
 - 產物：Node26.13.0／React/Vite／Fastify單一應用，production頁面／API／WSS，真實房間成員／有界合成控制，README、鎖版、TLS與瀏覽器腳本、版本授權inventory。
@@ -271,3 +271,11 @@ GATE-001-DESKTOP-AUDIO／[POC-07-R002](../poc/evidence/POC-07-R002/README.md)已
 依人類「要記得更新進度」，[母議題#1](https://github.com/samzhu/LaiTse/issues/1)及T01～T19（#2～20）已加入最新進度段，說明核心已驗／未驗、DEC-010輕量範圍、DEC-011空間門禁與DEC-012 PostgreSQL18例外；桌機Edge真人語音與兩端啟停已確認，手機仍待、technicalGo=false。保留原AC、open與labels，沒有推送程式、關票或部署。20張寫入後均讀回正文完全一致，before／expected／readback SHA256見POC-07-R002/github-progress-readback.json。後續相關POC保存後同步相關票的偏好已記入brief。
 
 本輪只有紀錄變更；JSON解析、20張Issue精確讀回／原文與狀態保持、證據路徑及git diff檢查通過，不重跑既有程式測試。R001歷史結果不覆寫。文件writer／GitHub寫入已結束；localhost:4173及專用PG容器繼續運作供人類，未接管Edge／麥克風，未做手機或MVP。
+
+## MVP-DESKTOP-PLAN／DEC-013（2026-11-05）
+
+人類確認桌機MVP優先、手機後續，授權先整理功能／開發計畫並集中討論待決項。已保存並讀回PRD v0.10第6/9/11節：F01～09核心範圍、M00～06開發／輕量示範順序、D01～06待決（身份／邀請、OS／瀏覽器、容量／發布、距離／門口／視覺、活動／資料、交付／部署）。D01～03先討論，其餘到相依階段前確認；建議不當人類決策。
+
+手機已從本版前置移除，不再以未做手機阻擋桌機規劃；T19原NoGo與未驗證據保留，未自動宣告全technicalGo。只規劃／文件，未開始MVP程式開發、未新增實測／拆票發布或部署；src/tests/deps不改，沿SOL007唯一資料清冊；manual服務不操作／不停止。後續GitHub母#1、手機#3與審查#20同步本次版本界線並讀回；驗測採文件／連結／狀態一致性，不重跑程式全測。
+
+MVP-DESKTOP-PLAN交付已保存／讀回（2026-11-05）：PRD v0.10第11節為唯一計畫入口，DEC-013精確原話／範圍已同步；GitHub母#1／手機#3／審查#20更新並3/3正文精確讀回、原正文／AC／open／labels保留，憑據POC07-R002/mvp-scope-progress-readback.json。計畫F/M/D識別、單一第11節、4份主要文件本機連結及diff檢查通過；純規劃未跑新程式／瀏覽器測試。無產品／依賴修改，未開始MVP或部署／push；本機commit紀錄，writer結束，既有manual服務與人類Edge未操作／未停止。下一步集中討論D01～03，建議不當已確認。

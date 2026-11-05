@@ -1,0 +1,45 @@
+{
+  "itemId": "MVP-DESKTOP-PLAN",
+  "decision": "DEC-013",
+  "date": "2026-11-05",
+  "codePushed": false,
+  "mvpImplementationStarted": false,
+  "issues": [
+    {
+      "number": 1,
+      "url": "https://github.com/samzhu/LaiTse/issues/1",
+      "beforeBodySHA256": "e84b4e96c256d648d25b975efd644cc2356da2824c8232bfb1f6a1b907d8793e",
+      "expectedBodySHA256": "9e050190a8d01a7d2a39a3771f7a8f1ae71cd324cf7c4b9618c1a8cad1e934ab",
+      "readbackBodySHA256": "9e050190a8d01a7d2a39a3771f7a8f1ae71cd324cf7c4b9618c1a8cad1e934ab",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:19:16.330964+00:00"
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/samzhu/LaiTse/issues/3",
+      "beforeBodySHA256": "475d1b66cb8b3f5d3c3cac54b6ac70121353282ff64f87d1adaac2ecf2189b02",
+      "expectedBodySHA256": "7ea347ad5e4fa64efc26b7b10ffbc8c6acfaf57674e8425b451aae11c3425c67",
+      "readbackBodySHA256": "7ea347ad5e4fa64efc26b7b10ffbc8c6acfaf57674e8425b451aae11c3425c67",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:19:18.669423+00:00"
+    },
+    {
+      "number": 20,
+      "url": "https://github.com/samzhu/LaiTse/issues/20",
+      "beforeBodySHA256": "722f4cd398d6a602b4d5bcdf91f2b0786b691d4a7f84c3de067cce69eb7d7272",
+      "expectedBodySHA256": "564b5a8fbc128550cebfeed1ab178ea55e6a5ffbf62d21377c1940d064b31b24",
+      "readbackBodySHA256": "564b5a8fbc128550cebfeed1ab178ea55e6a5ffbf62d21377c1940d064b31b24",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-05T09:19:21.283265+00:00"
+    }
+  ]
+}

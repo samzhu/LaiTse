@@ -28,3 +28,7 @@
 ## GitHub進度同步
 
 依人類要求已更新[母#1](https://github.com/samzhu/LaiTse/issues/1)及T01～T19（#2～20）的最新進度段；20張正文精確讀回，原票／AC／open／labels保留。各票URL、前後SHA256、readback時間與範圍見[同步憑據](github-progress-readback.json)。程式／本機紀錄未push，遠端只提供本機證據路徑與基線commit識別，不附不可讀的blob連結。
+
+## 後續範圍調整：DEC-013
+
+人類已明確改為桌機MVP優先、手機後續；本run的真人結果／未驗不變，但手機不再作桌機MVP規劃與開發前置。PRD v0.10第11節為唯一功能／開發計畫。母#1、手機#3、審查#20已補此差異並3/3精確讀回，[同步憑據](mvp-scope-progress-readback.json)；未改原AC／狀態／labels，未開始程式開發。

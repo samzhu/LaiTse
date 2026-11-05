@@ -66,3 +66,5 @@
 | GATE001／POC-07-R002 | Edge桌機真人語音及兩端啟停 | R002/human-confirmation.json、mvp-handoff | 人類「OK」與「兩端都測過，正常」；限定範圍Pass | 手機/跨裝置/品質未驗；服務持續供人類操作、未開MVP |
 
 GitHub進度同步（2026-11-05）：母#1及T01～T19/#2～20最新段已保存、20/20精確讀回，保留原AC/open/labels；憑據[POC07-R002](../poc/evidence/POC-07-R002/github-progress-readback.json)，程式未push。
+
+| MVP-DESKTOP-PLAN／DEC-013 | 桌機MVP範圍／開發計畫 | `docs/laitse-prd.md` v0.10第6/9/11節、`docs/collaboration/decisions.md` | 桌機優先／手機後續已確認；F/M/D計畫已保存，其他方案待決、未開發 | D01～03集中討論；技術移轉仍沿既有SOL表 |

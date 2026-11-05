@@ -1,8 +1,12 @@
 # POC 至 MVP 方案交接表
 
 - 權威計畫：[POC-PLAN v1.3](plan.md)；實際證據：[執行紀錄](execution-log.md)。
-- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19已完成範圍化採用建議，整體進場NoGo；可採用基底不等於完整階段通過**。
+- 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19原範圍NoGo保留；DEC-013改為桌機優先、手機後續，現進入桌機MVP規劃，待決項尚未定案，未開始程式開發**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
+
+## DEC-013最新範圍（2026-11-05）
+
+桌機MVP／手機後續已確認；手機未驗不再是本版規劃／開發前置。功能與開發順序統一在[PRD第11節](../laitse-prd.md#11-桌機-mvp-功能範圍與開發計畫)，本表僅維護技術移轉與歷史證據。首批桌機環境、容量、身份／邀請方案待討論；未開始MVP程式開發，不自動升為全面technicalGo。歷史R001/R002的NoGo／未驗不覆寫。
 
 ## 候選方案（T19審查，2026-11-05）
 
@@ -11,7 +15,7 @@
 | ID | 方案責任／採用建議 | 證據與可用範圍 | MVP移轉條件／限制 |
 |---|---|---|---|
 | SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
-| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標手機/跨裝置與原生畫面核心仍待驗。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
+| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標桌機跨端與原生畫面核心於M03補驗；手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
 | SOL-003 | **需重構**：server權威Room/控制Session/門禁/授撤權核心保留 | [POC03-R004](evidence/POC-03-R004/README.md)／[R005](evidence/POC-03-R005/README.md)、[PG資料恢復](evidence/POC-06-R002/README.md)、[T19撤權/恢復](evidence/POC-07-R001/README.md) | 臨時匿名身份與全域bootstrap token不是正式帳號/Room ACL；活動Session與control_sessions須分清，授權歷史不自動恢復有效權限 |
 | SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
 | SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
@@ -32,7 +36,7 @@
 - 資源量測、成本輸入、授權與資產權利、限制及採用前條件。
 - 暫時無解、只在本機成立或尚未測試的部分；不以「可採用」掩蓋必要限制。
 
-## MVP 進場審查（T19／POC-07-R001）
+## MVP 進場審查（T19／POC-07-R001，原桌機＋手機範圍歷史）
 
 **審查紀錄交付完成；technicalGo=false，結論NoGo；完整候選資格結果Inconclusive。** [本輪證據與狀態](evidence/POC-07-R001/README.md)將執行完成、核心可用、完整階段、人類接受與發布分開記錄。本輪沒有啟動MVP或變更產品範圍。
 
@@ -62,14 +66,14 @@ NoGo的主要理由是：桌機Edge真人收聽及兩端停止/重開已在[POC0
 
 | ID／類別 | 目前事實 | 下一個小步／需確認內容 |
 |---|---|---|
-| GATE-001／核心證據 | 桌機Edge真人聽見與兩端啟停已確認；實機手機核心仍未測 | 下一步是一台目標手機可信連線→選房→只互動/回饋/QR，桌機已通過範圍不重開。首批具體瀏覽器/機型與測試順序由人類確認，既有桌面＋手機P0不取消；不先要求長測與全矩陣 |
+| GATE-001／核心證據（DEC-013更新） | Edge桌機真人聽見及兩端啟停已確認；手機改為後續，不再阻擋本版 | 先定MVP-D02桌機OS／瀏覽器；在M03補該環境的真人音畫完整短流程，手機待後續專項，不回改歷史未驗 |
 | GATE-002／產品決策 | 正式主辦者/訪客/邀請及Space→Room→活動Session管理尚未定；目前control_sessions只是連線恢復 | 確認登入/訪客准入與主持授權方式；沿已驗server權威與PG新增正式domain，不能把bootstrap token當成帳號 |
 | GATE-003／容量與品質 | 硬上限8人、實測最多6；每房/channel單publisher，媒體同WS、DB同步控制寫入 | 確認首批人數/裝置/畫質與延遲目標；50人是原建議未達標，若保留須先擴配置/測資源與背壓。不是直接把8改50就算支持 |
 | GATE-004／互動細節 | 開放距離6格是示範；門可點/Enter，走路自動跨門未做；公開文字目前頁內區域 | 確認正式距離/進出邊界行為，MVP補門口操作與展示；維持已確認的會議室全房/未鎖直入/鎖房密碼，不重新詢問已確認規則 |
 | GATE-005／資料運維 | 系統資訊可存PG已確認且核心已驗；archive無清理期限，無備份還原/HA證據 | 決定保存期限、刪除/查看權限、資料庫託管與備份還原方式。沒有要求重新核准PostgreSQL或保存類別 |
 | GATE-006／部署與商品整合 | app只容許單active writer；未做CloudRun容器/正式配置，POC debug UI/API/固定fixture仍在 | 後續處理singleton/版本切換與DB連線生命週期、secret/診斷授權、正式UI；本輪不部署，不能將單一service自動當成可多instance |
 
-GATE-001是目前進場證據缺口；GATE-002～006分別是下一步產品設計、容量/部署與MVP工作，不一律要求先做完整MVP才能開始MVP。若人類之後調整首批範圍，保存精確決策再用對應證據復審，不能從一般「OK」推成全部風險接受。
+DEC-013已移除手機作為桌機MVP前置，GATE-001剩餘目標桌機音畫驗測排入M03；GATE-002～006分別是下一步產品設計、容量/部署與MVP工作，不一律要求先做完整MVP才能開始MVP。若人類之後調整首批範圍，保存精確決策再用對應證據復審，不能從一般「OK」推成全部風險接受。
 
 ### 必須保留、移出或重構的POC資產
 
@@ -78,14 +82,9 @@ GATE-001是目前進場證據缺口；GATE-002～006分別是下一步產品設�
 - 商品前重構：POC能力/下載/隊列統計面板與未授權diagnostic API的正式可見性；固定pixel fixture/房間配置、全域host密鑰、匿名身份模型；T15瞬時Continue helper回整維護腳本/統一重現入口。保留bounded trace與錯誤但避免記錄密碼/token/聊天全文。
 - 明確拒絕：WorkAdventure產品基底（DEC001）；強制供應商影音SaaS綁定（DEC003）；process-memory作系統持久化（R001）；把mock/空socket/ACK/codec probe當實播或真人證據。未選其他框架不代表其授權或技術不合法。
 
-### 有證據支持的MVP順序（提案，尚未開工）
+### MVP開發順序（DEC-013）
 
-0. GATE-001桌機真人流程已完成，接著補手機核心並確認首批具體支援範圍，再更新進場判定；技術Go與人類明確開工指示分開。
-1. 整理單一app＋PG基底：正式Space/Room/活動與身份/授權，migration/secret/保留/備份設計，延續commit後ACK；先完成一個可操作活動的縱向切片。
-2. 入場與空間：房間連結/QR、像素人物、手機替代控制、門/密碼/鎖房與開放距離規則；用同server權威驗私密邊界，不先做完整地圖編輯器。
-3. 授權音畫：一主講的mic/畫面獨立啟停、晚加入/接收恢復/撤權，沿已驗Opus/VP8候選，依目標實機選播放與不支援提示，sources仍須user操作。
-4. 互動與展示：持久事件/去重/TTL、商品彈幕與只互動、唯讀展示、主持治理，完成手機→同房展示的完整流程。
-5. 依首批人數調整8人上限/控制寫入與資源，跑必要短跨裝置/斷線/容量回歸；後續獨立安排CloudRun＋資料庫部署/備份還原，不把本機成功當已發布。
+統一維護於[PRD第11.3節](../laitse-prd.md#113-分階段開發與小步驗證)：M00集中決策 → M01身份／空間／PG基底 → M02像素移動與門禁 → M03語音／分享／模式 → M04互動／主持／展示 → M05恢復／保存／試用 → M06部署準備。各步依現有POC接回商品，記使用方式與驗測證據；本表不再保留第二份開發計畫。
 
 T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張為影音／耐久／MVP證據。
 

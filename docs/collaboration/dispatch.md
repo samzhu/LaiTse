@@ -359,3 +359,11 @@ root唯一writer/操作者：本次docs協作checkpoint/dispatch及POC07-R002記
 依人類「要記得更新進度」，[母議題#1](https://github.com/samzhu/LaiTse/issues/1)及T01～T19（#2～20）已加入最新進度段，說明核心已驗／未驗、DEC-010輕量範圍、DEC-011空間門禁與DEC-012 PostgreSQL18例外；桌機Edge真人語音與兩端啟停已確認，手機仍待、technicalGo=false。保留原AC、open與labels，沒有推送程式、關票或部署。20張寫入後均讀回正文完全一致，before／expected／readback SHA256見POC-07-R002/github-progress-readback.json。後續相關POC保存後同步相關票的偏好已記入brief。
 
 本輪只有紀錄變更；JSON解析、20張Issue精確讀回／原文與狀態保持、證據路徑及git diff檢查通過，不重跑既有程式測試。R001歷史結果不覆寫。文件writer／GitHub寫入已結束；localhost:4173及專用PG容器繼續運作供人類，未接管Edge／麥克風，未做手機或MVP。
+
+## MVP-DESKTOP-PLAN／DEC-013 範圍包（2026-11-05）
+
+人類：「MVP 先以桌機為主，手機之後再做，先幫我整理 MVP 的功能範圍與開發計畫，需要決定的項目再一起討論。」root唯一writer：docs/laitse-prd.md既有第6/9/11節作唯一MVP功能／開發計畫入口；docs/laitse-ai-handoff.md、collaboration/{decisions,project-brief,checkpoint,dispatch,delivery-index}、poc/{plan,mvp-handoff,execution-log}同步本次範圍與審查差異。保留SOL007唯一資料清冊及舊POC證據；不另建競爭PRD／資源清冊。
+
+已授權：桌機優先／手機後續、文件規劃與既有GitHub進度偏好下母#1／手機#3／審查#20同步；每票寫後精確讀回、保留原正文/AC/state/labels，憑據POC07-R002/mvp-scope-progress-readback.json。未授權決定：正式首批OS/瀏覽器、人數／並發發布、登入／邀請、活動與資料政策；以穩定待決ID列提案，不能當人類接受。既有NoGo是舊桌面＋手機範圍結論；手機移後不等於歷史實測Pass或全面technicalGo。此次只規劃，不開發MVP／新POC／發布新票／push／部署。src/tests/deps與人類Edge唯讀，不停止既有manual服務。交付功能邊界、相依順序、逐步示範／驗收、採用及風險、集中待決項，文件檢查及本機commit後停止writer。
+
+MVP-DESKTOP-PLAN交付已保存／讀回（2026-11-05）：PRD v0.10第11節為唯一計畫入口，DEC-013精確原話／範圍已同步；GitHub母#1／手機#3／審查#20更新並3/3正文精確讀回、原正文／AC／open／labels保留，憑據POC07-R002/mvp-scope-progress-readback.json。計畫F/M/D識別、單一第11節、4份主要文件本機連結及diff檢查通過；純規劃未跑新程式／瀏覽器測試。無產品／依賴修改，未開始MVP或部署／push；本機commit紀錄，writer結束，既有manual服務與人類Edge未操作／未停止。下一步集中討論D01～03，建議不當已確認。
