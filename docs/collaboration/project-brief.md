@@ -1,5 +1,9 @@
 # 專案 brief
 
+## 人工導覽／停止服務（2026-11-06，最新）
+
+人類要求「先不開服務, 教我如何手動測試 我先看一下功能跟操作」。root已確認自有4174/PID62270並SIGTERM，runtime回寫stopped／HTTP不可連線，本輪未啟動新服務。既有PG容器／資料／volume未變動，不停止其他服務或碰人類UI。手動功能導覽已保存poc/MANUAL-TESTING.md並連到根／POC README；先人物/房間/互動/門禁，再影音與交接，另列未執行的暫存啟動指令與PG保存差異。新啟動必須依人類之後的明確指示，不能沿上文「保留運作」自動重開。未跑測試／build／browser、未修改產品碼，僅指南與停止狀態。
+
 ## 最新目錄邊界（2026-11-06／DEC-020）
 
 REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace協調入口；`apps/web/`只有預留README，**正式MVP未開發**。根`npm run build`／`npm test`／`npm start`仍操作POC，產物在`poc/dist`。原工具/scratch/node_modules、秘密檔與PG/volume不搬刪，歷史evidence與原hash不改；舊程式路徑前加`poc/`對照，舊README封存legacy-local-poc-guide。官方依據支持最小workspace，未新增Turborepo／空共用套件／第二份PRD或資料清冊。

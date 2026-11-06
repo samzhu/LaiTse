@@ -383,3 +383,7 @@ REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace�
 Node26.13乾淨安裝成功（初次離線誤用預設cache失敗保留，改repo既有.cache/npm成功）、root workspace build/typecheck、PG全suite84/84且0skip、31腳本語法及純helper/library import不改cwd通過。從/private/tmp啟動三個隔離Chrome/Edge profiles，2路Opus PCM＋單VP8與逐源停止通過（19,644ms，觀測窗4,014ms）；79檔純搬移、30檔路徑調整，170registry lock entries及所有依賴exact版本不變。root修純TCP library不應chdir，app static root改依模組位置解析避免cwd。人工4174在0人後換poc/dist，PID62270／PGready／0人10席，原4173不碰；私有4175及測試profiles已停／清理。
 
 [證據／mapping／失敗與限制](../poc/evidence/REPO-LAYOUT-01/README.md)。研究與實作writer皆STOP，root完成檢視與純library窄修；root唯一writer提交程式與紀錄。GitHub母#1/#20補目錄與POC非產品說明、保留closed原理由，不新建MVP票、不push／部署或自動開MVP；原untrackedAGENTS/.scratch不納入。
+
+## 人工導覽／停止服務（2026-11-06，最新）
+
+人類要求「先不開服務, 教我如何手動測試 我先看一下功能跟操作」。root已確認自有4174/PID62270並SIGTERM，runtime回寫stopped／HTTP不可連線，本輪未啟動新服務。既有PG容器／資料／volume未變動，不停止其他服務或碰人類UI。手動功能導覽已保存poc/MANUAL-TESTING.md並連到根／POC README；先人物/房間/互動/門禁，再影音與交接，另列未執行的暫存啟動指令與PG保存差異。新啟動必須依人類之後的明確指示，不能沿上文「保留運作」自動重開。未跑測試／build／browser、未修改產品碼，僅指南與停止狀態。

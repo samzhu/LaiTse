@@ -43,7 +43,7 @@ npm test
 
 ## 保留的人工環境
 
-目前人工入口：[http://localhost:4174/?room=studio](http://localhost:4174/?room=studio)。需保持Docker／OrbStack運作；它是本機 POC。不要因整理目錄刪除資料庫／volume，也不要把測試用假來源移入產品。實際運作狀態以最新交付紀錄為準。
+服務目前停止，這輪不啟動。之後想看功能，可依[手動功能導覽](poc/MANUAL-TESTING.md)自行啟動，再用 `http://localhost:4174/?room=studio`。既有PostgreSQL資料與volume保留；導覽另提供不需DB的暫存模式，清楚分開功能預覽與資料保存測試。
 
 ## 文件入口與移轉原則
 
