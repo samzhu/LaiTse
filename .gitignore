@@ -57,3 +57,7 @@ dist/
 .scratch/desktop01/
 
 .scratch/final01/
+
+# REPO-LAYOUT-01 workspace output and private implementation notes
+poc/dist/
+.scratch/layout01/

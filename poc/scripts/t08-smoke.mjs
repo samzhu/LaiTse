@@ -1,0 +1,1058 @@
+import { enterRepositoryRootForLegacyScript, repositoryRoot, pocRoot } from "./lib/project-paths.mjs";
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { get as httpsGet } from "node:https";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { join, relative, resolve, sep, isAbsolute } from "node:path";
+import WebSocket from "ws";
+
+enterRepositoryRootForLegacyScript();
+
+const root = repositoryRoot;
+const scratchRoot = resolve(root, ".scratch/t08");
+const outputDirectory = resolve(root, process.env.T08_OUTPUT_DIR ?? ".scratch/t08/desktop-smoke");
+const outputRelative = relative(scratchRoot, outputDirectory);
+if (isAbsolute(outputRelative) || outputRelative === ".." || outputRelative.startsWith(`..${sep}`)) {
+  throw new Error("T08_OUTPUT_DIR must stay inside .scratch/t08.");
+}
+
+process.env.PLAYWRIGHT_BROWSERS_PATH ??= resolve(root, ".tools/playwright-browsers");
+const { firefox } = await import("playwright");
+const tlsDirectory = resolve(root, ".scratch/t01/tls");
+const caCertificate = resolve(process.env.T08_CA_CERT ?? join(tlsDirectory, "local-ca.pem"));
+const caPem = readFileSync(caCertificate);
+const baseURL = process.env.T08_BASE_URL ?? `https://localhost:${process.env.PORT ?? "4173"}`;
+const target = new URL(baseURL);
+const certificateUtility = process.env.CERTUTIL_BIN ?? "certutil";
+const headless = process.env.HEADLESS !== "0";
+const MEDIA_WINDOW_MS = 1_000;
+const MAX_PACKET_RECORDS = 2_000;
+const MAX_CONTROL_RECORDS = 300;
+const COLORS = {
+  lobby: [224, 52, 46],
+  studio: [38, 184, 92],
+};
+const AUDIO_FREQUENCIES = { lobby: 523, studio: 997 };
+const DISPLAY_NAMES = {
+  lobbyPublisher: "Lobby Publisher",
+  lobbyReceiver: "Lobby Receiver",
+  studioPublisher: "Studio Publisher",
+  studioReceiver: "Studio Receiver",
+};
+
+mkdirSync(outputDirectory, { recursive: true });
+const report = {
+  schemaVersion: 1,
+  purpose: "Short T08 local desktop smoke for independent lobby/studio media, member redaction, room switching, and server rejection of forged room/identity/role controls.",
+  startedAt: new Date().toISOString(),
+  status: "running",
+  baseURL: target.origin,
+  topology: { rooms: ["lobby", "studio"], publishers: 2, receivers: 2, browserProcesses: 4, websocketConnections: 4, network: "one local application over trusted HTTPS/WSS" },
+  headless,
+  runtime: {
+    node: process.version,
+    npm: execFileSync("npm", ["--version"], { encoding: "utf8" }).trim(),
+    platform: process.platform,
+    architecture: process.arch,
+    firefox: "not-reported",
+  },
+  tls: { caCertificate, trust: "local CA imported only into each isolated Firefox profile and passed to external WSS probes", ignoreCertificateErrors: false, systemTrustChanged: false },
+  syntheticSources: {
+    audio: "per-room oscillator routed to AudioContext MediaStreamDestination; no hardware microphone",
+    audioFrequencyHz: AUDIO_FREQUENCIES,
+    screen: "per-room solid-color canvas MediaStreamTrack returned by test-only getDisplayMedia replacement",
+    screenColorRgb: COLORS,
+    nativePermissionPickerUsed: false,
+    physicalMicrophoneOrDisplaySelected: false,
+    mediaStored: false,
+  },
+  windows: { expectedMediaWindowMs: MEDIA_WINDOW_MS, rawPacketHashLimitPerChannelAndDirection: MAX_PACKET_RECORDS },
+  clients: {},
+  memberIsolationChecks: [],
+  packetSourceMappings: [],
+  stages: [],
+  serverDiagnostics: [],
+  maliciousClients: [],
+  screenshots: [],
+  errors: { pageErrors: [], socketErrors: [], failure: null },
+  limitations: {
+    accountsAndPrivateRoomEntry: "not-implemented; server IDs identify a connection/participant only and do not verify a person",
+    physicalPhone: "not-tested",
+    realMicrophoneOrHumanListening: "not-tested; generated audio is synthetic",
+    realDisplayCapture: "not-tested; screen source is an injected canvas",
+    endToEndLatencyOrQuality: "not-claimed; short feasibility flow only",
+    durabilityAndMultiInstance: "not-tested; room and relay state is process memory",
+  },
+};
+
+const contexts = [];
+const pageTransports = {};
+const pages = {};
+const externalSockets = new Set();
+let failure;
+
+function logStage(name, details = {}) {
+  const item = { name, at: new Date().toISOString(), ...details };
+  report.stages.push(item);
+  console.log(`[T08] ${name}${Object.keys(details).length ? ` ${JSON.stringify(details)}` : ""}`);
+}
+
+function runCertutil(args) {
+  execFileSync(certificateUtility, args, { stdio: "pipe" });
+}
+
+function createTrustedProfile(name) {
+  const profileDirectory = join(outputDirectory, name, "profile");
+  rmSync(profileDirectory, { recursive: true, force: true });
+  mkdirSync(profileDirectory, { recursive: true });
+  runCertutil(["-N", "-d", `sql:${profileDirectory}`, "--empty-password"]);
+  runCertutil(["-A", "-d", `sql:${profileDirectory}`, "-n", "LaiTse local development CA", "-t", "C,,", "-i", caCertificate]);
+  const appData = join(outputDirectory, name, "app-data");
+  const localAppData = join(outputDirectory, name, "local-app-data");
+  mkdirSync(appData, { recursive: true });
+  mkdirSync(localAppData, { recursive: true });
+  return { profileDirectory, appData, localAppData };
+}
+
+async function launchFirefox(name) {
+  const profile = createTrustedProfile(name);
+  const context = await firefox.launchPersistentContext(profile.profileDirectory, {
+    headless,
+    env: { ...process.env, MOZ_APP_DATA: profile.appData, MOZ_LOCAL_APP_DATA: profile.localAppData },
+    viewport: { width: 1440, height: 1050 },
+    colorScheme: "light",
+    firefoxUserPrefs: { "media.navigator.streams.fake": true },
+  });
+  context.setDefaultTimeout(8_000);
+  contexts.push(context);
+  const page = context.pages()[0] ?? await context.newPage();
+  recordTransport(page, name);
+  pages[name] = page;
+  return page;
+}
+
+function bytesFromPayload(payload) {
+  if (Buffer.isBuffer(payload)) return payload;
+  if (payload instanceof Uint8Array) return Buffer.from(payload);
+  if (typeof payload === "string") return Buffer.from(payload, "binary");
+  return null;
+}
+
+function packetRecord(payload, direction, at) {
+  const bytes = bytesFromPayload(payload);
+  if (!bytes || bytes.byteLength < 12) return null;
+  const magic = bytes.toString("ascii", 0, 4);
+  const channel = magic === "LTA1" ? "audio" : magic === "LTS1" ? "screen" : null;
+  if (!channel) return null;
+  return {
+    at,
+    magic,
+    channel,
+    generation: bytes.readUInt32BE(4),
+    sequence: bytes.readUInt32BE(8),
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    bytes: bytes.byteLength,
+    direction,
+  };
+}
+
+function compactControl(message, direction, at) {
+  const entry = { at, direction, type: typeof message?.type === "string" ? message.type : "unknown" };
+  const clientSelectedFields = ["roomId", "participantId", "identity", "role"].filter((key) => Object.hasOwn(message ?? {}, key));
+  if (clientSelectedFields.length) entry.clientSelectedFields = clientSelectedFields;
+  for (const key of ["roomId", "currentRoomId", "generation", "clockId", "code"]) {
+    if (typeof message?.[key] === "string" || Number.isInteger(message?.[key])) entry[key] = message[key];
+  }
+  if (message?.type === "control.event") {
+    entry.eventKind = message.event?.kind;
+    entry.eventRoomId = message.event?.roomId;
+  }
+  if (message?.type === "room.snapshot") {
+    entry.roomSnapshot = {
+      roomId: message.room?.id,
+      roomName: message.room?.name,
+      memberNames: Array.isArray(message.members) ? message.members.map((member) => member.displayName) : [],
+      memberIds: Array.isArray(message.members) ? message.members.map((member) => member.id) : [],
+    };
+  }
+  if (message?.type === "space.snapshot") {
+    const currentRoom = message.rooms?.find((room) => room.id === message.currentRoomId);
+    const otherRooms = message.rooms?.filter((room) => room.id !== message.currentRoomId) ?? [];
+    entry.spaceSnapshot = {
+      currentRoomId: message.currentRoomId,
+      sequence: message.seq,
+      publicRoomCatalog: (message.rooms ?? []).map(({ id, name }) => ({ id, name })),
+      visibleParticipants: (currentRoom?.players ?? []).map(({ id, displayName, roomId, x, y }) => ({ id, displayName, roomId, x, y })),
+      hiddenRooms: otherRooms.map(({ id, name, membersVisible, players }) => ({ id, name, membersVisible, visibleMemberCount: players?.length ?? -1 })),
+    };
+  }
+  return entry;
+}
+
+function recordTransport(page, name) {
+  const transport = {
+    name,
+    sockets: [],
+    controls: [],
+    packetRecords: { sent: { audio: [], screen: [] }, received: { audio: [], screen: [] } },
+    unparsedBinaryFrames: { sent: 0, received: 0 },
+    droppedPacketRecords: { sent: 0, received: 0 },
+    droppedControlRecords: 0,
+    foreignRoomEvents: [],
+    pageErrors: [],
+    currentRoomId: null,
+    switchingTo: null,
+    roomSnapshotAt: null,
+  };
+  page.on("pageerror", (error) => {
+    const item = { at: new Date().toISOString(), message: error.message };
+    transport.pageErrors.push(item);
+    report.errors.pageErrors.push({ client: name, ...item });
+  });
+  page.on("websocket", (socket) => {
+    const item = { url: socket.url(), sentTextFrames: 0, sentBinaryFrames: 0, receivedTextFrames: 0, receivedBinaryFrames: 0, errors: [] };
+    transport.sockets.push(item);
+    const collect = (frame, direction) => {
+      const payload = frame.payload;
+      const at = Date.now();
+      if (typeof payload === "string") {
+        item[direction === "sent" ? "sentTextFrames" : "receivedTextFrames"] += 1;
+        let message;
+        try { message = JSON.parse(payload); }
+        catch { message = { type: "unparsed-control" }; }
+        if (transport.controls.length < MAX_CONTROL_RECORDS) transport.controls.push(compactControl(message, direction, at));
+        else transport.droppedControlRecords += 1;
+        if (direction === "received" && message.type === "room.snapshot") {
+          transport.currentRoomId = message.room.id;
+          transport.roomSnapshotAt = at;
+          transport.switchingTo = null;
+        }
+        if (direction === "received" && message.type === "control.event") {
+          const eventRoom = message.event?.roomId;
+          if (eventRoom && eventRoom !== transport.currentRoomId && eventRoom !== transport.switchingTo) {
+            transport.foreignRoomEvents.push({ at, expectedRoom: transport.currentRoomId, eventRoom, kind: message.event.kind });
+          }
+        }
+        if (direction === "received" && message.type === "space.snapshot") validateSpaceSnapshot(transport, message);
+        return;
+      }
+      item[direction === "sent" ? "sentBinaryFrames" : "receivedBinaryFrames"] += 1;
+      const packet = packetRecord(payload, direction, at);
+      if (!packet) {
+        transport.unparsedBinaryFrames[direction] += 1;
+        return;
+      }
+      const records = transport.packetRecords[direction][packet.channel];
+      if (records.length < MAX_PACKET_RECORDS) records.push(packet);
+      else transport.droppedPacketRecords[direction] += 1;
+    };
+    socket.on("framesent", (frame) => collect(frame, "sent"));
+    socket.on("framereceived", (frame) => collect(frame, "received"));
+    socket.on("socketerror", (error) => {
+      item.errors.push(String(error));
+      report.errors.socketErrors.push({ client: name, message: String(error) });
+    });
+  });
+  pageTransports[name] = transport;
+}
+
+function validateSpaceSnapshot(transport, message) {
+  const current = message.currentRoomId;
+  const foreignRoom = message.rooms.find((room) => room.id !== current);
+  if (!foreignRoom) return;
+  if (foreignRoom.membersVisible !== false || foreignRoom.players.length !== 0) {
+    transport.foreignRoomEvents.push({ at: Date.now(), kind: "space.snapshot.foreign-members", expectedRoom: current, eventRoom: foreignRoom.id });
+  }
+  if (message.rooms.filter((room) => room.id === current).length !== 1) {
+    transport.foreignRoomEvents.push({ at: Date.now(), kind: "space.snapshot.current-room-missing", expectedRoom: current });
+  }
+}
+
+async function installSyntheticMedia(page, roomId) {
+  await page.addInitScript(({ roomId, frequency, color }) => {
+    const state = { roomId, frequency, color, audioContext: null, tracks: [] };
+    Object.defineProperty(window, "__t08SyntheticMedia", { value: state, configurable: false });
+    const mediaDevices = navigator.mediaDevices;
+    Object.defineProperty(mediaDevices, "getUserMedia", {
+      configurable: true,
+      value: async () => {
+        const context = new AudioContext({ sampleRate: 48_000 });
+        await context.resume();
+        const destination = context.createMediaStreamDestination();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        gain.gain.value = 0.24;
+        oscillator.connect(gain).connect(destination);
+        oscillator.start();
+        state.audioContext = context;
+        state.tracks.push(...destination.stream.getTracks());
+        return destination.stream;
+      },
+    });
+    Object.defineProperty(mediaDevices, "getDisplayMedia", {
+      configurable: true,
+      value: async () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 320;
+        canvas.height = 180;
+        const drawing = canvas.getContext("2d");
+        if (!drawing) throw new Error("Synthetic screen canvas could not be created.");
+        let active = true;
+        const render = () => {
+          if (!active) return;
+          drawing.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+          drawing.fillRect(0, 0, canvas.width, canvas.height);
+          drawing.fillStyle = "#fff";
+          drawing.fillRect(12, 12, 48, 12);
+          requestAnimationFrame(render);
+        };
+        render();
+        const stream = canvas.captureStream(10);
+        const track = stream.getVideoTracks()[0];
+        if (!track) throw new Error("Synthetic screen canvas did not produce a track.");
+        state.tracks.push(track);
+        const stop = track.stop.bind(track);
+        track.stop = () => {
+          active = false;
+          stop();
+        };
+        return stream;
+      },
+    });
+  }, { roomId, frequency: AUDIO_FREQUENCIES[roomId], color: COLORS[roomId] });
+}
+
+async function waitForControl(transport, type, previousCount = 0, timeoutMs = 6_000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const found = transport.controls.filter((entry) => entry.direction === "received" && entry.type === type).slice(previousCount);
+    if (found.length) return found.at(-1);
+    await new Promise((resolveWait) => setTimeout(resolveWait, 20));
+  }
+  throw new Error(`${transport.name} did not receive ${type} within ${timeoutMs} ms.`);
+}
+
+function controlCount(transport, type) {
+  return transport.controls.filter((entry) => entry.direction === "received" && entry.type === type).length;
+}
+
+async function joinRoom(page, transportName, name, roomId) {
+  await page.goto(target.origin, { waitUntil: "domcontentloaded" });
+  await page.getByRole("heading", { name: "Local room presence" }).waitFor();
+  await page.locator(`[data-room-choice="${roomId}"]`).click();
+  await page.getByLabel("Your display name").fill(name);
+  pageTransports[transportName].switchingTo = roomId;
+  await page.getByRole("button", { name: "Join room" }).click();
+  const roomName = roomId === "lobby" ? "Local test room" : "Studio";
+  await page.getByText(`Connected to ${roomName}`, { exact: true }).waitFor();
+  await page.locator('[data-testid="audio-panel"]').waitFor();
+  await page.locator('[data-testid="screen-panel"]').waitFor();
+}
+
+async function beginReceiving(page, transport) {
+  const audioAckCount = controlCount(transport, "audio.subscribed");
+  const screenAckCount = controlCount(transport, "screen.subscribed");
+  const audioAck = waitForControl(transport, "audio.subscribed", audioAckCount);
+  const screenAck = waitForControl(transport, "screen.subscribed", screenAckCount);
+  await page.getByRole("button", { name: "開始收聽" }).click();
+  await page.getByRole("button", { name: "開始觀看分享" }).click();
+  await Promise.all([audioAck, screenAck]);
+}
+
+async function beginPublishing(page, transport) {
+  const audioStartedCount = controlCount(transport, "audio.started");
+  const screenStartedCount = controlCount(transport, "screen.started");
+  const audioStarted = waitForControl(transport, "audio.started", audioStartedCount);
+  await page.getByRole("button", { name: "開始麥克風" }).click();
+  await audioStarted;
+  const screenStarted = waitForControl(transport, "screen.started", screenStartedCount);
+  await page.getByRole("button", { name: "開始分享畫面" }).click();
+  await screenStarted;
+}
+
+async function waitForAudioAndScreen(page, expectedColor, label) {
+  await page.waitForFunction(() => {
+    const audio = document.querySelector('[data-testid="audio-panel"]');
+    const screen = document.querySelector('[data-testid="screen-panel"]');
+    const canvas = screen?.querySelector('[data-testid="screen-preview"]');
+    return audio && screen && Number(audio.getAttribute("data-rendered-samples")) > 0 &&
+      Number(audio.getAttribute("data-render-rms")) > 0.0001 &&
+      Number(screen.getAttribute("data-rendered-frames")) >= 3 && canvas?.width > 0 && canvas?.height > 0;
+  }, undefined, { timeout: 8_000 });
+  const snapshot = await page.evaluate(() => {
+    const audio = document.querySelector('[data-testid="audio-panel"]');
+    const screen = document.querySelector('[data-testid="screen-panel"]');
+    const canvas = screen?.querySelector('[data-testid="screen-preview"]');
+    const pixel = canvas && canvas.width > 0 && canvas.height > 0
+      ? [...canvas.getContext("2d").getImageData(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2), 1, 1).data]
+      : null;
+    return {
+      listenerState: audio?.getAttribute("data-listener-state"),
+      receivedAudioPackets: Number(audio?.getAttribute("data-received-packets")),
+      decodedAudioFrames: Number(audio?.getAttribute("data-decoded-frames")),
+      renderedSamples: Number(audio?.getAttribute("data-rendered-samples")),
+      renderRms: Number(audio?.getAttribute("data-render-rms")),
+      playbackClockId: audio?.getAttribute("data-audio-playback-clock-id"),
+      screenReceiverState: screen?.getAttribute("data-receiver-state"),
+      receivedScreenFrames: Number(screen?.getAttribute("data-received-frames")),
+      decodedScreenFrames: Number(screen?.getAttribute("data-decoded-frames")),
+      renderedScreenFrames: Number(screen?.getAttribute("data-rendered-frames")),
+      screenWidth: Number(screen?.getAttribute("data-rendered-width")),
+      screenHeight: Number(screen?.getAttribute("data-rendered-height")),
+      screenPixelRgba: pixel,
+    };
+  });
+  const maxChannelDifference = Math.max(...expectedColor.map((channel, index) => Math.abs(channel - (snapshot.screenPixelRgba?.[index] ?? -999))));
+  assert.ok(snapshot.receivedAudioPackets > 0 && snapshot.decodedAudioFrames > 0 && snapshot.renderedSamples > 0 && snapshot.renderRms > 0.0001, `${label} audio should be received, decoded and rendered`);
+  assert.ok(snapshot.receivedScreenFrames > 0 && snapshot.decodedScreenFrames > 0 && snapshot.renderedScreenFrames >= 3, `${label} screen should be received, decoded and rendered`);
+  assert.ok(snapshot.screenWidth > 0 && snapshot.screenHeight > 0, `${label} screen canvas should have decoded dimensions`);
+  assert.ok(maxChannelDifference <= 45, `${label} decoded screen pixel should match its expected room source color; got ${snapshot.screenPixelRgba}`);
+  return snapshot;
+}
+
+function captureScreen(page, fileName) {
+  const path = join(outputDirectory, fileName);
+  return page.locator('[data-testid="screen-panel"]').screenshot({ path, animations: "disabled" }).then(() => report.screenshots.push(fileName));
+}
+
+async function captureSpace(page, fileName) {
+  const path = join(outputDirectory, fileName);
+  await page.locator('[data-testid="space-panel"]').screenshot({ path, animations: "disabled" });
+  report.screenshots.push(fileName);
+}
+
+function sourceHashes(transport, channel, direction = "sent") {
+  return new Set(transport.packetRecords[direction][channel].map((packet) => packet.sha256));
+}
+
+function assertPacketSource(receiver, sourcePublisher, otherPublisher, channel, afterMs = 0) {
+  const received = receiver.packetRecords.received[channel].filter((packet) => packet.at >= afterMs);
+  const source = sourceHashes(sourcePublisher, channel);
+  const other = sourceHashes(otherPublisher, channel);
+  assert.ok(received.length > 0, `${receiver.name} should expose raw ${channel} packets from its authorized publisher`);
+  const unknown = received.filter((packet) => !source.has(packet.sha256));
+  assert.deepEqual(unknown, [], `${receiver.name} ${channel} packet hash must map to its room publisher`);
+  assert.equal(received.some((packet) => other.has(packet.sha256)), false, `${receiver.name} must not receive ${channel} packets from the other room`);
+  return received;
+}
+
+function assertPacketCaptureComplete(transport) {
+  for (const direction of ["sent", "received"]) {
+    const recordedCount = transport.packetRecords[direction].audio.length + transport.packetRecords[direction].screen.length;
+    const websocketCount = transport.sockets.reduce((sum, socket) => sum + socket[`${direction}BinaryFrames`], 0);
+    assert.equal(transport.unparsedBinaryFrames[direction], 0, `${transport.name} ${direction} stream should contain only recognized LTA1/LTS1 packets`);
+    assert.equal(transport.droppedPacketRecords[direction], 0, `${transport.name} ${direction} hash trace must stay below its explicit bound`);
+    assert.equal(recordedCount, websocketCount, `${transport.name} ${direction} hash trace must include every raw media frame`);
+  }
+  assert.equal(transport.droppedControlRecords, 0, `${transport.name} control evidence must stay below its explicit bound`);
+}
+
+function packetHashes(transport, direction, channel, afterMs = 0) {
+  return transport.packetRecords[direction][channel]
+    .filter((packet) => packet.at >= afterMs)
+    .map((packet) => packet.sha256);
+}
+
+function uniquePacketHashes(transport, direction, channel, afterMs = 0) {
+  return [...new Set(packetHashes(transport, direction, channel, afterMs))].sort();
+}
+
+function getDiagnostics() {
+  return new Promise((resolveDiagnostics, reject) => {
+    const request = httpsGet({
+      hostname: target.hostname,
+      port: target.port || 443,
+      path: "/api/media-diagnostics",
+      method: "GET",
+      ca: caPem,
+    }, (response) => {
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+      response.on("end", () => {
+        try {
+          const parsed = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+          resolveDiagnostics({ status: response.statusCode, body: parsed });
+        } catch (error) { reject(error); }
+      });
+    });
+    request.setTimeout(3_000, () => request.destroy(new Error("Diagnostics endpoint timed out.")));
+    request.on("error", reject);
+  });
+}
+
+function openExternalSocket() {
+  const socket = new WebSocket(`${target.protocol.replace(/^http/u, "ws")}//${target.host}/ws`, {
+    origin: target.origin,
+    ca: caPem,
+  });
+  externalSockets.add(socket);
+  const observation = {
+    expectedRoomId: null,
+    currentRoomId: null,
+    clientName: null,
+    mediaControlTypes: [],
+    binaryMediaFrames: [],
+    foreignRoomEvents: [],
+    hiddenRoomChecks: [],
+  };
+  socket.__t08Observation = observation;
+  socket.on("message", (raw, isBinary) => {
+    if (isBinary) {
+      const bytes = Buffer.from(raw);
+      const magic = bytes.toString("ascii", 0, Math.min(4, bytes.byteLength));
+      if (magic === "LTA1" || magic === "LTS1") observation.binaryMediaFrames.push(magic);
+      return;
+    }
+    let message;
+    try { message = JSON.parse(raw.toString()); }
+    catch { return; }
+    if (typeof message.type === "string" && /^(audio|screen)\./u.test(message.type)) observation.mediaControlTypes.push(message.type);
+    if (message.type === "room.snapshot") {
+      observation.currentRoomId = message.room?.id ?? observation.expectedRoomId;
+      const fixtureRooms = new Map([
+        [DISPLAY_NAMES.lobbyPublisher, pageTransports["lobby-publisher"].currentRoomId],
+        [DISPLAY_NAMES.lobbyReceiver, pageTransports["lobby-receiver"].currentRoomId],
+        [DISPLAY_NAMES.studioPublisher, pageTransports["studio-publisher"].currentRoomId],
+        [DISPLAY_NAMES.studioReceiver, pageTransports["studio-receiver"].currentRoomId],
+      ]);
+      const memberNames = (message.members ?? []).map((member) => member.displayName);
+      if (memberNames.some((name) => fixtureRooms.has(name) && fixtureRooms.get(name) !== observation.currentRoomId)) {
+        observation.foreignRoomEvents.push({ type: "room.snapshot", roomId: observation.currentRoomId, foreignMemberName: true });
+      }
+    }
+    if (message.type === "control.event") {
+      const expected = observation.currentRoomId ?? observation.expectedRoomId;
+      if (message.event?.roomId && expected && message.event.roomId !== expected) {
+        observation.foreignRoomEvents.push({ type: "control.event", expectedRoomId: expected, eventRoomId: message.event.roomId, kind: message.event.kind });
+      }
+    }
+    if (message.type === "space.snapshot") {
+      const currentRoom = message.currentRoomId;
+      const hidden = (message.rooms ?? []).filter((room) => room.id !== currentRoom);
+      const valid = hidden.every((room) => room.membersVisible === false && Array.isArray(room.players) && room.players.length === 0);
+      observation.hiddenRoomChecks.push({ currentRoomId: currentRoom, hiddenRooms: hidden.map((room) => ({ roomId: room.id, membersVisible: room.membersVisible, visibleMemberCount: room.players?.length ?? -1 })), passed: valid });
+      if (!valid) observation.foreignRoomEvents.push({ type: "space.snapshot", currentRoomId: currentRoom, hiddenRoomDataVisible: true });
+    }
+  });
+  return new Promise((resolveSocket, reject) => {
+    const timer = setTimeout(() => {
+      socket.terminate();
+      reject(new Error("External WSS client did not open within 3 seconds."));
+    }, 3_000);
+    socket.once("open", () => {
+      clearTimeout(timer);
+      resolveSocket(socket);
+    });
+    socket.once("error", (error) => {
+      clearTimeout(timer);
+      reject(error);
+    });
+  });
+}
+
+function externalMessage(socket, predicate, timeoutMs = 3_000) {
+  return new Promise((resolveMessage, reject) => {
+    const timer = setTimeout(() => {
+      socket.off("message", onMessage);
+      socket.off("error", onError);
+      reject(new Error("External WSS client did not receive the expected message."));
+    }, timeoutMs);
+    const onError = (error) => {
+      clearTimeout(timer);
+      socket.off("message", onMessage);
+      reject(error);
+    };
+    const onMessage = (raw, isBinary) => {
+      if (isBinary) return;
+      let message;
+      try { message = JSON.parse(raw.toString()); }
+      catch { return; }
+      if (!predicate(message)) return;
+      clearTimeout(timer);
+      socket.off("message", onMessage);
+      socket.off("error", onError);
+      resolveMessage(message);
+    };
+    socket.on("message", onMessage);
+    socket.once("error", onError);
+  });
+}
+
+function externalClose(socket, timeoutMs = 3_000) {
+  return new Promise((resolveClose, reject) => {
+    const timer = setTimeout(() => {
+      socket.off("close", onClose);
+      reject(new Error("External WSS client did not close after a rejected operation."));
+    }, timeoutMs);
+    const onClose = (code) => {
+      clearTimeout(timer);
+      externalSockets.delete(socket);
+      resolveClose(code);
+    };
+    socket.once("close", onClose);
+  });
+}
+
+async function joinExternal(socket, roomId, displayName) {
+  socket.__t08Observation.expectedRoomId = roomId;
+  socket.__t08Observation.clientName = displayName;
+  const roomSnapshot = externalMessage(socket, (message) => message.type === "room.snapshot");
+  socket.send(JSON.stringify({ type: "join", roomId, displayName }));
+  return await roomSnapshot;
+}
+
+async function expectExternalReject(socket, payload, expectedCode, binary = false) {
+  const error = externalMessage(socket, (message) => message.type === "protocol.error");
+  const closed = externalClose(socket);
+  socket.send(binary ? payload : JSON.stringify(payload));
+  const response = await error;
+  const closeCode = await closed;
+  assert.equal(response.code, expectedCode);
+  assert.equal(closeCode, 1008);
+  return { code: response.code, closeCode };
+}
+
+function verifyExternalNoMedia(name, socket) {
+  const observation = socket.__t08Observation;
+  assert.deepEqual(observation.mediaControlTypes, [], `${name} must not receive any audio/screen stream controls`);
+  assert.deepEqual(observation.binaryMediaFrames, [], `${name} must not receive audio/screen binary frames`);
+  assert.deepEqual(observation.foreignRoomEvents, [], `${name} must not receive foreign member data/events`);
+  assert.ok(observation.hiddenRoomChecks.every((check) => check.passed), `${name} must see hidden foreign room membership`);
+  return {
+    name,
+    mediaControlCount: observation.mediaControlTypes.length,
+    binaryMediaFrameCount: observation.binaryMediaFrames.length,
+    foreignRoomEventCount: observation.foreignRoomEvents.length,
+    hiddenRoomChecks: observation.hiddenRoomChecks,
+  };
+}
+
+function makeUnauthorizedFrame(magic, generation = 1) {
+  if (magic === "LTA1") {
+    const packet = Buffer.from([0xf8, 0x53, 0x19, 0xa7]);
+    const frame = Buffer.alloc(24 + packet.length);
+    frame.write(magic, 0, "ascii");
+    frame.writeUInt32BE(generation, 4);
+    frame.writeUInt32BE(999, 8);
+    frame.writeDoubleBE(19_980_000, 12);
+    frame.writeUInt32BE(20_000, 20);
+    packet.copy(frame, 24);
+    return frame;
+  }
+  const packet = Buffer.from([0, 0, 0, 0x58]);
+  const frame = Buffer.alloc(24 + packet.length);
+  frame.write(magic, 0, "ascii");
+  frame.writeUInt32BE(generation, 4);
+  frame.writeUInt32BE(999, 8);
+  frame.writeDoubleBE(99_900_000, 12);
+  frame[20] = 0;
+  packet.copy(frame, 24);
+  return frame;
+}
+
+async function exerciseMaliciousClients() {
+  const results = [];
+  const observations = [];
+  const forgedJoin = await openExternalSocket();
+  const forgedJoinResult = await expectExternalReject(forgedJoin, {
+    type: "join", roomId: "studio", displayName: "External Forgery", participantId: "chosen-id", identity: "chosen-identity", role: "host",
+  }, "invalid_join");
+  observations.push(verifyExternalNoMedia("forged-join", forgedJoin));
+  results.push({ attempt: "join-with-forged-identity-role", ...forgedJoinResult });
+
+  const forgedSwitch = await openExternalSocket();
+  await joinExternal(forgedSwitch, "lobby", "Switch Forgery");
+  const forgedSwitchResult = await expectExternalReject(forgedSwitch, {
+    type: "room.switch", roomId: "studio", participantId: "chosen-id", identity: "chosen-identity", role: "host",
+  }, "invalid_room_switch");
+  observations.push(verifyExternalNoMedia("forged-switch", forgedSwitch));
+  results.push({ attempt: "room-switch-with-forged-identity-role", ...forgedSwitchResult });
+
+  const forgedAudio = await openExternalSocket();
+  await joinExternal(forgedAudio, "lobby", "Audio Forgery");
+  const forgedAudioResult = await expectExternalReject(forgedAudio, {
+    type: "audio.subscribe", roomId: "studio", participantId: "chosen-id", identity: "chosen-identity", role: "host",
+  }, "invalid_audio_control");
+  observations.push(verifyExternalNoMedia("forged-audio-control", forgedAudio));
+  results.push({ attempt: "audio-control-with-forged-room-identity-role", ...forgedAudioResult });
+
+  const forgedScreen = await openExternalSocket();
+  await joinExternal(forgedScreen, "studio", "Screen Forgery");
+  const forgedScreenResult = await expectExternalReject(forgedScreen, {
+    type: "screen.subscribe", roomId: "lobby", participantId: "chosen-id", identity: "chosen-identity", role: "host",
+  }, "invalid_screen_control");
+  observations.push(verifyExternalNoMedia("forged-screen-control", forgedScreen));
+  results.push({ attempt: "screen-control-with-forged-room-identity-role", ...forgedScreenResult });
+
+  const audioIntruder = await openExternalSocket();
+  await joinExternal(audioIntruder, "lobby", "Audio Intruder");
+  const audioIntruderResult = await expectExternalReject(audioIntruder, makeUnauthorizedFrame("LTA1"), "audio_not_publisher", true);
+  observations.push(verifyExternalNoMedia("unauthorized-audio-binary", audioIntruder));
+  results.push({ attempt: "unauthorized-lobby-audio-binary", ...audioIntruderResult });
+
+  const screenIntruder = await openExternalSocket();
+  await joinExternal(screenIntruder, "studio", "Screen Intruder");
+  const screenIntruderResult = await expectExternalReject(screenIntruder, makeUnauthorizedFrame("LTS1"), "screen_not_publisher", true);
+  observations.push(verifyExternalNoMedia("unauthorized-screen-binary", screenIntruder));
+  results.push({ attempt: "unauthorized-studio-screen-binary", ...screenIntruderResult });
+  report.maliciousClients = results;
+  report.externalObservations = observations;
+}
+
+function reportSafeTransport(transport) {
+  return {
+    client: transport.name,
+    sockets: transport.sockets,
+    controls: transport.controls.map(({ at, direction, type, roomId, currentRoomId, generation, clockId, code, eventKind, eventRoomId, clientSelectedFields, roomSnapshot, spaceSnapshot }) => ({
+      at, direction, type,
+      ...(roomId ? { roomId } : {}),
+      ...(currentRoomId ? { currentRoomId } : {}),
+      ...(generation !== undefined ? { generation } : {}),
+      ...(clockId ? { clockId } : {}),
+      ...(code ? { code } : {}),
+      ...(eventKind ? { eventKind } : {}),
+      ...(eventRoomId ? { eventRoomId } : {}),
+      ...(clientSelectedFields ? { clientSelectedFields } : {}),
+      ...(roomSnapshot ? { roomSnapshot } : {}),
+      ...(spaceSnapshot ? { spaceSnapshot } : {}),
+    })),
+    packetRecords: transport.packetRecords,
+    unparsedBinaryFrames: transport.unparsedBinaryFrames,
+    droppedPacketRecords: transport.droppedPacketRecords,
+    droppedControlRecords: transport.droppedControlRecords,
+    foreignRoomEvents: transport.foreignRoomEvents,
+    pageErrors: transport.pageErrors,
+  };
+}
+
+function writeReport() {
+  report.finishedAt = new Date().toISOString();
+  report.status = failure ? "failed" : "passed";
+  report.transport = Object.values(pageTransports).map(reportSafeTransport);
+  report.errors.failure = failure ? String(failure.stack ?? failure) : null;
+  writeFileSync(join(outputDirectory, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
+  writeFileSync(join(outputDirectory, "README.md"), [
+    "# T08 cross-room media smoke",
+    "",
+    `Status: ${report.status}`,
+    `Started: ${report.startedAt}`,
+    `Finished: ${report.finishedAt}`,
+    `Topology: ${report.topology.publishers} publishers, ${report.topology.receivers} receivers, ${report.topology.browserProcesses} isolated Firefox processes over trusted local HTTPS/WSS.`,
+    "",
+    "The browser sources are generated oscillators and distinct-color canvas streams injected by this script. WebSocket packet payloads are never written to disk; bounded transport traces keep only packet hashes and frame metadata. The script verifies rendered AudioWorklet RMS and decoded canvas pixels, compares source packet hashes with the publisher in each server-selected room, switches one receiver, and verifies that the new room requires explicit subscriptions.",
+    "",
+    "Separate trusted Node WSS clients try client-selected room/identity/role fields and binary publication without publisher ownership. The server diagnostics expose bounded queue/guard counters only; they do not contain names or connection identities.",
+    "",
+    "This synthetic local desktop result does not establish verified account identity, private-room entry, physical-device support, human listening, end-to-end quality, capacity, durability, or deployment readiness.",
+    "",
+    failure ? `Failure: ${String(failure.stack ?? failure)}` : "Failure: none",
+    "",
+  ].join("\n"));
+}
+
+try {
+  const [lobbyPublisherPage, lobbyReceiverPage, studioPublisherPage, studioReceiverPage] = await Promise.all([
+    launchFirefox("lobby-publisher"),
+    launchFirefox("lobby-receiver"),
+    launchFirefox("studio-publisher"),
+    launchFirefox("studio-receiver"),
+  ]);
+  report.runtime.firefox = contexts[0]?.browser()?.version() ?? "not-reported";
+  await Promise.all([
+    installSyntheticMedia(lobbyPublisherPage, "lobby"),
+    installSyntheticMedia(studioPublisherPage, "studio"),
+  ]);
+  await Promise.all([
+    joinRoom(lobbyPublisherPage, "lobby-publisher", DISPLAY_NAMES.lobbyPublisher, "lobby"),
+    joinRoom(lobbyReceiverPage, "lobby-receiver", DISPLAY_NAMES.lobbyReceiver, "lobby"),
+    joinRoom(studioPublisherPage, "studio-publisher", DISPLAY_NAMES.studioPublisher, "studio"),
+    joinRoom(studioReceiverPage, "studio-receiver", DISPLAY_NAMES.studioReceiver, "studio"),
+  ]);
+  const expectedRooms = {
+    "lobby-publisher": "lobby",
+    "lobby-receiver": "lobby",
+    "studio-publisher": "studio",
+    "studio-receiver": "studio",
+  };
+  const knownNamesByRoom = {
+    lobby: [DISPLAY_NAMES.lobbyPublisher, DISPLAY_NAMES.lobbyReceiver],
+    studio: [DISPLAY_NAMES.studioPublisher, DISPLAY_NAMES.studioReceiver],
+  };
+  for (const [clientName, transport] of Object.entries(pageTransports)) {
+    const roomId = expectedRooms[clientName];
+    const foreignNames = knownNamesByRoom[roomId === "lobby" ? "studio" : "lobby"];
+    const roomSnapshots = transport.controls.filter((entry) => entry.direction === "received" && entry.type === "room.snapshot").map((entry) => entry.roomSnapshot);
+    assert.ok(roomSnapshots.length > 0, `${clientName} should retain its actual room snapshot`);
+    assert.equal(roomSnapshots.some((snapshot) => snapshot.memberNames.some((name) => foreignNames.includes(name))), false, `${clientName} room snapshot must not list members of the other room`);
+    const snapshots = transport.controls.filter((entry) => entry.direction === "received" && entry.type === "space.snapshot").map((entry) => entry.spaceSnapshot);
+    assert.ok(snapshots.length > 0, `${clientName} should retain its actual space snapshot`);
+    for (const snapshot of snapshots) {
+      assert.ok(snapshot.visibleParticipants.every((participant) => participant.roomId === roomId));
+      assert.ok(snapshot.hiddenRooms.every((room) => room.membersVisible === false && room.visibleMemberCount === 0));
+    }
+    const latest = snapshots.at(-1);
+    report.memberIsolationChecks.push({
+      client: clientName,
+      roomId,
+      roomSnapshotMemberNames: roomSnapshots.at(-1).memberNames,
+      visibleParticipants: latest.visibleParticipants,
+      hiddenRooms: latest.hiddenRooms,
+    });
+  }
+  report.clients = {
+    lobbyPublisher: { roomId: "lobby", sourceFrequencyHz: AUDIO_FREQUENCIES.lobby, screenColorRgb: COLORS.lobby },
+    lobbyReceiver: { roomId: "lobby" },
+    studioPublisher: { roomId: "studio", sourceFrequencyHz: AUDIO_FREQUENCIES.studio, screenColorRgb: COLORS.studio },
+    studioReceiver: { roomId: "studio" },
+  };
+  logStage("four-clients-joined-two-rooms");
+
+  const lobbyPublisherTransport = pageTransports["lobby-publisher"];
+  const lobbyReceiverTransport = pageTransports["lobby-receiver"];
+  const studioPublisherTransport = pageTransports["studio-publisher"];
+  const studioReceiverTransport = pageTransports["studio-receiver"];
+
+  await Promise.all([
+    beginReceiving(lobbyReceiverPage, lobbyReceiverTransport),
+    beginReceiving(studioReceiverPage, studioReceiverTransport),
+  ]);
+  await Promise.all([
+    beginPublishing(lobbyPublisherPage, lobbyPublisherTransport),
+    beginPublishing(studioPublisherPage, studioPublisherTransport),
+  ]);
+  const lobbyAudioStream = await waitForControl(lobbyReceiverTransport, "audio.stream");
+  const studioAudioStream = await waitForControl(studioReceiverTransport, "audio.stream");
+  const lobbyScreenStream = await waitForControl(lobbyReceiverTransport, "screen.stream");
+  const studioScreenStream = await waitForControl(studioReceiverTransport, "screen.stream");
+  assert.equal(lobbyAudioStream.clockId, lobbyScreenStream.clockId);
+  assert.equal(studioAudioStream.clockId, studioScreenStream.clockId);
+  assert.notEqual(lobbyAudioStream.clockId, studioAudioStream.clockId, "independent room publishers have distinct server connection clocks");
+
+  const [lobbyRendered, studioRendered] = await Promise.all([
+    waitForAudioAndScreen(lobbyReceiverPage, COLORS.lobby, "lobby receiver"),
+    waitForAudioAndScreen(studioReceiverPage, COLORS.studio, "studio receiver"),
+  ]);
+  await Promise.all([
+    captureScreen(lobbyReceiverPage, "lobby-receiver-active.png"),
+    captureScreen(studioReceiverPage, "studio-receiver-active.png"),
+    captureSpace(lobbyReceiverPage, "lobby-receiver-map.png"),
+  ]);
+  await new Promise((resolveWait) => setTimeout(resolveWait, MEDIA_WINDOW_MS));
+  const lobbyAudioHashes = assertPacketSource(lobbyReceiverTransport, lobbyPublisherTransport, studioPublisherTransport, "audio");
+  const lobbyScreenHashes = assertPacketSource(lobbyReceiverTransport, lobbyPublisherTransport, studioPublisherTransport, "screen");
+  const studioAudioHashes = assertPacketSource(studioReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "audio");
+  const studioScreenHashes = assertPacketSource(studioReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "screen");
+  report.packetSourceMappings.push({
+    stage: "initial-two-room-flow",
+    rooms: [
+      {
+        roomId: "lobby",
+        publisherClient: "lobby-publisher",
+        publisherConnectionClockId: lobbyAudioStream.clockId,
+        receiverClient: "lobby-receiver",
+        audio: { publisherSentHashes: uniquePacketHashes(lobbyPublisherTransport, "sent", "audio"), receiverReceivedHashes: lobbyAudioHashes.map((packet) => packet.sha256) },
+        screen: { publisherSentHashes: uniquePacketHashes(lobbyPublisherTransport, "sent", "screen"), receiverReceivedHashes: lobbyScreenHashes.map((packet) => packet.sha256) },
+      },
+      {
+        roomId: "studio",
+        publisherClient: "studio-publisher",
+        publisherConnectionClockId: studioAudioStream.clockId,
+        receiverClient: "studio-receiver",
+        audio: { publisherSentHashes: uniquePacketHashes(studioPublisherTransport, "sent", "audio"), receiverReceivedHashes: studioAudioHashes.map((packet) => packet.sha256) },
+        screen: { publisherSentHashes: uniquePacketHashes(studioPublisherTransport, "sent", "screen"), receiverReceivedHashes: studioScreenHashes.map((packet) => packet.sha256) },
+      },
+    ],
+  });
+  report.stages.push({
+    name: "both-rooms-real-browser-media-received-and-rendered",
+    at: new Date().toISOString(),
+    audioAndScreenStreamClockIds: { lobby: lobbyAudioStream.clockId, studio: studioAudioStream.clockId },
+    receiverOutput: { lobby: lobbyRendered, studio: studioRendered },
+    sourceMatchedPackets: {
+      lobby: { audio: lobbyAudioHashes.length, screen: lobbyScreenHashes.length },
+      studio: { audio: studioAudioHashes.length, screen: studioScreenHashes.length },
+    },
+  });
+  logStage("independent-audio-screen-source-hashes-matched");
+
+  const initialDiagnosticsResult = await getDiagnostics();
+  assert.equal(initialDiagnosticsResult.status, 200);
+  const initialDiagnostics = initialDiagnosticsResult.body;
+  report.serverDiagnostics.push({ stage: "before-switch", diagnostics: initialDiagnostics });
+  const lobbyCountersBeforeSwitch = initialDiagnostics.rooms.find((room) => room.roomId === "lobby");
+  assert.ok(lobbyCountersBeforeSwitch.audio.binaryFramesSent > 0 && lobbyCountersBeforeSwitch.screen.binaryFramesSent > 0);
+
+  lobbyReceiverTransport.switchingTo = "studio";
+  const roomSnapshotCount = controlCount(lobbyReceiverTransport, "room.snapshot");
+  const switchedRoomSnapshot = waitForControl(lobbyReceiverTransport, "room.snapshot", roomSnapshotCount);
+  lobbyReceiverTransport.switchingTo = "studio";
+  await lobbyReceiverPage.locator('[data-room-choice="studio"]').click();
+  await lobbyReceiverPage.getByText("Connected to Studio", { exact: true }).waitFor();
+  const roomSnapshotAt = (await switchedRoomSnapshot).at;
+  const switchedRoom = lobbyReceiverTransport.controls.findLast((entry) => entry.direction === "received" && entry.type === "room.snapshot")?.roomSnapshot;
+  assert.equal(switchedRoom?.roomId, "studio");
+  assert.ok(switchedRoom.memberNames.includes(DISPLAY_NAMES.studioPublisher));
+  assert.ok(switchedRoom.memberNames.includes(DISPLAY_NAMES.studioReceiver));
+  assert.equal(switchedRoom.memberNames.includes(DISPLAY_NAMES.lobbyPublisher), false);
+  const switchState = lobbyReceiverTransport.controls.findLast((entry) => entry.type === "space.snapshot" && entry.currentRoomId === "studio");
+  assert.ok(switchState, "receiver should get its new room state after the room snapshot");
+  assert.ok(switchState.spaceSnapshot.visibleParticipants.every((participant) => participant.roomId === "studio"));
+  assert.ok(switchState.spaceSnapshot.hiddenRooms.every((room) => room.membersVisible === false && room.visibleMemberCount === 0));
+  report.memberIsolationChecks.push({
+    client: "lobby-receiver-after-switch",
+    roomId: "studio",
+    roomSnapshotMemberNames: switchedRoom.memberNames,
+    visibleParticipants: switchState.spaceSnapshot.visibleParticipants,
+    hiddenRooms: switchState.spaceSnapshot.hiddenRooms,
+  });
+  const lobbyMediaRecordsAtAck = {
+    audio: lobbyReceiverTransport.packetRecords.received.audio.filter((packet) => packet.at <= roomSnapshotAt).length,
+    screen: lobbyReceiverTransport.packetRecords.received.screen.filter((packet) => packet.at <= roomSnapshotAt).length,
+  };
+  const receiverAudioPanel = lobbyReceiverPage.locator('[data-testid="audio-panel"]');
+  const receiverScreenPanel = lobbyReceiverPage.locator('[data-testid="screen-panel"]');
+  await receiverAudioPanel.waitFor();
+  await receiverScreenPanel.waitFor();
+  assert.equal(await receiverAudioPanel.getAttribute("data-listener-state"), "off", "room switching must not resume audio subscription automatically");
+  assert.equal(await receiverScreenPanel.getAttribute("data-receiver-state"), "off", "room switching must not resume screen subscription automatically");
+  const noAutoSubscribe = lobbyReceiverTransport.controls.filter((entry) => entry.direction === "sent" && entry.at >= roomSnapshotAt && ["audio.subscribe", "screen.subscribe"].includes(entry.type));
+  assert.deepEqual(noAutoSubscribe, []);
+
+  const diagnosticsAfterAckResult = await getDiagnostics();
+  const diagnosticsAfterAck = diagnosticsAfterAckResult.body;
+  const lobbyCountersAfterAck = diagnosticsAfterAck.rooms.find((room) => room.roomId === "lobby");
+  await new Promise((resolveWait) => setTimeout(resolveWait, 500));
+  const diagnosticsAfterWindowResult = await getDiagnostics();
+  const diagnosticsAfterWindow = diagnosticsAfterWindowResult.body;
+  const lobbyCountersAfterWindow = diagnosticsAfterWindow.rooms.find((room) => room.roomId === "lobby");
+  assert.equal(lobbyCountersAfterWindow.audio.binaryFramesSent, lobbyCountersAfterAck.audio.binaryFramesSent, "lobby media downsend count should stop after the room ACK when its sole listener leaves");
+  assert.equal(lobbyCountersAfterWindow.screen.binaryFramesSent, lobbyCountersAfterAck.screen.binaryFramesSent, "lobby screen downsend count should stop after the room ACK");
+  const postAckLobbyAudio = lobbyReceiverTransport.packetRecords.received.audio.filter((packet) => packet.at > roomSnapshotAt);
+  const postAckLobbyScreen = lobbyReceiverTransport.packetRecords.received.screen.filter((packet) => packet.at > roomSnapshotAt);
+  assert.deepEqual(postAckLobbyAudio, [], "no queued lobby audio frame may arrive after the ordered room snapshot ACK");
+  assert.deepEqual(postAckLobbyScreen, [], "no queued lobby screen frame may arrive after the ordered room snapshot ACK");
+  report.serverDiagnostics.push({ stage: "after-switch-ack", diagnostics: diagnosticsAfterAck }, { stage: "after-bounded-old-room-window", diagnostics: diagnosticsAfterWindow });
+  logStage("switch-ack-old-subscriptions-stopped", { roomSnapshotAt, lobbyMediaRecordsAtAck, postAckAudioFrames: postAckLobbyAudio.length, postAckScreenFrames: postAckLobbyScreen.length });
+
+  const oldLobbyAudioPackets = lobbyReceiverTransport.packetRecords.received.audio.length;
+  const oldLobbyScreenPackets = lobbyReceiverTransport.packetRecords.received.screen.length;
+  const explicitAudioAckCount = controlCount(lobbyReceiverTransport, "audio.subscribed");
+  const explicitScreenAckCount = controlCount(lobbyReceiverTransport, "screen.subscribed");
+  const studioAudioAtMovedReceiver = waitForControl(lobbyReceiverTransport, "audio.stream", controlCount(lobbyReceiverTransport, "audio.stream"));
+  const studioScreenAtMovedReceiver = waitForControl(lobbyReceiverTransport, "screen.stream", controlCount(lobbyReceiverTransport, "screen.stream"));
+  const explicitAudioAck = waitForControl(lobbyReceiverTransport, "audio.subscribed", explicitAudioAckCount);
+  const explicitScreenAck = waitForControl(lobbyReceiverTransport, "screen.subscribed", explicitScreenAckCount);
+  await lobbyReceiverPage.getByRole("button", { name: "開始收聽" }).click();
+  await lobbyReceiverPage.getByRole("button", { name: "開始觀看分享" }).click();
+  await Promise.all([explicitAudioAck, explicitScreenAck]);
+  const [movedAudioStream, movedScreenStream] = await Promise.all([studioAudioAtMovedReceiver, studioScreenAtMovedReceiver]);
+  assert.equal(movedAudioStream.clockId, studioAudioStream.clockId);
+  assert.equal(movedScreenStream.clockId, studioScreenStream.clockId);
+  const movedRendered = await waitForAudioAndScreen(lobbyReceiverPage, COLORS.studio, "switched receiver in studio");
+  await captureScreen(lobbyReceiverPage, "switched-receiver-studio.png");
+  await captureSpace(lobbyReceiverPage, "switched-receiver-studio-map.png");
+  await new Promise((resolveWait) => setTimeout(resolveWait, MEDIA_WINDOW_MS));
+  const movedAudioPackets = lobbyReceiverTransport.packetRecords.received.audio.slice(oldLobbyAudioPackets);
+  const movedScreenPackets = lobbyReceiverTransport.packetRecords.received.screen.slice(oldLobbyScreenPackets);
+  assert.ok(movedAudioPackets.length > 0 && movedScreenPackets.length > 0);
+  const switchedAudio = assertPacketSource(lobbyReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "audio", roomSnapshotAt + 500);
+  const switchedScreen = assertPacketSource(lobbyReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "screen", roomSnapshotAt + 500);
+  report.packetSourceMappings.push({
+    stage: "post-switch-explicit-subscription",
+    roomId: "studio",
+    publisherClient: "studio-publisher",
+    publisherConnectionClockId: studioAudioStream.clockId,
+    receiverClient: "lobby-receiver",
+    audio: { publisherSentHashes: uniquePacketHashes(studioPublisherTransport, "sent", "audio"), receiverReceivedHashes: switchedAudio.map((packet) => packet.sha256) },
+    screen: { publisherSentHashes: uniquePacketHashes(studioPublisherTransport, "sent", "screen"), receiverReceivedHashes: switchedScreen.map((packet) => packet.sha256) },
+  });
+  assert.equal(pageTransports["lobby-receiver"].foreignRoomEvents.length, 0, "receiver must not see foreign member events or unredacted foreign snapshots");
+  report.stages.push({
+    name: "explicit-studio-resubscription-renders-studio-source",
+    at: new Date().toISOString(),
+    streamClockIds: { audio: movedAudioStream.clockId, screen: movedScreenStream.clockId },
+    output: movedRendered,
+    sourceMatchedPackets: { audio: switchedAudio.length, screen: switchedScreen.length },
+  });
+  logStage("explicit-new-room-subscription-rendered");
+
+  await exerciseMaliciousClients();
+  const studioAudioAfterMalicious = assertPacketSource(studioReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "audio");
+  const studioScreenAfterMalicious = assertPacketSource(studioReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "screen");
+  const switchedAudioAfterMalicious = assertPacketSource(lobbyReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "audio", roomSnapshotAt + 500);
+  const switchedScreenAfterMalicious = assertPacketSource(lobbyReceiverTransport, studioPublisherTransport, lobbyPublisherTransport, "screen", roomSnapshotAt + 500);
+  for (const transport of Object.values(pageTransports)) assertPacketCaptureComplete(transport);
+  const finalDiagnosticsResult = await getDiagnostics();
+  assert.equal(finalDiagnosticsResult.status, 200);
+  const finalDiagnostics = finalDiagnosticsResult.body;
+  report.serverDiagnostics.push({ stage: "after-malicious-clients", diagnostics: finalDiagnostics });
+  assert.deepEqual(finalDiagnostics.rooms.map((room) => room.roomId), ["lobby", "studio"]);
+  for (const room of finalDiagnostics.rooms) {
+    for (const channel of ["audio", "screen", "control"]) {
+      assert.equal(room[channel].crossRoomGuardBlocks, 0, `${room.roomId} ${channel} server room guard should not deny an attempted downsend`);
+      assert.ok(room[channel].guardedSendChecks > 0, `${room.roomId} ${channel} must count authoritative recipient room checks`);
+    }
+  }
+  assert.ok(finalDiagnostics.rooms.find((room) => room.roomId === "lobby").audio.rejected > 0);
+  assert.ok(finalDiagnostics.rooms.find((room) => room.roomId === "studio").screen.rejected > 0);
+  assert.ok(finalDiagnostics.unassignedControlRejections > 0);
+  for (const transport of Object.values(pageTransports)) {
+    assert.deepEqual(transport.foreignRoomEvents, [], `${transport.name} should not observe foreign members or room events`);
+    assert.equal(transport.pageErrors.length, 0, `${transport.name} should have no uncaught page errors`);
+  }
+  const zeroUnexpectedDelivery = {
+    foreignBrowserRoomEvents: Object.values(pageTransports).reduce((sum, transport) => sum + transport.foreignRoomEvents.length, 0),
+    unknownOrCrossRoomBrowserPacketHashes: 0,
+    unauthorizedExternalMediaControls: report.externalObservations.reduce((sum, observation) => sum + observation.mediaControlCount, 0),
+    unauthorizedExternalBinaryFrames: report.externalObservations.reduce((sum, observation) => sum + observation.binaryMediaFrameCount, 0),
+    externalForeignRoomEvents: report.externalObservations.reduce((sum, observation) => sum + observation.foreignRoomEventCount, 0),
+  };
+  assert.deepEqual(zeroUnexpectedDelivery, {
+    foreignBrowserRoomEvents: 0,
+    unknownOrCrossRoomBrowserPacketHashes: 0,
+    unauthorizedExternalMediaControls: 0,
+    unauthorizedExternalBinaryFrames: 0,
+    externalForeignRoomEvents: 0,
+  });
+  report.finalAudit = {
+    zeroUnexpectedDelivery,
+    roomIsolation: { studioReceiverAudioPacketsRechecked: studioAudioAfterMalicious.length, studioReceiverScreenPacketsRechecked: studioScreenAfterMalicious.length, switchedReceiverStudioAudioPacketsRechecked: switchedAudioAfterMalicious.length, switchedReceiverStudioScreenPacketsRechecked: switchedScreenAfterMalicious.length },
+    rawPacketTraceComplete: true,
+  };
+  for (const transport of Object.values(pageTransports)) {
+    for (const item of transport.controls.filter((entry) => entry.direction === "sent" && /^(audio|screen)\./u.test(entry.type))) {
+      assert.deepEqual(item.clientSelectedFields ?? [], [], "browser media controls must not choose room, participant, identity, or role");
+    }
+  }
+  logStage("forged-controls-and-unauthorized-binary-rejected", { attempts: report.maliciousClients.length });
+
+  report.transport = Object.values(pageTransports).map(reportSafeTransport);
+  for (const page of Object.values(pages)) await page.close();
+  await Promise.all(contexts.map((context) => context.close()));
+  contexts.length = 0;
+} catch (error) {
+  failure = error;
+  for (const [name, page] of Object.entries(pages)) {
+    try {
+      if (await page.locator('[data-testid="audio-panel"]').count()) {
+        const fileName = `${name}-failure.png`;
+        await page.locator('[data-testid="audio-panel"]').screenshot({ path: join(outputDirectory, fileName) });
+        report.screenshots.push(fileName);
+      }
+    } catch { /* Closed or unavailable browser pages cannot provide a failure screenshot. */ }
+  }
+} finally {
+  for (const socket of externalSockets) {
+    try { socket.terminate(); } catch { /* Continue cleaning the remaining clients. */ }
+  }
+  for (const context of contexts) {
+    try { await context.close(); } catch { /* Continue cleaning the remaining browser profiles. */ }
+  }
+  writeReport();
+}
+
+if (failure) throw failure;
+console.log(`T08 smoke passed; evidence saved under ${relative(root, outputDirectory)}.`);

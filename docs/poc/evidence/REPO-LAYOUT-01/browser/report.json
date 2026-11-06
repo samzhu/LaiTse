@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short staged local desktop capacity observation: N-1 independent synthetic Opus publishers feed one installed-Edge receiver, which decodes and renders PCM while one publisher shares a synthetic VP8 canvas.",
+  "runId": "2026-11-06T06-26-38-545Z-62140-2e444962",
+  "startedAt": "2026-11-06T06:26:38.702Z",
+  "status": "core-pass",
+  "baseURL": "http://localhost:4175",
+  "artifactDirectory": ".scratch/final01/capacity-harness/run-2026-11-06T06-26-38-545Z-62140-2e444962",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "os": "27.2",
+    "headless": true,
+    "browsers": {
+      "chrome": {
+        "name": "Google Chrome",
+        "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "executableVersion": "Google Chrome 157.0.8103.38",
+        "playwrightVersion": "157.0.8103.38"
+      },
+      "edge": {
+        "name": "Microsoft Edge",
+        "executable": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "executableVersion": "Microsoft Edge 156.0.4314.58",
+        "playwrightVersion": "156.0.4314.58"
+      }
+    }
+  },
+  "topology": {
+    "room": "studio",
+    "participants": 3,
+    "publishers": 2,
+    "publisherBrowser": "Google Chrome, one independent persistent profile per page",
+    "receiver": {
+      "name": "FinalCap-P03",
+      "browser": "Microsoft Edge",
+      "profile": "independent persistent workspace profile"
+    },
+    "profileRoot": ".scratch/final01/capacity-harness/run-2026-11-06T06-26-38-545Z-62140-2e444962/profiles",
+    "topology": "N-1 publishers send to the final Edge receiver; publishers do not subscribe, so this is not N-by-N mutual listening.",
+    "observationWindowTargetMs": 4000,
+    "sourceStopIsolationProbe": true
+  },
+  "syntheticSources": {
+    "audio": "Each publisher page overrides getUserMedia locally with a unique-frequency oscillator-backed MediaStreamDestination; the application uses its normal Opus encoder and publish controls.",
+    "audioFrequencyHz": [
+      {
+        "key": "P01",
+        "frequencyHz": 397
+      },
+      {
+        "key": "P02",
+        "frequencyHz": 438
+      }
+    ],
+    "screen": "FinalCap-P01 overrides getDisplayMedia locally with an animated canvas captureStream; the application uses its normal VP8 share controls.",
+    "screenColorRgb": [
+      38,
+      146,
+      78
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "systemFakePermissionFlags": false,
+    "rawMediaPayloadsStored": false
+  },
+  "checks": [
+    {
+      "name": "launch-independent-installed-browser-profiles",
+      "at": "2026-11-06T06:26:38.789Z",
+      "atMs": 87,
+      "participants": 3
+    },
+    {
+      "name": "all-studio-participants-joined",
+      "at": "2026-11-06T06:26:42.220Z",
+      "atMs": 3518,
+      "participants": 3
+    },
+    {
+      "name": "edge-receiver-listening",
+      "at": "2026-11-06T06:26:42.525Z",
+      "atMs": 3823
+    },
+    {
+      "name": "all-publishers-received-with-unique-source-identifiers",
+      "at": "2026-11-06T06:26:43.334Z",
+      "atMs": 4632,
+      "sources": 2
+    },
+    {
+      "name": "single-synthetic-vp8-canvas-decoded-on-edge",
+      "at": "2026-11-06T06:26:43.871Z",
+      "atMs": 5169,
+      "renderedFrames": 3
+    },
+    {
+      "name": "four-second-per-source-observation-finished",
+      "at": "2026-11-06T06:26:47.886Z",
+      "atMs": 9184,
+      "actualDurationMs": 4014,
+      "samples": 5,
+      "anyLocalDecodeDrops": false
+    },
+    {
+      "name": "stopped-source-does-not-block-remaining-sources",
+      "at": "2026-11-06T06:26:48.948Z",
+      "atMs": 10246,
+      "stoppedSourceInactive": true,
+      "remainingSources": 1
+    }
+  ],
+  "publishers": [
+    {
+      "name": "FinalCap-P01",
+      "browser": "Google Chrome",
+      "generation": 1,
+      "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P02",
+      "browser": "Google Chrome",
+      "generation": 2,
+      "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    }
+  ],
+  "receiver": {
+    "name": "FinalCap-P03",
+    "browser": "Microsoft Edge",
+    "receiverSubscribed": true,
+    "sources": [
+      {
+        "name": "FinalCap-P01",
+        "generation": 1,
+        "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d"
+      },
+      {
+        "name": "FinalCap-P02",
+        "generation": 2,
+        "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518"
+      }
+    ],
+    "uniqueGenerations": true,
+    "uniqueClockIds": true,
+    "publisherSelfSourcesObserved": false
+  },
+  "stableWindow": {
+    "startedAt": "2026-11-06T06:26:43.872Z",
+    "endedAt": "2026-11-06T06:26:47.886Z",
+    "actualDurationMs": 4014,
+    "targetDurationMs": 4000,
+    "sampleIntervalTargetMs": 1000,
+    "samples": [
+      {
+        "sample": 0,
+        "sampledAt": "2026-11-06T06:26:43.872Z",
+        "elapsedFromWindowStartMs": 0,
+        "samplingDurationMs": 4,
+        "receiverActiveSourceCount": 2,
+        "sources": [
+          {
+            "generation": 1,
+            "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+            "active": true,
+            "receivedPackets": 54,
+            "decodedFrames": 54,
+            "renderedPcmSamples": 49408,
+            "queuedSamples": 1472,
+            "renderRms": 0.15622739850510695,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 2,
+            "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+            "active": true,
+            "receivedPackets": 33,
+            "decodedFrames": 33,
+            "renderedPcmSamples": 29952,
+            "queuedSamples": 768,
+            "renderRms": 0.15562984752303108,
+            "decodeQueueHighWater": 1,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 1,
+        "sampledAt": "2026-11-06T06:26:44.873Z",
+        "elapsedFromWindowStartMs": 1001,
+        "samplingDurationMs": 4,
+        "receiverActiveSourceCount": 2,
+        "sources": [
+          {
+            "generation": 1,
+            "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+            "active": true,
+            "receivedPackets": 104,
+            "decodedFrames": 104,
+            "renderedPcmSamples": 97536,
+            "queuedSamples": 1344,
+            "renderRms": 0.1561175590415506,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 2,
+            "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+            "active": true,
+            "receivedPackets": 84,
+            "decodedFrames": 84,
+            "renderedPcmSamples": 79104,
+            "queuedSamples": 1536,
+            "renderRms": 0.15441870442981948,
+            "decodeQueueHighWater": 1,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 2,
+        "sampledAt": "2026-11-06T06:26:45.873Z",
+        "elapsedFromWindowStartMs": 2001,
+        "samplingDurationMs": 4,
+        "receiverActiveSourceCount": 2,
+        "sources": [
+          {
+            "generation": 1,
+            "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+            "active": true,
+            "receivedPackets": 154,
+            "decodedFrames": 154,
+            "renderedPcmSamples": 145664,
+            "queuedSamples": 1216,
+            "renderRms": 0.15607186450697572,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 2,
+            "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+            "active": true,
+            "receivedPackets": 133,
+            "decodedFrames": 133,
+            "renderedPcmSamples": 126208,
+            "queuedSamples": 1472,
+            "renderRms": 0.15705856283059352,
+            "decodeQueueHighWater": 1,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 3,
+        "sampledAt": "2026-11-06T06:26:46.873Z",
+        "elapsedFromWindowStartMs": 3001,
+        "samplingDurationMs": 8,
+        "receiverActiveSourceCount": 2,
+        "sources": [
+          {
+            "generation": 1,
+            "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+            "active": true,
+            "receivedPackets": 204,
+            "decodedFrames": 204,
+            "renderedPcmSamples": 193792,
+            "queuedSamples": 2048,
+            "renderRms": 0.1560929015721334,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 2,
+            "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+            "active": true,
+            "receivedPackets": 184,
+            "decodedFrames": 184,
+            "renderedPcmSamples": 174336,
+            "queuedSamples": 1344,
+            "renderRms": 0.15578996345846335,
+            "decodeQueueHighWater": 1,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 4,
+        "sampledAt": "2026-11-06T06:26:47.875Z",
+        "elapsedFromWindowStartMs": 4003,
+        "samplingDurationMs": 11,
+        "receiverActiveSourceCount": 2,
+        "sources": [
+          {
+            "generation": 1,
+            "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+            "active": true,
+            "receivedPackets": 254,
+            "decodedFrames": 254,
+            "renderedPcmSamples": 241920,
+            "queuedSamples": 960,
+            "renderRms": 0.15622590454825913,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 2,
+            "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+            "active": true,
+            "receivedPackets": 234,
+            "decodedFrames": 234,
+            "renderedPcmSamples": 223488,
+            "queuedSamples": 1152,
+            "renderRms": 0.15414281271745467,
+            "decodeQueueHighWater": 1,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      }
+    ],
+    "perSource": [
+      {
+        "publisher": "FinalCap-P01",
+        "generation": 1,
+        "clockId": "c14dabe9-94d2-44a3-a720-898c91cef32d",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 54,
+          "decodedFrames": 54,
+          "renderedPcmSamples": 49408,
+          "renderRms": 0.15622739850510695,
+          "queuedSamples": 1472,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 254,
+          "decodedFrames": 254,
+          "renderedPcmSamples": 241920,
+          "renderRms": 0.15622590454825913,
+          "queuedSamples": 960,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P02",
+        "generation": 2,
+        "clockId": "2c2f0f96-ae9d-41a1-b525-96b86dc16518",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 33,
+          "decodedFrames": 33,
+          "renderedPcmSamples": 29952,
+          "renderRms": 0.15562984752303108,
+          "queuedSamples": 768,
+          "decodeQueueHighWater": 1,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 234,
+          "decodedFrames": 234,
+          "renderedPcmSamples": 223488,
+          "renderRms": 0.15414281271745467,
+          "queuedSamples": 1152,
+          "decodeQueueHighWater": 1,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 201,
+          "decodedFrames": 201,
+          "renderedPcmSamples": 193536,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      }
+    ],
+    "allExpectedSourcesPresentEverySample": true,
+    "allSourcesAdvancedPcmEveryInterval": true,
+    "anyLocalDecodeDrops": false,
+    "anySourceError": false,
+    "expectedSourceCount": 2
+  },
+  "screen": {
+    "publisher": "FinalCap-P01",
+    "receiver": "FinalCap-P03",
+    "codec": "VP8",
+    "syntheticColorRgb": [
+      38,
+      146,
+      78
+    ],
+    "receivedFrames": 4,
+    "decodedFrames": 4,
+    "renderedFrames": 3,
+    "renderedSize": {
+      "width": 320,
+      "height": 180
+    },
+    "centerPixel": [
+      37,
+      146,
+      77,
+      255
+    ]
+  },
+  "stopIsolation": {
+    "stoppedPublisher": "FinalCap-P01",
+    "stoppedGeneration": 1,
+    "stoppedSourceInactive": true,
+    "remainingSources": [
+      {
+        "publisher": "FinalCap-P02",
+        "generation": 2,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      }
+    ],
+    "remainingSourcesAllActive": true,
+    "remainingSourcesAllAdvancedPcm": true,
+    "remainingSourcesAllAdvancedReceived": true
+  },
+  "screenshots": [
+    "edge-receiver-audio.png",
+    "edge-receiver-screen.png"
+  ],
+  "errors": {
+    "pageErrorCount": 0,
+    "consoleErrorCount": 4,
+    "pageErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "tokensPasswordsProofsCookiesOrPageStorageRecorded": false,
+    "metadataBounded": true
+  },
+  "limits": {
+    "realPeopleOrIndependentDevices": "not-tested; all pages and synthetic identities share this host.",
+    "realMicrophoneAndHumanListening": "not-tested; oscillator input and PCM/RMS counters show browser pipeline work, not hardware output or what a person hears.",
+    "physicalDisplayCapture": "not-tested; generated canvas only.",
+    "cloudRunCapacityOrServerResourceUsage": "not-tested; this is a local browser workload and does not measure Cloud Run, server CPU, memory, bandwidth, or product limits.",
+    "longDurationOrEndurance": "not-tested; each stage uses a short bounded window.",
+    "fullMutualListening": "not-tested; only the final Edge receiver subscribes.",
+    "networkLossOrEndToEndQuality": "not-tested; local source counters are not network packet loss, listening quality, or calibrated latency."
+  },
+  "cleanup": {
+    "contextsClosed": 3,
+    "profilesRemoved": true
+  },
+  "durationMs": 19644,
+  "outcome": {
+    "nativeEdgeOpusDecodeAndPcmObserved": true,
+    "allSourcesPresentAndAdvancingDuringWindow": true,
+    "noLocalDecodeQueueDropsDuringWindow": true,
+    "stopIsolationPass": true,
+    "singleScreenVp8Pass": true,
+    "note": "All staged browser pipeline checks passed for this local synthetic workload only."
+  },
+  "finishedAt": "2026-11-06T06:26:58.346Z"
+}

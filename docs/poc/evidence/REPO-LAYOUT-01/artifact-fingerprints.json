@@ -1,0 +1,74 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "ea21fd3bda4cdf4b548a0343b6f7c9d4b7b70e34418fb7daeacfe164c34e08f1"
+  },
+  {
+    "path": "baseline.json",
+    "sha256": "31a57bb00eb300dd40868c77ad87970975f81c9389d8ab054ea975772814dcde"
+  },
+  {
+    "path": "browser/edge-receiver-audio.png",
+    "sha256": "3754c2fd7c6422d4088d099389b5186cce3c28e87e157fbb67221dbd2c9105b7"
+  },
+  {
+    "path": "browser/edge-receiver-screen.png",
+    "sha256": "9085ad153639c448ffefe8d5a41de9fae2990ceab2df2e1657bc05f96e4006d7"
+  },
+  {
+    "path": "browser/report.json",
+    "sha256": "b74fd3ba0d644f5417316bebe9a255ed05bc5d1379ada398041527fa069fd165"
+  },
+  {
+    "path": "build.log",
+    "sha256": "ffebc038b29082bc2482e6312d319a453c9fec657e02cc8c786ded4e7bc45d19"
+  },
+  {
+    "path": "full-tests.log",
+    "sha256": "dc20d5e9612a67d90acbc00032213ea68258486283b0ab54a0597e1aecbd65ff"
+  },
+  {
+    "path": "git-rename-readback.json",
+    "sha256": "a72012b913c62796f4ee77f2c1a0d0ae57c556b8e091dcabf37e209309e15a89"
+  },
+  {
+    "path": "github-progress-readback.json",
+    "sha256": "a6be9eeb77358a60696e9869c8f27feb3c9dae18d5fdd09a5db004156ab2bde2"
+  },
+  {
+    "path": "implementation.md",
+    "sha256": "e12c7cff812d091ab00fccdd779bfce73d300dc2148457ed7b63bb199fb41b0d"
+  },
+  {
+    "path": "install-cache.log",
+    "sha256": "bb7aaada3dd0c64a0d07a83770f0471457e983fe7880e4d7fb538de35c19398d"
+  },
+  {
+    "path": "install.log",
+    "sha256": "ec8e033afaa475bac0cb4a8467089a8b0d2f0b9671dfd1a2002cbcc9c6dd4fef"
+  },
+  {
+    "path": "licenses.log",
+    "sha256": "13c29797979b3a60f8758462d4a97b1f64854788762d8a414d29c3343e70bbde"
+  },
+  {
+    "path": "move-readback.json",
+    "sha256": "603d3381269a9b4ef042c03084de0d1e6264d663f5eeda8cea9cb3ba6d33946a"
+  },
+  {
+    "path": "npm-start-readback.json",
+    "sha256": "8ebfcb8605b40f68b4582e9878709f7d750950c770fadf8c552b5ff606ae3262"
+  },
+  {
+    "path": "retained-runtime.json",
+    "sha256": "024a5f301642ac0b9c8e0c13351c90888b629870bd0182921cdfa10b525b1e70"
+  },
+  {
+    "path": "source-fingerprints.json",
+    "sha256": "17a785a1bf9ea5858caefc6805ab0af70d45a3f8ac5f6c812105d0730634173f"
+  },
+  {
+    "path": "validation.json",
+    "sha256": "4052d6479a2a6d0a746423d54fce8335e66c44f420bfb6d5e2203c7d3107e338"
+  }
+]

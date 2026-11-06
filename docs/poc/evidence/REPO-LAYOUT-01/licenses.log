@@ -1,0 +1,9 @@
+
+> laitse-workspace@0.1.0 licenses
+> npm run --workspace=poc licenses
+
+
+> laitse-local-poc@0.1.0 licenses
+> node scripts/dependency-inventory.mjs
+
+Wrote 127 installed package records to /Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/layout01-dependency-inventory.json

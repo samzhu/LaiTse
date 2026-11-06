@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-06T06:30:12.747624+00:00",
+  "rootCommand": "npm start",
+  "testEnvironment": {
+    "port": 4176,
+    "persistence": "process-memory",
+    "anonymous": true,
+    "usedHumanPort": false
+  },
+  "rootEnvironmentFileAbsent": true,
+  "health": {
+    "status": "ok",
+    "persistence": "process-memory"
+  },
+  "rooms": [
+    {
+      "id": "lobby",
+      "name": "Open area",
+      "kind": "open-area",
+      "audioPolicy": "proximity",
+      "audioRadiusGridUnits": 6,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    },
+    {
+      "id": "studio",
+      "name": "Meeting room",
+      "kind": "meeting-room",
+      "audioPolicy": "room",
+      "audioRadiusGridUnits": null,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    }
+  ],
+  "htmlContainsBuiltEntry": true,
+  "httpStatus": 200
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "issue": 20,
+    "url": "https://github.com/samzhu/LaiTse/issues/20",
+    "bodyExactReadback": true,
+    "oldBodyRetained": true,
+    "stateAndReasonPreserved": true,
+    "labelsAndTitlePreserved": true,
+    "bodySha256": "c266d277600a95bb05f84517c20e37fcccc0a0234cf5a0dac1eff52775777669",
+    "verifiedAt": "2026-11-06T06:29:42.138397+00:00"
+  },
+  {
+    "issue": 1,
+    "url": "https://github.com/samzhu/LaiTse/issues/1",
+    "bodyExactReadback": true,
+    "oldBodyRetained": true,
+    "stateAndReasonPreserved": true,
+    "labelsAndTitlePreserved": true,
+    "bodySha256": "b6a2c2f732eaa628cd28571b78e2e9753c500a787d4329035814cef04872608e",
+    "verifiedAt": "2026-11-06T06:29:45.215918+00:00"
+  }
+]

@@ -369,3 +369,17 @@ root保留人工4174/PID53830+PG laitse-poc06-r002-db，不碰user UI/mic。另�
 DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
 
 [證據／用法／失敗／限制](../poc/evidence/POC-FINAL-01-R001/README.md)。人工4174／PID58824與PG保留，測試4175已停，自有proxy／contexts／profiles清理，所有writer已STOP；GitHub7票更新正文/狀態已保存讀回，20票closed（19completed／手機not_planned）；程式與紀錄納入本筆本機commit，不push／部署。
+
+## REPO-LAYOUT-01整理中（2026-11-06）
+
+人類確認技術POC不等於產品，授權同repo分poc/與apps/web/，僅整理不開MVP。DEC020／dispatch scope已保存。研究Luna xhigh已STOP，官方依據 docs/research/poc-mvp-repository-layout.md；code writer layout_implementation獨占poc/、rootpackage/lock/.gitignore及apps/web README，移動src/scripts/tests/public/db/config/compose/.env.example，根node_modules/tools/scratch/dist不動。root持有其餘docs與README，舊README完整原文已封存docs/poc/legacy-local-poc-guide.md（加歷史前言），新根README及docs/mvp索引完成初稿，待code交付核對。
+
+manual4174/PID58824（讀回0人/10席）與PG仍留運作，不碰人類UI或原4173。root準備.scratch/layout01/run-tests.mjs從root npm test帶PG_TEST_DATABASE_URL（讀final01私密cfg、不得印DSN），以及start.mjs引用poc/dist/server/app.js啟私有4175沿final01獨立DB；尚未執行。後續待code writer STOP，驗lock/npm ci、build/typecheck、84全suite、3browser（desktop-capacity-smoke只接受獨立HTTP非4174），其餘歷史證據不重寫；人工launcher之後僅0人且確認PID才可換poc/dist路徑。root獨占Git/GitHub結案補路徑說明與commit，不push/MVP/部署。原untrackedAGENTS.md與.scratch不stage。
+
+## REPO-LAYOUT-01交付（2026-11-06）
+
+REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace協調入口；`apps/web/`只有預留README，**正式MVP未開發**。根`npm run build`／`npm test`／`npm start`仍操作POC，產物在`poc/dist`。原工具/scratch/node_modules、秘密檔與PG/volume不搬刪，歷史evidence與原hash不改；舊程式路徑前加`poc/`對照，舊README封存legacy-local-poc-guide。官方依據支持最小workspace，未新增Turborepo／空共用套件／第二份PRD或資料清冊。
+
+Node26.13乾淨安裝成功（初次離線誤用預設cache失敗保留，改repo既有.cache/npm成功）、root workspace build/typecheck、PG全suite84/84且0skip、31腳本語法及純helper/library import不改cwd通過。從/private/tmp啟動三個隔離Chrome/Edge profiles，2路Opus PCM＋單VP8與逐源停止通過（19,644ms，觀測窗4,014ms）；79檔純搬移、30檔路徑調整，170registry lock entries及所有依賴exact版本不變。root修純TCP library不應chdir，app static root改依模組位置解析避免cwd。人工4174在0人後換poc/dist，PID62270／PGready／0人10席，原4173不碰；私有4175及測試profiles已停／清理。
+
+[證據／mapping／失敗與限制](../poc/evidence/REPO-LAYOUT-01/README.md)。研究與實作writer皆STOP，root完成檢視與純library窄修；root唯一writer提交程式與紀錄。GitHub母#1/#20補目錄與POC非產品說明、保留closed原理由，不新建MVP票、不push／部署或自動開MVP；原untrackedAGENTS/.scratch不納入。

@@ -1,5 +1,11 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
+## 目錄整理補充（2026-11-06，驗收／功能範圍不變）
+
+REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace協調入口；`apps/web/`只有預留README，**正式MVP未開發**。根`npm run build`／`npm test`／`npm start`仍操作POC，產物在`poc/dist`。原工具/scratch/node_modules、秘密檔與PG/volume不搬刪，歷史evidence與原hash不改；舊程式路徑前加`poc/`對照，舊README封存legacy-local-poc-guide。官方依據支持最小workspace，未新增Turborepo／空共用套件／第二份PRD或資料清冊。
+
+[路徑對照／驗收](evidence/REPO-LAYOUT-01/README.md)；既有技術Go仍只表示POC核心可行，不表示MVP產品已完成。
+
 - 識別碼：POC-PLAN；版本：v1.5；日期：2026-11-06。
 - 狀態：DEC-019桌機自動核心驗收通過；FINAL01失聯交接、逐級多來源及同步已驗，真人／手機／品質長測列後續、原歷史保留，MVP未開發。
 - 版本界線：GitHub原v1.0票面保留歷史；2026-11-05依人類要求於母#1與子#2～20補最新進度段，連回本機v1.3／PRD v0.9、DEC-010～012及未驗項，不回改原AC。Issue更新不是程式push／部署。

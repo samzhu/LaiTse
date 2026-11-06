@@ -1,0 +1,51 @@
+{
+  "pid": 62270,
+  "baseURL": "http://localhost:4174",
+  "roomURL": "http://localhost:4174/?room=studio",
+  "capacityURL": "http://localhost:4174/poc/capacity",
+  "startedAt": "2026-11-06T06:27:41.157Z",
+  "persistence": "postgresql",
+  "database": "laitse_desktop01_20261106131659",
+  "candidate": "91b886d+REPO-LAYOUT-01",
+  "workspace": "poc",
+  "connectionLiveness": {
+    "pingIntervalMs": 10000,
+    "pongTimeoutMs": 20000
+  },
+  "state": "running",
+  "purpose": "desktop Chrome/Edge automatic smoke then retained for later human testing",
+  "resourceLimits": "native host process; not a Cloud Run or 1CPU/1GiB capacity benchmark",
+  "health": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "capacity": {
+    "softLimit": 10,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "rooms": [
+    {
+      "id": "lobby",
+      "name": "Open area",
+      "kind": "open-area",
+      "audioPolicy": "proximity",
+      "audioRadiusGridUnits": 6,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    },
+    {
+      "id": "studio",
+      "name": "Meeting room",
+      "kind": "meeting-room",
+      "audioPolicy": "room",
+      "audioRadiusGridUnits": null,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    }
+  ],
+  "verifiedAt": "2026-11-06T06:28:32.914833+00:00",
+  "private4175Stopped": true
+}

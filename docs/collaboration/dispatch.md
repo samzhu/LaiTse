@@ -492,3 +492,21 @@ FINAL01第二輪已驗原生decode/PCM與黑洞失聯交接，後續互動probe�
 FINAL01 root追加唯一writer scripts/t06-smoke.mjs，read-only沿既有聲光方法，僅修舊room名稱硬編碼及新增受限T06_ROOM_ID（lobby/studio）選擇，依當前DOM判Connected；首輪舊Local test room文字逾時保存，非產品失敗。不得改聲光演算法或放寬品質斷言，停止條件為本輪新run保存。
 
 FINAL01 root最終驗收：三位writer均已STOP，root接手窄修與執行；84/84真PG／network9／3-6-10 core-pass／sync10通過，失敗report保留、source97指紋核對。7票正文與狀態readback、全20closed（3為not_planned）完成；人工4174在0人後換新版PID58824，PG保留，其餘自有測試資源停止清理。文件保存讀回，root唯一writer將程式及紀錄納入同筆本機commit，不push／部署／MVP。
+
+## REPO-LAYOUT-01／POC與MVP資料夾分離（2026-11-06）
+
+人類授權：在解釋同repo分離poc/與apps/web/、保留證據與人工入口後，回覆「OK好 先整理一下 參考最佳實踐」。只整理技術POC與未開發MVP的邊界，不新增MVP產品碼／新需求清冊、不部署／push。既有PRD第11節及SOL007仍唯一權威；原AGENTS.md與.scratch為人類既有untracked不納入提交，歷史證據原樣保留。
+
+- root：唯一writer根README、docs/collaboration/*、docs/laitse-ai-handoff.md、docs/poc/{plan,mvp-handoff,execution-log}.md與本輪evidence/REPO-LAYOUT-01；驗收、人工runtime、Git/GitHub更新與commit。持有原4174/專用PG，禁止子代理碰人類UI、mic、系統網路或停共享服務。
+- layout_research（Luna xhigh）：唯一writer docs/research/poc-mvp-repository-layout.md；其餘唯讀。查官方npm workspaces／Vite root／TypeScript project組織／git移動建議，區分官方事實與本repo推論，引用URL，不把某種目錄名稱說成唯一標準。交付短可用依據並STOP。不改manifest/code/Git。
+- layout_implementation（稍後啟動）：唯一writer poc/**、apps/web/README.md、根package.json與package-lock.json、.gitignore，以及搬移現有src/public/scripts/tests/db/config/index/compose/.env.example/POC README。root不並行寫上述資源。依研究結論調整root npm forwarding與單lockfile，MVP僅標示未實作的README，不提前抽packages或引新依賴／建置框架。沿用Node26.13與既有功能／DB／匿名門禁／媒體保護，保留root .tools/.scratch/.env/ignored dist，不能搬刪secret或歷史證據。所有script相對路徑需盤點，保持repo工具／scratch與POC workspace資產分清；新輸出不得污染歷史run。可build/typecheck／語法檢查，不啟動browser、DB或manual服務，不做Git mutation。交付完整move清單、路徑對應、檢查證據與限制後STOP。
+
+相依／驗收：研究先提出最小方案，root核定後code writer執行；manifest/lock單writer串行。root重跑build、啟用PG全suite，隔離browser短流程驗服務／影音可讀，確認人工入口保持可用（僅0人且確認自有PID時可換新版），紀錄歷史path mapping而不重寫舊證據hash。停止條件：folder／npm入口／docs一致、檢查與讀回保存、同筆本機commit；仍未開始MVP商品開發。
+
+REPO-LAYOUT-01 scope補充（root核定最小npm方案，研究已回報方向）：root README原長篇POC指南由root保存為 docs/poc/legacy-local-poc-guide.md（加歷史路徑說明，不當新PRD）；code writer只新寫精簡poc/README.md，不修改root README。新腳本分repoRoot（工具／scratch／lock）與pocRoot（app／tests／config／db），避免假symlink把root src繼續當產品。root npm預設仍操作POC並清楚標名，新增test入口可串行PG suite，未設PG需明示skip。工具沿root .tools，共用單node_modules／lockfile，不引新runner。agent可採小型路徑helper確保cwd不同不讀錯輸出資源；歷史smoke預設輸出若會覆蓋既有run須說明獨立OUTPUT_DIR，root不覆寫歷史證據。
+
+REPO-LAYOUT-01 root文件scope補充：新建docs/mvp/README.md僅索引既有PRD11/SOL，不複製功能清冊；封存原根README到docs/poc/legacy-local-poc-guide.md保留原文與舊根相對連結語意，根README改repo導航／POC forwarding入口，code writer不碰此兩檔。
+
+REPO-LAYOUT-01 code writer已STOP交回root；root窄修local-tcp-fault-proxy.mjs為純library，移除批次加入的helper import／chdir呼叫，內容回到原版純移動（此檔非CLI亦無路徑需求）；保留CLI明確opt-in cwd，避免import library改全域工作目錄。
+
+REPO-LAYOUT-01 root驗收與保存：code/research writers已STOP；root npm ci改用既有.cache/npm後成功，build/typecheck/PG84/0skip/31語法與tmp→3browser核心通過；79純搬移/30path調整，原170 lock entries版本與integrity不變，原evidence無改。root接手poc README改繁中並精確說明POC legacy根.env，無產品擴張。人工4174零人平順換poc/dist/PID62270並讀回ready，私有4175與profiles停清，PG/volume保留；文件與GitHub保存讀回後同筆commit，所有writer資源釋出，不push/MVP/部署。

@@ -1,5 +1,13 @@
 # 來坐 LaiTse：故事由來與下一個 AI 的交辦事項
 
+## 最新目錄邊界（2026-11-06／DEC-020）
+
+REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace協調入口；`apps/web/`只有預留README，**正式MVP未開發**。根`npm run build`／`npm test`／`npm start`仍操作POC，產物在`poc/dist`。原工具/scratch/node_modules、秘密檔與PG/volume不搬刪，歷史evidence與原hash不改；舊程式路徑前加`poc/`對照，舊README封存legacy-local-poc-guide。官方依據支持最小workspace，未新增Turborepo／空共用套件／第二份PRD或資料清冊。
+
+Node26.13乾淨安裝成功（初次離線誤用預設cache失敗保留，改repo既有.cache/npm成功）、root workspace build/typecheck、PG全suite84/84且0skip、31腳本語法及純helper/library import不改cwd通過。從/private/tmp啟動三個隔離Chrome/Edge profiles，2路Opus PCM＋單VP8與逐源停止通過（19,644ms，觀測窗4,014ms）；79檔純搬移、30檔路徑調整，170registry lock entries及所有依賴exact版本不變。root修純TCP library不應chdir，app static root改依模組位置解析避免cwd。人工4174在0人後換poc/dist，PID62270／PGready／0人10席，原4173不碰；私有4175及測試profiles已停／清理。
+
+[整理／操作與驗收紀錄](poc/evidence/REPO-LAYOUT-01/README.md)。前段GitHub的POC結案不是產品功能交付；正式MVP規劃唯一沿PRD11／SOL表。
+
 ## 最新進度：FINAL01／DEC-019
 
 DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。

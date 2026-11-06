@@ -1,5 +1,11 @@
 # POC 至 MVP 方案交接表
 
+## 目錄整理補充（2026-11-06，驗收／功能範圍不變）
+
+REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace協調入口；`apps/web/`只有預留README，**正式MVP未開發**。根`npm run build`／`npm test`／`npm start`仍操作POC，產物在`poc/dist`。原工具/scratch/node_modules、秘密檔與PG/volume不搬刪，歷史evidence與原hash不改；舊程式路徑前加`poc/`對照，舊README封存legacy-local-poc-guide。官方依據支持最小workspace，未新增Turborepo／空共用套件／第二份PRD或資料清冊。
+
+[路徑對照／驗收](evidence/REPO-LAYOUT-01/README.md)；既有技術Go仍只表示POC核心可行，不表示MVP產品已完成。
+
 - 權威計畫：[POC-PLAN v1.4](plan.md)；實際證據：[執行紀錄](execution-log.md)。
 - 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19原範圍NoGo保留；DEC-013改為桌機優先、手機後續，現進入桌機MVP規劃，待決項尚未定案，未開始程式開發**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。

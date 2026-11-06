@@ -1,42 +1,23 @@
 {
-  "name": "laitse-local-poc",
+  "name": "laitse-workspace",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "license": "Apache-2.0",
   "engines": {
     "node": "26.13.0"
   },
+  "workspaces": [
+    "poc"
+  ],
   "scripts": {
-    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit",
-    "build": "npm run typecheck && vite build && tsc -p tsconfig.server.json",
-    "start": "node --env-file-if-exists=.env dist/server/index.js",
-    "test:integration": "node --test tests/server.integration.test.mjs",
-    "test:persistence": "node --test tests/postgres.integration.test.mjs",
-    "test:e2e": "node scripts/e2e.mjs",
-    "tls:dev": "node scripts/setup-local-tls.mjs",
-    "licenses": "node scripts/dependency-inventory.mjs"
-  },
-  "dependencies": {
-    "@fastify/static": "10.1.8",
-    "@fastify/websocket": "11.3.6",
-    "fastify": "5.12.8",
-    "pg": "8.23.1",
-    "phaser": "4.2.1",
-    "qrcode-generator": "2.0.4",
-    "react": "19.3.1",
-    "react-dom": "19.3.1"
-  },
-  "devDependencies": {
-    "@types/node": "26.6.6",
-    "@types/pg": "8.23.1",
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0",
-    "@types/ws": "8.18.2",
-    "jsqr": "1.4.0",
-    "playwright": "1.64.1",
-    "typescript": "7.0.2",
-    "vite": "8.3.5",
-    "ws": "8.22.1"
+    "typecheck": "npm run --workspace=poc typecheck",
+    "build": "npm run --workspace=poc build",
+    "start": "npm run --workspace=poc start",
+    "test": "npm run --workspace=poc test",
+    "test:integration": "npm run --workspace=poc test:integration",
+    "test:persistence": "npm run --workspace=poc test:persistence",
+    "test:e2e": "npm run --workspace=poc test:e2e",
+    "tls:dev": "npm run --workspace=poc tls:dev",
+    "licenses": "npm run --workspace=poc licenses"
   }
 }

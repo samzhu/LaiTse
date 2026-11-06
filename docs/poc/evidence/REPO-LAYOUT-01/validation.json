@@ -1,0 +1,48 @@
+{
+  "verifiedAt": "2026-11-06T06:31:03.760Z",
+  "node": "v26.13.0",
+  "rootNpmInstall": "passed; repository cache",
+  "rootBuildTypecheck": "passed",
+  "rootNpmTest": {
+    "pass": 84,
+    "fail": 0,
+    "skip": 0,
+    "postgresEnabled": true,
+    "durationMs": 37630.508625
+  },
+  "rootNpmStart": "4176 memory fixture health, rooms and built HTML passed, then stopped",
+  "browser": {
+    "participants": 3,
+    "sourceCount": 2,
+    "status": "core-pass",
+    "durationMs": 19644,
+    "windowMs": 4014,
+    "callerCwd": "/private/tmp",
+    "synthetic": true,
+    "profilesRemoved": true
+  },
+  "scriptModulesSyntaxChecked": 31,
+  "archivedReadmeExact": true,
+  "registryLockEntriesUnchanged": 170,
+  "historicalEvidenceUnmodified": true,
+  "mvpOnlyReadme": true,
+  "singleLockfile": true,
+  "rootDistNotUsedForNewAcceptance": true,
+  "brokenCurrentDocsLinks": 0,
+  "credentialLeaks": 0,
+  "manualPort": 4174,
+  "manualPid": 62270,
+  "private4175And4176Stopped": true,
+  "sourceFingerprintFiles": 111,
+  "notRun": [
+    "all historical smoke scripts",
+    "human capture/listening",
+    "phone",
+    "Cloud Run",
+    "quality/long-duration"
+  ],
+  "noPush": true,
+  "all109MovesDetectedAsRenames": true,
+  "helperAndProxyLibraryImportsPreserveCallerCwd": true,
+  "licensesInstalledRegistryRecords": 127
+}

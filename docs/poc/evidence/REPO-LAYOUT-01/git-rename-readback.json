@@ -1,0 +1,553 @@
+{
+  "verifiedAt": "2026-11-06T06:31:54.335563+00:00",
+  "expectedMovedFiles": 109,
+  "allMovesDetectedAsRenames": true,
+  "renames": [
+    {
+      "similarity": "R100",
+      "previousPath": ".env.example",
+      "currentPath": "poc/.env.example"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "compose.yaml",
+      "currentPath": "poc/compose.yaml"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "db/migrations/001_system_persistence.sql",
+      "currentPath": "poc/db/migrations/001_system_persistence.sql"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "db/migrations/002_anonymous_room_management.sql",
+      "currentPath": "poc/db/migrations/002_anonymous_room_management.sql"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "db/migrations/003_capacity_settings.sql",
+      "currentPath": "poc/db/migrations/003_capacity_settings.sql"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "index.html",
+      "currentPath": "poc/index.html"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "public/audio-capture-worklet.js",
+      "currentPath": "poc/public/audio-capture-worklet.js"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "public/audio-playback-worklet.js",
+      "currentPath": "poc/public/audio-playback-worklet.js"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "public/vendor-notices.txt",
+      "currentPath": "poc/public/vendor-notices.txt"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/capacity-smoke.mjs",
+      "currentPath": "poc/scripts/capacity-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/control-reconnect-smoke.mjs",
+      "currentPath": "poc/scripts/control-reconnect-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/database-restart-browser.mjs",
+      "currentPath": "poc/scripts/database-restart-browser.mjs"
+    },
+    {
+      "similarity": "R092",
+      "previousPath": "scripts/dependency-inventory.mjs",
+      "currentPath": "poc/scripts/dependency-inventory.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/desktop-av-smoke.mjs",
+      "currentPath": "poc/scripts/desktop-av-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/desktop-capacity-smoke.mjs",
+      "currentPath": "poc/scripts/desktop-capacity-smoke.mjs"
+    },
+    {
+      "similarity": "R098",
+      "previousPath": "scripts/e2e.mjs",
+      "currentPath": "poc/scripts/e2e.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/host-control-smoke.mjs",
+      "currentPath": "poc/scripts/host-control-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/integrated-session-smoke.mjs",
+      "currentPath": "poc/scripts/integrated-session-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/interaction-smoke.mjs",
+      "currentPath": "poc/scripts/interaction-smoke.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "scripts/local-tcp-fault-proxy.mjs",
+      "currentPath": "poc/scripts/local-tcp-fault-proxy.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/media-recovery-smoke.mjs",
+      "currentPath": "poc/scripts/media-recovery-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/multi-speaker-smoke.mjs",
+      "currentPath": "poc/scripts/multi-speaker-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/network-recovery-smoke.mjs",
+      "currentPath": "poc/scripts/network-recovery-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/participation-smoke.mjs",
+      "currentPath": "poc/scripts/participation-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/process-restart-smoke.mjs",
+      "currentPath": "poc/scripts/process-restart-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/room-access-smoke.mjs",
+      "currentPath": "poc/scripts/room-access-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/room-management-smoke.mjs",
+      "currentPath": "poc/scripts/room-management-smoke.mjs"
+    },
+    {
+      "similarity": "R097",
+      "previousPath": "scripts/setup-local-tls.mjs",
+      "currentPath": "poc/scripts/setup-local-tls.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/single-room-fanout-smoke.mjs",
+      "currentPath": "poc/scripts/single-room-fanout-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/slow-receiver-smoke.mjs",
+      "currentPath": "poc/scripts/slow-receiver-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/space-policy-smoke.mjs",
+      "currentPath": "poc/scripts/space-policy-smoke.mjs"
+    },
+    {
+      "similarity": "R097",
+      "previousPath": "scripts/t02-smoke.mjs",
+      "currentPath": "poc/scripts/t02-smoke.mjs"
+    },
+    {
+      "similarity": "R098",
+      "previousPath": "scripts/t03-smoke.mjs",
+      "currentPath": "poc/scripts/t03-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/t04-smoke.mjs",
+      "currentPath": "poc/scripts/t04-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/t05-smoke.mjs",
+      "currentPath": "poc/scripts/t05-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/t06-smoke.mjs",
+      "currentPath": "poc/scripts/t06-smoke.mjs"
+    },
+    {
+      "similarity": "R098",
+      "previousPath": "scripts/t07-smoke.mjs",
+      "currentPath": "poc/scripts/t07-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/t08-smoke.mjs",
+      "currentPath": "poc/scripts/t08-smoke.mjs"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "scripts/two-room-mixed-smoke.mjs",
+      "currentPath": "poc/scripts/two-room-mixed-smoke.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/App.tsx",
+      "currentPath": "poc/src/client/App.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/AudioPanel.tsx",
+      "currentPath": "poc/src/client/AudioPanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/DisplayApp.tsx",
+      "currentPath": "poc/src/client/DisplayApp.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/DoorEntryDialog.tsx",
+      "currentPath": "poc/src/client/DoorEntryDialog.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/HostPanel.tsx",
+      "currentPath": "poc/src/client/HostPanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/InteractionPanel.tsx",
+      "currentPath": "poc/src/client/InteractionPanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/JoinQr.tsx",
+      "currentPath": "poc/src/client/JoinQr.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/ParticipationControls.tsx",
+      "currentPath": "poc/src/client/ParticipationControls.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/PublicInteractionView.tsx",
+      "currentPath": "poc/src/client/PublicInteractionView.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/RoomManagementPanel.tsx",
+      "currentPath": "poc/src/client/RoomManagementPanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/ScreenPanel.tsx",
+      "currentPath": "poc/src/client/ScreenPanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/SpacePanel.tsx",
+      "currentPath": "poc/src/client/SpacePanel.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/audio.ts",
+      "currentPath": "poc/src/client/audio.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/capabilities.ts",
+      "currentPath": "poc/src/client/capabilities.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/control-reconnect.ts",
+      "currentPath": "poc/src/client/control-reconnect.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/entry.ts",
+      "currentPath": "poc/src/client/entry.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/interactions.ts",
+      "currentPath": "poc/src/client/interactions.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/main.tsx",
+      "currentPath": "poc/src/client/main.tsx"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/media-queue.ts",
+      "currentPath": "poc/src/client/media-queue.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/media-recovery.ts",
+      "currentPath": "poc/src/client/media-recovery.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/media-timeline.ts",
+      "currentPath": "poc/src/client/media-timeline.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/multi-audio-receiver.ts",
+      "currentPath": "poc/src/client/multi-audio-receiver.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/participation.ts",
+      "currentPath": "poc/src/client/participation.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/pixel-space.ts",
+      "currentPath": "poc/src/client/pixel-space.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/qr.ts",
+      "currentPath": "poc/src/client/qr.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/screen.ts",
+      "currentPath": "poc/src/client/screen.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/client/styles.css",
+      "currentPath": "poc/src/client/styles.css"
+    },
+    {
+      "similarity": "R099",
+      "previousPath": "src/server/app.ts",
+      "currentPath": "poc/src/server/app.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/audio-relay.ts",
+      "currentPath": "poc/src/server/audio-relay.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/capabilities.ts",
+      "currentPath": "poc/src/server/capabilities.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/capacity.ts",
+      "currentPath": "poc/src/server/capacity.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/connection-liveness.ts",
+      "currentPath": "poc/src/server/connection-liveness.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/control-resume.ts",
+      "currentPath": "poc/src/server/control-resume.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/host-control.ts",
+      "currentPath": "poc/src/server/host-control.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/index.ts",
+      "currentPath": "poc/src/server/index.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/interactions.ts",
+      "currentPath": "poc/src/server/interactions.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/persistence.ts",
+      "currentPath": "poc/src/server/persistence.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/room-access.ts",
+      "currentPath": "poc/src/server/room-access.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/room-management.ts",
+      "currentPath": "poc/src/server/room-management.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/screen-relay.ts",
+      "currentPath": "poc/src/server/screen-relay.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/serial-executor.ts",
+      "currentPath": "poc/src/server/serial-executor.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/space.ts",
+      "currentPath": "poc/src/server/space.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "src/server/transport-budget.ts",
+      "currentPath": "poc/src/server/transport-budget.ts"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/audio.integration.test.mjs",
+      "currentPath": "poc/tests/audio.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/capabilities.integration.test.mjs",
+      "currentPath": "poc/tests/capabilities.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/capacity.integration.test.mjs",
+      "currentPath": "poc/tests/capacity.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/connection-liveness.integration.test.mjs",
+      "currentPath": "poc/tests/connection-liveness.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/connection-liveness.test.mjs",
+      "currentPath": "poc/tests/connection-liveness.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/control-reconnect.integration.test.mjs",
+      "currentPath": "poc/tests/control-reconnect.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/host-control.integration.test.mjs",
+      "currentPath": "poc/tests/host-control.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/interactions.integration.test.mjs",
+      "currentPath": "poc/tests/interactions.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/media-recovery.integration.test.mjs",
+      "currentPath": "poc/tests/media-recovery.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/media-timeline.test.mjs",
+      "currentPath": "poc/tests/media-timeline.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/multi-audio-receiver.test.mjs",
+      "currentPath": "poc/tests/multi-audio-receiver.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/participation.integration.test.mjs",
+      "currentPath": "poc/tests/participation.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/playback-queue.test.mjs",
+      "currentPath": "poc/tests/playback-queue.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/postgres.integration.test.mjs",
+      "currentPath": "poc/tests/postgres.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/room-access.integration.test.mjs",
+      "currentPath": "poc/tests/room-access.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/room-isolation.integration.test.mjs",
+      "currentPath": "poc/tests/room-isolation.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/room-management.integration.test.mjs",
+      "currentPath": "poc/tests/room-management.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/room-management.postgres.test.mjs",
+      "currentPath": "poc/tests/room-management.postgres.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/screen.integration.test.mjs",
+      "currentPath": "poc/tests/screen.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/server.integration.test.mjs",
+      "currentPath": "poc/tests/server.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/space-policy.integration.test.mjs",
+      "currentPath": "poc/tests/space-policy.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/space.integration.test.mjs",
+      "currentPath": "poc/tests/space.integration.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tests/transport-budget.test.mjs",
+      "currentPath": "poc/tests/transport-budget.test.mjs"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tsconfig.app.json",
+      "currentPath": "poc/tsconfig.app.json"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tsconfig.json",
+      "currentPath": "poc/tsconfig.json"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "tsconfig.server.json",
+      "currentPath": "poc/tsconfig.server.json"
+    },
+    {
+      "similarity": "R100",
+      "previousPath": "vite.config.ts",
+      "currentPath": "poc/vite.config.ts"
+    }
+  ],
+  "originalUntrackedAgentsAndScratchExcluded": true
+}

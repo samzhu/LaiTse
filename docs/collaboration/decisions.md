@@ -137,3 +137,11 @@ DEC018執行結果：POC-CAP-01-R001核心Pass：可調容量PG保存／重啟�
 POC-FINAL-01-R001將補ping/pong失聯、隔離TCP中斷/恢復、健康端延續、Chrome/Edge逐級多源品質觀測；按實際自動結果完成#5/#7/#16/#17/#20與母#1；手機#3以後續範圍處理而非宣稱Pass，不新建未授權issues。結果與實作pitfall/限制同紀錄commit與GitHub正文/狀態讀回。
 
 DEC019結果：FINAL01自動核心通過，新增失聯偵測與可重現browser scripts；84真PG測試/0skip、TCP故障9項、逐級3/6/10與同步10階段證據保存讀回。GitHub20票closed（19completed、手機#3後續not_planned）；不代勾手機／真人／p95。正式MVP未自動啟動，進場採用與限制沿PRD v0.15／SOL既有表。
+
+## DEC-020／技術POC與MVP目錄分離（2026-11-06）
+
+人類先確認目前是技術核心POC而非正式產品，對「同一repo，以poc/保留實驗、apps/web/預留MVP；保留POC證據並逐項移轉」回覆「OK好 先整理一下 參考最佳實踐」。授權為目錄／工具入口與文件整理，**不是開始MVP功能開發**。
+
+採最小npm workspaces（目前僅poc），同repo/root lockfile管理；apps/web只有README不建立假產品package，不提前抽packages或引大型建置工具。PRD第11節仍唯一產品計畫，SOL007仍唯一資料清冊；docs/poc證據和歷史hash不重寫。根工具/scratch與秘密檔/資料volume保留；POC程式移到poc後以mapping說明舊路徑。原人工4174僅確認0在線及自有PID後可平順換新版，禁止代理接管人類UI/mic。程式與紀錄按既有本機commit慣例交付，不push／部署，不新增未授權MVP議題。
+
+DEC020結果：REPO-LAYOUT-01目錄／workspace與歷史路徑mapping完成，root乾淨安裝、build/typecheck、84真PG全suite、3browser代表音畫通過。無MVP package/code；原PRD及SOL清冊仍唯一，GitHub關閉核心票不是正式產品完成。操作與證據見POC evidence/REPO-LAYOUT-01，原人工4174及PG保留。

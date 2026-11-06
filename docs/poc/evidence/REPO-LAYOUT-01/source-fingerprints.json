@@ -1,0 +1,446 @@
+[
+  {
+    "path": "poc/README.md",
+    "sha256": "6edd546300c4796776428e395b6c7618e247e482f0097e8c342ef919d34d7b22"
+  },
+  {
+    "path": "poc/compose.yaml",
+    "sha256": "e332b6e9059c22773cb829bd1223fbbaed92714c2183adb3aa650d05fd10963b"
+  },
+  {
+    "path": "poc/db/migrations/001_system_persistence.sql",
+    "sha256": "96567869e8b53649e3fbb26e3994dd3c4fd497cb2daa86277fe302285091ae18"
+  },
+  {
+    "path": "poc/db/migrations/002_anonymous_room_management.sql",
+    "sha256": "53a515a23455d695ef23fb72f98cc6b66a20940e8b3e567a6f5ed4fe4478ffa3"
+  },
+  {
+    "path": "poc/db/migrations/003_capacity_settings.sql",
+    "sha256": "0e4166308e3cf11a09637abcb42013665fc01f39d07e52d4aaf8ac286f551467"
+  },
+  {
+    "path": "poc/index.html",
+    "sha256": "3038d0cbca598dc46191d5a0b9e31519902f55a790d24e90c82e966d5cb02576"
+  },
+  {
+    "path": "poc/package.json",
+    "sha256": "a60fe463f592137919a83efb6de8079dbd13bee1932c15377b632f7c77c51025"
+  },
+  {
+    "path": "poc/public/audio-capture-worklet.js",
+    "sha256": "a1b408f100cac534fe3e7a83b083ac1c61490a2e0573e5a881616054d96219bc"
+  },
+  {
+    "path": "poc/public/audio-playback-worklet.js",
+    "sha256": "419f6f5d9a8b4697efea9a4a2d5c0c5b116b6dd6215019778accdf9b7fee65f7"
+  },
+  {
+    "path": "poc/public/vendor-notices.txt",
+    "sha256": "4524003d65acab735aa1eace52463a3bfecab0cd65ed840a0af2e7472219ba19"
+  },
+  {
+    "path": "poc/scripts/capacity-smoke.mjs",
+    "sha256": "f7d4dc2dbc964db36dc57f8962c0ff13aa1c05f98e1b18b3666518cda806ec94"
+  },
+  {
+    "path": "poc/scripts/control-reconnect-smoke.mjs",
+    "sha256": "589812c5429b1c0e63ab75ab38f1c82dcfeae27eea2f0f993231c7bcb343468c"
+  },
+  {
+    "path": "poc/scripts/database-restart-browser.mjs",
+    "sha256": "d01b1303aaba5496d1378389a451d1e99662280244822ae4d1bc3deb94d790c6"
+  },
+  {
+    "path": "poc/scripts/dependency-inventory.mjs",
+    "sha256": "9f859d6a0591f149288e30510526e78496dca39db5b9a15dde07489d2b626f55"
+  },
+  {
+    "path": "poc/scripts/desktop-av-smoke.mjs",
+    "sha256": "a78f1ba543e1ebe831a740e38ddcd3ce1d93b91373c21a601fb99eaf5a2bf7af"
+  },
+  {
+    "path": "poc/scripts/desktop-capacity-smoke.mjs",
+    "sha256": "e2aa5897f9ad14d778743e2a47931d8847302a1748ebf6cb133f2ccd359002be"
+  },
+  {
+    "path": "poc/scripts/e2e.mjs",
+    "sha256": "9663c4e8b9feaed232551a3435567765110319ac74e5fc81e0d2fc2050210ec6"
+  },
+  {
+    "path": "poc/scripts/host-control-smoke.mjs",
+    "sha256": "279a2117d506e0012adfe863d6b6ba9a73652a20f180159e8c75b5fa56a107a7"
+  },
+  {
+    "path": "poc/scripts/integrated-session-smoke.mjs",
+    "sha256": "43453a47f600ddfccc149bb231ec0dcf40bfeed750c0c9459ce8b4517d52499c"
+  },
+  {
+    "path": "poc/scripts/interaction-smoke.mjs",
+    "sha256": "8fd104a8c9e7d5819af67ca3f19e62091799f7b79e86b635c74212657b20b4a4"
+  },
+  {
+    "path": "poc/scripts/lib/project-paths.mjs",
+    "sha256": "08c83004ec7290c9dfcf0778f680c51733de21cce8390f074e4909dec093e6b7"
+  },
+  {
+    "path": "poc/scripts/local-tcp-fault-proxy.mjs",
+    "sha256": "ff820a359326188fb449c462cc477a0c23daf39afbe3f957e7682610fe7a9c1c"
+  },
+  {
+    "path": "poc/scripts/media-recovery-smoke.mjs",
+    "sha256": "344bf91c1350a86b2c292c5f93d3c134a090af6f8995dfbdd29851c0df89a8c6"
+  },
+  {
+    "path": "poc/scripts/multi-speaker-smoke.mjs",
+    "sha256": "7b1e8867d741a91fbcf442212a7cdd8812b5b67c08088024b63e6648c78edae5"
+  },
+  {
+    "path": "poc/scripts/network-recovery-smoke.mjs",
+    "sha256": "ff55c276a9286c39dc37c89e9e610652a17ba1cbfce65965bbcc477d9d247d4d"
+  },
+  {
+    "path": "poc/scripts/participation-smoke.mjs",
+    "sha256": "719e1bf5027551581773c24580917849f88cc351ec2c0cd6e61359a3fcc4c76b"
+  },
+  {
+    "path": "poc/scripts/process-restart-smoke.mjs",
+    "sha256": "67c33398812942ca232158b91ef547bab68d117cc93353819c7a017b29486c79"
+  },
+  {
+    "path": "poc/scripts/room-access-smoke.mjs",
+    "sha256": "767ae217bff49bf1840ea8067864cbff7d53175b1d8b19a9c314af956edb0089"
+  },
+  {
+    "path": "poc/scripts/room-management-smoke.mjs",
+    "sha256": "b62c488729e0b793dcb924df9c4bbafb28a003a53b61dea17bb1e4659a5f2263"
+  },
+  {
+    "path": "poc/scripts/setup-local-tls.mjs",
+    "sha256": "8786b1d86f200e7c226dacd124ffc9525dc7543a0b224a277dec5e8da31ca35c"
+  },
+  {
+    "path": "poc/scripts/single-room-fanout-smoke.mjs",
+    "sha256": "d6767ba631d9745761c9d0747092b27edf04b89264002fba1fb61433ead75bf0"
+  },
+  {
+    "path": "poc/scripts/slow-receiver-smoke.mjs",
+    "sha256": "5db4d195364bba3c9d109edc43f9bfc9b223a4fbf70072d71c7b8cff16c6c402"
+  },
+  {
+    "path": "poc/scripts/space-policy-smoke.mjs",
+    "sha256": "b9e0446f91a7ed052046f5a5367dd54e794334372c06d6a227071b5ce6ddff29"
+  },
+  {
+    "path": "poc/scripts/t02-smoke.mjs",
+    "sha256": "a4215d0144eb5415caa8176ed3d0048c3014cd4783fc8165ee1d70fe2c759dfb"
+  },
+  {
+    "path": "poc/scripts/t03-smoke.mjs",
+    "sha256": "cee79e17456f636e0fdfd721d730dee008215abc68f761a83e14bf16f80fe943"
+  },
+  {
+    "path": "poc/scripts/t04-smoke.mjs",
+    "sha256": "c686ec226d77fbadcc4f9a4b403c4e2f998d52b8d2e8cf4f689c596bb59b067a"
+  },
+  {
+    "path": "poc/scripts/t05-smoke.mjs",
+    "sha256": "6deeb98c5af194f25d6016a4a14f54aeaaa16ccb4dc17da8b258ac03a1860cc1"
+  },
+  {
+    "path": "poc/scripts/t06-smoke.mjs",
+    "sha256": "1133b444da9dd2fd66203b19bc8ddfd84fde5c5e7263a1e06a9cec2ed65c3ccd"
+  },
+  {
+    "path": "poc/scripts/t07-smoke.mjs",
+    "sha256": "b44471bc7f7dca4e4a5d682107bea1f226d7280c276c36eda34fb72a600f43ba"
+  },
+  {
+    "path": "poc/scripts/t08-smoke.mjs",
+    "sha256": "5c05a76dd0f91e0ceb98c41a661291099f9aad35ae16a9283068a508d031222c"
+  },
+  {
+    "path": "poc/scripts/two-room-mixed-smoke.mjs",
+    "sha256": "5aa867ccd5ffa9d5b01ec757e55d3261b809d9fd42f04119f0528a70fa4fb40f"
+  },
+  {
+    "path": "poc/src/client/App.tsx",
+    "sha256": "11595efd6c1adddb98fe7db5cbc3387f1e3cd9df81141ad3c63c1653406e8939"
+  },
+  {
+    "path": "poc/src/client/AudioPanel.tsx",
+    "sha256": "664e51008bb79fa213b5b903670f08642a0c89564a89ef29f229f9d2daca821b"
+  },
+  {
+    "path": "poc/src/client/DisplayApp.tsx",
+    "sha256": "673ebd3e2b6f10dc35ab5a8528e4ac3ae43dfe21b78473c5a27e58add8bf01de"
+  },
+  {
+    "path": "poc/src/client/DoorEntryDialog.tsx",
+    "sha256": "681958fa45fd1546180e2fdd5bf0c1d46ed51b452a6f2f095259f010e3a5df75"
+  },
+  {
+    "path": "poc/src/client/HostPanel.tsx",
+    "sha256": "e77c2083de8bab71392757b16cb4bbd1652d0f9065f063f891843d544809d299"
+  },
+  {
+    "path": "poc/src/client/InteractionPanel.tsx",
+    "sha256": "5dc8282ed2d04e46bcb21ddce309255c61c0e30fa98be06afb73da4bac6d814b"
+  },
+  {
+    "path": "poc/src/client/JoinQr.tsx",
+    "sha256": "14a90bbcf7e8c55e18641aac453355b0ec05d21a8c00516e5e19a877b6bfce65"
+  },
+  {
+    "path": "poc/src/client/ParticipationControls.tsx",
+    "sha256": "cbe1a81f821208fefc6dafaf9a23c0c3cca9a92362ca58990d4fdcd3b9becd4f"
+  },
+  {
+    "path": "poc/src/client/PublicInteractionView.tsx",
+    "sha256": "45072f78bddc3f73767fbc484e6d7ca202696aea21703e273db1129538c47eca"
+  },
+  {
+    "path": "poc/src/client/RoomManagementPanel.tsx",
+    "sha256": "e55e917131a07cb9be9986e0557d2c9d0565f194486f3c49a05906f0a28ae770"
+  },
+  {
+    "path": "poc/src/client/ScreenPanel.tsx",
+    "sha256": "8681df6cb36de1d886941040d1187b2af43ca191596e3a99ba3320f749cc2721"
+  },
+  {
+    "path": "poc/src/client/SpacePanel.tsx",
+    "sha256": "e13ddbc203859a0e98e51a19ba87608a7e6e8e0ac0a6765a1976f843fa49ab93"
+  },
+  {
+    "path": "poc/src/client/audio.ts",
+    "sha256": "c96540fd75e56ee023a07face3cb7bdfb04cfe7bcbbc8a1500f4bd3ceae10246"
+  },
+  {
+    "path": "poc/src/client/capabilities.ts",
+    "sha256": "4cb063abc4109dba71066f5650e70cfa9ddb3796f0122eb3f0d6c86ba43e93c6"
+  },
+  {
+    "path": "poc/src/client/control-reconnect.ts",
+    "sha256": "386d053ae7ebdf4c05a3517cf614a2295211f39a51d260539db9cfb1f1444d36"
+  },
+  {
+    "path": "poc/src/client/entry.ts",
+    "sha256": "b1a8288f8310a35746f02732abd725b7cdefa011ec6e49ff4706551ab3b900ce"
+  },
+  {
+    "path": "poc/src/client/interactions.ts",
+    "sha256": "3641b0e44133c613ea698dabbb091f62b02c501033610c6ddba63fc8bbf7ebc6"
+  },
+  {
+    "path": "poc/src/client/main.tsx",
+    "sha256": "69fec99ceda161bec383ba2a920f676a65e68cad9be57b9bd1a6baf93484fcf3"
+  },
+  {
+    "path": "poc/src/client/media-queue.ts",
+    "sha256": "f4fad0fe223d0e2c8a544a20551ba991415034ed36c24fb724d522c368dfecd0"
+  },
+  {
+    "path": "poc/src/client/media-recovery.ts",
+    "sha256": "f89e2707070c6038cfec2f1c8298563c5407992d030819a90c47eb07a4060932"
+  },
+  {
+    "path": "poc/src/client/media-timeline.ts",
+    "sha256": "2d8df759670ec25afe22f3ee0ceb98b1d44ac2455bd133dcebded5f1bcc120c8"
+  },
+  {
+    "path": "poc/src/client/multi-audio-receiver.ts",
+    "sha256": "a059ee95bd11701503c7aa8ba44b072f71f4ca4c7ce067a1cf5954a0924c0f94"
+  },
+  {
+    "path": "poc/src/client/participation.ts",
+    "sha256": "a7d5a2b5f9f6224526a36330cef16c92c9fc1ab00c5b86aca8a1b9d86f9854e4"
+  },
+  {
+    "path": "poc/src/client/pixel-space.ts",
+    "sha256": "9f05e155b50d4ed6dc0f7922483185708de20d1e120bb9ddcdeb173b02717d5f"
+  },
+  {
+    "path": "poc/src/client/qr.ts",
+    "sha256": "68a58a2a80c89284be714ed0c267041d3e09c264d9d5aadbbd5b0cc491ce2ed1"
+  },
+  {
+    "path": "poc/src/client/screen.ts",
+    "sha256": "bf0d6bfeba3fe6f4744864709e7152f39b552f4191586cebe0550c94eac4c9f1"
+  },
+  {
+    "path": "poc/src/client/styles.css",
+    "sha256": "f568fc5997304b7e5456e75923fb336b9b82ac3d2514e3b7b2eb51f13d12f9b1"
+  },
+  {
+    "path": "poc/src/server/app.ts",
+    "sha256": "81f7573cb479f2c988ae23bde77c067dadc4859f525c76e79389ac1e22711e6f"
+  },
+  {
+    "path": "poc/src/server/audio-relay.ts",
+    "sha256": "6eacad90a5027f71a938d87119a9727164ef23c381cf9c3119d75a6649fac21a"
+  },
+  {
+    "path": "poc/src/server/capabilities.ts",
+    "sha256": "e631cae32089666f51136178c32a14d8ec2197373fde0778757c5f3a85ef47eb"
+  },
+  {
+    "path": "poc/src/server/capacity.ts",
+    "sha256": "b3f1cad9e60788287766a60d048b8f2582814b18a39f3fa433127c95b005241e"
+  },
+  {
+    "path": "poc/src/server/connection-liveness.ts",
+    "sha256": "f013d2e74f509840cdb7e7ba7e53384d94c1f3f24556eeeaedf686c110e2350c"
+  },
+  {
+    "path": "poc/src/server/control-resume.ts",
+    "sha256": "bf80cbdd9dd2e061a1a4b6d55d6ccf9ebc2f0128e287cb124a5b2624ae8b3a3c"
+  },
+  {
+    "path": "poc/src/server/host-control.ts",
+    "sha256": "39ee8df3071995cfb9cebfc294d770b4534877b43f5107d0ef191befbfedabbc"
+  },
+  {
+    "path": "poc/src/server/index.ts",
+    "sha256": "4bf62254b83de0a4b0baa44366392b1e7997d18b8c6a8187f68774dbdc8110db"
+  },
+  {
+    "path": "poc/src/server/interactions.ts",
+    "sha256": "9a77d29c314568725d3c858312ffa88fff8609c6b4a4dffd6fe52af995429294"
+  },
+  {
+    "path": "poc/src/server/persistence.ts",
+    "sha256": "e513d7f469279eff184c9375274e917a78cd7e67ac99b9aa47a7343fc0b4021d"
+  },
+  {
+    "path": "poc/src/server/room-access.ts",
+    "sha256": "1aaf5f3f2ac16735d1c0f1e57fdb31f799ef5f57a54c4e94657812da10fa229f"
+  },
+  {
+    "path": "poc/src/server/room-management.ts",
+    "sha256": "06b5f106d272c9e4cf2171d4a3d1262a88ff5f0db25be197927894e7f0c98571"
+  },
+  {
+    "path": "poc/src/server/screen-relay.ts",
+    "sha256": "6e3111d696626375cdd9d3df39c1aefe539048fe68ec99d93e559c88b9f900e5"
+  },
+  {
+    "path": "poc/src/server/serial-executor.ts",
+    "sha256": "ab997f63f62f5534c39ed31538961fa80a44cb54686acb97891055120378dda9"
+  },
+  {
+    "path": "poc/src/server/space.ts",
+    "sha256": "6a1e119b19c70805708749fb8a77f773c6ff341f228a0b3c78c98730e3203ed2"
+  },
+  {
+    "path": "poc/src/server/transport-budget.ts",
+    "sha256": "34b96fa5e66fc054dfffd2d3884bacf7eeb2ce47d053435732ac1cf513372a8d"
+  },
+  {
+    "path": "poc/tests/audio.integration.test.mjs",
+    "sha256": "a881d88347932ca77b867e93b53a0147a2f783bfbdf83658204f30c1efe54028"
+  },
+  {
+    "path": "poc/tests/capabilities.integration.test.mjs",
+    "sha256": "37b2e4e41937820ba47682a59a79e247f4a208fc8ffe1f5390319f3e9752d066"
+  },
+  {
+    "path": "poc/tests/capacity.integration.test.mjs",
+    "sha256": "4d7d92b8528c6ad725cf4ef38d1b4a0e4be19f81347add4cf6e2ab437b1ba631"
+  },
+  {
+    "path": "poc/tests/connection-liveness.integration.test.mjs",
+    "sha256": "7390a50933e594fb19153ec5c35b1e78b97018f5677da2f66697e2fb0f9bae49"
+  },
+  {
+    "path": "poc/tests/connection-liveness.test.mjs",
+    "sha256": "95b47d3dc9ecd04c01c88f3b97ba138348b0856b0f7e17d5c020b615493789f6"
+  },
+  {
+    "path": "poc/tests/control-reconnect.integration.test.mjs",
+    "sha256": "f3fcf33b38511eefeeb3fc43264427935633885ace360d5f875d99fe83de283a"
+  },
+  {
+    "path": "poc/tests/host-control.integration.test.mjs",
+    "sha256": "3b69d4a38d15c5ddb73e971ea5d6fb1942e1119031b69fd4bdc6918a7f08f5fc"
+  },
+  {
+    "path": "poc/tests/interactions.integration.test.mjs",
+    "sha256": "ae83a2bc111606f91f6d01df7102e5aa02ae0e21e8620682344942409bef910c"
+  },
+  {
+    "path": "poc/tests/media-recovery.integration.test.mjs",
+    "sha256": "0476814249c91692fb0ef23dac61aadff81fdcb73a33bce77ecd019cd4a12522"
+  },
+  {
+    "path": "poc/tests/media-timeline.test.mjs",
+    "sha256": "e4a3e3896f44e639633c5f49f3e3a559532ea04cbda20d6df068a7dca44cddf5"
+  },
+  {
+    "path": "poc/tests/multi-audio-receiver.test.mjs",
+    "sha256": "678aa1d78c019dc62b595435763348f304171dcb4ad23b856615f5208ea421a2"
+  },
+  {
+    "path": "poc/tests/participation.integration.test.mjs",
+    "sha256": "d35bfcaa9bd334391ed7efe08e5004d3c21d728ee798ff89e4c4d92f10b829ac"
+  },
+  {
+    "path": "poc/tests/playback-queue.test.mjs",
+    "sha256": "ec988876d0368a09913f14bcf1f7e616f83391e7938855792f965801e6d7d7c2"
+  },
+  {
+    "path": "poc/tests/postgres.integration.test.mjs",
+    "sha256": "ad0552dae635ee17f0b58cc8322b70ba2be958d05b3ee7afe88777b5ee5934e0"
+  },
+  {
+    "path": "poc/tests/room-access.integration.test.mjs",
+    "sha256": "89bfd36fd477895c2559eb45296a6f0ff6bda7d8a85e8572f3c8d3e491e2e32f"
+  },
+  {
+    "path": "poc/tests/room-isolation.integration.test.mjs",
+    "sha256": "c0a542f61eea1da38fe278ff1ec6903751095e0050205e80976ae3ec084361fa"
+  },
+  {
+    "path": "poc/tests/room-management.integration.test.mjs",
+    "sha256": "1a268b3129098fd40473e4050fe4202dfb6f2dc86fa1b839df81e1ed42732e4a"
+  },
+  {
+    "path": "poc/tests/room-management.postgres.test.mjs",
+    "sha256": "a6fb2afb2508e35efd7216e05c24aa4090dbbaac9c10d7a6fb8f56bfcf0aee4f"
+  },
+  {
+    "path": "poc/tests/screen.integration.test.mjs",
+    "sha256": "f79fc708f23896c58f6ebfe5583dca24c12551b1f1e9730334ba256e655b18c0"
+  },
+  {
+    "path": "poc/tests/server.integration.test.mjs",
+    "sha256": "248d94834a6004f9a63063eeffbbdd151d9da3e304a335636f9022da0f2bb55a"
+  },
+  {
+    "path": "poc/tests/space-policy.integration.test.mjs",
+    "sha256": "e0ae6b6e2c46aa7a7950e2d7eaf3326777fa34d49dc380294d90f7e6cd3d592f"
+  },
+  {
+    "path": "poc/tests/space.integration.test.mjs",
+    "sha256": "e61d6d3ca15630166c55417f5064b5ce98f312f72934696d28ff81d55b3750c0"
+  },
+  {
+    "path": "poc/tests/transport-budget.test.mjs",
+    "sha256": "17da0270bc52d68e0ba7066f5f5eb63fd4f08501e72f642c596369ee70687c53"
+  },
+  {
+    "path": "poc/tsconfig.app.json",
+    "sha256": "f939d99342215a97be9a9f247ea611448210f826ac11e0f046c4e11c92c5b339"
+  },
+  {
+    "path": "poc/tsconfig.json",
+    "sha256": "fc8f349e3185b401ac14b6b4930ed6f98e9c293e80e05ca8c4794b2969e9e838"
+  },
+  {
+    "path": "poc/tsconfig.server.json",
+    "sha256": "1dde6a1665af85b442c7b654510a40246eb81422f23671ff00eea85f9c03a99f"
+  },
+  {
+    "path": "poc/vite.config.ts",
+    "sha256": "1fca3d06e71e33211a6b7f861f8a0410a15e097ca4ff35d0a2e3da356cfefb18"
+  }
+]
