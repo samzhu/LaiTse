@@ -324,3 +324,13 @@ GATE-001-DESKTOP-AUDIO／[POC-07-R002](evidence/POC-07-R002/README.md)已保存�
 人類確認桌機MVP優先、手機後續，授權先整理功能／開發計畫並集中討論待決項。已保存並讀回PRD v0.10第6/9/11節：F01～09核心範圍、M00～06開發／輕量示範順序、D01～06待決（身份／邀請、OS／瀏覽器、容量／發布、距離／門口／視覺、活動／資料、交付／部署）。D01～03先討論，其餘到相依階段前確認；建議不當人類決策。
 
 手機已從本版前置移除，不再以未做手機阻擋桌機規劃；T19原NoGo與未驗證據保留，未自動宣告全technicalGo。只規劃／文件，未開始MVP程式開發、未新增實測／拆票發布或部署；src/tests/deps不改，沿SOL007唯一資料清冊；manual服務不操作／不停止。後續GitHub母#1、手機#3與審查#20同步本次版本界線並讀回；驗測採文件／連結／狀態一致性，不重跑程式全測。
+
+## POC-MA-01-R001／會議室多人語音（2026-11-06）
+
+POC-MA-01／R001（2026-11-06）已完成會議室多音訊來源relay、逐來源decoder／AudioWorklet／時鐘與計數，lobby仍單來源；screen同時一人及同源clock保留。最終build/typecheck與四Firefox合成短流程11,063ms／媒體6,461ms完成；root重算A收B318、B收A302、C收A161/B175，未知／自送／歧義0、D影音0，A停B持續、晚加入／重連／切房／only0與單screen競爭通過，兩圖已實看。
+
+自動結果分開：初次66pass/1PGskip原log後被覆寫，root先前讀回計數保留；第二全套65pass/1space快照時序失敗/1PGskip，space窄診斷3/3，未改空間功能／測試，不稱最終全套綠。首輪Firefox sandbox啟動中止、受控首次成功、狀態文字修正後同頁並行點擊screen.subscribe未送出失敗、腳本改循序後最終成功皆保存，不回改舊run。
+
+真人多人聽感／Chrome/Edge跨裝置／本輪PG多人整合／真弱網／容量品質未驗；Docker不可用故memory fixture，無schema／新依賴，原8人程式門檻與舊managed主講授權仍在，不是新商品鎖房管理已完成。自有server／browser已停，未操作原4173／人類Edge／麥克風；未開始MVP／push／部署。
+
+證據：[R001](evidence/POC-MA-01-R001/README.md)，core Pass與執行完成／完整資格／人類收聽分列；SOL-002/006/008與PRD M03採用界線已同步。

@@ -119,25 +119,27 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
       data-queue-stale-drop-batches={state.queueStaleDropBatches}
       data-queue-oversize-drop-batches={state.queueOversizeDropBatches}
       data-audio-decode-queue-high-water={state.decodeQueueHighWater}
-      data-audio-decode-queue-saturation-closes={state.decodeQueueSaturationCloses}
+      data-audio-decode-queue-saturation-stops={state.decodeQueueSaturationStops}
       data-render-rms={state.renderRms}
       data-queue-overflow-resets={state.queueOverflowResets}
       data-publisher-generation={currentObservation?.publisher.streamGeneration ?? ""}
       data-receiver-generation={currentObservation?.receiver.streamGeneration ?? ""}
       data-packet-gap-count={currentObservation?.receiver.packetGapCount ?? 0}
       data-receiver-buffer-ms={currentObservation?.receiver.receiverBufferMs ?? 0}
+      data-audio-active-stream-count={state.sources.filter((source) => source.active).length}
+      data-audio-streams={JSON.stringify(state.sources)}
       data-audio-pulse-events={JSON.stringify(timeline.getPulseEvents())}
       data-audio-playback-clock-id={timeline.getActiveAudioStream()?.clockId ?? ""}
     >
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">T06 · AUDIO OBSERVATION</p>
+          <p className="eyebrow">POC-MA-01 · AUDIO OBSERVATION</p>
           <h2 id="audio-title">即時語音</h2>
         </div>
         <span className="audio-profile">Opus · mono · 48 kHz</span>
       </div>
       <p className="audio-intro">
-        接收者先用按鈕啟動播放；主講人按「開始麥克風」後才會出現權限提示。停止後會關閉本機音訊資源並停止轉送新封包。
+        先按「開始收聽」啟動播放；每位發布者的 Opus 解碼與播放佇列分開管理。按「開始麥克風」後才會詢問麥克風權限。
       </p>
 
       <div className="audio-controls">
@@ -171,11 +173,11 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
             <p className={`audio-state ${state.publisherState === "denied" || state.publisherState === "blocked" || state.publisherState === "no-device" || state.publisherState === "error" ? "is-error" : ""}`} role="status" data-audio-status="publisher">{hostControlsEnabled && !publishAllowed && !publisherRunning && !publisherStarting ? "主持人尚未授予目前房間的發布權。" : state.publisherMessage}</p>
           </div>
           {publisherRunning ? (
-            <button className="quiet-button" onClick={() => controllerRef.current?.stopMicrophone()}>停止麥克風</button>
+            <button className="quiet-button" data-testid="audio-stop-publishing" onClick={() => controllerRef.current?.stopMicrophone()}>停止麥克風</button>
           ) : publisherStarting ? (
-            <button className="quiet-button" onClick={() => controllerRef.current?.stopMicrophone()}>{startPublisherLabel}</button>
+            <button className="quiet-button" data-testid="audio-stop-publishing" onClick={() => controllerRef.current?.stopMicrophone()}>{startPublisherLabel}</button>
           ) : (
-            <button className="primary-button" onClick={() => controllerRef.current?.startMicrophone()} disabled={hostControlsEnabled && !publishAllowed}> {startPublisherLabel} </button>
+            <button className="primary-button" data-testid="audio-start-publishing" onClick={() => controllerRef.current?.startMicrophone()} disabled={hostControlsEnabled && !publishAllowed}> {startPublisherLabel} </button>
           )}
         </div>
       </div>
@@ -213,7 +215,28 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
         <span><strong>封包序號缺口</strong><output data-testid="audio-packet-gap-count">{currentObservation?.receiver.packetGapCount ?? 0}</output></span>
         <span><strong>播放RMS</strong><output data-testid="audio-render-rms">{state.renderRms.toFixed(4)}</output></span>
       </div>
-      <p className="audio-limit-note">播放樣本與RMS由接收端 AudioWorklet 實際輸出的PCM計算；graph 居留時間是本機排隊時間，不是背景牆鐘或網路年齡；這些值不代表真人已聽見或量得端到端延遲。</p>
+      <div className="audio-source-stats" data-testid="audio-source-list" aria-label="每位發布者的接收與播放狀態">
+        {state.sources.map((source) => <div
+          key={source.generation}
+          data-testid="audio-source-stats"
+          data-generation={source.generation}
+          data-clock-id={source.clockId}
+          data-active={source.active}
+          data-received-packets={source.receivedPackets}
+          data-decoded-frames={source.decodedFrames}
+          data-rendered-pcm-samples={source.renderedPcmSamples}
+          data-queued-samples={source.queuedSamples}
+          data-render-rms={source.renderRms}
+          data-packet-gap-count={source.packetGapCount}
+          data-error={source.error ?? ""}
+        >
+          <span>{source.clockId} · generation {source.generation} · {source.active ? "接收中" : "已停止"}</span>
+          <span>封包 {source.receivedPackets}／解碼 {source.decodedFrames}／AudioWorklet PCM 樣本 {source.renderedPcmSamples}</span>
+          <span>播放佇列 {source.queuedSamples}／RMS {source.renderRms.toFixed(4)}／序號缺口 {source.packetGapCount}</span>
+          {source.error ? <span role="status">{source.error}</span> : null}
+        </div>)}
+      </div>
+      <p className="audio-limit-note">播放樣本與RMS由各來源接收端 AudioWorklet 實際輸出的PCM計算；每來源佇列上限500ms，總佇列為各來源加總。graph 居留時間是本機排隊時間，不是背景牆鐘或網路年齡；這些值不代表真人已聽見或量得端到端延遲。</p>
       <div className="audio-observation-actions">
         <button className="quiet-button" onClick={downloadObservation}>下載音訊觀測</button>
         <span>報告只含此頁播放器管線計數；來源裝置與真人收聽狀態不由應用推斷。</span>

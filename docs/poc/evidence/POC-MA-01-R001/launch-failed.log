@@ -1,0 +1,17 @@
+[MA01] failure browserType.launchPersistentContext: Failed to launch the browser process.
+Browser logs:
+
+<launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/ma01/browser/MA01-C-runtime/profile -juggler-pipe about:blank
+<launched> pid=34188
+[pid=34188][err] *** You are running in headless mode.
+[pid=34188] <process did exit: exitCode=null, signal=SIGABRT>
+[pid=34188] starting temporary directories cleanup
+Call log:
+  - <launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/ma01/browser/MA01-C-runtime/profile -juggler-pipe about:blank
+  - <launched> pid=34188
+  - [pid=34188][err] *** You are running in headless mode.
+  - [pid=34188] <process did exit: exitCode=null, signal=SIGABRT>
+  - [pid=34188] starting temporary directories cleanup
+  - [pid=34188] <gracefully close start>
+  - [pid=34188] <kill>
+  - [pid=34188] <skipped force

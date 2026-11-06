@@ -302,6 +302,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const publisherGrants = new Map<RoomId, Set<string>>(SPACE_ROOMS.map(({ id }) => [id, new Set()]));
   const mediaRooms = new Map<RoomId, RoomRelays>(SPACE_ROOMS.map(({ id }) => [id, {
     audio: createAudioRelay({
+      allowMultiplePublishers: id === "studio",
       isRecipientEligible: (publisherConnectionId, recipientConnectionId) => {
         const findCurrentPlayer = (connectionId: string) => {
           for (const connection of clients.values()) {

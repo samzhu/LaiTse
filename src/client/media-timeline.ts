@@ -27,6 +27,16 @@ export type PlaybackStream = {
   epoch: number;
 };
 
+type ActivePlaybackStream = PlaybackStream & {
+  order: number;
+  audioMasterSamples: AudioMasterSample[];
+  pulseEvents: AudioPulseEvent[];
+};
+
+function streamKey(clockId: string, generation: number): string {
+  return `${clockId}\u0000${generation}`;
+}
+
 export function selectVideoFrameIndex(frameTimestampsUs: readonly number[], audioPlayheadTimestampUs: number | null): number {
   if (frameTimestampsUs.length === 0) return -1;
   if (audioPlayheadTimestampUs === null || !Number.isFinite(audioPlayheadTimestampUs)) return frameTimestampsUs.length - 1;
@@ -71,53 +81,71 @@ export function mapGraphTimeToPerformanceTime(input: {
 }
 
 export class MediaTimeline {
-  private audioStream: PlaybackStream | null = null;
-  private readonly audioMasterSamples: AudioMasterSample[] = [];
-  private readonly pulseEvents: AudioPulseEvent[] = [];
+  private readonly audioStreams = new Map<string, ActivePlaybackStream>();
+  private nextStreamOrder = 0;
   private readonly listeners = new Set<() => void>();
 
   beginAudioStream(clockId: string, generation: number, epoch: number): void {
     if (!clockId || !Number.isInteger(generation) || generation < 1 || !Number.isInteger(epoch) || epoch < 1) return;
-    this.audioStream = { clockId, generation, epoch };
-    this.audioMasterSamples.length = 0;
-    this.pulseEvents.length = 0;
+    for (const [key, stream] of this.audioStreams) {
+      if (stream.clockId === clockId) this.audioStreams.delete(key);
+    }
+    this.audioStreams.set(streamKey(clockId, generation), {
+      clockId,
+      generation,
+      epoch,
+      order: ++this.nextStreamOrder,
+      audioMasterSamples: [],
+      pulseEvents: [],
+    });
     this.notify();
   }
 
   updateAudioMaster(sample: AudioPulseEvent, receivedAtPerformanceTimeMs: number): boolean {
-    const active = this.audioStream;
-    if (!active || sample.clockId !== active.clockId || sample.generation !== active.generation || sample.epoch !== active.epoch) return false;
+    const active = this.audioStreams.get(streamKey(sample.clockId, sample.generation));
+    if (!active || sample.epoch !== active.epoch) return false;
     if (![sample.sourceTimestampUs, sample.graphTimestampUs, sample.receiverPerformanceTimeMs, sample.observationWindowMs, receivedAtPerformanceTimeMs].every(Number.isFinite)) return false;
     if (sample.sourceTimestampUs < 0 || sample.graphTimestampUs < 0 || sample.observationWindowMs < 0 || sample.mappingErrorBoundMs !== null) return false;
-    this.audioMasterSamples.push({ ...sample, receivedAtPerformanceTimeMs });
-    while (this.audioMasterSamples.length > MAX_AUDIO_MASTER_SAMPLES) this.audioMasterSamples.shift();
+    active.audioMasterSamples.push({ ...sample, receivedAtPerformanceTimeMs });
+    while (active.audioMasterSamples.length > MAX_AUDIO_MASTER_SAMPLES) active.audioMasterSamples.shift();
     this.notify();
     return true;
   }
 
   recordAudioPulse(event: AudioPulseEvent): void {
-    const active = this.audioStream;
-    if (!active || event.clockId !== active.clockId || event.generation !== active.generation || event.epoch !== active.epoch) return;
+    const active = this.audioStreams.get(streamKey(event.clockId, event.generation));
+    if (!active || event.epoch !== active.epoch) return;
     if (![event.sourceTimestampUs, event.graphTimestampUs, event.receiverPerformanceTimeMs, event.observationWindowMs].every(Number.isFinite)) return;
-    this.pulseEvents.push({ ...event });
-    while (this.pulseEvents.length > MAX_AUDIO_PULSE_EVENTS) this.pulseEvents.shift();
+    active.pulseEvents.push({ ...event });
+    while (active.pulseEvents.length > MAX_AUDIO_PULSE_EVENTS) active.pulseEvents.shift();
     this.notify();
   }
 
   endAudioStream(epoch?: number): void {
-    if (epoch !== undefined && this.audioStream?.epoch !== epoch) return;
-    this.audioStream = null;
-    this.audioMasterSamples.length = 0;
-    this.pulseEvents.length = 0;
+    if (epoch === undefined) this.audioStreams.clear();
+    else {
+      for (const [key, stream] of this.audioStreams) if (stream.epoch === epoch) this.audioStreams.delete(key);
+    }
+    this.notify();
+  }
+
+  endAudioSource(clockId: string, generation: number, epoch?: number): void {
+    const key = streamKey(clockId, generation);
+    const active = this.audioStreams.get(key);
+    if (!active || (epoch !== undefined && active.epoch !== epoch)) return;
+    this.audioStreams.delete(key);
     this.notify();
   }
 
   getAudioMaster(clockId: string | null, nowPerformanceTimeMs: number): AudioMasterSample | null {
     if (!clockId || !Number.isFinite(nowPerformanceTimeMs)) return null;
+    const active = [...this.audioStreams.values()]
+      .filter((stream) => stream.clockId === clockId)
+      .sort((left, right) => right.order - left.order)[0];
+    if (!active) return null;
     let latestDue: AudioMasterSample | null = null;
     let earliestFuture: AudioMasterSample | null = null;
-    for (const sample of this.audioMasterSamples) {
-      if (sample.clockId !== clockId) continue;
+    for (const sample of active.audioMasterSamples) {
       const age = nowPerformanceTimeMs - sample.receivedAtPerformanceTimeMs;
       const mappedAge = nowPerformanceTimeMs - sample.receiverPerformanceTimeMs;
       const scheduledLeadMs = Math.max(0, Math.min(AUDIO_MASTER_FUTURE_LIMIT_MS, sample.receiverPerformanceTimeMs - sample.receivedAtPerformanceTimeMs));
@@ -135,12 +163,21 @@ export class MediaTimeline {
   }
 
   getActiveAudioStream(): PlaybackStream | null {
-    return this.audioStream ? { ...this.audioStream } : null;
+    const active = [...this.audioStreams.values()].sort((left, right) => right.order - left.order)[0];
+    return active ? { clockId: active.clockId, generation: active.generation, epoch: active.epoch } : null;
+  }
+
+  getAudioStream(clockId: string): PlaybackStream | null {
+    const active = [...this.audioStreams.values()]
+      .filter((stream) => stream.clockId === clockId)
+      .sort((left, right) => right.order - left.order)[0];
+    return active ? { clockId: active.clockId, generation: active.generation, epoch: active.epoch } : null;
   }
 
   getPulseEvents(clockId?: string | null): AudioPulseEvent[] {
-    return this.pulseEvents
-      .filter((event) => !clockId || event.clockId === clockId)
+    return [...this.audioStreams.values()]
+      .filter((stream) => !clockId || stream.clockId === clockId)
+      .flatMap((stream) => stream.pulseEvents)
       .map((event) => ({ ...event }));
   }
 

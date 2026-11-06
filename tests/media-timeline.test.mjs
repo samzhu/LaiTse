@@ -32,7 +32,7 @@ test("video scheduling never selects a frame newer than a same-clock audio playh
   assert.equal(selectVideoFrameIndex([], 250_000), -1);
 });
 
-test("only current same-publisher playback samples drive the timeline; stale, replaced, and stopped clocks are rejected", () => {
+test("publisher playback samples stay isolated; stale generations and stopped clocks are rejected", () => {
   const timeline = new MediaTimeline();
   timeline.beginAudioStream("publisher-a", 3, 9);
   const sample = {
@@ -81,7 +81,8 @@ test("pulse diagnostics stay bounded and scoped to the active publisher generati
   assert.equal(timeline.getPulseEvents().length, 24);
   assert.equal(timeline.getPulseEvents()[0]?.sourceTimestampUs, 12_000_000);
   timeline.beginAudioStream("publisher-b", 1, 2);
-  assert.deepEqual(timeline.getPulseEvents(), []);
+  assert.equal(timeline.getPulseEvents("publisher-a").length, 24, "starting another publisher does not reset this source's diagnostics");
+  assert.deepEqual(timeline.getPulseEvents("publisher-b"), []);
 });
 
 
@@ -100,4 +101,28 @@ test("new future output samples do not hide a due audio-master sample", () => {
   assert.equal(timeline.getAudioMaster("publisher-a", 1_160)?.sourceTimestampUs, 1_040_000);
   timeline.updateAudioMaster({ ...point, sourceTimestampUs: 2_000_000, receiverPerformanceTimeMs: 1_000 }, 1_500);
   assert.equal(timeline.getAudioMaster("publisher-a", 1_500), null, "recent arrival cannot revive a stale output sample");
+});
+
+test("adding and stopping one concurrent audio source preserves the other publisher clock", () => {
+  const timeline = new MediaTimeline();
+  const sampleFor = (clockId, generation, epoch, sourceTimestampUs) => ({
+    clockId, generation, epoch,
+    sourceTimestampUs, graphTimestampUs: sourceTimestampUs,
+    receiverPerformanceTimeMs: 1_100, observationWindowMs: 20,
+    mappingErrorBoundMs: null, mapping: "output-timestamp",
+  });
+  timeline.beginAudioStream("publisher-a", 1, 1);
+  timeline.beginAudioStream("publisher-b", 2, 2);
+  assert.equal(timeline.updateAudioMaster(sampleFor("publisher-a", 1, 1, 1_000), 1_100), true);
+  assert.equal(timeline.updateAudioMaster(sampleFor("publisher-b", 2, 2, 2_000), 1_100), true);
+  assert.equal(timeline.getAudioMaster("publisher-a", 1_120)?.sourceTimestampUs, 1_000);
+  assert.equal(timeline.getAudioMaster("publisher-b", 1_120)?.sourceTimestampUs, 2_000);
+
+  timeline.endAudioSource("publisher-b", 2, 2);
+  assert.equal(timeline.getAudioMaster("publisher-b", 1_120), null);
+  assert.equal(timeline.getAudioMaster("publisher-a", 1_120)?.sourceTimestampUs, 1_000, "stopping B leaves A's master intact");
+
+  timeline.beginAudioStream("publisher-a", 3, 3);
+  assert.equal(timeline.getAudioMaster("publisher-a", 1_120), null, "a new generation for the same publisher replaces its old clock");
+  assert.equal(timeline.updateAudioMaster(sampleFor("publisher-a", 1, 1, 1_200), 1_120), false);
 });

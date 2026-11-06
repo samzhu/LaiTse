@@ -1,0 +1,9 @@
+[MA01] A-and-B-publish-and-receive-other-source-with-real-per-source-PCM {"generations":{"A":2,"B":1},"pcmSamples":{"A":5120,"B":4800}}
+[MA01] late-joining-C-receives-both-streams-and-lobby-D-receives-no-studio-media {"C":[{"generation":1,"clockId":"c0143599-645f-4280-8af9-6edac8753159","renderedPcmSamples":15872},{"generation":2,"clockId":"b2669885-6a36-490f-a057-91683c473f8f","renderedPcmSamples":15872}],"D":{"roomId":"lobby","receivedAudioFrames":0,"receivedScreenFrames":0}}
+[MA01] A-single-screen-clock-renders-and-B-is-rejected-without-replacement {"generation":1,"clockId":"b2669885-6a36-490f-a057-91683c473f8f","conflictCode":"publisher_exists","C":{"renderedFrames":9,"syncMode":"audio-master","centerPixel":[38,185,94,255]}}
+[MA01] A-stop-does-not-break-B {"stoppedGeneration":2,"retainedGeneration":1,"bRenderedPcmSamplesBefore":118016,"bRenderedPcmSamplesAfter":122112,"aLastStreamEndedAtMs":6867}
+[MA01] A-restart-uses-fresh-generation-and-retains-source-clock {"generations":{"A":3,"B":1},"clockIdA":"b2669885-6a36-490f-a057-91683c473f8f","screenClockIdA":"b2669885-6a36-490f-a057-91683c473f8f"}
+[MA01] C-controlled-WebSocket-disconnect-restores-current-subscriptions-and-two-PCM-sources {"connection":{"before":1,"after":2},"generations":[3,1],"pcmSamples":[{"generation":1,"renderedPcmSamples":10560},{"generation":3,"renderedPcmSamples":10368}]}
+[MA01] C-moves-to-lobby-with-zero-studio-audio-and-screen-downlink {"roomId":"lobby","CAudioRows":[],"screenFrames":0,"DStudioMediaDownlinkFrames":0}
+[MA01] C-returns-to-studio-and-manually-resubscribes-only-if-needed {"roomId":"studio","manualListenRequired":true,"generations":[3,1]}
+[MA01] C-interaction-only-has-zero-media-downlink {"mode":"interaction","audioFrames":0,"screenFrames":0}

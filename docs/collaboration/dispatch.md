@@ -383,3 +383,21 @@ DEC-014／015本輪交付完成（2026-11-05）：PRD v0.11與既有MVP計畫已
 人類要求「希望像真實會議室，大家都可以同時開麥聊天，畫面分享先一個人就好。」root唯一writer：PRD第6/8/9/11節、collaboration/{decisions,brief,checkpoint,dispatch,delivery-index}、ai-handoff、poc/{plan,mvp-handoff}；Github母#1／音訊#4／權限#10／審查#20同步差異並精確讀回，憑據POC07-R002/multi-speaker-progress-readback.json。src/server/audio-relay.ts等唯讀現況核對，原音訊單publisher與目前8人限制不改；不啟MVP／POC實作、不改依賴、不部署／push、不操作manual服務／人類Edge。已確認會議室人人可自行開麥多人交談＋同時一畫面；不推定開放區多來源／攝影機／分享搶占或管理者靜音政策已確認。補多人語音最小驗證計畫，不宣稱既有fanout證據已覆蓋多人上行。保存原話、版本、scope與GitHub讀回，文件檢查／本機commit後停止writer。
 
 DEC-016交付讀回（2026-11-05）：人類原話、會議室人人自行同時開麥／同時單人畫面已保存PRD v0.12及decisions；M03/D03／驗收與POC-MA-01增量流程已同步。Github#1/#4/#10/#20保存後4/4正文精確讀回，原正文／AC／open／labels保留，憑據POC07-R002/multi-speaker-progress-readback.json。主要本機文件連結、單一計畫／版本／新增範圍與JSON／diff檢查通過；只規劃無新測試或src/deps更動，單音訊publisher尚未改造。紀錄同本機commit、不push／部署；writer結束、既有manual服務及人類Edge未操作／未停止。
+
+## POC-MA-01-R001 執行範圍包（2026-11-06）
+
+人類明確開始POC-MA-01、輕量核心及用法驗證、程式與紀錄一起commit並更新GitHub。基線16924e0，DEC016會議室所有成員可自行同時開麥、畫面同時一人；開放區仍維持既有單音訊發布者／距離路由，不自行新增多源產品規則。既有8人限制非本輪移除範圍；免登入／鎖房管理新商品實作不展開。本輪採現有匿名unmanaged會議室驗多人，managed模式仍保留撤權／房間隔離不變；若牽涉權限商品變更回root處理。
+
+唯一writer：ma_implementation（Luna xhigh，依人類委派偏好）負責src/server/{audio-relay,app}.ts、src/client/{audio,media-timeline,screen}.ts、src/client/{AudioPanel,App,DisplayApp}.tsx、public/audio-playback-worklet.js及tests/*.mjs相關音訊／timeline回歸；其餘src只讀，需要擴檔先交root。可新增內部client多源audio模組（先通知root），不可改manifest/lock/依賴／docs／scripts／Git。交付多源relay與逐來源解碼／播放、同源screen clock不串台、來源停止不清別人、晚加入／重連／切房／無自聽、型別／build／核心server測試。真正會議室多人自行開麥在匿名fixture成立；managed版為歷史控制語意不暗自改商品其他權限。
+
+root唯一writer：scripts/multi-speaker-smoke.mjs、新證據docs/poc/evidence/POC-MA-01-R001/、README及既有docs/{PRD,ai-handoff,collaboration,poc}現況／SOL同步、Git、Github母#1與音訊#4／權限#10／審查#20正文；來源其餘唯讀驗收。root獨占新自有測試server／Firefox，使用未占用port，先檢查既有manual服務但不停止／接管；不得碰人類Edge/麥克風。測試專用資料／.scratch/ma01，不輸出私密env；優先用既有PG Docker專用新DB整合如可用，無法時區分memory測試與持久化未重驗，勿編造PG證據。單一build由implementation執行，交接後root才執行最終build／browser，避免dist並行寫。
+
+驗收：A/B同時發布、C同收兩人，A/B互收且沒有自送；逐來源decode/render/PCM實際輸出非只ACK；A停B持續、晚加入與受控重連、切房隔離／only0、單screen競爭。合成瀏覽器與真人收聽分列，必要真人安排後續不偽造；不要求長測／大人數。資料／角色權威、單畫面、背壓有界與同publisher影音時基保留；檢查失敗保存→一次窄診斷，同錯再現停該操作再處理。每次進度有實證，實作交接需saved/readback/STOP才能root改同檔；本機commit程式＋證據、Github讀回後釋出自有資源，不push／部署／自動開始MVP。
+
+POC-MA-01並行窄交接：root尚未建立scripts/multi-speaker-smoke.mjs，該新檔唯一writer交ma_browser_script（Luna xhigh）；可寫.scratch/ma01/harness私有開發稿，其他scripts/docs/source/deps/Git只讀，不啟server／瀏覽器或改人類UI。依implementation提供的協議／snapshot設計短browser smoke；驗證報告與screenshots只寫指定輸出.scratch/ma01/browser，運行由root等source build交接後執行，無同資源並行操控。交付需語法檢查、用法及saved/readback/STOP；若要跑browser須先root明確移交自有新服務操作者。root維持唯一docs/Git/server/browser操作者與最後驗收。
+
+root另維護.gitignore加入.scratch/ma01/，只忽略本輪browser profile／私有runtime與開發輸出，正式選取證據存POC-MA-01-R001；不加入AGENTS.md或原有scratch。源碼writer不改此檔。
+
+POC-MA-01資源交接：ma_implementation已saved/readback/STOP，root接回其9個source/test檔與新multi-audio-receiver；最終build通過，原全套66pass/1skip僅root讀回摘要（log後被覆寫），第二全套65pass/1fail/1skip保留、space單檔窄診斷3/3未改空間功能。ma_browser_script已saved/readback/STOP，腳本語法通過、未啟服務／browser，root接回script。root現在獨占測試操作：新memory/unlocked studio HTTPS ephemeral service（.scratch/ma01/runtime.json）與4獨立Firefox；不碰原4173／人類Edge，不並行改source/dist。失敗與修正由root唯一writer處理，原代理不再寫入。
+
+POC-MA-01-R001最終保存／讀回（2026-11-06）：程式／操作／verdict、32份選取證據及source64指紋保存，root重算所有接收封包來源與quiet／跨房窗口、實看兩張最終圖。最終短流程11,063ms／active6,461ms通過；全套第二跑space時序失敗與單檔3/3、首次log覆寫只保留讀回計數、三輪browser歷史與最終confirm分開，不稱全綠或真人通過。Github#1/#4/#10/#20已保存並4/4精確讀回、原AC/open/labels保持。JSON／64hash／122主要本機連結／diff／secret模式掃描通過，全部自有server/browser已停且讀回確認，未操作人類資源或資料volume。root唯一writer結束，程式＋紀錄同本機commit，不push／部署／自動接MVP；真人多人、PG模式、目標跨裝置／容量等保留未驗。

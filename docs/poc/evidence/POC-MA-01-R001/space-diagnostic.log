@@ -1,0 +1,11 @@
+✔ space snapshots expose member positions only for the recipient's current room (46.596208ms)
+✔ movement is one bounded step, rejects room and participant spoofing, and fails at the grid edge (66.862375ms)
+✔ media controls are available in both rooms and switching clears the previous publisher (111.483ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 372.31775

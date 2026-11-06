@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short four-Firefox synthetic multi-speaker smoke for per-source Opus playback, recovery, room isolation, and single-screen ownership.",
+  "startedAt": "2026-11-06T01:35:46.104Z",
+  "status": "failed",
+  "baseURL": "https://localhost:50419",
+  "outputDirectory": ".scratch/ma01/browser",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "not-reported",
+    "headless": true
+  },
+  "tls": {
+    "caCertificate": ".scratch/t01/tls/local-ca.pem",
+    "trust": "local CA imported only into four isolated Firefox NSS profiles; certificate errors are not ignored",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false,
+    "applicationTransport": "trusted local HTTPS/WSS"
+  },
+  "topology": {
+    "room": "studio",
+    "roomIsolationParticipant": "D",
+    "participants": {
+      "A": "studio publisher/receiver",
+      "B": "studio publisher/receiver",
+      "C": "late-joining studio receiver",
+      "D": "lobby receiver"
+    },
+    "browserProcesses": 4,
+    "isolatedFirefoxProfiles": 4,
+    "applicationConnections": 4,
+    "activeMediaWindowBudgetMs": 20000
+  },
+  "syntheticSources": {
+    "audio": "A and B use test-injected getUserMedia oscillator streams through AudioContext MediaStreamDestination; no physical microphone is opened",
+    "audioFrequencyHz": {
+      "A": 523,
+      "B": 997
+    },
+    "screen": "A and B use test-injected getDisplayMedia canvas streams; no native picker or physical display is used",
+    "screenColorRgb": {
+      "A": [
+        38,
+        184,
+        92
+      ],
+      "B": [
+        224,
+        52,
+        46
+      ]
+    },
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "mediaPayloadsStored": false
+  },
+  "checks": [],
+  "sourceStreams": {
+    "audio": {},
+    "screen": {}
+  },
+  "packetSourceChecks": [],
+  "reconnect": null,
+  "roomIsolation": null,
+  "interactionMode": null,
+  "screenshots": [],
+  "transport": [],
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "packetHashesAndHeadersOnly": true,
+    "recoveryTokensRetained": false,
+    "pageStorageDumped": false,
+    "configuredSecretsReadOrRecorded": false
+  },
+  "limits": {
+    "realMicrophoneAndHumanListening": "not-tested; oscillators are injected synthetic sources",
+    "realDisplayCapture": "not-tested; getDisplayMedia is replaced with a generated canvas in test pages",
+    "physicalNetworkFailure": "not-tested; C receives one controlled Playwright WebSocket close",
+    "phonesAndCrossDeviceUse": "not-tested",
+    "endToEndLatencyOrListeningQuality": "not-measured",
+    "capacityAndEndurance": "not-tested; short four-process feasibility flow, no load or long-duration target",
+    "persistenceAndCloudDeployment": "not-tested; this browser smoke attaches to the externally started local fixture",
+    "identity": "not-verified; labels identify synthetic browser contexts, not people"
+  },
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "cleanupErrors": [],
+    "failure": "browserType.launchPersistentContext: Failed to launch the browser process.\nBrowser logs:\n\n<launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/ma01/browser/MA01-C-runtime/profile -juggler-pipe about:blank\n<launched> pid=34188\n[pid=34188][err] *** You are running in headless mode.\n[pid=34188] <process did exit: exitCode=null, signal=SIGABRT>\n[pid=34188] starting temporary directories cleanup\nCall log:\n\u001b[2m  - <launching> /Users/samzhu/workspace_herdr/LaiTse/.tools/playwright-browsers/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /Users/samzhu/workspace_herdr/LaiTse/.scratch/ma01/browser/MA01-C-runtime/profile -juggler-pipe about:blank\u001b[22m\n\u001b[2m  - <launched> pid=34188\u001b[22m\n\u001b[2m  - [pid=34188][err] *** You are running in headless mode.\u001b[22m\n\u001b[2m  - [pid=34188] <process did exit: exitCode=null, signal=SIGABRT>\u001b[22m\n\u001b[2m  - [pid=34188] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=34188] <gracefully close start>\u001b[22m\n\u001b[2m  - [pid=34188] <kill>\u001b[22m\n\u001b[2m  - [pid=34188] <skipped force kill spawnedProcess.killed=false processClosed=true>\u001b[22m\n\u001b[2m  - [pid=34188] finished temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=34188] <gracefully close end>\u001b[22m\n\n    at async launchClient (/Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:414:19)\n    at async runSmoke (/Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:715:24)\n    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:1017:3"
+  },
+  "durationMs": 1758,
+  "activeMediaDurationMs": null,
+  "finishedAt": "2026-11-06T01:35:47.862Z"
+}

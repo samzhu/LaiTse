@@ -1,0 +1,13 @@
+{
+  "basis": "root read .scratch/ma01/implementation-tests.log before later run overwrote it; counts recorded in tool output",
+  "observedCounts": {
+    "tests": 67,
+    "pass": 66,
+    "fail": 0,
+    "skip": 1,
+    "durationMs": 9478.011916
+  },
+  "fullOriginalLogRetained": false,
+  "laterFullRun": "65 pass / 1 existing space snapshot test failure / 1 PostgreSQL skip; full-suite-latest.log retained",
+  "historicalResultsNotOverwritten": true
+}

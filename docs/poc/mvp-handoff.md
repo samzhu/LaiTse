@@ -6,7 +6,7 @@
 
 ## DEC-016目前影音範圍（2026-11-05）
 
-會議室多人同時開麥、同時單人畫面已確認；現有Opus relay仍單音訊publisher，SOL-002/006只涵蓋既有單來源核心。多人音訊採用仍待POC-MA-01：流程與M03相依統一維護在PRD v0.12第11.5節，未實作／執行。本次替代早期單主講／多人語音後續的範圍，不改舊run或宣稱多來源已可用；開放區多人、其他治理仍待。
+會議室多人同時開麥、同時單人畫面已確認；2026-11-06已在[POC-MA-01-R001](evidence/POC-MA-01-R001/README.md)完成多來源relay／逐來源解碼、PCM與clock及桌面Firefox合成核心驗收。SOL-002/006可沿已驗範圍接入M03，真人多人、目標桌機與PG多人整合仍待，原8人門檻／managed授權未移除，不宣稱完整商品Go。開放區仍單音訊來源／原距離規則，其他治理仍待。
 
 ## DEC-014免登入範圍（2026-11-05）
 
@@ -23,7 +23,7 @@
 | ID | 方案責任／採用建議 | 證據與可用範圍 | MVP移轉條件／限制 |
 |---|---|---|---|
 | SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
-| SOL-002 | **待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標桌機跨端與原生畫面核心於M03補驗；手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
+| SOL-002 | **有條件可採用／目標裝置待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標桌機跨端與原生畫面核心於M03補驗；手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
 | SOL-003 | **需重構**：server權威Room/控制Session/門禁/授撤權核心保留 | [POC03-R004](evidence/POC-03-R004/README.md)／[R005](evidence/POC-03-R005/README.md)、[PG資料恢復](evidence/POC-06-R002/README.md)、[T19撤權/恢復](evidence/POC-07-R001/README.md) | 臨時匿名身份與全域bootstrap token不是正式帳號/Room ACL；活動Session與control_sessions須分清，授權歷史不自動恢復有效權限 |
 | SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
 | SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
@@ -301,3 +301,13 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 DEC-015最新確認（2026-11-05）：上鎖時詢問密碼；上鎖者為管理者，只有現任管理者能解鎖／改密碼並可轉交。離線由server隨機交給仍在線的房內人；無人接任則自動解鎖，下一位重新上鎖。轉交後原人重連不自動取回權限，以匿名成員ID而非暱稱核對。房間鎖管理已定，其他活動主持／發布權映射仍待；PRD v0.12第6/11節為現行規劃，未實作。
 
 DEC-016現行範圍（2026-11-05）：會議室人人可自行同時開麥聊天、畫面同時一人，PRD v0.12／D03已確認。原單講者限制與多人語音後續提案退役；原POC單音訊publisher尚未改造，已有證據不等於多人上行可用。M03前先POC-MA-01：A/B同時發布、C收兩人／互聽不自聽、逐來源啟停／恢復／房間隔離與單畫面競爭。只排計畫未開發／新實測；開放區多來源與其他治理權未一併定案。
+
+## POC-MA-01／SOL-002、006、008補充（2026-11-06）
+
+POC-MA-01／R001（2026-11-06）已完成會議室多音訊來源relay、逐來源decoder／AudioWorklet／時鐘與計數，lobby仍單來源；screen同時一人及同源clock保留。最終build/typecheck與四Firefox合成短流程11,063ms／媒體6,461ms完成；root重算A收B318、B收A302、C收A161/B175，未知／自送／歧義0、D影音0，A停B持續、晚加入／重連／切房／only0與單screen競爭通過，兩圖已實看。
+
+自動結果分開：初次66pass/1PGskip原log後被覆寫，root先前讀回計數保留；第二全套65pass/1space快照時序失敗/1PGskip，space窄診斷3/3，未改空間功能／測試，不稱最終全套綠。首輪Firefox sandbox啟動中止、受控首次成功、狀態文字修正後同頁並行點擊screen.subscribe未送出失敗、腳本改循序後最終成功皆保存，不回改舊run。
+
+真人多人聽感／Chrome/Edge跨裝置／本輪PG多人整合／真弱網／容量品質未驗；Docker不可用故memory fixture，無schema／新依賴，原8人程式門檻與舊managed主講授權仍在，不是新商品鎖房管理已完成。自有server／browser已停，未操作原4173／人類Edge／麥克風；未開始MVP／push／部署。
+
+移轉：保留multi-audio-receiver來源隔離／世代檢查、各來源500ms queue／8 decode backlog限制、最多8active與32歷史來源觀測；聚合統計只加總保留歷史，非永久單調累計。screen以clockId取同來源時鐘、同clock新世代取代舊世代但保留其他人。MVP需依會議室類型取代硬編碼studio、整合匿名房間管理與新語音准入（本輪舊managed模式仍需grant）、驗真人混音／回音／音量與PG模式。測試oscillator／canvas／socket close只留開發端，不包成正式假資料；單screen衝突維持publisher_exists／先停再由他人手動開。SOL007資料清冊不變。

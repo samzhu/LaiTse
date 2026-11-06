@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-06",
+  "testService": {
+    "pid": 34074,
+    "baseURL": "https://localhost:50419",
+    "fixture": "isolated memory/unlocked studio/no managed-host token",
+    "persistence": "process-memory",
+    "humanServiceOperated": false
+  },
+  "healthBeforeStop": {
+    "status": "ok",
+    "persistence": "process-memory"
+  },
+  "stopSent": "SIGTERM only to verified own launcher PID",
+  "browserReportCleanupErrors": [],
+  "humanEdgeOperated": false,
+  "humanMicrophoneOperated": false,
+  "existingPort4173ServiceStopped": false,
+  "DockerOrVolumesDeleted": false,
+  "sandboxProcessInspection": "default ps permission denied before any stop; verified own PID with escalated narrow ps",
+  "testServiceConfirmedStopped": true
+}

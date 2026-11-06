@@ -1,0 +1,122 @@
+{
+  "reviewer": "root",
+  "basis": "independently recomputed every received packet generation/hash against captured publisher hashes; no raw media stored",
+  "reportSHA256": "8d88e0aba35f9b3daa1f4e77a6efeda095b3e8245bdfbbe33dec5038eac09562",
+  "sourceHashesMatched": 64,
+  "status": "Pass within synthetic desktop memory fixture",
+  "channels": {
+    "audio": {
+      "D": {
+        "received": 0,
+        "ownerCounts": {},
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "A": {
+        "received": 318,
+        "ownerCounts": {
+          "B": 318
+        },
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "B": {
+        "received": 302,
+        "ownerCounts": {
+          "A": 302
+        },
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "C": {
+        "received": 336,
+        "ownerCounts": {
+          "B": 175,
+          "A": 161
+        },
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      }
+    },
+    "screen": {
+      "D": {
+        "received": 0,
+        "ownerCounts": {},
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "A": {
+        "received": 0,
+        "ownerCounts": {},
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "B": {
+        "received": 0,
+        "ownerCounts": {},
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      },
+      "C": {
+        "received": 24,
+        "ownerCounts": {
+          "A": 24
+        },
+        "unknown": 0,
+        "self": 0,
+        "ambiguous": 0
+      }
+    }
+  },
+  "AStopBPCM": {
+    "before": 121664,
+    "after": 125760
+  },
+  "CRecoveredSourcePCM": [
+    {
+      "generation": 7,
+      "active": true,
+      "clockId": "8a82885c-b06c-4a4b-bacd-963afc32e091",
+      "receivedPackets": 14,
+      "decodedFrames": 14,
+      "renderedPcmSamples": 12672,
+      "queuedSamples": 768,
+      "renderRms": 0.16881199452074847,
+      "packetGapCount": 0
+    },
+    {
+      "generation": 8,
+      "active": true,
+      "clockId": "3f27491b-26de-4cc9-92cf-588f3faea4a6",
+      "receivedPackets": 14,
+      "decodedFrames": 14,
+      "renderedPcmSamples": 12736,
+      "queuedSamples": 704,
+      "renderRms": 0.17011062035572821,
+      "packetGapCount": 0
+    }
+  ],
+  "quietWindow": {
+    "startMs": 9083,
+    "audioAndScreenReceived": 0
+  },
+  "roomSwitchWindow": {
+    "startMs": 8011,
+    "returnRoomSnapshotMs": 8645,
+    "studioMediaReceived": 0
+  },
+  "screenshotsActuallyViewed": [
+    "confirmed/c-two-audio-sources.png",
+    "confirmed/c-a-screen-clock.png"
+  ],
+  "humanListening": "not tested",
+  "PostgreSQL": "not rerun; unavailable",
+  "wholeMVPGo": false
+}

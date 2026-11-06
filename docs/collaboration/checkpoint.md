@@ -1,6 +1,6 @@
 # 工作階段 checkpoint
 
-**狀態：DEC-016會議室多人同時開麥／單人畫面已確認，PRD v0.12與POC-MA-01增量計畫已整理；未實作；2026-11-05。最新事項見文末。**
+**狀態：POC-MA-01輕量核心Pass（桌面Firefox合成／memory），真人多人與PG多人整合待驗；尚未啟MVP，2026-11-06。最新事項見文末。**
 
 - 人類原話「開始」並指定implement；按當時唯一無阻擋前沿執行T01。Luna xhigh實作，主代理思考、獨立檢視、最終完整檢查及紀錄；未切到其他票或MVP。
 - 產物：Node26.13.0／React/Vite／Fastify單一應用，production頁面／API／WSS，真實房間成員／有界合成控制，README、鎖版、TLS與瀏覽器腳本、版本授權inventory。
@@ -291,3 +291,15 @@ DEC-014／015本輪交付完成（2026-11-05）：PRD v0.11與既有MVP計畫已
 DEC-016：會議室人人可同時自行開麥、同時一畫面已確認。原話在decisions，PRD v0.12更新M03／D03／多人驗收與POC-MA-01；server現況仍單音訊publisher、尚未開發／驗測，新要求不沿用單講者證據宣稱可用。開放區多人、治理與分享交接仍待；本輪不操作既有服務或Edge。
 
 DEC-016交付讀回（2026-11-05）：人類原話、會議室人人自行同時開麥／同時單人畫面已保存PRD v0.12及decisions；M03/D03／驗收與POC-MA-01增量流程已同步。Github#1/#4/#10/#20保存後4/4正文精確讀回，原正文／AC／open／labels保留，憑據POC07-R002/multi-speaker-progress-readback.json。主要本機文件連結、單一計畫／版本／新增範圍與JSON／diff檢查通過；只規劃無新測試或src/deps更動，單音訊publisher尚未改造。紀錄同本機commit、不push／部署；writer結束、既有manual服務及人類Edge未操作／未停止。
+
+## POC-MA-01交付（2026-11-06）
+
+POC-MA-01／R001（2026-11-06）已完成會議室多音訊來源relay、逐來源decoder／AudioWorklet／時鐘與計數，lobby仍單來源；screen同時一人及同源clock保留。最終build/typecheck與四Firefox合成短流程11,063ms／媒體6,461ms完成；root重算A收B318、B收A302、C收A161/B175，未知／自送／歧義0、D影音0，A停B持續、晚加入／重連／切房／only0與單screen競爭通過，兩圖已實看。
+
+自動結果分開：初次66pass/1PGskip原log後被覆寫，root先前讀回計數保留；第二全套65pass/1space快照時序失敗/1PGskip，space窄診斷3/3，未改空間功能／測試，不稱最終全套綠。首輪Firefox sandbox啟動中止、受控首次成功、狀態文字修正後同頁並行點擊screen.subscribe未送出失敗、腳本改循序後最終成功皆保存，不回改舊run。
+
+真人多人聽感／Chrome/Edge跨裝置／本輪PG多人整合／真弱網／容量品質未驗；Docker不可用故memory fixture，無schema／新依賴，原8人程式門檻與舊managed主講授權仍在，不是新商品鎖房管理已完成。自有server／browser已停，未操作原4173／人類Edge／麥克風；未開始MVP／push／部署。
+
+來源／結果已保存並讀回：`docs/poc/evidence/POC-MA-01-R001/README.md`、root-readback/source-sha256/verdict/cleanup及各輪報告；Github#1/#4/#10/#20更新與正文讀回待本輪最後執行，按明確授權程式＋紀錄同本機commit。不自動啟動下一個POC或MVP。
+
+POC-MA-01-R001最終保存／讀回（2026-11-06）：程式／操作／verdict、32份選取證據及source64指紋保存，root重算所有接收封包來源與quiet／跨房窗口、實看兩張最終圖。最終短流程11,063ms／active6,461ms通過；全套第二跑space時序失敗與單檔3/3、首次log覆寫只保留讀回計數、三輪browser歷史與最終confirm分開，不稱全綠或真人通過。Github#1/#4/#10/#20已保存並4/4精確讀回、原AC/open/labels保持。JSON／64hash／122主要本機連結／diff／secret模式掃描通過，全部自有server/browser已停且讀回確認，未操作人類資源或資料volume。root唯一writer結束，程式＋紀錄同本機commit，不push／部署／自動接MVP；真人多人、PG模式、目標跨裝置／容量等保留未驗。

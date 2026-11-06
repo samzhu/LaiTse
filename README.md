@@ -375,3 +375,9 @@ Build the app first with pinned Node 26.13.0. `node scripts/process-restart-smok
 The three-browser scenario observes active synthetic Opus/VP8 and room control across a real application stop and a new process start with the same startup configuration. It distinguishes fixed scene reconstruction, rejection of old resume credentials, new participant identities, fresh host claims, manually restarted sources, and data that is absent after restart. Changing the live room password before the restart makes the difference between startup configuration and unsaved runtime state observable.
 
 This describes the historical 2026-11-05 T18/R001 run, before PostgreSQL persistence was implemented: that run observed process-memory loss and remains valid evidence of its tested build. The PostgreSQL 18 local path is documented above; it does not rewrite T18's result or establish production backups, database hosting, or Cloud Run recovery. Keep credentials out of command history and retained evidence.
+
+## POC-MA-01：會議室多人同時語音
+
+2026-11-06已完成studio多來源音訊本機合成核心驗證；每頁加入同一會議室後先「開始收聽」，想說話的人各按「開始麥克風」。接收頁可看到多個來源的接收／解碼／AudioWorklet PCM與RMS；一人停麥不停止其他來源，畫面仍同時一人分享。開放區維持原單來源／距離規則，原8人POC限制與舊managed發布授權未移除。
+
+完整[操作與驗測紀錄](docs/poc/evidence/POC-MA-01-R001/README.md)分開列合成／真人、成功／失敗／未測；真人多人聽感與PG多人模式未驗。可信HTTPS服務啟動後可用鎖定Node執行`MA01_BASE_URL=https://localhost:<port>/ node scripts/multi-speaker-smoke.mjs`，輸出在`.scratch/ma01/browser`，不要覆蓋欲保留的前輪目錄。腳本只開本輪獨立Firefox／合成音源，無硬體收音或正式部署。

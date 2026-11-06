@@ -80,10 +80,58 @@ async function expectNoBinary(socket, durationMs = 80) {
   assert.deepEqual(received, [], "no audio binary should be delivered to this socket");
 }
 
-async function join(socket, displayName) {
+async function expectNoJson(socket, predicate, durationMs = 80) {
+  const received = [];
+  const onMessage = (raw, isBinary) => {
+    if (isBinary) return;
+    try {
+      const message = JSON.parse(raw.toString());
+      if (predicate(message)) received.push(message);
+    } catch {}
+  };
+  socket.on("message", onMessage);
+  await new Promise((resolve) => setTimeout(resolve, durationMs));
+  socket.off("message", onMessage);
+  assert.deepEqual(received, [], "no matching control message should be delivered to this socket");
+}
+
+async function join(socket, displayName, roomId = "lobby") {
   const snapshot = nextJson(socket, (message) => message.type === "room.snapshot");
-  socket.send(JSON.stringify({ type: "join", roomId: "lobby", displayName }));
+  socket.send(JSON.stringify({ type: "join", roomId, displayName }));
   await snapshot;
+}
+
+function nextBinaryGeneration(socket, generation) {
+  return new Promise((resolve, reject) => {
+    const cleanup = () => {
+      clearTimeout(timer);
+      socket.off("message", onMessage);
+      socket.off("error", onError);
+      socket.off("close", onClose);
+    };
+    const onError = (error) => {
+      cleanup();
+      reject(error);
+    };
+    const onClose = (code) => {
+      cleanup();
+      reject(new Error(`Socket closed (${code}) before audio generation ${generation} arrived.`));
+    };
+    const onMessage = (raw, isBinary) => {
+      if (!isBinary) return;
+      const bytes = Buffer.from(raw);
+      if (bytes.byteLength < 8 || bytes.readUInt32BE(4) !== generation) return;
+      cleanup();
+      resolve(bytes);
+    };
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error(`Audio generation ${generation} did not arrive within 5 seconds.`));
+    }, 5_000);
+    socket.on("message", onMessage);
+    socket.once("error", onError);
+    socket.once("close", onClose);
+  });
 }
 
 function makeFrame(generation, sequence, packet = Buffer.from([0xf8, 0xff, 0xfe])) {
@@ -248,5 +296,144 @@ test("subscribers receive identical frames across one receiver unsubscribe and r
     publisher.close();
     receiverA.close();
     receiverB.close();
+  }
+});
+
+test("studio relays concurrent publisher generations independently with self and room isolation", { timeout: 30_000 }, async () => {
+  const sockets = [];
+  try {
+    const publisherA = await connect();
+    const publisherB = await connect();
+    const receiverC = await connect();
+    const outside = await connect();
+    sockets.push(publisherA, publisherB, receiverC, outside);
+    await Promise.all([
+      join(publisherA, "Speaker A", "studio"),
+      join(publisherB, "Speaker B", "studio"),
+      join(receiverC, "Listener C", "studio"),
+      join(outside, "Lobby listener", "lobby"),
+    ]);
+
+    const subscriptions = [publisherA, publisherB, receiverC, outside].map((socket) => {
+      const ack = nextJson(socket, (message) => message.type === "audio.subscribed");
+      socket.send(JSON.stringify({ type: "audio.subscribe" }));
+      return ack;
+    });
+    await Promise.all(subscriptions);
+
+    const aReceivesB = nextJson(publisherB, (message) => message.type === "audio.stream");
+    const cReceivesA = nextJson(receiverC, (message) => message.type === "audio.stream");
+    const startedA = await startPublisher(publisherA);
+    const [streamAAtB, streamAAtC] = await Promise.all([aReceivesB, cReceivesA]);
+    const bReceivesA = nextJson(publisherA, (message) => message.type === "audio.stream");
+    const cReceivesB = nextJson(receiverC, (message) => message.type === "audio.stream");
+    const startedB = await startPublisher(publisherB);
+    const [streamBAtA, streamBAtC] = await Promise.all([bReceivesA, cReceivesB]);
+    assert.notEqual(startedA.generation, startedB.generation, "the server assigns an independent generation to each source");
+    assert.deepEqual([streamAAtB.generation, streamAAtC.generation, streamBAtA.generation, streamBAtC.generation],
+      [startedA.generation, startedA.generation, startedB.generation, startedB.generation]);
+    assert.ok([streamAAtB, streamAAtC, streamBAtA, streamBAtC].every((stream) => typeof stream.clockId === "string" && stream.clockId.length > 0));
+    assert.equal(streamAAtB.clockId, streamAAtC.clockId, "one publisher has the same server clock on each subscriber");
+    assert.equal(streamBAtA.clockId, streamBAtC.clockId, "the other publisher has its own server clock");
+    assert.notEqual(streamAAtB.clockId, streamBAtA.clockId, "publisher clocks cannot alias each other");
+    await expectNoJson(outside, (message) => message.type === "audio.stream");
+
+    const aToB = nextBinaryGeneration(publisherB, startedA.generation);
+    const aToC = nextBinaryGeneration(receiverC, startedA.generation);
+    const frameA = makeFrame(startedA.generation, 0, Buffer.from([0xf8, 0x51, 0x61]));
+    const noSelfEchoA = expectNoBinary(publisherA);
+    publisherA.send(frameA);
+    assert.deepEqual(await aToB, frameA);
+    assert.deepEqual(await aToC, frameA);
+    await noSelfEchoA;
+
+    const bToA = nextBinaryGeneration(publisherA, startedB.generation);
+    const bToC = nextBinaryGeneration(receiverC, startedB.generation);
+    const frameB = makeFrame(startedB.generation, 0, Buffer.from([0xf8, 0x52, 0x62]));
+    const noSelfEchoB = expectNoBinary(publisherB);
+    publisherB.send(frameB);
+    assert.deepEqual(await bToA, frameB);
+    assert.deepEqual(await bToC, frameB);
+    await noSelfEchoB;
+
+    const forgedPublisher = await connect();
+    sockets.push(forgedPublisher);
+    await join(forgedPublisher, "Forged speaker", "studio");
+    const forgedStarted = await startPublisher(forgedPublisher);
+    const forgedFrameError = nextJson(forgedPublisher, (message) => message.type === "protocol.error");
+    const forgedPublisherClosed = new Promise((resolve) => forgedPublisher.once("close", (code) => resolve(code)));
+    const noSpoofedFrameAtC = expectNoBinary(receiverC);
+    forgedPublisher.send(makeFrame(startedA.generation, 0, Buffer.from([0xf8, 0xee, 0x01])));
+    assert.ok(forgedStarted.generation !== startedA.generation && forgedStarted.generation !== startedB.generation);
+    assert.equal((await forgedFrameError).code, "invalid_audio_frame", "a connection cannot publish under another source generation");
+    assert.equal(await forgedPublisherClosed, 1008);
+    await noSpoofedFrameAtC;
+
+    const bContinuesAfterForgeryAtA = nextBinaryGeneration(publisherA, startedB.generation);
+    const bContinuesAfterForgeryAtC = nextBinaryGeneration(receiverC, startedB.generation);
+    const healthyFrameB = makeFrame(startedB.generation, 1, Buffer.from([0xf8, 0x54, 0x64]));
+    publisherB.send(healthyFrameB);
+    assert.deepEqual(await bContinuesAfterForgeryAtA, healthyFrameB);
+    assert.deepEqual(await bContinuesAfterForgeryAtC, healthyFrameB);
+
+    const late = await connect();
+    sockets.push(late);
+    await join(late, "Late listener", "studio");
+    const lateSubscribed = nextJson(late, (message) => message.type === "audio.subscribed");
+    const lateStreamA = nextJson(late, (message) => message.type === "audio.stream" && message.generation === startedA.generation);
+    const lateStreamB = nextJson(late, (message) => message.type === "audio.stream" && message.generation === startedB.generation);
+    late.send(JSON.stringify({ type: "audio.subscribe" }));
+    await lateSubscribed;
+    assert.deepEqual(new Set((await Promise.all([lateStreamA, lateStreamB])).map((stream) => stream.generation)),
+      new Set([startedA.generation, startedB.generation]));
+
+    const endAAtB = nextJson(publisherB, (message) => message.type === "audio.streamEnded" && message.generation === startedA.generation);
+    const endAAtC = nextJson(receiverC, (message) => message.type === "audio.streamEnded" && message.generation === startedA.generation);
+    const endAAtLate = nextJson(late, (message) => message.type === "audio.streamEnded" && message.generation === startedA.generation);
+    const stoppedA = nextJson(publisherA, (message) => message.type === "audio.stopped");
+    publisherA.send(JSON.stringify({ type: "audio.stop", generation: startedA.generation }));
+    await Promise.all([stoppedA, endAAtB, endAAtC, endAAtLate]);
+
+    const bContinuesAtA = nextBinaryGeneration(publisherA, startedB.generation);
+    const bContinuesAtC = nextBinaryGeneration(receiverC, startedB.generation);
+    const bContinuesAtLate = nextBinaryGeneration(late, startedB.generation);
+    const nextFrameB = makeFrame(startedB.generation, 2, Buffer.from([0xf8, 0x55, 0x65]));
+    publisherB.send(nextFrameB);
+    assert.deepEqual(await bContinuesAtA, nextFrameB);
+    assert.deepEqual(await bContinuesAtC, nextFrameB);
+    assert.deepEqual(await bContinuesAtLate, nextFrameB);
+    await expectNoBinary(outside);
+
+    const endBAtA = nextJson(publisherA, (message) => message.type === "audio.streamEnded" && message.generation === startedB.generation);
+    const endBAtC = nextJson(receiverC, (message) => message.type === "audio.streamEnded" && message.generation === startedB.generation);
+    const endBAtLate = nextJson(late, (message) => message.type === "audio.streamEnded" && message.generation === startedB.generation);
+    const stoppedB = nextJson(publisherB, (message) => message.type === "audio.stopped");
+    publisherB.send(JSON.stringify({ type: "audio.stop", generation: startedB.generation }));
+    await Promise.all([stoppedB, endBAtA, endBAtC, endBAtLate]);
+  } finally {
+    for (const socket of sockets) socket.close();
+  }
+});
+
+test("open lobby keeps its single audio publisher rule", { timeout: 10_000 }, async () => {
+  const first = await connect();
+  const second = await connect();
+  try {
+    await Promise.all([join(first, "Lobby speaker A"), join(second, "Lobby speaker B")]);
+    const active = await startPublisher(first);
+    assert.ok(active.generation > 0);
+    const rejected = nextJson(second, (message) => message.type === "audio.error" && message.code === "publisher_exists");
+    second.send(JSON.stringify({
+      type: "audio.start",
+      codec: "opus",
+      sampleRate: 48_000,
+      channels: 1,
+      bitrate: 32_000,
+      frameDurationUs: 20_000,
+    }));
+    assert.equal((await rejected).code, "publisher_exists");
+  } finally {
+    first.close();
+    second.close();
   }
 });

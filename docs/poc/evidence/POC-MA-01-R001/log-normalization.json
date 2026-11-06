@@ -1,0 +1,46 @@
+{
+  "method": "copied console logs only: strip ANSI styling and line-end whitespace; actual test contents/results retained; original logs remain ignored .scratch/ma01",
+  "browserReportsOrSourceHashesChanged": false,
+  "files": [
+    {
+      "file": "ui-recheck-failed.log",
+      "rawSHA256": "d558a00917ebc097841ab9c09e4d7408696280b9641be2d6fc62ba18e4661f35",
+      "normalizedSHA256": "d558a00917ebc097841ab9c09e4d7408696280b9641be2d6fc62ba18e4661f35"
+    },
+    {
+      "file": "space-diagnostic.log",
+      "rawSHA256": "12572f36876b336e6c824b4e709dbdd3acb9ad8b7784401f527368c0fc7578ac",
+      "normalizedSHA256": "12572f36876b336e6c824b4e709dbdd3acb9ad8b7784401f527368c0fc7578ac"
+    },
+    {
+      "file": "confirmed.log",
+      "rawSHA256": "3e7cd3e98d9219e2f5e6b3b0e5d657bab62d42fd91f08e6f94396d0881cc24ce",
+      "normalizedSHA256": "3e7cd3e98d9219e2f5e6b3b0e5d657bab62d42fd91f08e6f94396d0881cc24ce"
+    },
+    {
+      "file": "final-build.log",
+      "rawSHA256": "40fbc3a4e617ec553eba00f97e0425a5b0ec2d868763f0d0f45a623f4a20086c",
+      "normalizedSHA256": "7f1b00998cb4082a743e948cb1a144592aaf22e45c3bd0c9103b7db449a9923e"
+    },
+    {
+      "file": "implementation-build.log",
+      "rawSHA256": "114622196d3699902107164838b6f5104f50d610f8a3b65c911d4334ecfaa67c",
+      "normalizedSHA256": "62c721e56e5f68e82e5e5afaee6c05d89873ee04ebd9a3422aab59551712b95d"
+    },
+    {
+      "file": "launch-failed.log",
+      "rawSHA256": "216e3ac540484837a10902e9c56637dd27fe8591baf394adc6d95a77f7955c43",
+      "normalizedSHA256": "372f5b5683ca714e9c622284cec88c15a120dd80bb62edd36ced2e68a29764f1"
+    },
+    {
+      "file": "pre-ui-fix-passed.log",
+      "rawSHA256": "1c1534a37e1a55a7dfc33184915c1eb9271c979a83055e630576b64a690a3f20",
+      "normalizedSHA256": "1c1534a37e1a55a7dfc33184915c1eb9271c979a83055e630576b64a690a3f20"
+    },
+    {
+      "file": "full-suite-latest.log",
+      "rawSHA256": "44a5607f84e37baacb82dc1c2d2d60d912538a7b3af777dbb813c57d11fdbcf6",
+      "normalizedSHA256": "8e77390d2b679984711a64f188230d96c30374632f1e7775661bfd2bb9c7d38e"
+    }
+  ]
+}

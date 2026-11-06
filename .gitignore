@@ -48,3 +48,5 @@ dist/
 .env.local
 
 .scratch/t19/
+
+.scratch/ma01/

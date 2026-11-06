@@ -351,7 +351,7 @@ export class ScreenController {
       },
       audioVideoSync: {
         mode: state.syncMode,
-        matchingAudioPublisherClock: Boolean(this.activeClockId && this.timeline.getActiveAudioStream()?.clockId === this.activeClockId),
+        matchingAudioPublisherClock: Boolean(this.activeClockId && this.timeline.getAudioStream(this.activeClockId)?.clockId === this.activeClockId),
         scheduledSourceClockOffsetMs: state.scheduledSourceClockOffsetMs,
         audioMaster: (() => {
           const master = this.timeline.getAudioMaster(this.activeClockId, performance.now());

@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-06",
+  "baseline": "16924e0",
+  "pinnedNode": "v26.13.0",
+  "databaseThisRun": "unavailable; core audio verification uses isolated process-memory fixture",
+  "dockerSocketAvailable": false,
+  "dockerDiagnostic": "docker ps could not connect: socket not found",
+  "applicationLaunchAttempts": [
+    "open -a OrbStack: application name unavailable",
+    "open /Applications/OrbStack.app: kLSNoExecutableErr"
+  ],
+  "furtherDockerRetries": false,
+  "existingPort4173Health": "no response at initial check; no existing app process killed",
+  "humanBrowserOrMicrophoneOperated": false,
+  "testServer": "planned independent ephemeral loopback HTTPS port; no deployment"
+}

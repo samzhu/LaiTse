@@ -1,0 +1,7 @@
+[MA01] A-and-B-publish-and-receive-other-source-with-real-per-source-PCM {"generations":{"A":4,"B":5},"pcmSamples":{"A":5248,"B":4992}}
+[MA01] failure Error: MA01-D sent screen.subscribe was not observed within 8000 ms.
+    at waitFor (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:474:9)
+    at async startWatchingScreen (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:653:3)
+    at async Promise.all (index 1)
+    at async runSmoke (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:773:3)
+    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/multi-speaker-smoke.mjs:1017:3

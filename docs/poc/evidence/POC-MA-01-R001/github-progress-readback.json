@@ -1,0 +1,59 @@
+{
+  "runId": "POC-MA-01-R001",
+  "date": "2026-11-06",
+  "codePushed": false,
+  "issues": [
+    {
+      "number": 1,
+      "url": "https://github.com/samzhu/LaiTse/issues/1",
+      "updatedAt": "2026-11-06T01:44:56Z",
+      "beforeBodySHA256": "cca8011cfd5179ac007cd163e5c37d45eb6e04f547945ace57d7f03bcad42f3b",
+      "expectedBodySHA256": "0c7af2884e007cbd4dbadfe0e806f68aa16814af0502bbfa05ffb59e163bcb46",
+      "readbackBodySHA256": "0c7af2884e007cbd4dbadfe0e806f68aa16814af0502bbfa05ffb59e163bcb46",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-06T01:44:58.082437+00:00"
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/samzhu/LaiTse/issues/4",
+      "updatedAt": "2026-11-06T01:44:59Z",
+      "beforeBodySHA256": "914067f0fed36f4f74c54c232f1b483c18efe9e959f7bb5ef75faf87908554e7",
+      "expectedBodySHA256": "7ec5a1005b3c82d547cce6926da857203a02d69568ae3c76c4f2dde7a796e324",
+      "readbackBodySHA256": "7ec5a1005b3c82d547cce6926da857203a02d69568ae3c76c4f2dde7a796e324",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-06T01:45:00.311189+00:00"
+    },
+    {
+      "number": 10,
+      "url": "https://github.com/samzhu/LaiTse/issues/10",
+      "updatedAt": "2026-11-06T01:45:01Z",
+      "beforeBodySHA256": "ea677ba507fd796ed341a5bf47917973643ac2afd8e4303c063a9591c2d4939c",
+      "expectedBodySHA256": "b2c8fe11f40f88f33c89c5de7bf5346a528e7938344175217d00ca5a6e660344",
+      "readbackBodySHA256": "b2c8fe11f40f88f33c89c5de7bf5346a528e7938344175217d00ca5a6e660344",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-06T01:45:02.688394+00:00"
+    },
+    {
+      "number": 20,
+      "url": "https://github.com/samzhu/LaiTse/issues/20",
+      "updatedAt": "2026-11-06T01:45:03Z",
+      "beforeBodySHA256": "06eba64c334702d1e05958bf3366daf54e5d99a94dd2a7cf488d5c08f8ad2961",
+      "expectedBodySHA256": "5373ebd30788f4649c77d566eb636587d053ed295bd5badc853936410e418491",
+      "readbackBodySHA256": "5373ebd30788f4649c77d566eb636587d053ed295bd5badc853936410e418491",
+      "exactBodyMatch": true,
+      "previousBodyPreserved": true,
+      "stateAfter": "open",
+      "labelsUnchanged": true,
+      "readbackAtUTC": "2026-11-06T01:45:05.057418+00:00"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "dist/client/audio-capture-worklet.js": "a1b408f100cac534fe3e7a83b083ac1c61490a2e0573e5a881616054d96219bc",
+  "dist/client/index.html": "ca61d7f313cbe7ddb987a7a7864de78b5861d772afabfec6d0700d4b7c2433de",
+  "dist/client/audio-playback-worklet.js": "419f6f5d9a8b4697efea9a4a2d5c0c5b116b6dd6215019778accdf9b7fee65f7",
+  "dist/client/assets/index-BzveoVCI.css": "90953f0fc9c6a76ce8f44b7db68e151f31be112d030b6ed3d40f536841bb48c0",
+  "dist/client/assets/index-ChZDg2ac.js": "6def23f2d1530ae2286e89a42a9a2757603017cfc21305f09ac6e09607ae76b8",
+  "dist/client/assets/phaser.esm-BxCDEWDb.js": "7ca0ede9b89b52eef9ec3eac1f993697b1696ec81889b7a4aafdbf8db3f4355e"
+}
