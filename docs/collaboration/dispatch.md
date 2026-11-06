@@ -510,3 +510,9 @@ REPO-LAYOUT-01 root文件scope補充：新建docs/mvp/README.md僅索引既有PR
 REPO-LAYOUT-01 code writer已STOP交回root；root窄修local-tcp-fault-proxy.mjs為純library，移除批次加入的helper import／chdir呼叫，內容回到原版純移動（此檔非CLI亦無路徑需求）；保留CLI明確opt-in cwd，避免import library改全域工作目錄。
 
 REPO-LAYOUT-01 root驗收與保存：code/research writers已STOP；root npm ci改用既有.cache/npm後成功，build/typecheck/PG84/0skip/31語法與tmp→3browser核心通過；79純搬移/30path調整，原170 lock entries版本與integrity不變，原evidence無改。root接手poc README改繁中並精確說明POC legacy根.env，無產品擴張。人工4174零人平順換poc/dist/PID62270並讀回ready，私有4175與profiles停清，PG/volume保留；文件與GitHub保存讀回後同筆commit，所有writer資源釋出，不push/MVP/部署。
+
+## REPO-TIDY-01／push前實際repo根整理（2026-11-06）
+
+人類授權「可以先push一版」，補充「要先整理專案資料夾」「repo資料夾」；先整理實際repo根與追蹤邊界再push，未撤銷push授權。root唯一writer：.gitignore、README、原有AGENTS.md（原文納入Git不改寫）、docs/collaboration/{dispatch,checkpoint,project-brief,delivery-index}.md；本機.scratch/repo-tidy01保存舊root dist/.DS_Store，不刪資料。poc/apps/docs內容與歷史evidence/依賴不搬改；root workspace工具/.cache/.tools/node_modules保留標準位置。原AGENTS在前輪被排除僅為當時scope，本輪依repo協作入口納入，文件原文保持。沒有新增需求/功能/服務/部署。
+
+不變條件：不啟動應用（4173/4174均確認未回應），不搬刪secret/runtime/PG/volume、不碰其他工作。驗收為root清單、Git ignore/readback、AGENTS原文hash、歷史evidence無變、diff whitespace、遠端分支與push後SHA比對；純目錄/文件/ignore無需重跑84或browser。先commit再普通push HEAD到已配置origin/main，不force；遇遠端diverge先檢視，不丟棄本機或遠端commits。停止條件為repo整好、push讀回一致，服務仍停。

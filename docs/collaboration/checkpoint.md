@@ -387,3 +387,11 @@ Node26.13乾淨安裝成功（初次離線誤用預設cache失敗保留，改rep
 ## 人工導覽／停止服務（2026-11-06，最新）
 
 人類要求「先不開服務, 教我如何手動測試 我先看一下功能跟操作」。root已確認自有4174/PID62270並SIGTERM，runtime回寫stopped／HTTP不可連線，本輪未啟動新服務。既有PG容器／資料／volume未變動，不停止其他服務或碰人類UI。手動功能導覽已保存poc/MANUAL-TESTING.md並連到根／POC README；先人物/房間/互動/門禁，再影音與交接，另列未執行的暫存啟動指令與PG保存差異。新啟動必須依人類之後的明確指示，不能沿上文「保留運作」自動重開。未跑測試／build／browser、未修改產品碼，僅指南與停止狀態。
+
+## REPO-TIDY-01／repo根整理與push授權（2026-11-06）
+
+人類先授權「可以先push一版」，補充「要先整理專案資料夾」「repo資料夾」。本輪先整理實際repo根：已停用的舊root dist及.DS_Store移入ignored .scratch/repo-tidy01保存，不刪資料；.gitignore改為完整忽略本機scratch/tools/cache、各workspace建置產物及秘密env，只保留.env.example。AGENTS.md為既有人類提供的協作規則，本輪原文納入版本管理，不改寫；前輪排除它是當時scope。POC仍在poc/，apps/web僅README，docs證據原位，不啟動應用或MVP。
+
+驗收：root清單／Git ignore／sample env仍可追蹤／AGENTS原文hash／已追蹤檔案未含私有目錄、key/env或本機實際DSN/password均通過。4173/4174均未回應，本輪不啟動新服務／不動PG或其他程序。只有本機目錄、ignore、文件整理，未重跑build/84/browser，沿REPO-LAYOUT-01既有證據；不改歷史evidence。
+
+本輪人類已明確授權將整理後的已提交版本普通push至現有origin/main，不force、不部署；完成狀態以遠端main SHA與本機HEAD讀回一致為準（回執留本機.scratch/repo-tidy01）。這是本次push授權，未延伸成自動部署／啟服務。

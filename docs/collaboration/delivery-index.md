@@ -96,3 +96,11 @@ REPO-LAYOUT-01已將技術核心POC收進`poc/`，root為單lock npm workspace�
 Node26.13乾淨安裝成功（初次離線誤用預設cache失敗保留，改repo既有.cache/npm成功）、root workspace build/typecheck、PG全suite84/84且0skip、31腳本語法及純helper/library import不改cwd通過。從/private/tmp啟動三個隔離Chrome/Edge profiles，2路Opus PCM＋單VP8與逐源停止通過（19,644ms，觀測窗4,014ms）；79檔純搬移、30檔路徑調整，170registry lock entries及所有依賴exact版本不變。root修純TCP library不應chdir，app static root改依模組位置解析避免cwd。人工4174在0人後換poc/dist，PID62270／PGready／0人10席，原4173不碰；私有4175及測試profiles已停／清理。
 
 [證據／mapping／失敗與限制](../poc/evidence/REPO-LAYOUT-01/README.md)。研究與實作writer皆STOP，root完成檢視與純library窄修；root唯一writer提交程式與紀錄。GitHub母#1/#20補目錄與POC非產品說明、保留closed原理由，不新建MVP票、不push／部署或自動開MVP；原untrackedAGENTS/.scratch不納入。
+
+## REPO-TIDY-01／repo根整理與push授權（2026-11-06）
+
+人類先授權「可以先push一版」，補充「要先整理專案資料夾」「repo資料夾」。本輪先整理實際repo根：已停用的舊root dist及.DS_Store移入ignored .scratch/repo-tidy01保存，不刪資料；.gitignore改為完整忽略本機scratch/tools/cache、各workspace建置產物及秘密env，只保留.env.example。AGENTS.md為既有人類提供的協作規則，本輪原文納入版本管理，不改寫；前輪排除它是當時scope。POC仍在poc/，apps/web僅README，docs證據原位，不啟動應用或MVP。
+
+驗收：root清單／Git ignore／sample env仍可追蹤／AGENTS原文hash／已追蹤檔案未含私有目錄、key/env或本機實際DSN/password均通過。4173/4174均未回應，本輪不啟動新服務／不動PG或其他程序。只有本機目錄、ignore、文件整理，未重跑build/84/browser，沿REPO-LAYOUT-01既有證據；不改歷史evidence。
+
+本輪人類已明確授權將整理後的已提交版本普通push至現有origin/main，不force、不部署；完成狀態以遠端main SHA與本機HEAD讀回一致為準（回執留本機.scratch/repo-tidy01）。這是本次push授權，未延伸成自動部署／啟服務。

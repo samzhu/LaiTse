@@ -8,6 +8,7 @@
 
 ```text
 LaiTse/
+├── AGENTS.md                # 專案協作規則
 ├── poc/                     # 可獨立建置／操作的技術實驗 workspace
 │   ├── src/                 # POC 前後端，含實驗介面
 │   ├── scripts/             # 合成來源、瀏覽器驗測與故障工具
@@ -26,7 +27,7 @@ LaiTse/
 └── package-lock.json        # 單一依賴鎖檔
 ```
 
-`.tools/`、`.cache/`、`.scratch/` 為repo本機工具與私有測試產物，不提交。MVP開始前不建立空的共用套件；確認可用且有實際使用者後，再決定是否抽出 `packages/`。
+`.tools/`、`.cache/`、`.scratch/` 為repo本機工具與私有測試產物，整個目錄不提交；`node_modules/`及各workspace的`dist/`為可重建產物。根目錄舊`dist/`已移至本機`.scratch/repo-tidy01/`保存，現行POC產物只用`poc/dist/`。MVP開始前不建立空的共用套件；確認可用且有實際使用者後，再決定是否抽出 `packages/`。
 
 ## 先操作技術 POC
 
