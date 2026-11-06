@@ -1,0 +1,10 @@
+✔ PostgreSQL persistence survives app restart and fails closed on transaction errors (1077.06475ms)
+✔ PostgreSQL migrates legacy locks, commits anonymous ownership, and clears orphaned locks after restart (564.791917ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1937.444209

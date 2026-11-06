@@ -4,6 +4,10 @@
 - 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19原範圍NoGo保留；DEC-013改為桌機優先、手機後續，現進入桌機MVP規劃，待決項尚未定案，未開始程式開發**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
+## POC-RM-01現況（2026-11-06）
+
+[R001](evidence/POC-RM-01-R001/README.md)匿名studio管理核心已驗：密碼上鎖／唯一owner／轉交、DEC017換房保留、離線在線房內人接任／無候選解鎖；core69與真PG2案例、4Firefox13項、71來源指紋及DB審計已讀回。舊host模式單獨保留，不是新增登入需求。亦補同版PG多人影音短回歸；舊MA01 memory／PG未驗狀態不回改。MVP與部署未啟動，真人多人／原8人門檻與其餘治理仍待。
+
 ## DEC-016目前影音範圍（2026-11-05）
 
 會議室多人同時開麥、同時單人畫面已確認；2026-11-06已在[POC-MA-01-R001](evidence/POC-MA-01-R001/README.md)完成多來源relay／逐來源解碼、PCM與clock及桌面Firefox合成核心驗收。SOL-002/006可沿已驗範圍接入M03，真人多人、目標桌機與PG多人整合仍待，原8人門檻／managed授權未移除，不宣稱完整商品Go。開放區仍單音訊來源／原距離規則，其他治理仍待。
@@ -24,7 +28,7 @@
 |---|---|---|---|
 | SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
 | SOL-002 | **有條件可採用／目標裝置待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標桌機跨端與原生畫面核心於M03補驗；手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
-| SOL-003 | **需重構**：server權威Room/控制Session/門禁/授撤權核心保留 | [POC03-R004](evidence/POC-03-R004/README.md)／[R005](evidence/POC-03-R005/README.md)、[PG資料恢復](evidence/POC-06-R002/README.md)、[T19撤權/恢復](evidence/POC-07-R001/README.md) | 臨時匿名身份與全域bootstrap token不是正式帳號/Room ACL；活動Session與control_sessions須分清，授權歷史不自動恢復有效權限 |
+| SOL-003 | **可採用匿名門鎖核心／其餘治理待整合**：server匿名ID、Room控制與門禁 | 既有R004/R005及[POC-RM-01真PG/Firefox](evidence/POC-RM-01-R001/README.md)驗唯一owner／轉交／離線接任／無人解鎖 | 本版不做帳號認證；需由固定studio一般化房間配置，活動Session與control session分開；其他主持治理待決。舊host token不是新匿名管理，轉交或重連不復活舊owner |
 | SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
 | SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
 | SOL-006 | **可採用**：接收意圖/最新authority/config/keyframe恢復與有界背壓策略 | [POC04-R002](evidence/POC-04-R002/README.md)／[R003](evidence/POC-04-R003/README.md)、[T19短整合](evidence/POC-07-R001/integrated_confirmed/report.json)；PG模式下實播/撤權不復活 | route close不是TCP弱網或雲timeout；500ms本地queue與1s callback等是候選參數，非E2E/產品品質承諾，手機/背景待驗 |
@@ -112,7 +116,7 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 |---|---|---|
 | 固定場景／房間 | SPACE_ROOMS原始碼與build，可重建的lobby／studio；room_settings保存既有房間可變設定 | 場景編輯器／動態新增房間未實作，不假稱地圖可由DB自由編輯 |
 | 啟動設定／密鑰 | DB URL／TLS／host bootstrap token留環境或本機ignored檔；application_settings保存managed_host_mode | 初次seed後不允許缺token降成unmanaged；token可輪替，值不存DB。正式密鑰管理與託管未定 |
-| 門禁／顯示設定 | room_settings：密碼salt/verifier、鎖定/revision、presentation pause、danmaku enabled | DB已有設定優先於env seed。R002兩真browser驗B仍有效、A被拒絕；無明文密碼 |
+| 門禁／顯示設定 | room_settings：密碼salt/verifier、鎖定/revision、lock_kind（none/legacy/anonymous）、manager_participant_id、presentation pause、danmaku enabled | 002 migration additive、PG升級保留legacy verifier/revision；新匿名owner／轉交COMMIT後ACK，restart無在線owner清匿名鎖／憑證，legacy鎖保留。DB既有設定優先seed、無明文密碼；R001讀回與審計相符 |
 | 參與者／位置／模式 | participants：UUID、名稱、role/mode、最後房間/位置與last_seen_at | PG整合驗原ID/interaction模式/位置恢復；不等於正式帳號／跨裝置認證。boot不載入ghost在線成員 |
 | Session／撤銷 | control_sessions：SHA256 proof digest、門禁revision、到期/撤銷、active connection；bearer只在browser/短期memory | active lease10分鐘、每分鐘續租，crash從最近commit的lease判斷；正常斷線後10分鐘。有效proof仍核最新gate；expired/leave/kick不復活。無永久Session承諾 |
 | 聊天／彈幕／貼圖／回饋 | interaction_archive追加原始互動，history/live到期時間、remove tombstone、public_cleared_at；interaction_dedup另存摘要與TTL | archive與畫面TTL分開：history50/5分鐘、公開20/8秒、feedback60秒；clear公開不刪history，remove不在恢復投影重現。重啟與去重已驗，archive未設自動清理／正式保留期限，歷史查詢UI未新增 |
@@ -311,3 +315,13 @@ POC-MA-01／R001（2026-11-06）已完成會議室多音訊來源relay、逐來�
 真人多人聽感／Chrome/Edge跨裝置／本輪PG多人整合／真弱網／容量品質未驗；Docker不可用故memory fixture，無schema／新依賴，原8人程式門檻與舊managed主講授權仍在，不是新商品鎖房管理已完成。自有server／browser已停，未操作原4173／人類Edge／麥克風；未開始MVP／push／部署。
 
 移轉：保留multi-audio-receiver來源隔離／世代檢查、各來源500ms queue／8 decode backlog限制、最多8active與32歷史來源觀測；聚合統計只加總保留歷史，非永久單調累計。screen以clockId取同來源時鐘、同clock新世代取代舊世代但保留其他人。MVP需依會議室類型取代硬編碼studio、整合匿名房間管理與新語音准入（本輪舊managed模式仍需grant）、驗真人混音／回音／音量與PG模式。測試oscillator／canvas／socket close只留開發端，不包成正式假資料；單screen衝突維持publisher_exists／先停再由他人手動開。SOL007資料清冊不變。
+
+## POC-RM-01／SOL003、007、008補充
+
+POC-RM-01-R001（2026-11-06，基線0995141）匿名studio管理核心Pass：上鎖詢問密碼、server匿名ID唯一owner、改密碼／解鎖／手動轉交、同名越權拒絕；DEC017換房保留管理權且空房仍鎖，僅owner離線時從房內在線participant隨機接任／無候選自動解鎖，舊人重連不自動取回。私有轉交名單只給owner，display不參選；舊HOST_CONTROL_TOKEN模式保留原行為且停用新匿名命令。
+
+build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip，驗001→002舊鎖/verifier/revision升級保留、匿名lock/transfer ACK後讀回及restart只清匿名孤立鎖、legacy鎖保持。最終4Firefox13項10,214ms通過、兩圖已實看；另正向owner unlock可信WSS與PG清除讀回通過。root獨立核對65條狀態與7筆該run審計、71份來源指紋。初次test syntax typo、browser等待錯事件／離開ACK、historical-state helper修正及各次結果保存。
+
+共同相依的MA01同版PG短回歸11,328ms／active6,505ms通過：A收B323、B收A306、C收A160/B172，未知／自送／歧義0、D影音0、單screen與恢復／切房／only0保留；不是重啟影音自動恢復或真人聽感驗收。自有server/browser已停、專用container還原exited，DB/volume保留；未接管人類Edge或實體麥克風、未push／部署／啟MVP。
+
+移轉條件：固定studio管理模組與新Panel可作M02基底，manager只管密碼／鎖／轉交，不擴為未決強制停麥、踢人等主持權。隨機用crypto.randomInt，候選篩選server participant／open socket／studio，不含display；只對offline回調處理、不依room.switch交接。私有roster只送owner（含owner在大廳）；同名或偽造actor不授權。migration001→002依序交易／單writer鎖，保留原SQL清冊而非新建第二套。新匿名孤立鎖重啟清除是需求語意，不能誤認為資料持久化失敗；legacy鎖保留作相容邊界。PG媒體短回歸僅新證據，不外推長測／重啟影音自動恢復。

@@ -1,0 +1,17 @@
+✔ managed host claims are separate from room passwords; revoke stops both relays and blocks later frames (415.434959ms)
+✔ host token startup bounds are enforced without copying the configured value to errors (4.87175ms)
+✔ host claims have a per-connection rolling attempt limit (3.3865ms)
+﹣ PostgreSQL persistence integration (set PG_TEST_DATABASE_URL to enable) (0.3555ms) # SKIP
+✔ room door policy shares one locked server gate for join, switch, and room media (894.360875ms)
+✔ anonymous management selects only online studio participants and changes owner on disconnect (0.763542ms)
+✔ anonymous room manager can manage from the lobby, transfer, and hands over only when offline (228.184792ms)
+✔ legacy HOST_CONTROL_TOKEN mode keeps its lock path and denies anonymous lock messages (33.770791ms)
+﹣ PostgreSQL room management integration (set PG_TEST_DATABASE_URL to enable) (0.927709ms) # SKIP
+ℹ tests 9
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 1083.905292

@@ -1,0 +1,1633 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short trusted-HTTPS Firefox smoke for anonymous meeting-room locking, transfer, offline handover, and empty-room unlock.",
+  "startedAt": "2026-11-06T02:24:43.714Z",
+  "finishedAt": "2026-11-06T02:25:03.432Z",
+  "durationMs": 19718,
+  "status": "failed",
+  "baseURL": "https://localhost:55299",
+  "outputDirectory": ".scratch/rm01/browser-02",
+  "runtime": {
+    "node": "v26.13.0",
+    "firefox": "157.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "headless": true
+  },
+  "tls": {
+    "applicationTransport": "trusted local HTTPS/WSS",
+    "isolatedProfiles": 4,
+    "importedLocalCA": ".scratch/t01/tls/local-ca.pem",
+    "ignoreHTTPSErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "contexts": 4,
+    "sameDisplayNameContexts": [
+      "initial-owner",
+      "same-name-member"
+    ],
+    "flow": [
+      "join",
+      "lock",
+      "same-name denial",
+      "wrong then correct entry",
+      "manual transfer",
+      "owner changes target room from lobby",
+      "offline random eligible handover",
+      "empty candidate unlock",
+      "fresh member relocks"
+    ]
+  },
+  "cases": [
+    {
+      "name": "same display name received distinct server participant IDs",
+      "atMs": 5902,
+      "ownerParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "peerParticipantId": "67946545-101c-438a-93cd-92823de166a3",
+      "status": "passed"
+    },
+    {
+      "name": "lock created one anonymous manager",
+      "atMs": 6143,
+      "ownerParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "isLocked": true,
+      "status": "passed"
+    },
+    {
+      "name": "wrong room password denied entry; correct password joined",
+      "atMs": 6911,
+      "requiredCode": "room_password_required",
+      "wrongCode": "room_password_incorrect",
+      "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "status": "passed"
+    },
+    {
+      "name": "same-name member denied password change",
+      "atMs": 7449,
+      "code": "room_management_unauthorized",
+      "status": "passed"
+    },
+    {
+      "name": "same-name member denied unlock",
+      "atMs": 7491,
+      "code": "room_management_unauthorized",
+      "status": "passed"
+    },
+    {
+      "name": "same-name member denied transfer",
+      "atMs": 7532,
+      "code": "room_management_unauthorized",
+      "status": "passed"
+    },
+    {
+      "name": "manual transfer selected an online studio member",
+      "atMs": 7615,
+      "fromParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "toParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "status": "passed"
+    },
+    {
+      "name": "owner kept studio management after switching to lobby",
+      "atMs": 7974,
+      "ownerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "currentRoomId": "lobby",
+      "targetRoomId": "studio",
+      "status": "passed"
+    },
+    {
+      "name": "offline manager handed control to an eligible studio member",
+      "atMs": 8305,
+      "eligibleParticipantIds": [
+        "67946545-101c-438a-93cd-92823de166a3",
+        "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+      ],
+      "selectedParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "fairnessAssessed": false,
+      "status": "passed"
+    },
+    {
+      "name": "former manager reconnected without reclaiming ownership",
+      "atMs": 8305,
+      "formerManagerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "currentOwnerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "status": "passed"
+    },
+    {
+      "name": "empty studio stayed locked while its manager remained online in lobby",
+      "atMs": 8445,
+      "ownerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "roomMemberCount": 0,
+      "isLocked": true,
+      "status": "passed"
+    },
+    {
+      "name": "offline manager with no target-room candidates left the room unlocked",
+      "atMs": 8817,
+      "priorOwnerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "roomMemberCount": 0,
+      "isLocked": false,
+      "lockKind": "none",
+      "status": "passed"
+    }
+  ],
+  "controls": [
+    {
+      "context": "RM01 initial owner",
+      "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "connectionCount": 1,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 5471,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5525,
+          "type": "session.issued",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5526,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5526,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5527,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5885,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5886,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6008,
+          "type": "room.management.lock",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6059,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6059,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6059,
+          "type": "room.management.result",
+          "action": "lock",
+          "isLocked": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6876,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6876,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7363,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7364,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7572,
+          "type": "room.management.transfer",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7601,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7601,
+          "type": "room.management.result",
+          "action": "transfer",
+          "isLocked": true
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7657,
+          "type": "room.switch",
+          "roomId": "lobby",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7681,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7681,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7682,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7749,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7750,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7930,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7930,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7995,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7996,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8276,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8276,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8350,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8351,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8465,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8465,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8777,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8777,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8923,
+          "type": "space.snapshot",
+          "participantId": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8923,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        }
+      ]
+    },
+    {
+      "context": "RM01 same-name member",
+      "participantId": "67946545-101c-438a-93cd-92823de166a3",
+      "connectionCount": 1,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 5858,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5886,
+          "type": "session.issued",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5887,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5887,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5887,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6059,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6059,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6876,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6877,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7363,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7363,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7411,
+          "type": "room.management.error",
+          "code": "room_management_unauthorized"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7453,
+          "type": "room.management.error",
+          "code": "room_management_unauthorized"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7493,
+          "type": "room.management.error",
+          "code": "room_management_unauthorized"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7600,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7680,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7680,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7749,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7749,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7993,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7994,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8274,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8274,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 8332,
+          "type": "room.switch",
+          "roomId": "lobby",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8351,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8352,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8352,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8466,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8466,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8775,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8776,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8888,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8889,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 18922,
+          "type": "space.snapshot",
+          "participantId": "67946545-101c-438a-93cd-92823de166a3",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 18923,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        }
+      ]
+    },
+    {
+      "context": "RM01 late member / transfer target",
+      "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "connectionCount": 2,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6433,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6437,
+          "type": "protocol.error",
+          "code": "room_password_required"
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6544,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6580,
+          "type": "protocol.error",
+          "code": "room_password_incorrect"
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6821,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6876,
+          "type": "session.issued",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6876,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": true,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6877,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6878,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7363,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7363,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7601,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7680,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7680,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "memberIds": [
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7732,
+          "type": "room.switch",
+          "roomId": "lobby",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7750,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7750,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7751,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "memberIds": [
+            "67946545-101c-438a-93cd-92823de166a3",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7846,
+          "type": "room.management.changePassword",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "memberIds": [
+            "67946545-101c-438a-93cd-92823de166a3",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "room.management.result",
+          "action": "changePassword",
+          "isLocked": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8275,
+          "type": "session.resumed",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "roomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8275,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8276,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8276,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8351,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8352,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8421,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8423,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8465,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8465,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8776,
+          "type": "space.snapshot",
+          "participantId": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8776,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        }
+      ]
+    },
+    {
+      "context": "RM01 second late member",
+      "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "connectionCount": 2,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7204,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7209,
+          "type": "protocol.error",
+          "code": "room_password_required"
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 7301,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7366,
+          "type": "session.issued",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7366,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": true,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7366,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7367,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7602,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7681,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7681,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7750,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7750,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7931,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7993,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 7994,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "memberIds": [
+            "67946545-101c-438a-93cd-92823de166a3",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8275,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8275,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "memberIds": [
+            "67946545-101c-438a-93cd-92823de166a3",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8351,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8351,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "memberIds": [
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 8402,
+          "type": "room.switch",
+          "roomId": "lobby",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 8422,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "memberIds": []
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8774,
+          "type": "session.resumed",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "roomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8774,
+          "type": "room.snapshot",
+          "roomId": "lobby",
+          "isLocked": false,
+          "memberIds": [
+            "5a260a8b-7553-46ee-82d5-a53a116499c2",
+            "67946545-101c-438a-93cd-92823de166a3",
+            "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+            "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8776,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8776,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8888,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 8889,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 18922,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 18923,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 19271,
+          "type": "space.snapshot",
+          "participantId": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+          "currentRoomId": "lobby"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 2,
+          "atMs": 19271,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": ".scratch/rm01/browser-02/screenshots/locked-owner.png",
+      "context": "RM01 initial owner",
+      "passwordFieldsEmpty": true
+    }
+  ],
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "passwordValuesRetained": false,
+    "sessionTokensRetained": false,
+    "passwordVerifiersRetained": false,
+    "browserEnvironmentSecretFiltered": true,
+    "secretsUsedOnlyInMemory": true
+  },
+  "limits": {
+    "candidateSelection": "The selected successor is checked against the live server member roster; this small sample makes no fairness claim.",
+    "maliciousProtocol": "Three denial probes use the same joined browser socket; normal UI remains the primary interaction path.",
+    "media": "No synthetic or physical voice/media path is exercised by this room-control smoke.",
+    "persistenceAndCloud": "Not evaluated here; root owns server, build, database, and integration evidence.",
+    "realUsersAndCapacity": "Not tested; four isolated local Firefox contexts are a short functional sample."
+  },
+  "errors": {
+    "pageErrors": 0,
+    "cappedCollections": [],
+    "failure": {
+      "name": "Error",
+      "message": "RM01 late member / transfer target received session.left was not observed within 10000 ms."
+    }
+  }
+}

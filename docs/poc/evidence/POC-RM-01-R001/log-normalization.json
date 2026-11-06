@@ -1,0 +1,61 @@
+{
+  "method": "console copies only: strip ANSI styling and line-end whitespace; original output remains ignored .scratch/rm01; test contents/results retained",
+  "sourceOrBrowserReportsChanged": false,
+  "files": [
+    {
+      "file": "build2.log",
+      "rawSHA256": "c0a71f72183350b62e9912a07cf86b67a0e16f2990b0ed799ca00fb78e93290d",
+      "normalizedSHA256": "973d9c6a8f6a272e3ad1723bd1335f0d3e8c1b77c17e89e11e937f62c7054d92"
+    },
+    {
+      "file": "core.log",
+      "rawSHA256": "3e9d39f820366f32c84f5a4e97b8fa6d411f35548c612ba12642a372bb5799e5",
+      "normalizedSHA256": "3e9d39f820366f32c84f5a4e97b8fa6d411f35548c612ba12642a372bb5799e5"
+    },
+    {
+      "file": "relevant.log",
+      "rawSHA256": "87050c1996c4b47b68e177d08091ec8b4966fcf36db81b80779ada1f39dc64f3",
+      "normalizedSHA256": "87050c1996c4b47b68e177d08091ec8b4966fcf36db81b80779ada1f39dc64f3"
+    },
+    {
+      "file": "media-regression.log",
+      "rawSHA256": "de5253a82c6ada5fca264d346d925a003c55a38242a8a0a301a581163080179d",
+      "normalizedSHA256": "de5253a82c6ada5fca264d346d925a003c55a38242a8a0a301a581163080179d"
+    },
+    {
+      "file": "pg-tests-01.log",
+      "rawSHA256": "5f54824eed4803c04dc8315cd38552ab026ab03e036e381c0a65c14d00ac4578",
+      "normalizedSHA256": "5f54824eed4803c04dc8315cd38552ab026ab03e036e381c0a65c14d00ac4578"
+    },
+    {
+      "file": "browser-final.log",
+      "rawSHA256": "009c10fd34b269823ffe9bb3524439b080f2f2f19423800d52908cb009693c36",
+      "normalizedSHA256": "009c10fd34b269823ffe9bb3524439b080f2f2f19423800d52908cb009693c36"
+    },
+    {
+      "file": "relevant2.log",
+      "rawSHA256": "0783b471248487f15993ec6931331ebc3af363726127a104450da8974d785859",
+      "normalizedSHA256": "0783b471248487f15993ec6931331ebc3af363726127a104450da8974d785859"
+    },
+    {
+      "file": "browser-01.log",
+      "rawSHA256": "e5a1a89891c3068ce75863714362636a0455273ba5cfd29e3cb239c94f103df7",
+      "normalizedSHA256": "e5a1a89891c3068ce75863714362636a0455273ba5cfd29e3cb239c94f103df7"
+    },
+    {
+      "file": "browser-confirmed.log",
+      "rawSHA256": "009c10fd34b269823ffe9bb3524439b080f2f2f19423800d52908cb009693c36",
+      "normalizedSHA256": "009c10fd34b269823ffe9bb3524439b080f2f2f19423800d52908cb009693c36"
+    },
+    {
+      "file": "browser-02.log",
+      "rawSHA256": "a5c6acd4e403b442355ec96f96580e6c8856499ae4fc5e774853b118360041eb",
+      "normalizedSHA256": "a5c6acd4e403b442355ec96f96580e6c8856499ae4fc5e774853b118360041eb"
+    },
+    {
+      "file": "build.log",
+      "rawSHA256": "9a33f28f0c23ee80ebeb717cca958cec6d883247a185ff955953b35c4eeac583",
+      "normalizedSHA256": "dfa7f99b8dc299014afd15cfe197ddb73725c9210685435095047b6d8e676e93"
+    }
+  ]
+}

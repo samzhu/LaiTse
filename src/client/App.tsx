@@ -5,6 +5,7 @@ import { MediaTimeline } from "./media-timeline";
 import { MediaRecoveryIntent } from "./media-recovery";
 import { SpacePanel } from "./SpacePanel";
 import { HostPanel } from "./HostPanel";
+import { RoomManagementPanel, type RoomManagementState } from "./RoomManagementPanel";
 import { InteractionPanel } from "./InteractionPanel";
 import { ParticipationControls } from "./ParticipationControls";
 import { readParticipantEntry, type ParticipationMode } from "./entry";
@@ -93,6 +94,9 @@ type ServerMessage =
   | { type: "interaction.error"; roomId?: string; eventId?: string; code: string; message: string }
   | { type: "protocol.error"; code: string; message: string; roomId?: string }
   | { type: "room.catalogue"; rooms: RoomSummary[] }
+  | { type: "room.management.state"; roomId: "studio"; isLocked: boolean; lockKind: "none" | "legacy" | "anonymous"; anonymousManagementEnabled: boolean; canLock: boolean; isOwner: boolean; ownerParticipantId?: string; members?: Member[] }
+  | { type: "room.management.result"; action: "lock" | "changePassword" | "unlock" | "transfer"; isLocked: boolean }
+  | { type: "room.management.error"; code: string; message: string }
   | { type: "host.claimed"; roomId: string; participantId: string; publisherGrants: string[] }
   | { type: "host.publishPermission"; enabled: boolean; allowed: boolean }
   | { type: "host.publisherGrants"; participantIds: string[] }
@@ -191,6 +195,10 @@ export function App() {
   const [grantedPublisherIds, setGrantedPublisherIds] = useState<string[]>([]);
   const [hostActionStatus, setHostActionStatus] = useState("");
   const [hostActionError, setHostActionError] = useState("");
+  const [roomManagement, setRoomManagement] = useState<RoomManagementState | null>(null);
+  const [roomManagementStatus, setRoomManagementStatus] = useState("");
+  const [roomManagementError, setRoomManagementError] = useState("");
+  const [roomManagementResultSequence, setRoomManagementResultSequence] = useState(0);
   const [interactionState, setInteractionState] = useState<InteractionSnapshot>(() => emptyInteractionSnapshot());
   const [interactionStatus, setInteractionStatus] = useState("");
   const [interactionError, setInteractionError] = useState("");
@@ -392,6 +400,9 @@ export function App() {
         setGrantedPublisherIds([]);
         setHostActionStatus("");
         setHostActionError("");
+        setRoomManagement(null);
+        setRoomManagementStatus("");
+        setRoomManagementError("");
         setProtocolError("");
         setConnectionStatus("Refreshing restored room state…");
         if (message.mode === "interaction") mediaRecoveryIntentRef.current.clear();
@@ -405,6 +416,30 @@ export function App() {
 
       if (message.type === "room.catalogue") {
         setRooms(message.rooms);
+        return;
+      }
+
+      if (message.type === "room.management.state") {
+        setRoomManagement(message);
+        return;
+      }
+
+      if (message.type === "room.management.result") {
+        setRoomManagementError("");
+        setRoomManagementStatus(message.action === "lock"
+          ? "你已成為會議室管理者。"
+          : message.action === "changePassword"
+            ? "會議室密碼已更新。"
+            : message.action === "unlock"
+              ? "會議室已解鎖。"
+              : "管理權已轉交。" );
+        setRoomManagementResultSequence((current) => current + 1);
+        return;
+      }
+
+      if (message.type === "room.management.error") {
+        setRoomManagementStatus("");
+        setRoomManagementError(message.message);
         return;
       }
 
@@ -422,6 +457,8 @@ export function App() {
           setGrantedPublisherIds([]);
           setHostActionStatus("");
           setHostActionError("");
+          setRoomManagementStatus("");
+          setRoomManagementError("");
           setInteractionState(emptyInteractionSnapshot(message.room.id));
           setInteractionStatus("");
           setInteractionError("");
@@ -775,6 +812,9 @@ export function App() {
       setGrantedPublisherIds([]);
       setHostActionStatus("");
       setHostActionError("");
+      setRoomManagement(null);
+      setRoomManagementStatus("");
+      setRoomManagementError("");
       setInteractionState(emptyInteractionSnapshot());
       setInteractionStatus("");
       setInteractionError("");
@@ -810,6 +850,9 @@ export function App() {
     setGrantedPublisherIds([]);
     setHostActionStatus("");
     setHostActionError("");
+    setRoomManagement(null);
+    setRoomManagementStatus("");
+    setRoomManagementError("");
     setParticipationSelf(null);
     setModeSwitchPending(false);
     setInteractionState(emptyInteractionSnapshot());
@@ -869,6 +912,13 @@ export function App() {
     const socket = socketRef.current;
     if (!socket || socket.readyState !== WebSocket.OPEN || !connected) return;
     setHostActionError("");
+    socket.send(JSON.stringify(message));
+  };
+
+  const sendRoomManagementControl = (message: Record<string, unknown>) => {
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN || !connected) return;
+    setRoomManagementError("");
     socket.send(JSON.stringify(message));
   };
 
@@ -959,6 +1009,9 @@ export function App() {
     setGrantedPublisherIds([]);
     setHostActionStatus("");
     setHostActionError("");
+    setRoomManagement(null);
+    setRoomManagementStatus("");
+    setRoomManagementError("");
     setInteractionState(emptyInteractionSnapshot());
     setInteractionStatus("");
     setInteractionError("");
@@ -1243,6 +1296,18 @@ export function App() {
         errorMessage={hostActionError}
         onSend={sendHostControl}
       />
+
+      {connected && roomManagement ? (
+        <RoomManagementPanel
+          connected={connected}
+          currentParticipantId={currentParticipantId}
+          state={roomManagement}
+          resultSequence={roomManagementResultSequence}
+          statusMessage={roomManagementStatus}
+          errorMessage={roomManagementError}
+          onSend={sendRoomManagementControl}
+        />
+      ) : null}
 
       <section className="panel-card capability-panel" aria-labelledby="capability-title">
         <div className="panel-heading">

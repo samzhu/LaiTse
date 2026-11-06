@@ -1,0 +1,38 @@
+✔ managed host claims are separate from room passwords; revoke stops both relays and blocks later frames (420.317417ms)
+✔ host token startup bounds are enforced without copying the configured value to errors (4.654083ms)
+✔ host claims have a per-connection rolling attempt limit (3.796417ms)
+﹣ PostgreSQL persistence integration (set PG_TEST_DATABASE_URL to enable) (0.364125ms) # SKIP
+✔ room door policy shares one locked server gate for join, switch, and room media (887.65425ms)
+file:///Users/samzhu/workspace_herdr/LaiTse/tests/room-management.integration.test.mjs:158
+  const visitorBackToLobby = nextRoomSnapshot(visitor, "lobby");
+        ^
+
+SyntaxError: Identifier 'visitorBackToLobby' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:355:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:94:18)
+    at #translate (node:internal/modules/esm/loader:441:20)
+    at afterLoad (node:internal/modules/esm/loader:509:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:514:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:567:36)
+    at afterResolve (node:internal/modules/esm/loader:614:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:620:12)
+    at node:internal/modules/esm/loader:639:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:582:22)
+
+Node.js v26.13.0
+✖ tests/room-management.integration.test.mjs (37.706167ms)
+﹣ PostgreSQL room management integration (set PG_TEST_DATABASE_URL to enable) (0.396375ms) # SKIP
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 1066.961083
+
+✖ failing tests:
+
+test at tests/room-management.integration.test.mjs:1:1
+✖ tests/room-management.integration.test.mjs (37.706167ms)
+  'test failed'

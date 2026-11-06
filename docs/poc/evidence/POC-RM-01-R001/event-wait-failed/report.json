@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short trusted-HTTPS Firefox smoke for anonymous meeting-room locking, transfer, offline handover, and empty-room unlock.",
+  "startedAt": "2026-11-06T02:23:29.028Z",
+  "finishedAt": "2026-11-06T02:23:46.266Z",
+  "durationMs": 17238,
+  "status": "failed",
+  "baseURL": "https://localhost:55299",
+  "outputDirectory": ".scratch/rm01/browser-01",
+  "runtime": {
+    "node": "v26.13.0",
+    "firefox": "157.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "headless": true
+  },
+  "tls": {
+    "applicationTransport": "trusted local HTTPS/WSS",
+    "isolatedProfiles": 4,
+    "importedLocalCA": ".scratch/t01/tls/local-ca.pem",
+    "ignoreHTTPSErrors": false,
+    "systemTrustChanged": false
+  },
+  "topology": {
+    "contexts": 4,
+    "sameDisplayNameContexts": [
+      "initial-owner",
+      "same-name-member"
+    ],
+    "flow": [
+      "join",
+      "lock",
+      "same-name denial",
+      "wrong then correct entry",
+      "manual transfer",
+      "owner changes target room from lobby",
+      "offline random eligible handover",
+      "empty candidate unlock",
+      "fresh member relocks"
+    ]
+  },
+  "cases": [
+    {
+      "name": "same display name received distinct server participant IDs",
+      "atMs": 6244,
+      "ownerParticipantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+      "peerParticipantId": "8f88bd66-d591-422b-a127-b413884be7a4",
+      "status": "passed"
+    }
+  ],
+  "controls": [
+    {
+      "context": "RM01 initial owner",
+      "participantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+      "connectionCount": 1,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 5850,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5904,
+          "type": "session.issued",
+          "participantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5904,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "memberIds": [
+            "3297b054-ac8c-4cfe-bab9-acd725cb28f8"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5905,
+          "type": "space.snapshot",
+          "participantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 5905,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6226,
+          "type": "space.snapshot",
+          "participantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6226,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6339,
+          "type": "room.management.lock",
+          "passwordProvided": true
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6390,
+          "type": "space.snapshot",
+          "participantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6390,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": true,
+          "ownerParticipantId": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+          "memberIds": [
+            "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+            "8f88bd66-d591-422b-a127-b413884be7a4"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6391,
+          "type": "room.management.result",
+          "action": "lock",
+          "isLocked": true
+        }
+      ]
+    },
+    {
+      "context": "RM01 same-name member",
+      "participantId": "8f88bd66-d591-422b-a127-b413884be7a4",
+      "connectionCount": 1,
+      "messages": [
+        {
+          "direction": "sent",
+          "connectionIndex": 1,
+          "atMs": 6200,
+          "type": "join",
+          "roomId": "studio",
+          "passwordProvided": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6226,
+          "type": "session.issued",
+          "participantId": "8f88bd66-d591-422b-a127-b413884be7a4",
+          "roomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6227,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "isLocked": false,
+          "memberIds": [
+            "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+            "8f88bd66-d591-422b-a127-b413884be7a4"
+          ]
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6227,
+          "type": "space.snapshot",
+          "participantId": "8f88bd66-d591-422b-a127-b413884be7a4",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6227,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": false,
+          "lockKind": "none",
+          "canLock": true,
+          "isOwner": false
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6391,
+          "type": "space.snapshot",
+          "participantId": "8f88bd66-d591-422b-a127-b413884be7a4",
+          "currentRoomId": "studio"
+        },
+        {
+          "direction": "received",
+          "connectionIndex": 1,
+          "atMs": 6391,
+          "type": "room.management.state",
+          "roomId": "studio",
+          "isLocked": true,
+          "lockKind": "anonymous",
+          "canLock": false,
+          "isOwner": false
+        }
+      ]
+    },
+    {
+      "context": "RM01 late member / transfer target",
+      "participantId": null,
+      "connectionCount": 0,
+      "messages": []
+    },
+    {
+      "context": "RM01 second late member",
+      "participantId": null,
+      "connectionCount": 0,
+      "messages": []
+    }
+  ],
+  "screenshots": [],
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "passwordValuesRetained": false,
+    "sessionTokensRetained": false,
+    "passwordVerifiersRetained": false,
+    "browserEnvironmentSecretFiltered": true,
+    "secretsUsedOnlyInMemory": true
+  },
+  "limits": {
+    "candidateSelection": "The selected successor is checked against the live server member roster; this small sample makes no fairness claim.",
+    "maliciousProtocol": "Three denial probes use the same joined browser socket; normal UI remains the primary interaction path.",
+    "media": "No synthetic or physical voice/media path is exercised by this room-control smoke.",
+    "persistenceAndCloud": "Not evaluated here; root owns server, build, database, and integration evidence.",
+    "realUsersAndCapacity": "Not tested; four isolated local Firefox contexts are a short functional sample."
+  },
+  "errors": {
+    "pageErrors": 0,
+    "cappedCollections": [],
+    "failure": {
+      "name": "Error",
+      "message": "room snapshot broadcasts locked state was not observed within 10000 ms."
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "reviewer": "root",
+  "roomManagementCore": "Pass within trusted Firefox/PostgreSQL fixture",
+  "browserDurationMs": 10214,
+  "cases": 13,
+  "privateOwnerStatesChecked": 65,
+  "sameNameIdsDistinct": true,
+  "databaseMatchingAuditIds": [
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24"
+  ],
+  "databaseMatchingActions": [
+    "room.anonymous_locked",
+    "room.anonymous_manager.transferred",
+    "room.anonymous_password_changed",
+    "room.anonymous_manager.auto_transferred",
+    "room.anonymous_manager.auto_unlocked",
+    "room.anonymous_locked",
+    "room.anonymous_manager.auto_unlocked"
+  ],
+  "election": {
+    "name": "offline manager handed control to an eligible studio member",
+    "atMs": 8399,
+    "eligibleParticipantIds": [
+      "73bc7e6e-8d02-46fa-a4f3-ac4905777e6c",
+      "372808c6-5cb2-4da0-a6a4-77ea6e55ebe8"
+    ],
+    "selectedParticipantId": "73bc7e6e-8d02-46fa-a4f3-ac4905777e6c",
+    "fairnessAssessed": false,
+    "status": "passed"
+  },
+  "emptyRoomOnlineOwnerRetained": true,
+  "formerOwnerDidNotReclaim": true,
+  "finalDatabaseCleared": true,
+  "migrations": [
+    {
+      "version": "001_system_persistence.sql"
+    },
+    {
+      "version": "002_anonymous_room_management.sql"
+    }
+  ],
+  "positiveOwnerUnlockProtocolAndDB": "passed",
+  "mediaPGRegression": {
+    "durationMs": 11328,
+    "activeMediaMs": 6505,
+    "channels": {
+      "audio": {
+        "B": {
+          "ownerCounts": {
+            "A": 306
+          },
+          "received": 306,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "C": {
+          "ownerCounts": {
+            "B": 172,
+            "A": 160
+          },
+          "received": 332,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "D": {
+          "ownerCounts": {},
+          "received": 0,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "A": {
+          "ownerCounts": {
+            "B": 323
+          },
+          "received": 323,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        }
+      },
+      "screen": {
+        "B": {
+          "ownerCounts": {},
+          "received": 0,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "C": {
+          "ownerCounts": {
+            "A": 24
+          },
+          "received": 24,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "D": {
+          "ownerCounts": {},
+          "received": 0,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        },
+        "A": {
+          "ownerCounts": {},
+          "received": 0,
+          "unknown": 0,
+          "self": 0,
+          "ambiguous": 0
+        }
+      }
+    }
+  },
+  "sourceHashesMatched": 71,
+  "screenshotsActuallyViewed": [
+    "confirmed/screenshots/locked-owner.png",
+    "confirmed/screenshots/fresh-member-relocked.png"
+  ],
+  "humanAcceptance": "not collected; automated UI only",
+  "randomnessFairness": "not statistically assessed; production crypto.randomInt / deterministic seam membership cases"
+}

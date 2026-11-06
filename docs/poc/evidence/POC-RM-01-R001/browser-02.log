@@ -1,0 +1,13 @@
+[RM01] same display name received distinct server participant IDs
+[RM01] lock created one anonymous manager
+[RM01] wrong room password denied entry; correct password joined
+[RM01] same-name member denied password change
+[RM01] same-name member denied unlock
+[RM01] same-name member denied transfer
+[RM01] manual transfer selected an online studio member
+[RM01] owner kept studio management after switching to lobby
+[RM01] offline manager handed control to an eligible studio member
+[RM01] former manager reconnected without reclaiming ownership
+[RM01] empty studio stayed locked while its manager remained online in lobby
+[RM01] offline manager with no target-room candidates left the room unlocked
+[RM01] failure RM01 late member / transfer target received session.left was not observed within 10000 ms.

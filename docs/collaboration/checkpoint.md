@@ -1,6 +1,6 @@
 # 工作階段 checkpoint
 
-**狀態：POC-MA-01輕量核心Pass（桌面Firefox合成／memory），真人多人與PG多人整合待驗；尚未啟MVP，2026-11-06。最新事項見文末。**
+**狀態：POC-RM-01真PG＋Firefox匿名管理核心Pass，DEC017換房保留已驗，PG多人短回歸通過；MVP未啟動，2026-11-06。最新事項見文末。**
 
 - 人類原話「開始」並指定implement；按當時唯一無阻擋前沿執行T01。Luna xhigh實作，主代理思考、獨立檢視、最終完整檢查及紀錄；未切到其他票或MVP。
 - 產物：Node26.13.0／React/Vite／Fastify單一應用，production頁面／API／WSS，真實房間成員／有界合成控制，README、鎖版、TLS與瀏覽器腳本、版本授權inventory。
@@ -303,3 +303,15 @@ POC-MA-01／R001（2026-11-06）已完成會議室多音訊來源relay、逐來�
 來源／結果已保存並讀回：`docs/poc/evidence/POC-MA-01-R001/README.md`、root-readback/source-sha256/verdict/cleanup及各輪報告；Github#1/#4/#10/#20更新與正文讀回待本輪最後執行，按明確授權程式＋紀錄同本機commit。不自動啟動下一個POC或MVP。
 
 POC-MA-01-R001最終保存／讀回（2026-11-06）：程式／操作／verdict、32份選取證據及source64指紋保存，root重算所有接收封包來源與quiet／跨房窗口、實看兩張最終圖。最終短流程11,063ms／active6,461ms通過；全套第二跑space時序失敗與單檔3/3、首次log覆寫只保留讀回計數、三輪browser歷史與最終confirm分開，不稱全綠或真人通過。Github#1/#4/#10/#20已保存並4/4精確讀回、原AC/open/labels保持。JSON／64hash／122主要本機連結／diff／secret模式掃描通過，全部自有server/browser已停且讀回確認，未操作人類資源或資料volume。root唯一writer結束，程式＋紀錄同本機commit，不push／部署／自動接MVP；真人多人、PG模式、目標跨裝置／容量等保留未驗。
+
+## POC-RM-01-R001交付（2026-11-06）
+
+POC-RM-01-R001（2026-11-06，基線0995141）匿名studio管理核心Pass：上鎖詢問密碼、server匿名ID唯一owner、改密碼／解鎖／手動轉交、同名越權拒絕；DEC017換房保留管理權且空房仍鎖，僅owner離線時從房內在線participant隨機接任／無候選自動解鎖，舊人重連不自動取回。私有轉交名單只給owner，display不參選；舊HOST_CONTROL_TOKEN模式保留原行為且停用新匿名命令。
+
+build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip，驗001→002舊鎖/verifier/revision升級保留、匿名lock/transfer ACK後讀回及restart只清匿名孤立鎖、legacy鎖保持。最終4Firefox13項10,214ms通過、兩圖已實看；另正向owner unlock可信WSS與PG清除讀回通過。root獨立核對65條狀態與7筆該run審計、71份來源指紋。初次test syntax typo、browser等待錯事件／離開ACK、historical-state helper修正及各次結果保存。
+
+共同相依的MA01同版PG短回歸11,328ms／active6,505ms通過：A收B323、B收A306、C收A160/B172，未知／自送／歧義0、D影音0、單screen與恢復／切房／only0保留；不是重啟影音自動恢復或真人聽感驗收。自有server/browser已停、專用container還原exited，DB/volume保留；未接管人類Edge或實體麥克風、未push／部署／啟MVP。
+
+source/test/migration/script唯一writer已saved/readback/STOP交回root，root驗收與資料庫讀回保存。GitHub#1/#4/#10/#19/#20本輪同步最新差異並讀回；程式與紀錄按明確授權同本機commit，不提交既有AGENTS或私人scratch。證據`docs/poc/evidence/POC-RM-01-R001/`，不自動啟動下一項。
+
+POC-RM-01-R001最後交付讀回（2026-11-06）：build／core69、真PG2、Firefox13項10,214ms及PG多人影音短回歸均通過；root源碼／候選資格／65條私有狀態／7筆審計／71hash／正向解鎖DB／兩張畫面核對已完成。首syntax及harness事件／ACK失敗、前次成功與最新狀態加嚴後的成功均保存，不聲稱人類接受、統計公平、容量或部署。source8檔交回後未改，root僅修script觀測；新schema migration與SOL007清冊已同步。Github#1/#4/#10/#19/#20已保存並5/5精確讀回、原AC/open/labels保留；JSON／71hash／124主要本機連結／diff／secret模式掃描通過。自有app/browser停且讀回、專用container回exited、DB/volume保留，未接管人類資源。root writer結束，程式＋紀錄按授權同本機commit，不push／部署／自動接下一項。

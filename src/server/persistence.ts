@@ -6,6 +6,7 @@ import type { RoomId, SpacePlayer } from "./space.ts";
 import type { ControlResumeRecord, ResumeMode, ResumeRole } from "./control-resume.ts";
 import type { InteractionRecord } from "./interactions.ts";
 import type { SanitizedCapabilityReport } from "./capabilities.ts";
+import type { RoomLockKind } from "./room-management.ts";
 
 const { Pool } = pg;
 const ADVISORY_LOCK_NAMESPACE = 1_431_065_428;
@@ -17,6 +18,8 @@ export type PersistedRoomSettings = {
   passwordSalt: string | null;
   passwordVerifier: string | null;
   admissionRevision: number;
+  lockKind: RoomLockKind;
+  managerParticipantId: string | null;
   interactionPaused: boolean;
   danmakuEnabled: boolean;
 };
@@ -146,22 +149,30 @@ export class PostgresPersistence implements SystemPersistence {
     for (const room of seed.initialRoomSettings) {
       await this.pool.query(
         `INSERT INTO room_settings
-          (room_id, is_locked, password_salt, password_verifier, admission_revision, interaction_paused, danmaku_enabled)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+          (room_id, is_locked, password_salt, password_verifier, admission_revision, lock_kind, manager_participant_id, interaction_paused, danmaku_enabled)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          ON CONFLICT (room_id) DO NOTHING`,
         [room.roomId, room.locked, room.passwordSalt ? Buffer.from(room.passwordSalt, "base64") : null,
           room.passwordVerifier ? Buffer.from(room.passwordVerifier, "base64") : null, room.admissionRevision,
-          room.interactionPaused, room.danmakuEnabled],
+          room.lockKind, room.managerParticipantId, room.interactionPaused, room.danmakuEnabled],
       );
       await this.pool.query("INSERT INTO room_counters(room_id) VALUES ($1) ON CONFLICT (room_id) DO NOTHING", [room.roomId]);
     }
+
+    // An anonymous owner is an online connection identity. A process restart leaves no such owner online.
+    await this.pool.query(`UPDATE room_settings
+                           SET is_locked = false, password_salt = NULL, password_verifier = NULL,
+                               admission_revision = admission_revision + 1, lock_kind = 'none',
+                               manager_participant_id = NULL, updated_at = clock_timestamp()
+                           WHERE lock_kind = 'anonymous'`);
 
     // A process restart invalidates connection ownership but keeps a proof resumable until its original TTL.
     await this.pool.query("UPDATE control_sessions SET active_connection_id = NULL WHERE revoked_at IS NULL");
 
     const [settingsResult, sessionsResult, expiredSessionsResult, participantResult, interactionResult, dedupResult, appCountersResult, roomCountersResult, appSettingsResult] = await Promise.all([
       this.pool.query(`SELECT room_id, is_locked, password_salt, password_verifier, admission_revision,
-                              interaction_paused, danmaku_enabled FROM room_settings ORDER BY room_id`),
+                              lock_kind, manager_participant_id, interaction_paused, danmaku_enabled
+                       FROM room_settings ORDER BY room_id`),
       this.pool.query(`SELECT encode(token_digest, 'hex') AS token_digest, participant_id, room_id, role, mode,
                               admission_revision, expires_at, active_connection_id
                        FROM control_sessions WHERE revoked_at IS NULL AND expires_at > clock_timestamp()`),
@@ -206,6 +217,8 @@ export class PostgresPersistence implements SystemPersistence {
       passwordSalt: row.password_salt ? Buffer.from(row.password_salt as Buffer).toString("base64") : null,
       passwordVerifier: row.password_verifier ? Buffer.from(row.password_verifier as Buffer).toString("base64") : null,
       admissionRevision: Number(row.admission_revision),
+      lockKind: row.lock_kind as RoomLockKind,
+      managerParticipantId: row.manager_participant_id as string | null,
       interactionPaused: row.interaction_paused as boolean,
       danmakuEnabled: row.danmaku_enabled as boolean,
     }));
@@ -292,15 +305,17 @@ export class PostgresPersistence implements SystemPersistence {
       for (const room of snapshot.roomSettings) {
         await client.query(
           `INSERT INTO room_settings
-             (room_id, is_locked, password_salt, password_verifier, admission_revision, interaction_paused, danmaku_enabled, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, clock_timestamp())
+             (room_id, is_locked, password_salt, password_verifier, admission_revision, lock_kind, manager_participant_id,
+              interaction_paused, danmaku_enabled, updated_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, clock_timestamp())
            ON CONFLICT (room_id) DO UPDATE SET is_locked = EXCLUDED.is_locked,
              password_salt = EXCLUDED.password_salt, password_verifier = EXCLUDED.password_verifier,
-             admission_revision = EXCLUDED.admission_revision, interaction_paused = EXCLUDED.interaction_paused,
+             admission_revision = EXCLUDED.admission_revision, lock_kind = EXCLUDED.lock_kind,
+             manager_participant_id = EXCLUDED.manager_participant_id, interaction_paused = EXCLUDED.interaction_paused,
              danmaku_enabled = EXCLUDED.danmaku_enabled, updated_at = EXCLUDED.updated_at`,
           [room.roomId, room.locked, room.passwordSalt ? Buffer.from(room.passwordSalt, "base64") : null,
             room.passwordVerifier ? Buffer.from(room.passwordVerifier, "base64") : null,
-            room.admissionRevision, room.interactionPaused, room.danmakuEnabled],
+            room.admissionRevision, room.lockKind, room.managerParticipantId, room.interactionPaused, room.danmakuEnabled],
         );
       }
       for (const participant of snapshot.participants) {
@@ -467,22 +482,24 @@ export class PostgresPersistence implements SystemPersistence {
       version text PRIMARY KEY,
       applied_at timestamptz NOT NULL DEFAULT clock_timestamp()
     )`);
-    const migrationPath = fileURLToPath(new URL("../../db/migrations/001_system_persistence.sql", import.meta.url));
-    const sql = await readFile(path.resolve(migrationPath), "utf8");
-    const version = path.basename(migrationPath);
-    const seen = await this.pool.query("SELECT 1 FROM schema_migrations WHERE version = $1", [version]);
-    if (seen.rowCount) return;
-    const client = await this.pool.connect();
-    try {
-      await client.query("BEGIN");
-      await client.query(sql);
-      await client.query("INSERT INTO schema_migrations(version) VALUES ($1)", [version]);
-      await client.query("COMMIT");
-    } catch {
-      await client.query("ROLLBACK").catch(() => {});
-      throw new Error("PostgreSQL schema migration failed.");
-    } finally {
-      client.release();
+    const migrationNames = ["001_system_persistence.sql", "002_anonymous_room_management.sql"];
+    for (const version of migrationNames) {
+      const migrationPath = fileURLToPath(new URL(`../../db/migrations/${version}`, import.meta.url));
+      const seen = await this.pool.query("SELECT 1 FROM schema_migrations WHERE version = $1", [version]);
+      if (seen.rowCount) continue;
+      const sql = await readFile(path.resolve(migrationPath), "utf8");
+      const client = await this.pool.connect();
+      try {
+        await client.query("BEGIN");
+        await client.query(sql);
+        await client.query("INSERT INTO schema_migrations(version) VALUES ($1)", [version]);
+        await client.query("COMMIT");
+      } catch {
+        await client.query("ROLLBACK").catch(() => {});
+        throw new Error(`PostgreSQL schema migration ${version} failed.`);
+      } finally {
+        client.release();
+      }
     }
   }
 }

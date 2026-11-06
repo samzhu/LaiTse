@@ -1,0 +1,272 @@
+{
+  "database": "laitse_rm01_20261106100532",
+  "settings": [
+    {
+      "room_id": "lobby",
+      "is_locked": false,
+      "lock_kind": "none",
+      "manager_participant_id": null,
+      "admission_revision": "0",
+      "salt_cleared": true,
+      "verifier_cleared": true
+    },
+    {
+      "room_id": "studio",
+      "is_locked": false,
+      "lock_kind": "none",
+      "manager_participant_id": null,
+      "admission_revision": "17",
+      "salt_cleared": true,
+      "verifier_cleared": true
+    }
+  ],
+  "migrations": [
+    {
+      "version": "001_system_persistence.sql"
+    },
+    {
+      "version": "002_anonymous_room_management.sql"
+    }
+  ],
+  "audit": [
+    {
+      "audit_id": "1",
+      "room_id": "studio",
+      "actor_participant_id": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:23:35.410Z",
+      "details": {
+        "revision": 1
+      }
+    },
+    {
+      "audit_id": "2",
+      "room_id": "studio",
+      "actor_participant_id": "3297b054-ac8c-4cfe-bab9-acd725cb28f8",
+      "target_participant_id": "8f88bd66-d591-422b-a127-b413884be7a4",
+      "action": "room.anonymous_manager.auto_transferred",
+      "occurred_at": "2026-11-06T02:23:45.655Z",
+      "details": {}
+    },
+    {
+      "audit_id": "3",
+      "room_id": "studio",
+      "actor_participant_id": "8f88bd66-d591-422b-a127-b413884be7a4",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:23:45.849Z",
+      "details": {}
+    },
+    {
+      "audit_id": "4",
+      "room_id": "studio",
+      "actor_participant_id": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:24:49.766Z",
+      "details": {
+        "revision": 3
+      }
+    },
+    {
+      "audit_id": "5",
+      "room_id": "studio",
+      "actor_participant_id": "5a260a8b-7553-46ee-82d5-a53a116499c2",
+      "target_participant_id": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "action": "room.anonymous_manager.transferred",
+      "occurred_at": "2026-11-06T02:24:51.305Z",
+      "details": {}
+    },
+    {
+      "audit_id": "6",
+      "room_id": "studio",
+      "actor_participant_id": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "target_participant_id": null,
+      "action": "room.anonymous_password_changed",
+      "occurred_at": "2026-11-06T02:24:51.622Z",
+      "details": {
+        "revision": 4
+      }
+    },
+    {
+      "audit_id": "7",
+      "room_id": "studio",
+      "actor_participant_id": "af4a4ee7-1ed0-4379-bcc9-2c2c677cf916",
+      "target_participant_id": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "action": "room.anonymous_manager.auto_transferred",
+      "occurred_at": "2026-11-06T02:24:51.702Z",
+      "details": {}
+    },
+    {
+      "audit_id": "8",
+      "room_id": "studio",
+      "actor_participant_id": "f4be1ec5-e23c-4ffd-bb97-8adcb5b79e3a",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:24:52.172Z",
+      "details": {}
+    },
+    {
+      "audit_id": "9",
+      "room_id": "studio",
+      "actor_participant_id": "2a0a670d-60e6-4c58-a22f-4e933dd35dd0",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:26:39.243Z",
+      "details": {
+        "revision": 6
+      }
+    },
+    {
+      "audit_id": "10",
+      "room_id": "studio",
+      "actor_participant_id": "2a0a670d-60e6-4c58-a22f-4e933dd35dd0",
+      "target_participant_id": "8b35e390-3d17-4f00-8c6f-cdc0f0f87bee",
+      "action": "room.anonymous_manager.transferred",
+      "occurred_at": "2026-11-06T02:26:40.774Z",
+      "details": {}
+    },
+    {
+      "audit_id": "11",
+      "room_id": "studio",
+      "actor_participant_id": "8b35e390-3d17-4f00-8c6f-cdc0f0f87bee",
+      "target_participant_id": null,
+      "action": "room.anonymous_password_changed",
+      "occurred_at": "2026-11-06T02:26:41.071Z",
+      "details": {
+        "revision": 7
+      }
+    },
+    {
+      "audit_id": "12",
+      "room_id": "studio",
+      "actor_participant_id": "8b35e390-3d17-4f00-8c6f-cdc0f0f87bee",
+      "target_participant_id": "681a3504-862c-4f9a-9230-e200a63fcaaf",
+      "action": "room.anonymous_manager.auto_transferred",
+      "occurred_at": "2026-11-06T02:26:41.127Z",
+      "details": {}
+    },
+    {
+      "audit_id": "13",
+      "room_id": "studio",
+      "actor_participant_id": "681a3504-862c-4f9a-9230-e200a63fcaaf",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:26:41.619Z",
+      "details": {}
+    },
+    {
+      "audit_id": "14",
+      "room_id": "studio",
+      "actor_participant_id": "60a36b60-48a4-45cf-8096-02059869dfc1",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:26:42.222Z",
+      "details": {
+        "revision": 9
+      }
+    },
+    {
+      "audit_id": "15",
+      "room_id": "studio",
+      "actor_participant_id": "60a36b60-48a4-45cf-8096-02059869dfc1",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:26:42.928Z",
+      "details": {}
+    },
+    {
+      "audit_id": "16",
+      "room_id": "studio",
+      "actor_participant_id": "36336305-2132-44c2-aa64-298ede168dbd",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:29:17.058Z",
+      "details": {
+        "revision": 11
+      }
+    },
+    {
+      "audit_id": "17",
+      "room_id": "studio",
+      "actor_participant_id": "36336305-2132-44c2-aa64-298ede168dbd",
+      "target_participant_id": null,
+      "action": "room.anonymous_unlocked",
+      "occurred_at": "2026-11-06T02:29:17.069Z",
+      "details": {
+        "revision": 12
+      }
+    },
+    {
+      "audit_id": "18",
+      "room_id": "studio",
+      "actor_participant_id": "31b6917a-bea2-4a0f-b146-877d8bda908a",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:33:16.232Z",
+      "details": {
+        "revision": 13
+      }
+    },
+    {
+      "audit_id": "19",
+      "room_id": "studio",
+      "actor_participant_id": "31b6917a-bea2-4a0f-b146-877d8bda908a",
+      "target_participant_id": "5cd0d2d5-e6d8-4582-a0b7-97cbb0d97e40",
+      "action": "room.anonymous_manager.transferred",
+      "occurred_at": "2026-11-06T02:33:17.769Z",
+      "details": {}
+    },
+    {
+      "audit_id": "20",
+      "room_id": "studio",
+      "actor_participant_id": "5cd0d2d5-e6d8-4582-a0b7-97cbb0d97e40",
+      "target_participant_id": null,
+      "action": "room.anonymous_password_changed",
+      "occurred_at": "2026-11-06T02:33:18.098Z",
+      "details": {
+        "revision": 14
+      }
+    },
+    {
+      "audit_id": "21",
+      "room_id": "studio",
+      "actor_participant_id": "5cd0d2d5-e6d8-4582-a0b7-97cbb0d97e40",
+      "target_participant_id": "73bc7e6e-8d02-46fa-a4f3-ac4905777e6c",
+      "action": "room.anonymous_manager.auto_transferred",
+      "occurred_at": "2026-11-06T02:33:18.159Z",
+      "details": {}
+    },
+    {
+      "audit_id": "22",
+      "room_id": "studio",
+      "actor_participant_id": "73bc7e6e-8d02-46fa-a4f3-ac4905777e6c",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:33:18.586Z",
+      "details": {}
+    },
+    {
+      "audit_id": "23",
+      "room_id": "studio",
+      "actor_participant_id": "d3f73967-44d8-4b99-b3f6-6b08ed0c7a43",
+      "target_participant_id": null,
+      "action": "room.anonymous_locked",
+      "occurred_at": "2026-11-06T02:33:19.299Z",
+      "details": {
+        "revision": 16
+      }
+    },
+    {
+      "audit_id": "24",
+      "room_id": "studio",
+      "actor_participant_id": "d3f73967-44d8-4b99-b3f6-6b08ed0c7a43",
+      "target_participant_id": null,
+      "action": "room.anonymous_manager.auto_unlocked",
+      "occurred_at": "2026-11-06T02:33:19.997Z",
+      "details": {}
+    }
+  ],
+  "credentialsSelected": false
+}

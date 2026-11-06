@@ -401,3 +401,25 @@ root另維護.gitignore加入.scratch/ma01/，只忽略本輪browser profile／�
 POC-MA-01資源交接：ma_implementation已saved/readback/STOP，root接回其9個source/test檔與新multi-audio-receiver；最終build通過，原全套66pass/1skip僅root讀回摘要（log後被覆寫），第二全套65pass/1fail/1skip保留、space單檔窄診斷3/3未改空間功能。ma_browser_script已saved/readback/STOP，腳本語法通過、未啟服務／browser，root接回script。root現在獨占測試操作：新memory/unlocked studio HTTPS ephemeral service（.scratch/ma01/runtime.json）與4獨立Firefox；不碰原4173／人類Edge，不並行改source/dist。失敗與修正由root唯一writer處理，原代理不再寫入。
 
 POC-MA-01-R001最終保存／讀回（2026-11-06）：程式／操作／verdict、32份選取證據及source64指紋保存，root重算所有接收封包來源與quiet／跨房窗口、實看兩張最終圖。最終短流程11,063ms／active6,461ms通過；全套第二跑space時序失敗與單檔3/3、首次log覆寫只保留讀回計數、三輪browser歷史與最終confirm分開，不稱全綠或真人通過。Github#1/#4/#10/#20已保存並4/4精確讀回、原AC/open/labels保持。JSON／64hash／122主要本機連結／diff／secret模式掃描通過，全部自有server/browser已停且讀回確認，未操作人類資源或資料volume。root唯一writer結束，程式＋紀錄同本機commit，不push／部署／自動接MVP；真人多人、PG模式、目標跨裝置／容量等保留未驗。
+
+## POC-RM-01-R001／匿名房間管理與交接範圍包（2026-11-06）
+
+人類明確要求開始匿名管理POC，輕量驗上鎖／轉交／離線隨機接任／無人解鎖、程式與紀錄commit及GitHub進度。另明確回覆：「只在斷線／離線時交接，換房仍保留管理權」。基線0995141，沿DEC014/015，新的離房政策另記DEC017；不實作其他未決踢人／停麥／全域主持模型，不移除8人限制、不做多人大負載／雲部署。新run POC-RM-01-R001，不覆寫前輪MA01。
+
+rm_implementation（依人類偏好Luna xhigh）唯一writer：src/server/{app,room-access,persistence}.ts、新src/server/room-management.ts、src/client/App.tsx／HostPanel.tsx與新RoomManagementPanel.tsx、db/migrations/002_anonymous_room_management.sql（必要時）、tests/room-management.integration.test.mjs及相關既有room-access/host-control/postgres/space測試的窄相容變更。其他src可讀，擴檔先通知root；不改docs/scripts/README/manifest/lock/Git、不操作browser。新增管理權以server匿名participant ID核對，同名不共用權限；鎖密碼用現有verifier，控制與ACK沿既有serial executor／COMMIT後outbox。可持久化manager ID／anonymous鎖類型，沿原PG模型／migration，不重建資料清冊；重啟無在線owner的新匿名鎖按離線／無人自動解鎖，舊managed/startup password模式不得被這項新增行為偷偷清空。普通會員可設定未鎖會議室密碼並取得唯一管理者；現任管理者可改密碼／解鎖／轉交，其他人不能靠同名／偽造actor冒用。管理者換房仍保留，不能依room.switch移交或因目標房間暫空清鎖；斷線時才從仍在線房內participant中server random選一位，無候選解鎖並清除舊管理權／密碼。轉交後舊人／重連不自動收回。display／未加入者無控制權，鎖房准入／媒體隔離及MA01多源語音不退化。UI新增匿名鎖管理，不把它混成舊host token授權或要求登入。
+
+rm_browser_script（Luna xhigh）唯一writer：scripts/room-management-smoke.mjs及.scratch/rm01/harness；只作語法／腳本設計、不啟server/browser、不寫其他原始檔/docs/Git。依source writer早期協議／DOM約定做短browser harness，至少3頁、同名防冒用、上鎖詢問密碼／錯密碼拒／正確准入、轉交後舊人拒、換房owner仍保留、owner斷線候選內隨機接任／最後owner斷線且房空自動解鎖、後來者重新鎖；優先真實UI，外部WS只補拒絕。順序操作同頁click，不做同頁並行；安全緊湊controls不記密碼／proof／token，metadata有界。source/build交接STOP後root才執行，依結果一次窄修。
+
+root唯一writer／操作者：docs/laitse-prd/ai-handoff、collaboration/{decisions,project-brief,checkpoint,dispatch,delivery-index}、poc/{plan,execution-log,mvp-handoff}與新evidence/POC-RM-01-R001、README/.gitignore、Git、GitHub#1/#10/#19/#20；.scratch/rm01自有服務／獨立Firefox、資料庫fixture只由root操作。Docker檢查目前仍socket不存在，停止沿前輪已失敗app啟動重試；可先memory核心驗證，PG設計／測試跳過須明示。如可用PG才啟既有專用測試DB，不改舊資料／volume。source/test/libs權責交接saved/readback/STOP前root唯讀；agent不改共用build同時root不跑其他build。驗收依功能檢查build/typecheck、相關server cases與真Firefox短流程、公開／私密狀態及候選資格／轉交單一owner／owneroffline清理；隨機候選選擇可用server可注入RNG的單元案例證明範圍，少量browser只確認選到合法人，不以小樣本宣稱公平分布。PG實驗不可用則不宣稱持久化已驗／全部Go。不接管人類Edge／麥克風、不碰原服務，結束停自有服務與browser、讀回Github正文／原ACstate保留、同本機commit後釋出，不push／部署／自動啟MVP。
+
+POC-RM-01基礎設施更新：root確認OrbStack實際執行檔存在，受限啟動回報不可執行改用授權的窄提升啟動成功（非繼續同條件盲重試）；Docker可用。既有本輪專用container原exited，root啟動後首次立即psql尚未ready，pg_isready確認再建立全新rm01 DB（無舊資料刪除），PG18.6。私密DSN只存.scratch/rm01/runtime-private.json mode0600，不貼工具輸出／Github；root可驗真PG，結束還原本container停止但不刪volume/DB。source writer只寫PG tests不運作root DB，等saved/STOP後root在專用laitse_poc_test隔離schema跑PG測試，browser用獨立新rm01 DB避免衝突。
+
+驗收窄回歸補充：本次app／App與connection-close為MA01共同相依；room-management短流程完成後，root可在同一獨立PG fixture串行執行既有multi-speaker-smoke一次，核對管理功能新增未破壞多人／切房／重連。既有MA腳本本輪唯讀，不新增影音功能／長測；若執行，結果存本run的media-regression獨立目錄並明確限定同候選PG短整合，不回改前輪PG未驗歷史。不得與room-management UI流程同時占用測試服務。
+
+POC-RM-01 source交接：rm_implementation明確saved/readback/STOP，8個server/client/migration/tests檔交回root；build2通過、相關7pass/2PGskip、單次core69pass/2PGskip/0fail，初次syntax typo失敗保留。root接管源碼／build後才執行真PG測試；已啟PG_TEST_DATABASE_URL私有runner（test-concurrency=1，避免單writer鎖跨檔競爭），原代理不再寫入。後續必要窄修與重建／驗收由root唯一writer完成。
+
+rm_browser_script已saved/readback/STOP交回script，語法通過、未操作browser/server。root已在獨立PG18.6 DB啟匿名未鎖HTTPS自有服務（.scratch/rm01/runtime.json），真PG測試串行2/2通過、無skip；root接管四Firefox短流程，來源8檔及script無其他writer。使用已知需要的窄提升權限啟獨立Firefox，避免重現前輪受限啟動失敗，不接管使用者UI。
+
+POC-RM-01驗收完成概況：來源8檔接回後未再修改產品程式；root只修harness的鎖態事件等待、離開即關線不可等ACK、狀態只讀最新值。相關各輪保留，最終四Firefox13項10,214ms全部通過、兩圖已實看；PG2/2/core69pass，正向owner解鎖WSS+DB讀回另通過。同候選PG之MA01短回歸11,328ms／active6,505ms通過，root重算自送/未知/歧義0、D異房0。71個source/test/migration/腳本指紋已核對，65條management states與7筆本run審計事件對上；私密roster不發非owner。專用server與browser全停、container還原exited、DB/volume保留，OrbStack環境不關閉以免影響其他使用。因MA01新PG短整合證據，root同步範圍增#4（與母#1/#10/#19/#20共5票），不回改前輪PG未驗歷史。以下文件／GitHub讀回／同commit交付由root完成，未啟MVP或部署。
+
+POC-RM-01-R001最後交付讀回（2026-11-06）：build／core69、真PG2、Firefox13項10,214ms及PG多人影音短回歸均通過；root源碼／候選資格／65條私有狀態／7筆審計／71hash／正向解鎖DB／兩張畫面核對已完成。首syntax及harness事件／ACK失敗、前次成功與最新狀態加嚴後的成功均保存，不聲稱人類接受、統計公平、容量或部署。source8檔交回後未改，root僅修script觀測；新schema migration與SOL007清冊已同步。Github#1/#4/#10/#19/#20已保存並5/5精確讀回、原AC/open/labels保留；JSON／71hash／124主要本機連結／diff／secret模式掃描通過。自有app/browser停且讀回、專用container回exited、DB/volume保留，未接管人類資源。root writer結束，程式＋紀錄按授權同本機commit，不push／部署／自動接下一項。

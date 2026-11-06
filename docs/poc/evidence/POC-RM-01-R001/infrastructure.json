@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-06",
+  "Docker": "available after authorized elevated launch of installed OrbStack; executable verified present",
+  "container": "laitse-poc06-r002-db",
+  "containerInitialState": "exited",
+  "database": "laitse_rm01_20261106100532",
+  "PostgreSQLVersion": "18.6 (Debian 18.6-1.pgdg12+2)",
+  "credentialsRecorded": false,
+  "oldDatabasesOrVolumesDeleted": false,
+  "startupReadiness": "first immediate psql found server not yet listening; pg_isready confirmed readiness before new DB creation"
+}

@@ -14,6 +14,7 @@ import { createAudioRelay } from "./audio-relay.ts";
 import { createScreenRelay, MAX_SCREEN_FRAME_BYTES } from "./screen-relay.ts";
 import { createHostControlPolicy } from "./host-control.ts";
 import { createRoomAccessPolicy, isValidRoomPassword, type PersistedRoomAccess } from "./room-access.ts";
+import { createRoomManagement } from "./room-management.ts";
 import { createControlResumeStore, type ResumeMode, type ResumeRole } from "./control-resume.ts";
 import { createTransportBudget, MAX_APPLICATION_SEND_BYTES } from "./transport-budget.ts";
 import { createSerialExecutor, QueueFullError } from "./serial-executor.ts";
@@ -208,6 +209,8 @@ export async function createApp(options: CreateAppOptions = {}) {
         passwordSalt: access?.passwordSalt ?? null,
         passwordVerifier: access?.passwordVerifier ?? null,
         admissionRevision: access?.admissionRevision ?? 0,
+        lockKind: access?.locked ? "legacy" : "none",
+        managerParticipantId: null,
         interactionPaused: false,
         danmakuEnabled: true,
       };
@@ -284,6 +287,11 @@ export async function createApp(options: CreateAppOptions = {}) {
       admissionRevision: restoredStudio.admissionRevision,
     } satisfies PersistedRoomAccess)
     : seedRoomAccess;
+  const roomManagement = createRoomManagement({
+    initial: persistenceBootstrap && restoredStudio
+      ? { lockKind: restoredStudio.lockKind, managerParticipantId: restoredStudio.managerParticipantId }
+      : { lockKind: seedRoomAccess.isMeetingRoomLocked("studio") ? "legacy" : "none", managerParticipantId: null },
+  });
   const resumeSessions = createControlResumeStore({
     restored: persistenceBootstrap?.sessions,
     recentlyExpiredDigests: persistenceBootstrap?.recentlyExpiredSessionDigests,
@@ -378,6 +386,8 @@ export async function createApp(options: CreateAppOptions = {}) {
           passwordSalt: access?.passwordSalt ?? null,
           passwordVerifier: access?.passwordVerifier ?? null,
           admissionRevision: access?.admissionRevision ?? 0,
+          lockKind: room.id === "studio" ? roomManagement.snapshot(studioAccess.locked).lockKind : "none",
+          managerParticipantId: room.id === "studio" ? roomManagement.snapshot(studioAccess.locked).managerParticipantId : null,
           interactionPaused: room.id === "studio" ? presentation.paused : interactions.snapshot(room.id).presentation.paused,
           danmakuEnabled: room.id === "studio" ? presentation.danmakuEnabled : interactions.snapshot(room.id).presentation.danmakuEnabled,
         };
@@ -455,6 +465,57 @@ export async function createApp(options: CreateAppOptions = {}) {
   const bumpCounter = (roomId: RoomId, name: keyof ActivityCounters): void => {
     roomCounters[roomId][name] += 1;
     markDurable();
+  };
+
+  const onlineStudioParticipants = (): Member[] => {
+    const online = new Map<string, Member>();
+    for (const [socket, connection] of clients) {
+      if (socket.readyState !== socket.OPEN || connection.removed || connection.role !== "participant" ||
+          connection.currentRoomId !== "studio" || !connection.member) continue;
+      online.set(connection.member.id, connection.member);
+    }
+    return [...online.values()];
+  };
+
+  const roomManagementStateFor = (connection: ClientConnection) => {
+    const current = roomManagement.snapshot(roomAccess.isMeetingRoomLocked("studio"));
+    const isOwner = Boolean(connection.member && roomManagement.canManageAnonymously(connection.member.id));
+    return {
+      type: "room.management.state",
+      roomId: "studio",
+      isLocked: current.locked,
+      lockKind: current.lockKind,
+      anonymousManagementEnabled: !hostControl.enabled,
+      canLock: !hostControl.enabled && connection.role === "participant" && current.lockKind === "none" && !current.locked,
+      isOwner,
+      ...(isOwner && connection.member ? {
+        ownerParticipantId: connection.member.id,
+        members: onlineStudioParticipants().map((member) => ({ id: member.id, displayName: member.displayName })),
+      } : {}),
+    };
+  };
+
+  const sendRoomManagementState = (socket: import("ws").WebSocket, connection: ClientConnection): void => {
+    if (!connection.member || connection.role !== "participant" || socket.readyState !== socket.OPEN) return;
+    sendTo(socket, JSON.stringify(roomManagementStateFor(connection)));
+  };
+
+  const broadcastRoomManagementStates = (): void => {
+    for (const [socket, connection] of clients) sendRoomManagementState(socket, connection);
+  };
+
+  const handleAnonymousOwnerOffline = (participantId: string): "unchanged" | "transferred" | "unlocked" => {
+    const result = roomManagement.ownerDisconnected(participantId, onlineStudioParticipants().map((member) => member.id));
+    if (result === "unchanged") return result;
+    if (result === "unlocked") roomAccess.setMeetingRoomPassword(null);
+    markDurable();
+    addPending("management", {
+      roomId: "studio",
+      actorParticipantId: participantId,
+      targetParticipantId: roomManagement.snapshot(roomAccess.isMeetingRoomLocked("studio")).managerParticipantId,
+      action: result === "transferred" ? "room.anonymous_manager.auto_transferred" : "room.anonymous_manager.auto_unlocked",
+    });
+    return result;
   };
 
   const interactionPruneTimer = setInterval(() => {
@@ -745,6 +806,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         sendInteractionSnapshot(socket, connection, roomId);
         sendParticipationSnapshot();
         broadcastSpaceState();
+        broadcastRoomManagementStates();
         sendPublishPermission(socket, connection);
       };
 
@@ -1182,6 +1244,125 @@ export async function createApp(options: CreateAppOptions = {}) {
           return;
         }
 
+        if (typeof message.type === "string" && message.type.startsWith("room.management.")) {
+          const sendManagementError = (code: string, explanation: string) => send({ type: "room.management.error", code, message: explanation });
+          const sendManagementResult = (action: string) => send({
+            type: "room.management.result",
+            action,
+            isLocked: roomAccess.isMeetingRoomLocked("studio"),
+          });
+          if (!connection.member || connection.role !== "participant" || !connection.currentRoomId) {
+            sendManagementError("room_management_unavailable", "Join as a participant before managing a meeting room.");
+            return;
+          }
+          if (hostControl.enabled) {
+            sendManagementError("anonymous_management_disabled", "Anonymous room management is unavailable while legacy HOST_CONTROL_TOKEN mode is enabled.");
+            return;
+          }
+
+          if (message.type === "room.management.lock") {
+            if (!hasOnlyKeys(message, ["type", "password"]) || typeof message.password !== "string" ||
+                message.password.length === 0 || !isValidRoomPassword(message.password)) {
+              sendManagementError("invalid_room_password", "Enter a meeting room password of 1 to 128 characters and at most 512 UTF-8 bytes.");
+              return;
+            }
+            if (roomAccess.isMeetingRoomLocked("studio") || roomManagement.snapshot(false).lockKind !== "none") {
+              sendManagementError("room_already_managed", "The meeting room is already locked or managed.");
+              return;
+            }
+            if (message.password === options.hostControlToken) {
+              sendManagementError("invalid_room_password", "The meeting room password must be different from the host token.");
+              return;
+            }
+            const actorParticipantId = connection.member.id;
+            if (!roomManagement.lockAnonymous(actorParticipantId)) {
+              sendManagementError("room_already_managed", "The meeting room is already locked or managed.");
+              return;
+            }
+            roomAccess.setMeetingRoomPassword(message.password);
+            markDurable();
+            addPending("management", { roomId: "studio", actorParticipantId, action: "room.anonymous_locked", details: { revision: roomAccess.admissionRevision("studio") } });
+            broadcastRoomCatalogue();
+            broadcastSpaceState();
+            broadcastRoomManagementStates();
+            sendManagementResult("lock");
+            return;
+          }
+
+          if (message.type === "room.management.changePassword") {
+            if (!hasOnlyKeys(message, ["type", "password"]) || typeof message.password !== "string" ||
+                message.password.length === 0 || !isValidRoomPassword(message.password)) {
+              sendManagementError("invalid_room_password", "Enter a meeting room password of 1 to 128 characters and at most 512 UTF-8 bytes.");
+              return;
+            }
+            if (!roomManagement.canManageAnonymously(connection.member.id)) {
+              sendManagementError("room_management_unauthorized", "Only the current anonymous room manager can change this password.");
+              return;
+            }
+            if (message.password === options.hostControlToken) {
+              sendManagementError("invalid_room_password", "The meeting room password must be different from the host token.");
+              return;
+            }
+            roomAccess.setMeetingRoomPassword(message.password);
+            markDurable();
+            addPending("management", { roomId: "studio", actorParticipantId: connection.member.id, action: "room.anonymous_password_changed", details: { revision: roomAccess.admissionRevision("studio") } });
+            broadcastRoomCatalogue();
+            broadcastSpaceState();
+            broadcastRoomManagementStates();
+            sendManagementResult("changePassword");
+            return;
+          }
+
+          if (message.type === "room.management.unlock") {
+            if (!hasOnlyKeys(message, ["type"])) {
+              sendManagementError("invalid_room_management", "Unlock does not accept additional fields.");
+              return;
+            }
+            if (!roomManagement.canManageAnonymously(connection.member.id)) {
+              sendManagementError("room_management_unauthorized", "Only the current anonymous room manager can unlock this room.");
+              return;
+            }
+            roomAccess.setMeetingRoomPassword(null);
+            roomManagement.setLegacyLock(false);
+            markDurable();
+            addPending("management", { roomId: "studio", actorParticipantId: connection.member.id, action: "room.anonymous_unlocked", details: { revision: roomAccess.admissionRevision("studio") } });
+            broadcastRoomCatalogue();
+            broadcastSpaceState();
+            broadcastRoomManagementStates();
+            sendManagementResult("unlock");
+            return;
+          }
+
+          if (message.type === "room.management.transfer") {
+            if (!hasOnlyKeys(message, ["type", "participantId"]) || typeof message.participantId !== "string" ||
+                message.participantId.length < 1 || message.participantId.length > 128) {
+              sendManagementError("invalid_room_management_target", "Choose a current meeting room member by server-assigned participant ID.");
+              return;
+            }
+            if (!roomManagement.canManageAnonymously(connection.member.id)) {
+              sendManagementError("room_management_unauthorized", "Only the current anonymous room manager can transfer room management.");
+              return;
+            }
+            const target = onlineStudioParticipants().find((member) => member.id === message.participantId);
+            if (!target || target.id === connection.member.id) {
+              sendManagementError("room_management_target_not_in_room", "Choose another participant who is currently in the meeting room.");
+              return;
+            }
+            if (!roomManagement.transfer(connection.member.id, target.id, true)) {
+              sendManagementError("room_management_target_not_in_room", "Choose another participant who is currently in the meeting room.");
+              return;
+            }
+            markDurable();
+            addPending("management", { roomId: "studio", actorParticipantId: connection.member.id, targetParticipantId: target.id, action: "room.anonymous_manager.transferred" });
+            broadcastRoomManagementStates();
+            sendManagementResult("transfer");
+            return;
+          }
+
+          sendManagementError("invalid_room_management", "This meeting room management action is not supported.");
+          return;
+        }
+
         if (message.type === "host.claim") {
           if (!hasOnlyKeys(message, ["type", "token"])) {
             sendHostError("invalid_host_claim", "Host claim accepts only the room connection and a host token.");
@@ -1284,6 +1465,7 @@ export async function createApp(options: CreateAppOptions = {}) {
             broadcastHostPublisherGrants(roomId);
             members.delete(targetMemberId);
             space.remove(targetMemberId);
+            const managerHandover = handleAnonymousOwnerOffline(targetMemberId);
             for (const relays of mediaRooms.values()) {
               relays.audio.disconnect(target.connection.id);
               relays.screen.disconnect(target.connection.id);
@@ -1293,6 +1475,8 @@ export async function createApp(options: CreateAppOptions = {}) {
             sendHostResult("removeParticipant", { participantId: targetMemberId });
             emit("member.left", removedMember, roomId);
             broadcastSpaceState();
+            if (managerHandover !== "unchanged") broadcastRoomCatalogue();
+            broadcastRoomManagementStates();
             closeSocket(target.socket, 4001, "Removed by host");
             return;
           }
@@ -1306,6 +1490,10 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("host_wrong_room", "Meeting room lock controls are available only while you are in the meeting room.");
               return;
             }
+            if (roomManagement.snapshot(roomAccess.isMeetingRoomLocked("studio")).lockKind === "anonymous") {
+              sendHostError("host_room_managed_anonymously", "The current anonymous room manager controls this meeting room lock.");
+              return;
+            }
             if (typeof message.password !== "string" || message.password.length === 0 || !isValidRoomPassword(message.password)) {
               sendHostError("invalid_room_password", "Use a meeting room password of 1 to 128 characters and at most 512 UTF-8 bytes.");
               return;
@@ -1316,10 +1504,12 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
             markDurable();
             roomAccess.setMeetingRoomPassword(message.password);
+            roomManagement.setLegacyLock(true);
             addPending("management", { roomId, actorParticipantId: connection.member.id, action: "room.password.changed", details: { revision: roomAccess.admissionRevision(roomId) } });
             bumpCounter(roomId, "hostActions");
             broadcastRoomCatalogue();
             broadcastSpaceState();
+            broadcastRoomManagementStates();
             sendHostResult("setMeetingRoomPassword", { roomId, isLocked: true });
             return;
           }
@@ -1333,12 +1523,18 @@ export async function createApp(options: CreateAppOptions = {}) {
               sendHostError("host_wrong_room", "Meeting room lock controls are available only while you are in the meeting room.");
               return;
             }
+            if (roomManagement.snapshot(roomAccess.isMeetingRoomLocked("studio")).lockKind === "anonymous") {
+              sendHostError("host_room_managed_anonymously", "The current anonymous room manager controls this meeting room lock.");
+              return;
+            }
             markDurable();
             roomAccess.setMeetingRoomPassword(null);
+            roomManagement.setLegacyLock(false);
             addPending("management", { roomId, actorParticipantId: connection.member.id, action: "room.unlocked", details: { revision: roomAccess.admissionRevision(roomId) } });
             bumpCounter(roomId, "hostActions");
             broadcastRoomCatalogue();
             broadcastSpaceState();
+            broadcastRoomManagementStates();
             sendHostResult("unlockMeetingRoom", { roomId, isLocked: false });
             return;
           }
@@ -1675,8 +1871,11 @@ export async function createApp(options: CreateAppOptions = {}) {
           connection.hostActive = false;
           connection.member = undefined;
           connection.currentRoomId = undefined;
+          const managerHandover = handleAnonymousOwnerOffline(leavingMember.id);
           emit("member.left", leavingMember, leavingRoom);
           broadcastSpaceState();
+          if (managerHandover !== "unchanged") broadcastRoomCatalogue();
+          broadcastRoomManagementStates();
         }, socket);
       });
 

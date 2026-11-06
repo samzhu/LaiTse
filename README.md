@@ -381,3 +381,9 @@ This describes the historical 2026-11-05 T18/R001 run, before PostgreSQL persist
 2026-11-06已完成studio多來源音訊本機合成核心驗證；每頁加入同一會議室後先「開始收聽」，想說話的人各按「開始麥克風」。接收頁可看到多個來源的接收／解碼／AudioWorklet PCM與RMS；一人停麥不停止其他來源，畫面仍同時一人分享。開放區維持原單來源／距離規則，原8人POC限制與舊managed發布授權未移除。
 
 完整[操作與驗測紀錄](docs/poc/evidence/POC-MA-01-R001/README.md)分開列合成／真人、成功／失敗／未測；真人多人聽感與PG多人模式未驗。可信HTTPS服務啟動後可用鎖定Node執行`MA01_BASE_URL=https://localhost:<port>/ node scripts/multi-speaker-smoke.mjs`，輸出在`.scratch/ma01/browser`，不要覆蓋欲保留的前輪目錄。腳本只開本輪獨立Firefox／合成音源，無硬體收音或正式部署。
+
+## POC-RM-01：匿名會議室管理與交接
+
+匿名模式下，已加入的參與者可在「會議室門與管理權」按上鎖、輸入密碼取得管理權；現任管理者可改密碼／解鎖並轉交給在線房內成員。同名不等於管理者。管理者換房仍保留權限；只有離線才由房內成員隨機接任，無候選則解鎖，後來者可重新上鎖。舊HOST_CONTROL_TOKEN配置保持舊模式，新的匿名命令在該模式停用。
+
+[操作、真PG與Firefox驗測紀錄](docs/poc/evidence/POC-RM-01-R001/README.md)包含各輪失敗／修正與最終結果；可信HTTPS服務啟動後可用鎖定Node執行`RM01_BASE_URL=https://localhost:<port>/ node scripts/room-management-smoke.mjs`，輸出在`.scratch/rm01`，每次使用新的輸出目錄。這是固定studio的POC，不是完整MVP。

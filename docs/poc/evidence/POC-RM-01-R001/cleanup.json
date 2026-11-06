@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-06",
+  "testService": {
+    "pid": 41026,
+    "baseURL": "https://localhost:55299",
+    "database": "laitse_rm01_20261106100532",
+    "persistence": "postgresql",
+    "fixture": "dedicated anonymous room management DB, no host token / startup password"
+  },
+  "healthBeforeStop": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "stopSent": "SIGTERM to verified own launcher PID only",
+  "container": "laitse-poc06-r002-db",
+  "containerInitialState": "exited",
+  "databasePreserved": "laitse_rm01_20261106100532",
+  "noDatabaseOrVolumeDeleted": true,
+  "humanBrowserOrMicrophoneOperated": false,
+  "roomBrowserErrors": {
+    "pageErrors": 0,
+    "cappedCollections": [],
+    "failure": null
+  },
+  "mediaBrowserCleanupErrors": [],
+  "testServiceConfirmedStopped": true,
+  "containerFinalState": "exited",
+  "DockerEnvironmentLeftAvailable": true
+}

@@ -1,0 +1,62 @@
+{
+  "runId": "POC-RM-01-R001",
+  "date": "2026-11-06",
+  "baseline": "0995141",
+  "execution": "complete",
+  "lightweightCore": "Pass for anonymous studio manager lifecycle on local Firefox157/PostgreSQL18.6",
+  "productRule": "DEC017: switching rooms retains manager; only disconnect/offline triggers target-room candidate election, no candidate unlocks",
+  "build": "Pass build2/typecheck",
+  "coreTests": {
+    "pass": 69,
+    "fail": 0,
+    "pgSkippedBeforeRootPGRun": 2
+  },
+  "postgresTests": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "covers": [
+      "001-to002 legacy upgrade preserves verifier/revision",
+      "ACK then durable anonymous lock/transfer readback",
+      "anonymous orphan clears on restart; legacy lock survives",
+      "existing persistence transaction failure and recovery regressions"
+    ]
+  },
+  "roomBrowser": {
+    "runtime": {
+      "node": "v26.13.0",
+      "firefox": "157.0",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "headless": true
+    },
+    "status": "passed",
+    "durationMs": 10214,
+    "cases": 13,
+    "humanAcceptance": false
+  },
+  "mediaRegression": {
+    "status": "passed",
+    "durationMs": 11328,
+    "activeMediaMs": 6505,
+    "fixture": "same PG-backed candidate; synthetic oscillator/canvas; not human hearing or media restart durability"
+  },
+  "positiveManualUnlock": "trusted WSS probe and PG cleared-state readback Pass",
+  "initialFailures": [
+    "relevant test import syntax typo fixed, original log retained",
+    "browser01 expected room.snapshot instead of actual room.management.state broadcast",
+    "browser02 expected leave ACK after client immediately closes; changed to sent leave/local state/fresh ID"
+  ],
+  "additionalHarnessReview": "latest state only, no historical predicate match; previous successful full run retained",
+  "remaining": [
+    "only predefined studio; general room configuration is MVP work",
+    "legacy HOST_CONTROL_TOKEN mode deliberately excludes anonymous manager commands",
+    "microphone mute/kick/other moderation policy not expanded",
+    "actual network-loss detection latency/background/large capacity/cloud not tested",
+    "no new human product acceptance; desktop UI automation only",
+    "original 8-person cap remains; phones deferred"
+  ],
+  "mvpStarted": false,
+  "deployed": false,
+  "resources": "own app/browser stopped, dedicated container exited, DB/volume preserved"
+}

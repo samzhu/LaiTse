@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "transport": "trusted WSS protocol probe, not extra browser/human acceptance",
+  "actorParticipantId": "36336305-2132-44c2-aa64-298ede168dbd",
+  "lockAck": {
+    "type": "room.management.result",
+    "action": "lock",
+    "isLocked": true
+  },
+  "unlockAck": {
+    "type": "room.management.result",
+    "action": "unlock",
+    "isLocked": false
+  },
+  "clearedState": {
+    "type": "room.management.state",
+    "roomId": "studio",
+    "isLocked": false,
+    "lockKind": "none",
+    "anonymousManagementEnabled": true,
+    "canLock": true,
+    "isOwner": false
+  },
+  "databaseAfterUnlock": {
+    "is_locked": false,
+    "lock_kind": "none",
+    "manager_participant_id": null,
+    "salt_cleared": true,
+    "verifier_cleared": true
+  }
+}
