@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short local Chrome/Edge synthetic audio, screen decode, TCP blackhole, liveness handover, and proof-based participant resume smoke.",
+  "startedAt": "2026-11-06T05:54:39.928Z",
+  "finishedAt": "2026-11-06T05:54:46.017Z",
+  "durationMs": 6090,
+  "status": "failed",
+  "outputDirectory": ".scratch/final01/network/run-1793944479780-57835-ffe8476e-695c-4a55-aea6-bcce49d43116",
+  "application": {
+    "origin": "http://localhost:4175",
+    "configuredByRoot": true,
+    "expectedConnectionLiveness": {
+      "pingIntervalMs": 250,
+      "pongTimeoutMs": 1500,
+      "note": "Expected values supplied by the root-managed createApp test seam; the harness observes resulting peer state, not the timer internals."
+    }
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "os": "27.2",
+    "headless": true,
+    "browsers": {
+      "chrome": {
+        "name": "Google Chrome",
+        "executableVersion": "Google Chrome 157.0.8103.38",
+        "playwrightVersion": "157.0.8103.38"
+      },
+      "edge": {
+        "name": "Microsoft Edge",
+        "executableVersion": "Microsoft Edge 156.0.4314.58",
+        "playwrightVersion": "156.0.4314.58"
+      }
+    }
+  },
+  "topology": {
+    "room": "studio",
+    "participants": {
+      "A": {
+        "name": "Final01-A",
+        "browser": "chrome",
+        "proxiedThroughOwnedLoopbackProxy": true
+      },
+      "B": {
+        "name": "Final01-B",
+        "browser": "edge",
+        "proxiedThroughOwnedLoopbackProxy": false
+      },
+      "C": {
+        "name": "Final01-C",
+        "browser": "chrome",
+        "proxiedThroughOwnedLoopbackProxy": false
+      }
+    },
+    "proxyBoundary": "A alone uses an ephemeral 127.0.0.1 listener. It forwards raw TCP to the separate private app. B and C connect directly to that private app.",
+    "initialMedia": "A and B publish distinct synthetic Opus audio; A publishes a synthetic canvas screen; C uses native browser WebCodecs decode and AudioWorklet PCM output for both sources and decodes/renders the screen.",
+    "realPeopleOrDevices": false
+  },
+  "syntheticSources": {
+    "audio": "getUserMedia is replaced only in each isolated test page with oscillator-backed MediaStreamDestination tracks.",
+    "audioFrequencyHz": {
+      "A": 523,
+      "B": 761
+    },
+    "screen": "A getDisplayMedia call is replaced only in A's page with an animated canvas captureStream.",
+    "screenColorRgb": [
+      44,
+      133,
+      196
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "systemNetworkSettingsChanged": false,
+    "systemFakePermissionFlags": false,
+    "mediaPayloadsStored": false
+  },
+  "proxy": {
+    "implementation": "local raw TCP forwarder; no WebSocket frame rewriting",
+    "listenerHost": "127.0.0.1",
+    "delayMs": 10,
+    "bytesPerSecond": 524288,
+    "maxQueuedBytesPerDirection": 524288,
+    "maxQueuedChunksPerDirection": 256,
+    "overflowBehavior": "destroy the affected pair when the bounded delay/rate queue exceeds its cap; never discard arbitrary bytes and keep the stream active",
+    "blackholeBehavior": "discard all bytes both ways for A's WebSocket pair, suppress the upstream close/FIN while blackholed, then destroy old pairs before fresh TCP reconnects are forwarded",
+    "snapshots": [
+      {
+        "phase": "listener-ready",
+        "listening": true,
+        "listenHost": "127.0.0.1",
+        "listenPort": 57807,
+        "blackholeEnabled": false,
+        "acceptedConnections": 0,
+        "websocketConnections": 0,
+        "queueOverflowResets": 0,
+        "blackholeDiscardedClientBytes": 0,
+        "blackholeDiscardedServerBytes": 0,
+        "activeWebSocketPairs": 0,
+        "pairs": []
+      }
+    ]
+  },
+  "checks": [],
+  "mediaSnapshots": [],
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "passwordValuesRetained": false,
+    "sessionProofsOrTokensRetained": false,
+    "participantIdentifiersRetained": false,
+    "browserStorageDumped": false,
+    "metadataBounded": true
+  },
+  "limits": {
+    "physicalNetwork": "not-tested; this is a local TCP proxy on one computer, not Wi-Fi, WAN, cellular, Cloud Run, or a packet-loss model",
+    "syntheticMedia": "not-tested with physical microphones, OS screen picker, human listeners, or multiple physical devices",
+    "humanAudioVideoSync": "not-measured; source timestamp offsets, if shown by the app, are not human-observed synchronization or calibrated p95 latency",
+    "longDurationAndQuality": "optional local post-recovery soak 15000 ms; not a 65-minute or quality claim",
+    "capacityAndCloud": "not-tested; no capacity, cloud deployment, or Cloud Run claim"
+  },
+  "errors": {
+    "pageErrors": [],
+    "cleanupErrors": [],
+    "failure": "The private studio fixture must start unlocked for A's normal UI lock flow."
+  },
+  "cleanup": {
+    "contextsClosed": 3,
+    "profilesRemoved": true,
+    "proxyClosed": true
+  }
+}

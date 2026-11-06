@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short T06 synthetic browser feasibility flow: publisher-clocked audio/video, active-share late join, keyframe gating, source replacement, resubscribe, and same-receiver marker sampling.",
+  "startedAt": "2026-11-06T05:59:21.301Z",
+  "status": "failed",
+  "baseURL": "https://localhost:4175",
+  "topology": {
+    "publishers": 1,
+    "receivers": 2,
+    "browserProcesses": 3,
+    "network": "one local application over trusted HTTPS/WSS"
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "npm": "11.20.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "osVersion": "27.2",
+    "firefox": "157.0"
+  },
+  "tls": {
+    "trust": "local CA imported only into each isolated Firefox NSS profile",
+    "caCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/local-ca.pem",
+    "serverCertificate": "/Users/samzhu/workspace_herdr/LaiTse/.scratch/t01/tls/localhost-cert.pem",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false
+  },
+  "sources": {
+    "audio": "test-created oscillator → AudioContext → MediaStreamDestination; no hardware microphone",
+    "video": "animated canvas MediaStreamTrack returned by a test-only getDisplayMedia replacement",
+    "marker": {
+      "kind": "same synthetic audio-context pulse drives an audible oscillator interval and a color-coded canvas tile",
+      "periodMs": 2400,
+      "activeDurationMs": 480,
+      "colors": [
+        {
+          "cycleCode": 0,
+          "rgb": [
+            250,
+            50,
+            40
+          ]
+        },
+        {
+          "cycleCode": 1,
+          "rgb": [
+            35,
+            220,
+            80
+          ]
+        },
+        {
+          "cycleCode": 2,
+          "rgb": [
+            45,
+            90,
+            255
+          ]
+        },
+        {
+          "cycleCode": 3,
+          "rgb": [
+            245,
+            220,
+            35
+          ]
+        },
+        {
+          "cycleCode": 4,
+          "rgb": [
+            225,
+            45,
+            225
+          ]
+        },
+        {
+          "cycleCode": 5,
+          "rgb": [
+            20,
+            215,
+            220
+          ]
+        },
+        {
+          "cycleCode": 6,
+          "rgb": [
+            250,
+            135,
+            25
+          ]
+        },
+        {
+          "cycleCode": 7,
+          "rgb": [
+            245,
+            245,
+            245
+          ]
+        }
+      ],
+      "physicalInputLatency": "unknown; source audio timestamp is an approximate capture-graph/performance mapping",
+      "sourceJitter": "AudioContext gain transitions use a 12 ms test timer and a short gain ramp; transition timing is not exact"
+    },
+    "physicalDisplayCaptureSelected": false,
+    "physicalMicrophoneSelected": false,
+    "realMediaRecorded": false
+  },
+  "clients": {},
+  "stages": [],
+  "snapshots": [
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-06T05:59:36.142Z",
+        "receiverState": "off",
+        "renderedFrames": 0,
+        "receivedFrames": 0,
+        "decodedFrames": 0,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "receiverMessage": "尚未加入畫面接收。按「開始觀看分享」訂閱；晚加入會等待下一個關鍵影格。"
+      }
+    },
+    {
+      "client": "failure-audio-state",
+      "audio": {
+        "capturedAt": "2026-11-06T05:59:36.149Z",
+        "listenerState": "off",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 0,
+        "decodedFrames": 0,
+        "renderedSamples": 0,
+        "queuedSamples": 0,
+        "queueOverflowResets": 0,
+        "renderRms": 0,
+        "clockId": "",
+        "pulseEvents": []
+      }
+    },
+    {
+      "client": "failure-state",
+      "screen": {
+        "capturedAt": "2026-11-06T05:59:36.184Z",
+        "receiverState": "off",
+        "renderedFrames": 0,
+        "receivedFrames": 0,
+        "decodedFrames": 0,
+        "width": null,
+        "height": null,
+        "renderFps": 0,
+        "syncMode": "waiting",
+        "syncClockId": "",
+        "scheduledSourceClockOffsetMs": null,
+        "droppedDecodedFrames": 0,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "receiverMessage": "尚未加入畫面接收。按「開始觀看分享」訂閱；晚加入會等待下一個關鍵影格。"
+      }
+    },
+    {
+      "client": "failure-audio-state",
+      "audio": {
+        "capturedAt": "2026-11-06T05:59:36.191Z",
+        "listenerState": "off",
+        "publisherState": "idle",
+        "sentPackets": 0,
+        "receivedPackets": 0,
+        "decodedFrames": 0,
+        "renderedSamples": 0,
+        "queuedSamples": 0,
+        "queueOverflowResets": 0,
+        "renderRms": 0,
+        "clockId": "",
+        "pulseEvents": []
+      }
+    }
+  ],
+  "controlEvents": [],
+  "keyframeRequests": [],
+  "markerMeasurement": null,
+  "transport": [
+    {
+      "name": "publisher",
+      "sockets": [
+        {
+          "url": "wss://localhost:4175/ws",
+          "sentTextFrames": 1,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 7,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "session.issued",
+        "control.event",
+        "room.snapshot",
+        "interaction.snapshot",
+        "participation.self",
+        "space.snapshot",
+        "room.management.state"
+      ]
+    },
+    {
+      "name": "receiver-a",
+      "sockets": [
+        {
+          "url": "wss://localhost:4175/ws",
+          "sentTextFrames": 1,
+          "sentBinaryFrames": 0,
+          "receivedTextFrames": 10,
+          "receivedBinaryFrames": 0,
+          "errors": []
+        }
+      ],
+      "pageErrors": [],
+      "receivedControlTypes": [
+        "session.issued",
+        "control.event",
+        "room.snapshot",
+        "interaction.snapshot",
+        "participation.self",
+        "space.snapshot",
+        "room.management.state",
+        "control.event",
+        "space.snapshot",
+        "room.management.state"
+      ]
+    },
+    {
+      "name": "receiver-b",
+      "sockets": [],
+      "pageErrors": [],
+      "receivedControlTypes": []
+    }
+  ],
+  "errors": {
+    "pageErrors": [],
+    "socketErrors": [],
+    "failure": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Connected to Local test room', { exact: true }) to be visible\u001b[22m\n\n    at joinRoom (/Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:187:73)\n    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/t06-smoke.mjs:467:3"
+  },
+  "limitations": {
+    "endToEndLatencyMs": null,
+    "physicalDisplayCapture": "not-tested; getDisplayMedia is replaced by a synthetic canvas stream",
+    "physicalMicrophoneAndHumanListening": "not-tested; capture source is a synthetic oscillator",
+    "phoneBrowser": "not-tested",
+    "crossDeviceClockCalibration": "not-tested",
+    "mappingErrorBoundMs": null,
+    "audioVideoP95": "not-claimed; this short DEC-010 run samples a few color-coded marker cycles",
+    "screenCaptureTimestamp": "canvas-to-encoder copy time, not the physical source capture instant",
+    "audioOutputTimestamp": "browser AudioContext output-device clock mapping, not physical-speaker or human-hearing evidence",
+    "serverCpuAndMemory": "not-collected-by-browser-script",
+    "codecFallback": "VP8/Opus only; no Recorder/MSE negotiation in this run"
+  },
+  "screenshots": [
+    "receiver-b-late-join.png",
+    "receiver-b-source-replaced.png",
+    "receiver-b-resubscribed.png"
+  ],
+  "failureSnapshots": [
+    {
+      "capturedAt": "2026-11-06T05:59:36.142Z",
+      "receiverState": "off",
+      "renderedFrames": 0,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "receiverMessage": "尚未加入畫面接收。按「開始觀看分享」訂閱；晚加入會等待下一個關鍵影格。"
+    },
+    {
+      "capturedAt": "2026-11-06T05:59:36.149Z",
+      "listenerState": "off",
+      "publisherState": "idle",
+      "sentPackets": 0,
+      "receivedPackets": 0,
+      "decodedFrames": 0,
+      "renderedSamples": 0,
+      "queuedSamples": 0,
+      "queueOverflowResets": 0,
+      "renderRms": 0,
+      "clockId": "",
+      "pulseEvents": []
+    },
+    {
+      "capturedAt": "2026-11-06T05:59:36.184Z",
+      "receiverState": "off",
+      "renderedFrames": 0,
+      "receivedFrames": 0,
+      "decodedFrames": 0,
+      "width": null,
+      "height": null,
+      "renderFps": 0,
+      "syncMode": "waiting",
+      "syncClockId": "",
+      "scheduledSourceClockOffsetMs": null,
+      "droppedDecodedFrames": 0,
+      "pixel": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "receiverMessage": "尚未加入畫面接收。按「開始觀看分享」訂閱；晚加入會等待下一個關鍵影格。"
+    },
+    {
+      "capturedAt": "2026-11-06T05:59:36.191Z",
+      "listenerState": "off",
+      "publisherState": "idle",
+      "sentPackets": 0,
+      "receivedPackets": 0,
+      "decodedFrames": 0,
+      "renderedSamples": 0,
+      "queuedSamples": 0,
+      "queueOverflowResets": 0,
+      "renderRms": 0,
+      "clockId": "",
+      "pulseEvents": []
+    }
+  ],
+  "finishedAt": "2026-11-06T05:59:36.877Z"
+}

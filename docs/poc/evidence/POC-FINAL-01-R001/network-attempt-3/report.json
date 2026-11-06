@@ -1,0 +1,421 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short local Chrome/Edge synthetic audio, screen decode, TCP blackhole, liveness handover, and proof-based participant resume smoke.",
+  "startedAt": "2026-11-06T05:56:21.953Z",
+  "finishedAt": "2026-11-06T05:56:46.532Z",
+  "durationMs": 24581,
+  "status": "passed",
+  "outputDirectory": ".scratch/final01/network/run-1793944581798-58041-fd3ffff8-96a4-4343-9233-6664c31aba68",
+  "application": {
+    "origin": "http://localhost:4175",
+    "configuredByRoot": true,
+    "expectedConnectionLiveness": {
+      "pingIntervalMs": 250,
+      "pongTimeoutMs": 1500,
+      "note": "Expected values supplied by the root-managed createApp test seam; the harness observes resulting peer state, not the timer internals."
+    }
+  },
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "os": "27.2",
+    "headless": true,
+    "browsers": {
+      "chrome": {
+        "name": "Google Chrome",
+        "executableVersion": "Google Chrome 157.0.8103.38",
+        "playwrightVersion": "157.0.8103.38"
+      },
+      "edge": {
+        "name": "Microsoft Edge",
+        "executableVersion": "Microsoft Edge 156.0.4314.58",
+        "playwrightVersion": "156.0.4314.58"
+      }
+    }
+  },
+  "topology": {
+    "room": "studio",
+    "participants": {
+      "A": {
+        "name": "Final01-A",
+        "browser": "chrome",
+        "proxiedThroughOwnedLoopbackProxy": true
+      },
+      "B": {
+        "name": "Final01-B",
+        "browser": "edge",
+        "proxiedThroughOwnedLoopbackProxy": false
+      },
+      "C": {
+        "name": "Final01-C",
+        "browser": "chrome",
+        "proxiedThroughOwnedLoopbackProxy": false
+      }
+    },
+    "proxyBoundary": "A alone uses an ephemeral 127.0.0.1 listener. It forwards raw TCP to the separate private app. B and C connect directly to that private app.",
+    "initialMedia": "A and B publish distinct synthetic Opus audio; A publishes a synthetic canvas screen; C uses native browser WebCodecs decode and AudioWorklet PCM output for both sources and decodes/renders the screen.",
+    "realPeopleOrDevices": false
+  },
+  "syntheticSources": {
+    "audio": "getUserMedia is replaced only in each isolated test page with oscillator-backed MediaStreamDestination tracks.",
+    "audioFrequencyHz": {
+      "A": 523,
+      "B": 761
+    },
+    "screen": "A getDisplayMedia call is replaced only in A's page with an animated canvas captureStream.",
+    "screenColorRgb": [
+      44,
+      133,
+      196
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "systemNetworkSettingsChanged": false,
+    "systemFakePermissionFlags": false,
+    "mediaPayloadsStored": false
+  },
+  "proxy": {
+    "implementation": "local raw TCP forwarder; no WebSocket frame rewriting",
+    "listenerHost": "127.0.0.1",
+    "delayMs": 10,
+    "bytesPerSecond": 524288,
+    "maxQueuedBytesPerDirection": 524288,
+    "maxQueuedChunksPerDirection": 256,
+    "overflowBehavior": "destroy the affected pair when the bounded delay/rate queue exceeds its cap; never discard arbitrary bytes and keep the stream active",
+    "blackholeBehavior": "discard all bytes both ways for A's WebSocket pair, suppress the upstream close/FIN while blackholed, then destroy old pairs before fresh TCP reconnects are forwarded",
+    "snapshots": [
+      {
+        "phase": "listener-ready",
+        "listening": true,
+        "listenHost": "127.0.0.1",
+        "listenPort": 58167,
+        "blackholeEnabled": false,
+        "acceptedConnections": 0,
+        "websocketConnections": 0,
+        "queueOverflowResets": 0,
+        "blackholeDiscardedClientBytes": 0,
+        "blackholeDiscardedServerBytes": 0,
+        "activeWebSocketPairs": 0,
+        "pairs": []
+      },
+      {
+        "phase": "active-blackhole",
+        "listening": true,
+        "listenHost": "127.0.0.1",
+        "listenPort": 58167,
+        "blackholeEnabled": true,
+        "acceptedConnections": 5,
+        "websocketConnections": 1,
+        "queueOverflowResets": 0,
+        "blackholeDiscardedClientBytes": 1484,
+        "blackholeDiscardedServerBytes": 2,
+        "activeWebSocketPairs": 1,
+        "pairs": [
+          {
+            "id": 4,
+            "isWebSocket": true,
+            "blackholed": true,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 12763,
+            "serverBytes": 7210,
+            "blackholeDiscardedClientBytes": 1484,
+            "blackholeDiscardedServerBytes": 2,
+            "queuedBytesHighWater": 2742
+          },
+          {
+            "id": 5,
+            "isWebSocket": false,
+            "blackholed": false,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 507,
+            "serverBytes": 1890,
+            "blackholeDiscardedClientBytes": 0,
+            "blackholeDiscardedServerBytes": 0,
+            "queuedBytesHighWater": 1890
+          }
+        ]
+      },
+      {
+        "phase": "fresh-pair-after-resume",
+        "listening": true,
+        "listenHost": "127.0.0.1",
+        "listenPort": 58167,
+        "blackholeEnabled": false,
+        "acceptedConnections": 6,
+        "websocketConnections": 2,
+        "queueOverflowResets": 0,
+        "blackholeDiscardedClientBytes": 17124,
+        "blackholeDiscardedServerBytes": 2,
+        "activeWebSocketPairs": 1,
+        "pairs": [
+          {
+            "id": 5,
+            "isWebSocket": false,
+            "blackholed": false,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 507,
+            "serverBytes": 1890,
+            "blackholeDiscardedClientBytes": 0,
+            "blackholeDiscardedServerBytes": 0,
+            "queuedBytesHighWater": 1890
+          },
+          {
+            "id": 6,
+            "isWebSocket": true,
+            "blackholed": false,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 764,
+            "serverBytes": 3311,
+            "blackholeDiscardedClientBytes": 0,
+            "blackholeDiscardedServerBytes": 0,
+            "queuedBytesHighWater": 3042
+          }
+        ]
+      },
+      {
+        "phase": "final",
+        "listening": true,
+        "listenHost": "127.0.0.1",
+        "listenPort": 58167,
+        "blackholeEnabled": false,
+        "acceptedConnections": 6,
+        "websocketConnections": 2,
+        "queueOverflowResets": 0,
+        "blackholeDiscardedClientBytes": 17124,
+        "blackholeDiscardedServerBytes": 2,
+        "activeWebSocketPairs": 1,
+        "pairs": [
+          {
+            "id": 5,
+            "isWebSocket": false,
+            "blackholed": false,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 507,
+            "serverBytes": 1890,
+            "blackholeDiscardedClientBytes": 0,
+            "blackholeDiscardedServerBytes": 0,
+            "queuedBytesHighWater": 1890
+          },
+          {
+            "id": 6,
+            "isWebSocket": true,
+            "blackholed": false,
+            "resetReason": null,
+            "clientOpen": true,
+            "upstreamOpen": true,
+            "upstreamConnected": true,
+            "clientBytes": 1181,
+            "serverBytes": 8369,
+            "blackholeDiscardedClientBytes": 0,
+            "blackholeDiscardedServerBytes": 0,
+            "queuedBytesHighWater": 3042
+          }
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "three isolated Chrome/Edge pages joined the private unlocked studio",
+      "atMs": 4048,
+      "participantCount": 3,
+      "distinctServerIdentities": true
+    },
+    {
+      "name": "A locked the studio through the normal room-management UI",
+      "atMs": 4246,
+      "lockKind": "anonymous"
+    },
+    {
+      "name": "Chrome/Edge performed two-source Opus decode, PCM output, and screen decode/render",
+      "atMs": 5918,
+      "audioSources": 2,
+      "pcmSources": 2,
+      "screenRenderedFrames": 3
+    },
+    {
+      "name": "server liveness expired the blackholed A socket and a legal B/C member became owner",
+      "atMs": 7654,
+      "successorIsLiveRoomPeer": true,
+      "successorIsA": false,
+      "browserSawCloseBeforeHandover": false,
+      "serverSideSocketTerminated": true
+    },
+    {
+      "name": "healthy B/C kept PCM playback and room interaction after A went offline",
+      "atMs": 7748,
+      "bPublisherAdvanced": true,
+      "cPcmAdvanced": true,
+      "staleAScreenCleared": true,
+      "interactionSeenByBothHealthyPeers": true
+    },
+    {
+      "name": "A reconnected on a new TCP pair with the same identity and did not reclaim owner or old media",
+      "atMs": 8539,
+      "resumedSameParticipantId": true,
+      "passwordPromptShownByRoomGate": true,
+      "ownerRemainedBOrC": true,
+      "resumedNonOwnerReceivedNoPrivateOwnerIdentity": true,
+      "oldAudioPublicationResumed": false,
+      "oldScreenPublicationResumed": false
+    },
+    {
+      "name": "optional-post-recovery-soak-kept-B-publishing-and-C-rendering",
+      "atMs": 23778,
+      "requestedMs": 15000,
+      "checkedWindows": 15
+    },
+    {
+      "name": "owner leaving with no remaining studio candidates automatically unlocked the room",
+      "atMs": 24162,
+      "ownerWasOnlyStudioMember": true,
+      "unlockedObservedByRemainingParticipant": true
+    },
+    {
+      "name": "network smoke finished with bounded proxy queues and no unhandled page errors",
+      "atMs": 24162,
+      "proxyQueueOverflowResets": 0,
+      "browserPageErrors": 0
+    }
+  ],
+  "mediaSnapshots": [
+    {
+      "phase": "before-blackhole",
+      "receiver": {
+        "client": "C",
+        "publisherState": "idle",
+        "publisherGeneration": null,
+        "sentPackets": 0,
+        "activeSourceCount": 2,
+        "sources": [
+          {
+            "generation": 3,
+            "receivedPackets": 3,
+            "decodedFrames": 3,
+            "renderedPcmSamples": 1536,
+            "renderRms": 0.07998399003876104,
+            "localDecodeDrops": 0
+          },
+          {
+            "generation": 4,
+            "receivedPackets": 3,
+            "decodedFrames": 3,
+            "renderedPcmSamples": 1536,
+            "renderRms": 0.07376061137491241,
+            "localDecodeDrops": 0
+          }
+        ],
+        "screen": {
+          "publisherState": "idle",
+          "receiverState": "rendering",
+          "receivedFrames": 5,
+          "decodedFrames": 5,
+          "renderedFrames": 3,
+          "width": 320,
+          "height": 180
+        }
+      }
+    },
+    {
+      "phase": "A-offline",
+      "receiver": {
+        "client": "C",
+        "publisherState": "idle",
+        "publisherGeneration": null,
+        "sentPackets": 0,
+        "activeSourceCount": 1,
+        "sources": [
+          {
+            "generation": 4,
+            "receivedPackets": 107,
+            "decodedFrames": 107,
+            "renderedPcmSamples": 100672,
+            "renderRms": 0.16760633227813437,
+            "localDecodeDrops": 0
+          }
+        ],
+        "screen": {
+          "publisherState": "idle",
+          "receiverState": "waiting",
+          "receivedFrames": 5,
+          "decodedFrames": 5,
+          "renderedFrames": 5,
+          "width": 0,
+          "height": 0
+        }
+      }
+    },
+    {
+      "phase": "after-A-resume",
+      "receiver": {
+        "client": "C",
+        "publisherState": "idle",
+        "publisherGeneration": null,
+        "sentPackets": 0,
+        "activeSourceCount": 1,
+        "sources": [
+          {
+            "generation": 4,
+            "receivedPackets": 151,
+            "decodedFrames": 151,
+            "renderedPcmSamples": 141888,
+            "renderRms": 0.17026482034598944,
+            "localDecodeDrops": 0
+          }
+        ],
+        "screen": {
+          "publisherState": "idle",
+          "receiverState": "waiting",
+          "receivedFrames": 5,
+          "decodedFrames": 5,
+          "renderedFrames": 5,
+          "width": 0,
+          "height": 0
+        }
+      }
+    }
+  ],
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "passwordValuesRetained": false,
+    "sessionProofsOrTokensRetained": false,
+    "participantIdentifiersRetained": false,
+    "browserStorageDumped": false,
+    "metadataBounded": true
+  },
+  "limits": {
+    "physicalNetwork": "not-tested; this is a local TCP proxy on one computer, not Wi-Fi, WAN, cellular, Cloud Run, or a packet-loss model",
+    "syntheticMedia": "not-tested with physical microphones, OS screen picker, human listeners, or multiple physical devices",
+    "humanAudioVideoSync": "not-measured; source timestamp offsets, if shown by the app, are not human-observed synchronization or calibrated p95 latency",
+    "longDurationAndQuality": "optional local post-recovery soak 15000 ms; not a 65-minute or quality claim",
+    "capacityAndCloud": "not-tested; no capacity, cloud deployment, or Cloud Run claim"
+  },
+  "errors": {
+    "pageErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "cleanup": {
+    "contextsClosed": 3,
+    "profilesRemoved": true,
+    "proxyClosed": true
+  }
+}

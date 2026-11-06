@@ -377,3 +377,9 @@ build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip
 無產品碼改動，核20dist仍5dea2e2、未重build/全81，本輪syntax＋真Chrome/Edge流程。3contexts/profiles清，沒有操作人類分頁/真mic/OSpicker/系統權限。**保留**native Node PID53830、http://localhost:4174/?room=studio與專用PG容器給之後人工，freshDB/anonymous/unlocked/10席，結束0在線且PGready；不停止/刪資料，不碰原4173。私有runtime在.scratch/desktop01，不提交DSN或profiles。
 
 人類另明確授權驗後可關Issue並寫核心實作避坑。已依桌機輕量範圍關13票#2/#4/#6/#8/#9/#10/#11/#12/#13/#14/#15/#18/#19，保留#1/#3/#5/#7/#16/#17/#20 open；20/20正文/狀態精確讀回、title/labels/原AC歷史保留，沒有代勾未驗值。未驗真人/手機/弱網/品質不因關票變Pass。證據[POC-DESKTOP-01-R001](evidence/POC-DESKTOP-01-R001/README.md)，附人工guide、source/保留環境/避坑與兩輪資料；紀錄和script同本機commit，不push/部署/自動MVP。
+
+## POC-FINAL-01-R001（2026-11-06）
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+[證據／用法／失敗／限制](evidence/POC-FINAL-01-R001/README.md)。人工4174／PID58824與PG保留，測試4175已停，自有proxy／contexts／profiles清理，所有writer已STOP；GitHub7票更新正文/狀態已保存讀回，20票closed（19completed／手機not_planned）；程式與紀錄納入本筆本機commit，不push／部署。

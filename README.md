@@ -4,6 +4,10 @@ One Fastify process serves the React page, health and room APIs, and one WebSock
 
 This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Without `DATABASE_URL`, it keeps state in volatile process memory; local development can opt into PostgreSQL 18 for system information.
 
+## 本輪自動核心驗收完成（2026-11-06）
+
+依DEC-019以桌機自動核心驗收；84真PG測試、TCP失聯交接／恢復、3/6/10瀏覽器2/5/9音源及同步核心通過。[結果、重現與避坑](docs/poc/evidence/POC-FINAL-01-R001/README.md)。真人／手機／原p95及長測留後續，保留品質限制；MVP未自動開始。新版失聯偵測每10秒ping、20秒無pong只清理該連線；PG proof lease不能替代網路心跳。
+
 ## 桌機自動驗證與稍後人工環境（2026-11-06）
 
 本輪保留的獨立本機入口：[Meeting room](http://localhost:4174/?room=studio)，只限這台桌機，使用Chrome／Edge；[人工步驟與本輪狀態](docs/poc/evidence/POC-DESKTOP-01-R001/README.md)。請保持Docker／OrbStack運作；服務與PostgreSQL暫留給稍後人工測試，自動測試的隔離profiles會清除。真人多人／真麥克風／原生分享選擇器結果不由合成音畫測試推定。

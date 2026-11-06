@@ -1,5 +1,11 @@
 # 來坐 LaiTse：故事由來與下一個 AI 的交辦事項
 
+## 最新進度：FINAL01／DEC-019
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+[證據與操作](poc/evidence/POC-FINAL-01-R001/README.md)；人工4174已於0在線後換成同候選liveness backend，PID58824／PG保留，勿停止或碰人類UI。GitHub20票均closed：19completed／手機#3為deferred not_planned，原AC未代勾；先前13closed/7open是歷史。
+
 - 版本：v0.14
 - 更新日期：2026-11-06
 - 配套文件：[來坐 PRD](laitse-prd.md)

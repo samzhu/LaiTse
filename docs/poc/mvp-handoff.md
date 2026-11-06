@@ -4,7 +4,13 @@
 - 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19原範圍NoGo保留；DEC-013改為桌機優先、手機後續，現進入桌機MVP規劃，待決項尚未定案，未開始程式開發**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
 
-## 最新桌機交接（2026-11-06／POC-DESKTOP-01）
+## 最新自動驗收結論（2026-11-06／DEC-019）
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+[本輪證據／重現／失敗與避坑](evidence/POC-FINAL-01-R001/README.md)。下方T19原範圍NoGo及DESKTOP01 pending屬當時證據，當前POC technical core Go以本節為準，正式品質／MVP交付不一併宣告。
+
+## 前輪桌機交接（2026-11-06／POC-DESKTOP-01，歷史）
 
 [本輪auto與保留環境](evidence/POC-DESKTOP-01-R001/README.md)：macOS27.2、Chrome157／Edge156，3個隔離profile、兩合成講者與晚加入接收者，9項7,285ms核心Pass；原生codec/PCM／VP8、逐來源啟停與收聽/觀看恢復成立。真人真mic／原生OS分享選擇器仍pending，單機合成不當成跨桌機多人確認，9來源持續略包限制不因2來源短測清除。
 
@@ -86,14 +92,14 @@ NoGo的主要理由是：桌機Edge真人收聽及兩端停止/重開已在[POC0
 
 | ID／類別 | 目前事實 | 下一個小步／需確認內容 |
 |---|---|---|
-| GATE-001／核心證據（DESKTOP01更新） | 舊Edge單講者真人聽感已確認，當前macOS Chrome/Edge合成雙講者/分享核心Pass；真人真capture仍pending | 保留本機環境，M03補真mic/OS分享/真人多人流程；單機合成不等於跨桌機品質，手機後續 |
+| GATE-001／核心證據（FINAL01／DEC019） | 桌機自動核心驗收通過；原Edge單講者真人確認保留，當前多源/同步/恢復已驗 | 真人與手機後續、不阻擋本輪POC結案；M03／試用再補選定環境與品質，不能將合成等同實體支持 |
 | GATE-002／產品決策（DEC-014） | 免登入任意暱稱入場、人人可鎖會議室已確認；匿名成員與活動Session仍須分開 | 不做帳號／邀請認證；DEC-015鎖房管理已定；其他活動主持控制歸屬待決，保留server匿名ID／門禁隔離，不能把同名當同一人 |
-| GATE-003／容量與品質（CAP01更新） | 固定8人已移除，default10可調PG保存；meeting多音訊/單screen，lobby仍單音訊；16人opaque relay非完整browser品質 | CAP01九路仍持續local drops；DESKTOP01兩路短觀測0drop不清除該限制。保留8pending/PCM500ms/WS背壓；高頻控制PG負載與實際CloudRun容量待驗，不宣稱無限容量 |
+| GATE-003／容量與品質（CAP01更新） | 固定8人已移除，default10可調PG保存；meeting多音訊/單screen，lobby仍單音訊；16人opaque relay非完整browser品質 | FINAL01 Chrome→Edge九路約4秒窗0drop；CAP01 Firefox九路333drop歷史仍有效，不保證全環境品質。保留8pending/PCM500ms/WS背壓；高頻控制PG負載與實際CloudRun容量待驗，不宣稱無限容量 |
 | GATE-004／互動細節 | 開放距離6格是示範；門可點/Enter，走路自動跨門未做；公開文字目前頁內區域 | 確認正式距離/進出邊界行為，MVP補門口操作與展示；維持已確認的會議室全房/未鎖直入/鎖房密碼，不重新詢問已確認規則 |
 | GATE-005／資料運維 | 系統資訊可存PG已確認且核心已驗；archive無清理期限，無備份還原/HA證據 | 決定保存期限、刪除/查看權限、資料庫託管與備份還原方式。沒有要求重新核准PostgreSQL或保存類別 |
 | GATE-006／部署與商品整合 | app只容許單active writer；未做CloudRun容器/正式配置，POC debug UI/API/固定fixture仍在 | 後續處理singleton/版本切換與DB連線生命週期、secret/診斷授權、正式UI；本輪不部署，不能將單一service自動當成可多instance |
 
-DEC-013已移除手機作為桌機MVP前置，GATE-001剩餘目標桌機音畫驗測排入M03；GATE-002～006分別是下一步產品設計、容量/部署與MVP工作，不一律要求先做完整MVP才能開始MVP。若人類之後調整首批範圍，保存精確決策再用對應證據復審，不能從一般「OK」推成全部風險接受。
+DEC-013／019已移除手機／真人作為當前自動POC結案前置，GATE-001桌機自動核心已通過，剩餘實體品質驗測排入M03／試用；GATE-002～006分別是下一步產品設計、容量/部署與MVP工作，不一律要求先做完整MVP才能開始MVP。若人類之後調整首批範圍，保存精確決策再用對應證據復審，不能從一般「OK」推成全部風險接受。
 
 ### 必須保留、移出或重構的POC資產
 
@@ -344,3 +350,9 @@ POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9�
 - SOL008／容量：1CPU/1GiB下opaque10/12/16人各10s數量吻合，16人CPU mean26.81%／max32.67%、RSS79.97MiB。只支持此本機轉送已測點，暖機／GC／控制歷史不同，不外推最大值；未高頻全員移動／控制PG寫入尖峰。PG仍每control保存snapshot、單active writer，不等於已解擴展；CloudRun concurrency留HTTP餘裕／部署重疊／單writer策略待部署驗證。
 
 證據與用法只連[CAP01 R001](evidence/POC-CAP-01-R001/README.md)，原各run歷史不改判；本機commit、Issue更新不是push／部署或人類品質接受。
+
+## POC-FINAL-01／SOL002、006、007、008採用補充
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+MVP沿用server單timer ping/pong，失聯terminate交既有close交易；不能把PG lease當斷網偵測、不能從前端自稱owner或從暱稱還原權限。慢端8pending/PCM500ms/WS有界限制不變。聲光4組未校準offset235.60～321.35ms不是人耳同步品質Pass；M03品質待補。腳本與合成來源放開發測試，移出商品介面，沿既有SOL007清冊、未新增schema或第二份資料表。

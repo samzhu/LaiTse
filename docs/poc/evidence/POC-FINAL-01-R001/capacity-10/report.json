@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short staged local desktop capacity observation: N-1 independent synthetic Opus publishers feed one installed-Edge receiver, which decodes and renders PCM while one publisher shares a synthetic VP8 canvas.",
+  "runId": "2026-11-06T05-58-20-755Z-58324-23c994bf",
+  "startedAt": "2026-11-06T05:58:20.900Z",
+  "status": "core-pass",
+  "baseURL": "http://localhost:4175",
+  "artifactDirectory": ".scratch/final01/capacity-harness/run-2026-11-06T05-58-20-755Z-58324-23c994bf",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "os": "27.2",
+    "headless": true,
+    "browsers": {
+      "chrome": {
+        "name": "Google Chrome",
+        "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "executableVersion": "Google Chrome 157.0.8103.38",
+        "playwrightVersion": "157.0.8103.38"
+      },
+      "edge": {
+        "name": "Microsoft Edge",
+        "executable": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "executableVersion": "Microsoft Edge 156.0.4314.58",
+        "playwrightVersion": "156.0.4314.58"
+      }
+    }
+  },
+  "topology": {
+    "room": "studio",
+    "participants": 10,
+    "publishers": 9,
+    "publisherBrowser": "Google Chrome, one independent persistent profile per page",
+    "receiver": {
+      "name": "FinalCap-P10",
+      "browser": "Microsoft Edge",
+      "profile": "independent persistent workspace profile"
+    },
+    "profileRoot": ".scratch/final01/capacity-harness/run-2026-11-06T05-58-20-755Z-58324-23c994bf/profiles",
+    "topology": "N-1 publishers send to the final Edge receiver; publishers do not subscribe, so this is not N-by-N mutual listening.",
+    "observationWindowTargetMs": 4000,
+    "sourceStopIsolationProbe": true
+  },
+  "syntheticSources": {
+    "audio": "Each publisher page overrides getUserMedia locally with a unique-frequency oscillator-backed MediaStreamDestination; the application uses its normal Opus encoder and publish controls.",
+    "audioFrequencyHz": [
+      {
+        "key": "P01",
+        "frequencyHz": 397
+      },
+      {
+        "key": "P02",
+        "frequencyHz": 438
+      },
+      {
+        "key": "P03",
+        "frequencyHz": 479
+      },
+      {
+        "key": "P04",
+        "frequencyHz": 520
+      },
+      {
+        "key": "P05",
+        "frequencyHz": 561
+      },
+      {
+        "key": "P06",
+        "frequencyHz": 602
+      },
+      {
+        "key": "P07",
+        "frequencyHz": 643
+      },
+      {
+        "key": "P08",
+        "frequencyHz": 684
+      },
+      {
+        "key": "P09",
+        "frequencyHz": 725
+      }
+    ],
+    "screen": "FinalCap-P01 overrides getDisplayMedia locally with an animated canvas captureStream; the application uses its normal VP8 share controls.",
+    "screenColorRgb": [
+      38,
+      146,
+      78
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "systemFakePermissionFlags": false,
+    "rawMediaPayloadsStored": false
+  },
+  "checks": [
+    {
+      "name": "launch-independent-installed-browser-profiles",
+      "at": "2026-11-06T05:58:20.974Z",
+      "atMs": 74,
+      "participants": 10
+    },
+    {
+      "name": "all-studio-participants-joined",
+      "at": "2026-11-06T05:58:40.834Z",
+      "atMs": 19934,
+      "participants": 10
+    },
+    {
+      "name": "edge-receiver-listening",
+      "at": "2026-11-06T05:58:41.135Z",
+      "atMs": 20235
+    },
+    {
+      "name": "all-publishers-received-with-unique-source-identifiers",
+      "at": "2026-11-06T05:58:44.756Z",
+      "atMs": 23856,
+      "sources": 9
+    },
+    {
+      "name": "single-synthetic-vp8-canvas-decoded-on-edge",
+      "at": "2026-11-06T05:58:45.263Z",
+      "atMs": 24363,
+      "renderedFrames": 3
+    },
+    {
+      "name": "four-second-per-source-observation-finished",
+      "at": "2026-11-06T05:58:49.274Z",
+      "atMs": 28374,
+      "actualDurationMs": 4010,
+      "samples": 5,
+      "anyLocalDecodeDrops": false
+    },
+    {
+      "name": "stopped-source-does-not-block-remaining-sources",
+      "at": "2026-11-06T05:58:50.342Z",
+      "atMs": 29442,
+      "stoppedSourceInactive": true,
+      "remainingSources": 8
+    }
+  ],
+  "publishers": [
+    {
+      "name": "FinalCap-P01",
+      "browser": "Google Chrome",
+      "generation": 8,
+      "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P02",
+      "browser": "Google Chrome",
+      "generation": 9,
+      "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P03",
+      "browser": "Google Chrome",
+      "generation": 10,
+      "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P04",
+      "browser": "Google Chrome",
+      "generation": 11,
+      "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P05",
+      "browser": "Google Chrome",
+      "generation": 12,
+      "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+      "sentPackets": 7,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P06",
+      "browser": "Google Chrome",
+      "generation": 13,
+      "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P07",
+      "browser": "Google Chrome",
+      "generation": 14,
+      "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P08",
+      "browser": "Google Chrome",
+      "generation": 15,
+      "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    },
+    {
+      "name": "FinalCap-P09",
+      "browser": "Google Chrome",
+      "generation": 16,
+      "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+      "sentPackets": 6,
+      "selfSourceObserved": false
+    }
+  ],
+  "receiver": {
+    "name": "FinalCap-P10",
+    "browser": "Microsoft Edge",
+    "receiverSubscribed": true,
+    "sources": [
+      {
+        "name": "FinalCap-P01",
+        "generation": 8,
+        "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4"
+      },
+      {
+        "name": "FinalCap-P02",
+        "generation": 9,
+        "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737"
+      },
+      {
+        "name": "FinalCap-P03",
+        "generation": 10,
+        "clockId": "53b05cc7-a204-4d2f-b672-621979b09452"
+      },
+      {
+        "name": "FinalCap-P04",
+        "generation": 11,
+        "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1"
+      },
+      {
+        "name": "FinalCap-P05",
+        "generation": 12,
+        "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3"
+      },
+      {
+        "name": "FinalCap-P06",
+        "generation": 13,
+        "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880"
+      },
+      {
+        "name": "FinalCap-P07",
+        "generation": 14,
+        "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a"
+      },
+      {
+        "name": "FinalCap-P08",
+        "generation": 15,
+        "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825"
+      },
+      {
+        "name": "FinalCap-P09",
+        "generation": 16,
+        "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0"
+      }
+    ],
+    "uniqueGenerations": true,
+    "uniqueClockIds": true,
+    "publisherSelfSourcesObserved": false
+  },
+  "stableWindow": {
+    "startedAt": "2026-11-06T05:58:45.264Z",
+    "endedAt": "2026-11-06T05:58:49.274Z",
+    "actualDurationMs": 4010,
+    "targetDurationMs": 4000,
+    "sampleIntervalTargetMs": 1000,
+    "samples": [
+      {
+        "sample": 0,
+        "sampledAt": "2026-11-06T05:58:45.264Z",
+        "elapsedFromWindowStartMs": 0,
+        "samplingDurationMs": 7,
+        "receiverActiveSourceCount": 9,
+        "sources": [
+          {
+            "generation": 8,
+            "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+            "active": true,
+            "receivedPackets": 194,
+            "decodedFrames": 194,
+            "renderedPcmSamples": 183552,
+            "queuedSamples": 768,
+            "renderRms": 0.1557656888091223,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 9,
+            "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+            "active": true,
+            "receivedPackets": 174,
+            "decodedFrames": 174,
+            "renderedPcmSamples": 164352,
+            "queuedSamples": 768,
+            "renderRms": 0.15579003184824325,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 10,
+            "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+            "active": true,
+            "receivedPackets": 154,
+            "decodedFrames": 154,
+            "renderedPcmSamples": 145920,
+            "queuedSamples": 960,
+            "renderRms": 0.1541202034483741,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 11,
+            "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+            "active": true,
+            "receivedPackets": 134,
+            "decodedFrames": 134,
+            "renderedPcmSamples": 126464,
+            "queuedSamples": 1216,
+            "renderRms": 0.15509233449351129,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 12,
+            "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+            "active": true,
+            "receivedPackets": 115,
+            "decodedFrames": 115,
+            "renderedPcmSamples": 108032,
+            "queuedSamples": 1408,
+            "renderRms": 0.15549877167446166,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 13,
+            "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+            "active": true,
+            "receivedPackets": 96,
+            "decodedFrames": 96,
+            "renderedPcmSamples": 89600,
+            "queuedSamples": 1600,
+            "renderRms": 0.15491054604798835,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 14,
+            "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+            "active": true,
+            "receivedPackets": 76,
+            "decodedFrames": 76,
+            "renderedPcmSamples": 69888,
+            "queuedSamples": 1152,
+            "renderRms": 0.1550275904308394,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 15,
+            "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+            "active": true,
+            "receivedPackets": 54,
+            "decodedFrames": 54,
+            "renderedPcmSamples": 50432,
+            "queuedSamples": 1408,
+            "renderRms": 0.15470168399220663,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 16,
+            "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+            "active": true,
+            "receivedPackets": 32,
+            "decodedFrames": 32,
+            "renderedPcmSamples": 28928,
+            "queuedSamples": 832,
+            "renderRms": 0.15648287269271796,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 1,
+        "sampledAt": "2026-11-06T05:58:46.265Z",
+        "elapsedFromWindowStartMs": 1001,
+        "samplingDurationMs": 7,
+        "receiverActiveSourceCount": 9,
+        "sources": [
+          {
+            "generation": 8,
+            "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+            "active": true,
+            "receivedPackets": 244,
+            "decodedFrames": 244,
+            "renderedPcmSamples": 232704,
+            "queuedSamples": 1536,
+            "renderRms": 0.15549532337245264,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 9,
+            "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+            "active": true,
+            "receivedPackets": 224,
+            "decodedFrames": 224,
+            "renderedPcmSamples": 213504,
+            "queuedSamples": 1536,
+            "renderRms": 0.15508144453799025,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 10,
+            "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+            "active": true,
+            "receivedPackets": 204,
+            "decodedFrames": 204,
+            "renderedPcmSamples": 194048,
+            "queuedSamples": 1792,
+            "renderRms": 0.15432130419071366,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 11,
+            "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+            "active": true,
+            "receivedPackets": 184,
+            "decodedFrames": 184,
+            "renderedPcmSamples": 174592,
+            "queuedSamples": 2048,
+            "renderRms": 0.15473478979193586,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 12,
+            "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+            "active": true,
+            "receivedPackets": 165,
+            "decodedFrames": 165,
+            "renderedPcmSamples": 156160,
+            "queuedSamples": 1280,
+            "renderRms": 0.15548436194364504,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 13,
+            "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+            "active": true,
+            "receivedPackets": 146,
+            "decodedFrames": 146,
+            "renderedPcmSamples": 137728,
+            "queuedSamples": 1472,
+            "renderRms": 0.15590253986112876,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 14,
+            "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+            "active": true,
+            "receivedPackets": 126,
+            "decodedFrames": 126,
+            "renderedPcmSamples": 119040,
+            "queuedSamples": 960,
+            "renderRms": 0.15636123229882043,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 15,
+            "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+            "active": true,
+            "receivedPackets": 104,
+            "decodedFrames": 104,
+            "renderedPcmSamples": 98560,
+            "queuedSamples": 1280,
+            "renderRms": 0.1555486832603435,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 16,
+            "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+            "active": true,
+            "receivedPackets": 82,
+            "decodedFrames": 82,
+            "renderedPcmSamples": 77056,
+            "queuedSamples": 1664,
+            "renderRms": 0.15640920658193294,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 2,
+        "sampledAt": "2026-11-06T05:58:47.267Z",
+        "elapsedFromWindowStartMs": 2003,
+        "samplingDurationMs": 10,
+        "receiverActiveSourceCount": 9,
+        "sources": [
+          {
+            "generation": 8,
+            "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+            "active": true,
+            "receivedPackets": 295,
+            "decodedFrames": 295,
+            "renderedPcmSamples": 280832,
+            "queuedSamples": 1408,
+            "renderRms": 0.15539223441436376,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 9,
+            "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+            "active": true,
+            "receivedPackets": 275,
+            "decodedFrames": 275,
+            "renderedPcmSamples": 261632,
+            "queuedSamples": 1408,
+            "renderRms": 0.15340933874134527,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 10,
+            "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+            "active": true,
+            "receivedPackets": 255,
+            "decodedFrames": 255,
+            "renderedPcmSamples": 242176,
+            "queuedSamples": 1664,
+            "renderRms": 0.15572135999040276,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 11,
+            "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+            "active": true,
+            "receivedPackets": 235,
+            "decodedFrames": 235,
+            "renderedPcmSamples": 222720,
+            "queuedSamples": 960,
+            "renderRms": 0.15559310265608034,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 12,
+            "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+            "active": true,
+            "receivedPackets": 216,
+            "decodedFrames": 216,
+            "renderedPcmSamples": 204288,
+            "queuedSamples": 1152,
+            "renderRms": 0.15544767358249031,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 13,
+            "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+            "active": true,
+            "receivedPackets": 196,
+            "decodedFrames": 196,
+            "renderedPcmSamples": 185856,
+            "queuedSamples": 1344,
+            "renderRms": 0.15541138794418147,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 14,
+            "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+            "active": true,
+            "receivedPackets": 176,
+            "decodedFrames": 176,
+            "renderedPcmSamples": 167168,
+            "queuedSamples": 1792,
+            "renderRms": 0.1570345560335667,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 15,
+            "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+            "active": true,
+            "receivedPackets": 155,
+            "decodedFrames": 155,
+            "renderedPcmSamples": 146688,
+            "queuedSamples": 1152,
+            "renderRms": 0.15543572814260903,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 16,
+            "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+            "active": true,
+            "receivedPackets": 132,
+            "decodedFrames": 132,
+            "renderedPcmSamples": 125184,
+            "queuedSamples": 1536,
+            "renderRms": 0.15632989150888912,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 3,
+        "sampledAt": "2026-11-06T05:58:48.266Z",
+        "elapsedFromWindowStartMs": 3002,
+        "samplingDurationMs": 9,
+        "receiverActiveSourceCount": 9,
+        "sources": [
+          {
+            "generation": 8,
+            "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+            "active": true,
+            "receivedPackets": 344,
+            "decodedFrames": 344,
+            "renderedPcmSamples": 327936,
+            "queuedSamples": 1344,
+            "renderRms": 0.1548856121730881,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 9,
+            "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+            "active": true,
+            "receivedPackets": 324,
+            "decodedFrames": 324,
+            "renderedPcmSamples": 308736,
+            "queuedSamples": 1344,
+            "renderRms": 0.1553339179035212,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 10,
+            "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+            "active": true,
+            "receivedPackets": 304,
+            "decodedFrames": 304,
+            "renderedPcmSamples": 290304,
+            "queuedSamples": 1536,
+            "renderRms": 0.15361733248610562,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 11,
+            "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+            "active": true,
+            "receivedPackets": 284,
+            "decodedFrames": 284,
+            "renderedPcmSamples": 270848,
+            "queuedSamples": 1792,
+            "renderRms": 0.15637253654405273,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 12,
+            "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+            "active": true,
+            "receivedPackets": 265,
+            "decodedFrames": 265,
+            "renderedPcmSamples": 252416,
+            "queuedSamples": 1024,
+            "renderRms": 0.15542123532182991,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 13,
+            "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+            "active": true,
+            "receivedPackets": 246,
+            "decodedFrames": 246,
+            "renderedPcmSamples": 233984,
+            "queuedSamples": 1216,
+            "renderRms": 0.15447206305105696,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 14,
+            "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+            "active": true,
+            "receivedPackets": 226,
+            "decodedFrames": 226,
+            "renderedPcmSamples": 214272,
+            "queuedSamples": 768,
+            "renderRms": 0.15603529082884948,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 15,
+            "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+            "active": true,
+            "receivedPackets": 204,
+            "decodedFrames": 204,
+            "renderedPcmSamples": 194816,
+            "queuedSamples": 1024,
+            "renderRms": 0.15491683352564128,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 16,
+            "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+            "active": true,
+            "receivedPackets": 182,
+            "decodedFrames": 182,
+            "renderedPcmSamples": 173312,
+            "queuedSamples": 1408,
+            "renderRms": 0.1562350563898959,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      },
+      {
+        "sample": 4,
+        "sampledAt": "2026-11-06T05:58:49.265Z",
+        "elapsedFromWindowStartMs": 4001,
+        "samplingDurationMs": 9,
+        "receiverActiveSourceCount": 9,
+        "sources": [
+          {
+            "generation": 8,
+            "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+            "active": true,
+            "receivedPackets": 394,
+            "decodedFrames": 394,
+            "renderedPcmSamples": 377088,
+            "queuedSamples": 1152,
+            "renderRms": 0.1553740386083576,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 9,
+            "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+            "active": true,
+            "receivedPackets": 374,
+            "decodedFrames": 374,
+            "renderedPcmSamples": 357888,
+            "queuedSamples": 1152,
+            "renderRms": 0.15572955868502608,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 10,
+            "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+            "active": true,
+            "receivedPackets": 354,
+            "decodedFrames": 354,
+            "renderedPcmSamples": 338432,
+            "queuedSamples": 1408,
+            "renderRms": 0.15608168960953225,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 11,
+            "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+            "active": true,
+            "receivedPackets": 335,
+            "decodedFrames": 334,
+            "renderedPcmSamples": 318976,
+            "queuedSamples": 1664,
+            "renderRms": 0.15614024896958095,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 12,
+            "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+            "active": true,
+            "receivedPackets": 315,
+            "decodedFrames": 315,
+            "renderedPcmSamples": 300544,
+            "queuedSamples": 1856,
+            "renderRms": 0.1554517016172516,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 13,
+            "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+            "active": true,
+            "receivedPackets": 296,
+            "decodedFrames": 296,
+            "renderedPcmSamples": 282112,
+            "queuedSamples": 2048,
+            "renderRms": 0.15440731179641085,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 14,
+            "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+            "active": true,
+            "receivedPackets": 276,
+            "decodedFrames": 276,
+            "renderedPcmSamples": 263424,
+            "queuedSamples": 1536,
+            "renderRms": 0.156364062905963,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 15,
+            "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+            "active": true,
+            "receivedPackets": 255,
+            "decodedFrames": 255,
+            "renderedPcmSamples": 242944,
+            "queuedSamples": 1856,
+            "renderRms": 0.15562595757230702,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          },
+          {
+            "generation": 16,
+            "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+            "active": true,
+            "receivedPackets": 232,
+            "decodedFrames": 232,
+            "renderedPcmSamples": 221440,
+            "queuedSamples": 1280,
+            "renderRms": 0.15616444013414896,
+            "decodeQueueHighWater": 0,
+            "decodeQueueDroppedPackets": 0,
+            "packetGapCount": 0,
+            "error": ""
+          }
+        ]
+      }
+    ],
+    "perSource": [
+      {
+        "publisher": "FinalCap-P01",
+        "generation": 8,
+        "clockId": "f22e6930-266c-4e43-9ae3-97b67548c4a4",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 194,
+          "decodedFrames": 194,
+          "renderedPcmSamples": 183552,
+          "renderRms": 0.1557656888091223,
+          "queuedSamples": 768,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 394,
+          "decodedFrames": 394,
+          "renderedPcmSamples": 377088,
+          "renderRms": 0.1553740386083576,
+          "queuedSamples": 1152,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 193536,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P02",
+        "generation": 9,
+        "clockId": "33a053a9-8072-4ec4-b5e0-0287618ee737",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 174,
+          "decodedFrames": 174,
+          "renderedPcmSamples": 164352,
+          "renderRms": 0.15579003184824325,
+          "queuedSamples": 768,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 374,
+          "decodedFrames": 374,
+          "renderedPcmSamples": 357888,
+          "renderRms": 0.15572955868502608,
+          "queuedSamples": 1152,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 193536,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P03",
+        "generation": 10,
+        "clockId": "53b05cc7-a204-4d2f-b672-621979b09452",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 154,
+          "decodedFrames": 154,
+          "renderedPcmSamples": 145920,
+          "renderRms": 0.1541202034483741,
+          "queuedSamples": 960,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 354,
+          "decodedFrames": 354,
+          "renderedPcmSamples": 338432,
+          "renderRms": 0.15608168960953225,
+          "queuedSamples": 1408,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P04",
+        "generation": 11,
+        "clockId": "cec931fa-8a2d-4f59-a633-687a192a6cc1",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 134,
+          "decodedFrames": 134,
+          "renderedPcmSamples": 126464,
+          "renderRms": 0.15509233449351129,
+          "queuedSamples": 1216,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 335,
+          "decodedFrames": 334,
+          "renderedPcmSamples": 318976,
+          "renderRms": 0.15614024896958095,
+          "queuedSamples": 1664,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 201,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P05",
+        "generation": 12,
+        "clockId": "9a0ab7a2-06c5-4356-a557-74350912a8c3",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 115,
+          "decodedFrames": 115,
+          "renderedPcmSamples": 108032,
+          "renderRms": 0.15549877167446166,
+          "queuedSamples": 1408,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 315,
+          "decodedFrames": 315,
+          "renderedPcmSamples": 300544,
+          "renderRms": 0.1554517016172516,
+          "queuedSamples": 1856,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P06",
+        "generation": 13,
+        "clockId": "4dfc5c5f-72ed-4023-91aa-f12d6b9bf880",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 96,
+          "decodedFrames": 96,
+          "renderedPcmSamples": 89600,
+          "renderRms": 0.15491054604798835,
+          "queuedSamples": 1600,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 296,
+          "decodedFrames": 296,
+          "renderedPcmSamples": 282112,
+          "renderRms": 0.15440731179641085,
+          "queuedSamples": 2048,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P07",
+        "generation": 14,
+        "clockId": "5bd5d518-5ad6-4da5-b3eb-65ab0d6c0b6a",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 76,
+          "decodedFrames": 76,
+          "renderedPcmSamples": 69888,
+          "renderRms": 0.1550275904308394,
+          "queuedSamples": 1152,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 276,
+          "decodedFrames": 276,
+          "renderedPcmSamples": 263424,
+          "renderRms": 0.156364062905963,
+          "queuedSamples": 1536,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 193536,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P08",
+        "generation": 15,
+        "clockId": "ddf04d04-0f42-40a4-9b66-1c9e69391825",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 54,
+          "decodedFrames": 54,
+          "renderedPcmSamples": 50432,
+          "renderRms": 0.15470168399220663,
+          "queuedSamples": 1408,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 255,
+          "decodedFrames": 255,
+          "renderedPcmSamples": 242944,
+          "renderRms": 0.15562595757230702,
+          "queuedSamples": 1856,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 201,
+          "decodedFrames": 201,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      },
+      {
+        "publisher": "FinalCap-P09",
+        "generation": 16,
+        "clockId": "3c86723c-5a36-4135-af71-f2f6664161f0",
+        "observedInSamples": 5,
+        "activeAtFinalSample": true,
+        "start": {
+          "active": true,
+          "receivedPackets": 32,
+          "decodedFrames": 32,
+          "renderedPcmSamples": 28928,
+          "renderRms": 0.15648287269271796,
+          "queuedSamples": 832,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "end": {
+          "active": true,
+          "receivedPackets": 232,
+          "decodedFrames": 232,
+          "renderedPcmSamples": 221440,
+          "renderRms": 0.15616444013414896,
+          "queuedSamples": 1280,
+          "decodeQueueHighWater": 0,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        "windowDelta": {
+          "receivedPackets": 200,
+          "decodedFrames": 200,
+          "renderedPcmSamples": 192512,
+          "localDecodeDrops": 0
+        },
+        "pcmAdvanceIntervals": 4,
+        "intervalsObserved": 4,
+        "continuousPcmAcrossSamples": true,
+        "errorObserved": false
+      }
+    ],
+    "allExpectedSourcesPresentEverySample": true,
+    "allSourcesAdvancedPcmEveryInterval": true,
+    "anyLocalDecodeDrops": false,
+    "anySourceError": false,
+    "expectedSourceCount": 9
+  },
+  "screen": {
+    "publisher": "FinalCap-P01",
+    "receiver": "FinalCap-P10",
+    "codec": "VP8",
+    "syntheticColorRgb": [
+      38,
+      146,
+      78
+    ],
+    "receivedFrames": 4,
+    "decodedFrames": 4,
+    "renderedFrames": 3,
+    "renderedSize": {
+      "width": 320,
+      "height": 180
+    },
+    "centerPixel": [
+      37,
+      146,
+      77,
+      255
+    ]
+  },
+  "stopIsolation": {
+    "stoppedPublisher": "FinalCap-P01",
+    "stoppedGeneration": 8,
+    "stoppedSourceInactive": true,
+    "remainingSources": [
+      {
+        "publisher": "FinalCap-P02",
+        "generation": 9,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P03",
+        "generation": 10,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P04",
+        "generation": 11,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P05",
+        "generation": 12,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P06",
+        "generation": 13,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P07",
+        "generation": 14,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P08",
+        "generation": 15,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      },
+      {
+        "publisher": "FinalCap-P09",
+        "generation": 16,
+        "activeAfterStop": true,
+        "pcmAdvanced": true,
+        "receivedPacketsAdvanced": true,
+        "localDecodeDropsAfterStop": 0,
+        "error": ""
+      }
+    ],
+    "remainingSourcesAllActive": true,
+    "remainingSourcesAllAdvancedPcm": true,
+    "remainingSourcesAllAdvancedReceived": true
+  },
+  "screenshots": [
+    "edge-receiver-audio.png",
+    "edge-receiver-screen.png"
+  ],
+  "errors": {
+    "pageErrorCount": 0,
+    "consoleErrorCount": 11,
+    "pageErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "privacy": {
+    "rawControlFramesRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "tokensPasswordsProofsCookiesOrPageStorageRecorded": false,
+    "metadataBounded": true
+  },
+  "limits": {
+    "realPeopleOrIndependentDevices": "not-tested; all pages and synthetic identities share this host.",
+    "realMicrophoneAndHumanListening": "not-tested; oscillator input and PCM/RMS counters show browser pipeline work, not hardware output or what a person hears.",
+    "physicalDisplayCapture": "not-tested; generated canvas only.",
+    "cloudRunCapacityOrServerResourceUsage": "not-tested; this is a local browser workload and does not measure Cloud Run, server CPU, memory, bandwidth, or product limits.",
+    "longDurationOrEndurance": "not-tested; each stage uses a short bounded window.",
+    "fullMutualListening": "not-tested; only the final Edge receiver subscribes.",
+    "networkLossOrEndToEndQuality": "not-tested; local source counters are not network packet loss, listening quality, or calibrated latency."
+  },
+  "cleanup": {
+    "contextsClosed": 10,
+    "profilesRemoved": true
+  },
+  "durationMs": 30657,
+  "outcome": {
+    "nativeEdgeOpusDecodeAndPcmObserved": true,
+    "allSourcesPresentAndAdvancingDuringWindow": true,
+    "noLocalDecodeQueueDropsDuringWindow": true,
+    "stopIsolationPass": true,
+    "singleScreenVp8Pass": true,
+    "note": "All staged browser pipeline checks passed for this local synthetic workload only."
+  },
+  "finishedAt": "2026-11-06T05:58:51.557Z"
+}

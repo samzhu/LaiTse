@@ -1,6 +1,12 @@
 # 專案 brief
 
-**狀態：桌機Chrome/Edge合成音畫核心Pass；真人驗證pending，4174與PG保留。13核心票依人類新授權結案、7票保留；MVP未開發。2026-11-06更新。**
+## 最新進度：FINAL01／DEC-019
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+[證據與操作](../poc/evidence/POC-FINAL-01-R001/README.md)；人工4174已於0在線後換成同候選liveness backend，PID58824／PG保留，勿停止或碰人類UI。GitHub20票均closed：19completed／手機#3為deferred not_planned，原AC未代勾；先前13closed/7open是歷史。
+
+**狀態：DEC019桌機自動核心驗收完成，GitHub20票均closed（19completed／手機1延後not_planned）；真人／手機／量化品質後續。新版4174與PG保留，MVP未開發。2026-11-06更新。**
 
 - 產品目標：以角色、多房間、站內廣播／分享與即時回應建立共同在場的共享空間。
 - 主要使用者：主辦／主持人、主講人、現場與遠端參與者；應用不限企業。

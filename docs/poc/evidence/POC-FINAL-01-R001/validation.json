@@ -1,0 +1,40 @@
+{
+  "verifiedAt": "2026-11-06T06:05:57.563042+00:00",
+  "rootRuntime": "Node v26.13.0",
+  "buildAndTypecheck": "passed",
+  "fullSuite": {
+    "tests": 84,
+    "passed": 84,
+    "skipped": 0,
+    "failed": 0,
+    "postgresEnabled": true,
+    "durationMs": 37313.969
+  },
+  "browserChecks": {
+    "network": 9,
+    "syncStages": 10,
+    "capacityLevels": [
+      3,
+      6,
+      10
+    ]
+  },
+  "rootScreenshotsViewed": [
+    "capacity-10/edge-receiver-audio.png",
+    "capacity-10/edge-receiver-screen.png",
+    "sync-attempt-2/receiver-b-late-join.png"
+  ],
+  "newEvidenceLinks": "passed",
+  "actualPrivateCredentialScan": {
+    "leaks": 0,
+    "valuesPrinted": false
+  },
+  "sourceFingerprintFiles": 97,
+  "gitDiffWhitespaceCheck": "passed",
+  "physicalPhone": "deferred; not tested",
+  "humanOrPhysicalCapture": "not tested this run",
+  "cloudRun": "not deployed or tested",
+  "retainedManualPort": 4174,
+  "privateTest4175": "stopped",
+  "ownedProxyAndBrowserProfiles": "closed and removed"
+}

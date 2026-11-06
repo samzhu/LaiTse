@@ -82,3 +82,9 @@ POC-RM-01-R001（2026-11-06）：[匿名管理／交接與PG操作證據](../poc
 POC-CAP-01-R001（2026-11-06）：[可調容量／10Firefox／受限轉送與限制](../poc/evidence/POC-CAP-01-R001/README.md)。POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。程式與紀錄同本機commit、GitHub相關票保存讀回，非人類品質接受或部署。
 
 POC-DESKTOP-01-R001（2026-11-06）：[桌機auto/人工環境/避坑及關票證據](../poc/evidence/POC-DESKTOP-01-R001/README.md)。POC-DESKTOP-01-R001：macOS27.2／Chrome157／Edge156三個隔離profiles的合成音畫9項7,285ms核心Pass；真mic／OSpicker／真人聽感與跨桌機多人仍pending。兩路短觀測0drop不清除CAP01九路333drop限制。http://localhost:4174/?room=studio與專用PG刻意保留給之後人工，0在線／10席，測試profiles已清。 依新授權關13核心票、保留7票，20/20狀態/正文讀回；人工未接受，不宣稱全面technicalGo。
+
+## POC-FINAL-01-R001交付
+
+DEC-019改採桌機自動核心驗收：本輪build/typecheck、真PG全套84/84（0skip）、Chrome/Edge TCP故障／交接9項24,581ms、3/6/10瀏覽器對應2/5/9來源的約4秒PCM窗0decode queue drops，以及Firefox可信HTTPS晚加入／audio-master／來源重建10階段通過。真mic／OSpicker／真人多人、跨實體桌機、手機、校準同步p95／65min及CloudRun仍未驗，移後且不冒稱Pass；歷史CAP01 Firefox九路333drops保留。新增server ping10s/pong20s失聯偵測，沿close串行清理／PG管理交接；PG session lease不等於網路心跳。技術核心足以進入桌機MVP整合規劃，未自動開始MVP程式／push／部署。
+
+[證據／用法／失敗／限制](../poc/evidence/POC-FINAL-01-R001/README.md)。人工4174／PID58824與PG保留，測試4175已停，自有proxy／contexts／profiles清理，所有writer已STOP；GitHub7票更新正文/狀態已保存讀回，20票closed（19completed／手機not_planned）；程式與紀錄納入本筆本機commit，不push／部署。

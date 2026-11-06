@@ -18,6 +18,8 @@ const caCertificate = resolve(process.env.T06_CA_CERT ?? join(defaultTlsDirector
 const serverCertificate = resolve(process.env.TLS_CERT_FILE ?? join(defaultTlsDirectory, "localhost-cert.pem"));
 const baseURL = process.env.T06_BASE_URL ?? `https://localhost:${process.env.PORT ?? "4173"}`;
 const target = new URL(baseURL);
+const roomId = process.env.T06_ROOM_ID ?? "lobby";
+if (!["lobby", "studio"].includes(roomId)) throw new Error("T06_ROOM_ID must be lobby or studio.");
 const certificateUtility = process.env.CERTUTIL_BIN ?? "certutil";
 const headless = process.env.HEADLESS !== "0";
 const markerPeriodMs = 2_400;
@@ -180,11 +182,11 @@ async function waitForControl(transport, type, previousCount = 0, timeoutMs = 10
 }
 
 async function joinRoom(page, displayName) {
-  await page.goto(target.origin, { waitUntil: "domcontentloaded" });
+  await page.goto(`${target.origin}/?room=${roomId}`, { waitUntil: "domcontentloaded" });
   await page.getByRole("heading", { name: "Local room presence" }).waitFor();
   await page.getByLabel("Your display name").fill(displayName);
   await page.getByRole("button", { name: "Join room" }).click();
-  await page.getByText("Connected to Local test room", { exact: true }).waitFor();
+  await page.getByTestId("control-connection-status").filter({ hasText: /^Connected to /u }).waitFor();
   await page.locator('[data-testid="audio-panel"]').waitFor();
   await page.locator('[data-testid="screen-panel"]').waitFor();
 }

@@ -17,6 +17,7 @@ import { createRoomAccessPolicy, isValidRoomPassword, type PersistedRoomAccess }
 import { createRoomManagement } from "./room-management.ts";
 import { createControlResumeStore, type ResumeMode, type ResumeRole } from "./control-resume.ts";
 import { createTransportBudget, MAX_APPLICATION_SEND_BYTES } from "./transport-budget.ts";
+import { createConnectionLiveness } from "./connection-liveness.ts";
 import { createSerialExecutor, QueueFullError } from "./serial-executor.ts";
 import { openSystemPersistence, type ActivityCounters, type DurableSnapshot, type PendingPersistence, type PersistedParticipant, type PersistedRoomSettings, type PersistedSession, type PersistenceBootstrap } from "./persistence.ts";
 import {
@@ -107,6 +108,11 @@ type CreateAppOptions = {
   databaseUrl?: string;
   databaseSchema?: string;
   localCapacityAdmin?: boolean;
+  /** Test-only override for the server WebSocket ping/pong liveness deadline. */
+  connectionLivenessForTest?: {
+    pingIntervalMs?: number;
+    pongTimeoutMs?: number;
+  };
 };
 
 type ControlRunResult = "completed" | "queue_full" | "unavailable";
@@ -241,6 +247,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   }
   const app = Fastify({ logger: false, https: options.https ?? null });
   const clients = new Map<import("ws").WebSocket, ClientConnection>();
+  const connectionLiveness = createConnectionLiveness(options.connectionLivenessForTest);
   const transportBudgets = new WeakMap<import("ws").WebSocket, ReturnType<typeof createTransportBudget>>();
   type OutboundFrame = { target: import("ws").WebSocket; payload: string | Buffer; sendOptions?: { binary?: boolean; compress?: boolean } };
   type DeferredClose = { target: import("ws").WebSocket; code?: number; reason?: string };
@@ -700,9 +707,11 @@ export async function createApp(options: CreateAppOptions = {}) {
         eventTimes: [], interactionTimes: [], feedbackTimes: [], moveTimes: [],
       };
       clients.set(socket, connection);
+      connectionLiveness.add(socket);
       const transportBudget = createTransportBudget(socket);
       transportBudgets.set(socket, transportBudget);
       socket.once("close", () => {
+        connectionLiveness.remove(socket);
         transportBudget.dispose();
         transportBudgets.delete(socket);
       });
@@ -1973,12 +1982,15 @@ export async function createApp(options: CreateAppOptions = {}) {
 
       socket.on("error", () => {
         // The connection close handler owns membership cleanup.
+        connectionLiveness.remove(socket);
+        if (socket.readyState === socket.OPEN) socket.terminate();
       });
     },
   );
 
   app.addHook("onClose", async () => {
     appClosing = true;
+    connectionLiveness.dispose();
     clearInterval(interactionPruneTimer);
     clearInterval(sessionHeartbeatTimer);
     await controlExecutor.drain();

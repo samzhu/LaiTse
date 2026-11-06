@@ -1,0 +1,86 @@
+[
+  {
+    "issue": 3,
+    "url": "https://github.com/samzhu/LaiTse/issues/3",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "not_planned",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "c03fbd2c83a908334c47cbe9f0204516318516a11881f27f14b1cf6e611828f3",
+    "verifiedAt": "2026-11-06T06:04:26.005311+00:00"
+  },
+  {
+    "issue": 5,
+    "url": "https://github.com/samzhu/LaiTse/issues/5",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "4ec47a41f3c605749d832dc6417d8299670d5b23a918406565d872bb29078c22",
+    "verifiedAt": "2026-11-06T06:04:28.877850+00:00"
+  },
+  {
+    "issue": 7,
+    "url": "https://github.com/samzhu/LaiTse/issues/7",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "ee899e008df190e921cf9216df97236c09962ab70ab6b2d4c810118b945d35fb",
+    "verifiedAt": "2026-11-06T06:04:31.448844+00:00"
+  },
+  {
+    "issue": 16,
+    "url": "https://github.com/samzhu/LaiTse/issues/16",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "72c9975b3d632cf7f5e078c40f340e40daf7e72ffaf60c41f45d3e1520ea8cc6",
+    "verifiedAt": "2026-11-06T06:04:34.391477+00:00"
+  },
+  {
+    "issue": 17,
+    "url": "https://github.com/samzhu/LaiTse/issues/17",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "5380861a28100b02693b1fde92ca504d15026352db3719c3f095e78ec3228578",
+    "verifiedAt": "2026-11-06T06:04:37.081378+00:00"
+  },
+  {
+    "issue": 20,
+    "url": "https://github.com/samzhu/LaiTse/issues/20",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "cfb8522382846381ada435d99bd4c4f340de9e4eeed7816cd60b6f150b2f6e41",
+    "verifiedAt": "2026-11-06T06:04:40.026964+00:00"
+  },
+  {
+    "issue": 1,
+    "url": "https://github.com/samzhu/LaiTse/issues/1",
+    "beforeState": "open",
+    "afterState": "closed",
+    "stateReason": "completed",
+    "bodyExactReadback": true,
+    "originalBodyRetained": true,
+    "titleAndLabelsUnchanged": true,
+    "bodySha256": "ef431fe0b0cf152cbd295b93992aef353dee00bbdcb809d328720a03e18dd93c",
+    "verifiedAt": "2026-11-06T06:04:43.851175+00:00"
+  }
+]
