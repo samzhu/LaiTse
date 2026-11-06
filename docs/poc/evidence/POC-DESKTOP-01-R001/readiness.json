@@ -1,0 +1,44 @@
+{
+  "candidate": "5dea2e2",
+  "node": "v26.13.0",
+  "macOS": "27.2",
+  "architecture": "arm64",
+  "installedBrowserVersions": {
+    "chrome": "157.0.8103.38",
+    "edge": "156.0.4314.58"
+  },
+  "baseURL": "http://localhost:4174",
+  "health": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "rooms": [
+    {
+      "id": "lobby",
+      "name": "Open area",
+      "kind": "open-area",
+      "audioPolicy": "proximity",
+      "audioRadiusGridUnits": 6,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    },
+    {
+      "id": "studio",
+      "name": "Meeting room",
+      "kind": "meeting-room",
+      "audioPolicy": "room",
+      "audioRadiusGridUnits": null,
+      "isLocked": false,
+      "hostControlsEnabled": false
+    }
+  ],
+  "capacity": {
+    "softLimit": 10,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "source": "read-only readiness; no mic or screen capture yet",
+  "humanScope": "same desktop Chrome/Edge deferred; real multi-person deferred"
+}

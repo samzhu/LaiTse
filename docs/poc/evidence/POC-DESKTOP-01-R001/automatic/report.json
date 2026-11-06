@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short local cross-browser desktop smoke for two mutual synthetic audio publishers, a late receiver, and one decoded/rendered synthetic screen share.",
+  "startedAt": "2026-11-06T05:28:02.520Z",
+  "status": "passed",
+  "baseURL": "http://localhost:4174",
+  "outputDirectory": ".scratch/desktop01/browser",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "macOS": "27.2",
+    "headless": true,
+    "browsers": {
+      "chrome": {
+        "name": "Google Chrome",
+        "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "executableVersion": "Google Chrome 157.0.8103.38",
+        "playwrightVersion": "157.0.8103.38"
+      },
+      "edge": {
+        "name": "Microsoft Edge",
+        "executable": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "executableVersion": "Microsoft Edge 156.0.4314.58",
+        "playwrightVersion": "156.0.4314.58"
+      }
+    }
+  },
+  "topology": {
+    "room": "studio",
+    "clients": {
+      "A": {
+        "name": "Desktop01-A",
+        "browser": "chrome"
+      },
+      "B": {
+        "name": "Desktop01-B",
+        "browser": "edge"
+      },
+      "C": {
+        "name": "Desktop01-C",
+        "browser": "chrome"
+      }
+    },
+    "profiles": "one independent workspace-owned persistent profile per browser page, removed in finally",
+    "realPeopleOrDevices": false
+  },
+  "syntheticSources": {
+    "audio": "getUserMedia is replaced only in each test page with an oscillator-backed MediaStreamDestination; no physical microphone is opened.",
+    "audioFrequencyHz": {
+      "A": 523,
+      "B": 761
+    },
+    "screen": "getDisplayMedia is replaced only in A's test page with an animated canvas captureStream; no OS picker or physical display is used.",
+    "screenColorRgb": [
+      34,
+      158,
+      86
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "systemFakePermissionFlags": false,
+    "mediaPayloadsStored": false
+  },
+  "nativeMediaCapabilities": {
+    "scope": "observed before page-local test injection; API presence is not capture evidence",
+    "byClient": {
+      "A": {
+        "secureContext": true,
+        "mediaDevicesType": "object",
+        "getUserMediaType": "function",
+        "getDisplayMediaType": "function",
+        "captureMethodsCalledForProbe": false
+      },
+      "B": {
+        "secureContext": true,
+        "mediaDevicesType": "object",
+        "getUserMediaType": "function",
+        "getDisplayMediaType": "function",
+        "captureMethodsCalledForProbe": false
+      },
+      "C": {
+        "secureContext": true,
+        "mediaDevicesType": "object",
+        "getUserMediaType": "function",
+        "getDisplayMediaType": "function",
+        "captureMethodsCalledForProbe": false
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "chrome-and-edge-joined-with-listeners-ready",
+      "atMs": 2699
+    },
+    {
+      "name": "chrome-and-edge-publish-and-receive-only-the-other-source",
+      "atMs": 3015,
+      "AReceivesGeneration": 5,
+      "BReceivesGeneration": 4,
+      "selfSourcesActive": 0
+    },
+    {
+      "name": "late-chrome-receiver-decodes-and-renders-two-independent-pcm-sources",
+      "atMs": 4685,
+      "generations": [
+        4,
+        5
+      ],
+      "clockIds": [
+        "c4c52d69-a720-4a4f-b308-0ecbf342647a",
+        "545efdcc-e074-421d-a462-af0681ecbdf9"
+      ],
+      "decodedFrames": [
+        4,
+        4
+      ],
+      "pcmSamples": [
+        2496,
+        2752
+      ],
+      "rms": [
+        0.1172295320404802,
+        0.11867426418189507
+      ],
+      "localDecodeQueueDroppedPackets": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "chrome-screen-source-decoded-and-rendered-on-late-receiver",
+      "atMs": 5429,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "dimensions": [
+        320,
+        180
+      ],
+      "observedCenterPixel": [
+        34,
+        158,
+        89,
+        255
+      ]
+    },
+    {
+      "name": "A-stopped-while-B-kept-publishing",
+      "atMs": 5495,
+      "BPacketsBefore": 126,
+      "BPacketsAfter": 129,
+      "BGeneration": 5,
+      "CBeforeBRenderedPcmSamples": 37376,
+      "CAfterBRenderedPcmSamples": 40448
+    },
+    {
+      "name": "A-reopened-with-fresh-generation",
+      "atMs": 5598,
+      "oldGeneration": 4,
+      "newGeneration": 6
+    },
+    {
+      "name": "C-stopped-and-restarted-listening-while-A-and-B-kept-mutual-receive",
+      "atMs": 6051,
+      "AReceivedPacketsAdvanced": true,
+      "BReceivedPacketsAdvanced": true,
+      "restartedSources": [
+        5,
+        6
+      ],
+      "listenerState": "ready"
+    },
+    {
+      "name": "screen-watch-stop-restart-and-publisher-stop-cleared-canvas",
+      "atMs": 6651,
+      "renderedBeforeStop": 3,
+      "clearedWidth": 0,
+      "clearedHeight": 0,
+      "receiverState": "waiting"
+    },
+    {
+      "name": "publishers-listeners-and-synthetic-tracks-stopped",
+      "atMs": 6829
+    }
+  ],
+  "publishers": {
+    "A": {
+      "browser": "chrome",
+      "generation1": 4,
+      "clockId": "c4c52d69-a720-4a4f-b308-0ecbf342647a",
+      "generation2": 6,
+      "restartClockId": "c4c52d69-a720-4a4f-b308-0ecbf342647a"
+    },
+    "B": {
+      "browser": "edge",
+      "generation": 5,
+      "clockId": "545efdcc-e074-421d-a462-af0681ecbdf9"
+    }
+  },
+  "receiverSnapshots": [
+    {
+      "phase": "late-join-baseline",
+      "client": "Desktop01-C",
+      "sources": [
+        {
+          "generation": 4,
+          "clockId": "c4c52d69-a720-4a4f-b308-0ecbf342647a",
+          "active": true,
+          "receivedPackets": 4,
+          "decodedFrames": 4,
+          "renderedPcmSamples": 2496,
+          "queuedSamples": 384,
+          "renderRms": 0.1172295320404802,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        {
+          "generation": 5,
+          "clockId": "545efdcc-e074-421d-a462-af0681ecbdf9",
+          "active": true,
+          "receivedPackets": 4,
+          "decodedFrames": 4,
+          "renderedPcmSamples": 2752,
+          "queuedSamples": 128,
+          "renderRms": 0.11867426418189507,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        }
+      ],
+      "aggregate": {
+        "receivedPackets": 8,
+        "decodedFrames": 8,
+        "renderedSamples": 5248,
+        "renderRms": 0.11795411006307537,
+        "decodeQueueDroppedPackets": 0
+      }
+    },
+    {
+      "phase": "after-stop-and-restart-listening",
+      "client": "Desktop01-C",
+      "sources": [
+        {
+          "generation": 5,
+          "clockId": "545efdcc-e074-421d-a462-af0681ecbdf9",
+          "active": true,
+          "receivedPackets": 2,
+          "decodedFrames": 2,
+          "renderedPcmSamples": 768,
+          "queuedSamples": 192,
+          "renderRms": 0.03510964809402729,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        },
+        {
+          "generation": 6,
+          "clockId": "c4c52d69-a720-4a4f-b308-0ecbf342647a",
+          "active": true,
+          "receivedPackets": 2,
+          "decodedFrames": 2,
+          "renderedPcmSamples": 512,
+          "queuedSamples": 448,
+          "renderRms": 0.026798662464769606,
+          "decodeQueueDroppedPackets": 0,
+          "packetGapCount": 0,
+          "error": ""
+        }
+      ],
+      "aggregate": {
+        "receivedPackets": 4,
+        "decodedFrames": 4,
+        "renderedSamples": 1280,
+        "renderRms": 0.031231840317111365,
+        "decodeQueueDroppedPackets": 0
+      }
+    }
+  ],
+  "screen": {
+    "publisher": "Desktop01-A",
+    "receiver": "Desktop01-C",
+    "syntheticColor": [
+      34,
+      158,
+      86
+    ],
+    "initial": {
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 320,
+      "height": 180,
+      "centerPixel": [
+        34,
+        158,
+        89,
+        255
+      ]
+    },
+    "stoppedAndCleared": {
+      "publisherState": "idle",
+      "receiverState": "waiting",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 0,
+      "height": 0,
+      "centerPixel": null
+    },
+    "rewatched": {
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 320,
+      "height": 180,
+      "centerPixel": [
+        34,
+        159,
+        87,
+        255
+      ]
+    }
+  },
+  "screenshots": [
+    "desktop01-c-audio-baseline.png",
+    "desktop01-c-screen-baseline.png"
+  ],
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "sessionProofsTokensAndPasswordsReadOrRecorded": false,
+    "pageStorageDumped": false,
+    "metadataBounded": true
+  },
+  "limits": {
+    "realMicrophoneAndHumanListening": "not-tested; oscillator-generated streams and PCM/RMS counters do not establish what a person hears",
+    "realDisplayCaptureOrOSPicker": "not-tested; generated canvas only",
+    "threePhysicalParticipantsOrDevices": "not-tested; three pages share one machine and are synthetic identities",
+    "isolationPermissionsLongDurationCapacityAndNetworkFailure": "not-tested; outside this short core flow",
+    "serverPersistenceCloudDeploymentAndCloudRun": "not-tested; the script attaches to the separately managed local fixture",
+    "endToEndLatencyOrListeningQuality": "not-measured"
+  },
+  "errors": {
+    "pageErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "cleanup": {
+    "contextsClosed": 3,
+    "profilesRemoved": true
+  },
+  "durationMs": 7285,
+  "finishedAt": "2026-11-06T05:28:09.805Z"
+}

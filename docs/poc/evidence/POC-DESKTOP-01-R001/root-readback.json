@@ -1,0 +1,136 @@
+{
+  "verdict": "automatic synthetic desktop core Pass; human capture/listening pending",
+  "durationMs": 7285,
+  "checks": 9,
+  "browserVersions": {
+    "chrome": {
+      "name": "Google Chrome",
+      "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "executableVersion": "Google Chrome 157.0.8103.38",
+      "playwrightVersion": "157.0.8103.38"
+    },
+    "edge": {
+      "name": "Microsoft Edge",
+      "executable": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+      "executableVersion": "Microsoft Edge 156.0.4314.58",
+      "playwrightVersion": "156.0.4314.58"
+    }
+  },
+  "node": "v26.13.0",
+  "macOS": "27.2",
+  "sourceGenerations": [
+    4,
+    5
+  ],
+  "sourceClockIdsUnique": true,
+  "initialDecodedFrames": [
+    4,
+    4
+  ],
+  "initialRenderedPcmSamples": [
+    2496,
+    2752
+  ],
+  "initialRms": [
+    0.1172295320404802,
+    0.11867426418189507
+  ],
+  "initialLocalDecodeDrops": [
+    0,
+    0
+  ],
+  "afterAStops": {
+    "name": "A-stopped-while-B-kept-publishing",
+    "atMs": 5495,
+    "BPacketsBefore": 126,
+    "BPacketsAfter": 129,
+    "BGeneration": 5,
+    "CBeforeBRenderedPcmSamples": 37376,
+    "CAfterBRenderedPcmSamples": 40448
+  },
+  "screen": {
+    "publisher": "Desktop01-A",
+    "receiver": "Desktop01-C",
+    "syntheticColor": [
+      34,
+      158,
+      86
+    ],
+    "initial": {
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 320,
+      "height": 180,
+      "centerPixel": [
+        34,
+        158,
+        89,
+        255
+      ]
+    },
+    "stoppedAndCleared": {
+      "publisherState": "idle",
+      "receiverState": "waiting",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 0,
+      "height": 0,
+      "centerPixel": null
+    },
+    "rewatched": {
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "receiverSubscribed": true,
+      "receivedFrames": 4,
+      "decodedFrames": 4,
+      "renderedFrames": 3,
+      "width": 320,
+      "height": 180,
+      "centerPixel": [
+        34,
+        159,
+        87,
+        255
+      ]
+    }
+  },
+  "independentVisualReadback": {
+    "audioScreenshot": {
+      "receivedPackets": 64,
+      "decodedFrames": 64,
+      "renderedPcmSamples": 56320,
+      "decodeQueueHighWater": 1,
+      "localDrops": 0
+    },
+    "screenScreenshot": {
+      "width": 320,
+      "height": 180,
+      "renderedFrames": 6
+    }
+  },
+  "cleanup": {
+    "contextsClosed": 3,
+    "profilesRemoved": true
+  },
+  "serviceIntentionallyRetained": {
+    "baseURL": "http://localhost:4174",
+    "roomURL": "http://localhost:4174/?room=studio",
+    "pid": 53830,
+    "postgresContainer": "laitse-poc06-r002-db",
+    "onlineMembers": 0,
+    "softLimit": 10
+  },
+  "limits": [
+    "Oscillator and canvas injection; no physical mic/OS picker/human listening",
+    "One macOS host, three isolated profiles, two publisher sources; not cross-device or nine-source quality",
+    "Snapshot drops0 in this short run do not clear CAP01 sustained nine-source drops",
+    "No Cloud Run deployment/performance, real network outage, long run or p95",
+    "No new all81 run or build: production code unchanged and validated dist fingerprints matched; test script syntax+real browser flow checked"
+  ]
+}

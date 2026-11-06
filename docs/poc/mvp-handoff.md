@@ -1,8 +1,16 @@
 # POC 至 MVP 方案交接表
 
-- 權威計畫：[POC-PLAN v1.3](plan.md)；實際證據：[執行紀錄](execution-log.md)。
+- 權威計畫：[POC-PLAN v1.4](plan.md)；實際證據：[執行紀錄](execution-log.md)。
 - 建立日期：2026-11-03；2026-11-05更新：T01～T17桌面核心已有證據，T18/R001記憶體No-Go保留；SOL-007的PostgreSQL18候選已在R002驗本機保存／恢復核心。**T19原範圍NoGo保留；DEC-013改為桌機優先、手機後續，現進入桌機MVP規劃，待決項尚未定案，未開始程式開發**。
 - 本表記錄技術方案結論與復用界線，不取代 PRD、不另建派工／資源占用總表。
+
+## 最新桌機交接（2026-11-06／POC-DESKTOP-01）
+
+[本輪auto與保留環境](evidence/POC-DESKTOP-01-R001/README.md)：macOS27.2、Chrome157／Edge156，3個隔離profile、兩合成講者與晚加入接收者，9項7,285ms核心Pass；原生codec/PCM／VP8、逐來源啟停與收聽/觀看恢復成立。真人真mic／原生OS分享選擇器仍pending，單機合成不當成跨桌機多人確認，9來源持續略包限制不因2來源短測清除。
+
+固定8人已由CAP01移除，default10可調PG保存；手機不作桌機前置。已驗核心Issue依人類新授權結案並補操作／pitfall，人工/品質/真弱網/容量與MVP進場票保留。服務http://localhost:4174/?room=studio與PG刻意留運作給稍後人工；測試profile已清。MVP未開發／未部署。
+
+以下RM／DEC段落保留當時措辭；其中「仍8人／PG多人未驗」不是目前狀態，現況以上方與後續CAP／DESKTOP結果為準，不回改原run。
 
 ## POC-RM-01現況（2026-11-06）
 
@@ -27,7 +35,7 @@
 | ID | 方案責任／採用建議 | 證據與可用範圍 | MVP移轉條件／限制 |
 |---|---|---|---|
 | SOL-001 | **可採用**：Node26、React/Vite、Fastify/ws單一app與鎖版工具鏈 | [POC00-R002](evidence/POC-00-R002/README.md)、[T19候選指紋/重建](evidence/POC-07-R001/candidate-readback.json)；本機Node26.13.0、127項已安裝依賴盤點 | 不是CloudRun驗證；正式建置/secret/授權notice與部署入口另整理 |
-| SOL-002 | **有條件可採用／目標裝置待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；目標桌機跨端與原生畫面核心於M03補驗；手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
+| SOL-002 | **有條件可採用／桌機合成已驗、真人待驗**：Opus/VP8＋WebCodecs/AudioWorklet/canvas＋同一WSS relay；桌面管線可延續 | [POC01-R002](evidence/POC-01-R002/README.md)、[POC02-R001](evidence/POC-02-R001/README.md)／[R002](evidence/POC-02-R002/README.md)、[T19 PG雙房實播](evidence/POC-07-R001/README.md) | [Edge桌機真人語音及兩端啟停](evidence/POC-07-R002/README.md)已確認；macOS Chrome157/Edge156單機合成雙講者與分享已驗；真mic/OSpicker/真人聽感與跨實體桌機於M03補，手機依DEC-013排後續，不作桌機MVP前置。同步只承諾同publisher clock已驗範圍，無E2E/p95品質保證 |
 | SOL-003 | **可採用匿名門鎖核心／其餘治理待整合**：server匿名ID、Room控制與門禁 | 既有R004/R005及[POC-RM-01真PG/Firefox](evidence/POC-RM-01-R001/README.md)驗唯一owner／轉交／離線接任／無人解鎖 | 本版不做帳號認證；需由固定studio一般化房間配置，活動Session與control session分開；其他主持治理待決。舊host token不是新匿名管理，轉交或重連不復活舊owner |
 | SOL-004 | **可採用**：Phaser4像素人物與操作橋接 | [POC03-R001](evidence/POC-03-R001/README.md)、[兩類空間收聽R003](evidence/POC-03-R003/README.md)；桌面WebGL/移動/切房/隱藏成立 | 固定場景可起步，手機觸控/實機待補；走路自動跨門尚未實作，點門/Enter/選房入口已驗。示範6格非產品參數 |
 | SOL-005 | **可採用**：觀看/只互動/唯讀展示、深連結與本機QR | [POC03-R007](evidence/POC-03-R007/README.md)、[T19 PG mixed](evidence/POC-07-R001/mixed/report.json)；只互動零media、同房回饋與手動回看成立 | 需商品化入口與展示UI；真手機掃碼/操作待補，無外部應用全域覆蓋能力承諾 |
@@ -78,9 +86,9 @@ NoGo的主要理由是：桌機Edge真人收聽及兩端停止/重開已在[POC0
 
 | ID／類別 | 目前事實 | 下一個小步／需確認內容 |
 |---|---|---|
-| GATE-001／核心證據（DEC-013更新） | Edge桌機真人聽見及兩端啟停已確認；手機改為後續，不再阻擋本版 | 先定MVP-D02桌機OS／瀏覽器；在M03補該環境的真人音畫完整短流程，手機待後續專項，不回改歷史未驗 |
+| GATE-001／核心證據（DESKTOP01更新） | 舊Edge單講者真人聽感已確認，當前macOS Chrome/Edge合成雙講者/分享核心Pass；真人真capture仍pending | 保留本機環境，M03補真mic/OS分享/真人多人流程；單機合成不等於跨桌機品質，手機後續 |
 | GATE-002／產品決策（DEC-014） | 免登入任意暱稱入場、人人可鎖會議室已確認；匿名成員與活動Session仍須分開 | 不做帳號／邀請認證；DEC-015鎖房管理已定；其他活動主持控制歸屬待決，保留server匿名ID／門禁隔離，不能把同名當同一人 |
-| GATE-003／容量與品質 | 硬上限8人、實測最多6；每房/channel單publisher，媒體同WS、DB同步控制寫入 | 產品不設固定人數上限，現有8人門檻待移除；逐級觀測實際容量／資源，保留有界背壓，不宣稱無限容量。裝置／並發發布及品質仍待 |
+| GATE-003／容量與品質（CAP01更新） | 固定8人已移除，default10可調PG保存；meeting多音訊/單screen，lobby仍單音訊；16人opaque relay非完整browser品質 | CAP01九路仍持續local drops；DESKTOP01兩路短觀測0drop不清除該限制。保留8pending/PCM500ms/WS背壓；高頻控制PG負載與實際CloudRun容量待驗，不宣稱無限容量 |
 | GATE-004／互動細節 | 開放距離6格是示範；門可點/Enter，走路自動跨門未做；公開文字目前頁內區域 | 確認正式距離/進出邊界行為，MVP補門口操作與展示；維持已確認的會議室全房/未鎖直入/鎖房密碼，不重新詢問已確認規則 |
 | GATE-005／資料運維 | 系統資訊可存PG已確認且核心已驗；archive無清理期限，無備份還原/HA證據 | 決定保存期限、刪除/查看權限、資料庫託管與備份還原方式。沒有要求重新核准PostgreSQL或保存類別 |
 | GATE-006／部署與商品整合 | app只容許單active writer；未做CloudRun容器/正式配置，POC debug UI/API/固定fixture仍在 | 後續處理singleton/版本切換與DB連線生命週期、secret/診斷授權、正式UI；本輪不部署，不能將單一service自動當成可多instance |

@@ -453,3 +453,24 @@ CAP root測試隔離窄修：backpressure後10Firefox重驗Pass，但與browser�
 POC-CAP-01-R001最終交付讀回（2026-11-06）：全服務固定8人改PG保存可調容量，default10、輸入1..1000不承諾容量；本機顯式受限管理頁、降額不踢人／滿額拒join/resume、PG保存/rollback503與restart20/0在線/最後restore10皆有證據。10Firefox join/互動各10、9合成Opus逐來源解碼/PCM與單VP8呈現核心Pass（32,368ms，active8,254ms）；local drops早期58、500ms窗+58、稍後截圖333，品質／真人多人未Pass，不把略包說僅啟動或網路遺失。decoder保留8pending/PCM500ms但busy skip後可恢復，不再永久終止。
 受限Docker1CPU/1GiB、外置PG/產生器，10/12/16 opaque全員音訊互送+單screen各約10s均數量吻合0error，CPUmean27.94/24.12/26.81%、RSSpeak70.88/76.29/79.97MiB；僅工作負載已測點，非CloudRun最大值／16完整browser品質。最後完整81/81 PG案例啟用無skip、build/typecheck通過；歷史81→80/81與單檔11/11及test fixture清理後81分開保存，不改production限速／timeout。root核93source/20dist指紋（browser後僅測試清理檔改動）、203主要本機連結、JSON、99檔私密DSN/password/key掃描無命中；管理與兩媒體截圖已實看。
 GitHub#1/#4/#17/#18/#19/#20已保存並6/6精確讀回、原AC/open/labels保留，PRD v0.14／DEC018、SOL002/007/008、研究/操作/交接同步。root唯一writer結束；source與browser agents皆STOP，自有3個host PTY及10Firefox全停、app與專用PG container exited且PID0，HTTP/WSS以正確CA檢查ECONNREFUSED；DB/volume保留，OrbStack共享環境不關。程式紀錄依授權同本機commit，不push／部署／自動MVP；既有AGENTS.md與原scratch不提交。正式雲端管理權／目標桌機品質／高頻控制PG負載／實際雲容量待後續。
+
+
+## POC-DESKTOP-01-R001／桌機自動驗證與真人環境（2026-11-06）
+
+人類先要求啟本機服務、教桌機真人多人語音／真分享輕量驗測、完成紀錄commit與Github；其後明確選「先同一台桌機的Chrome＋Edge，驗單機雙端；真人多人稍後」，又授權「確定做完驗證後可以把issues關閉，並加上核心關鍵怎麼做避免踩坑」，最新改為「先你自動驗證就好，我真人驗證要有環境」。因此本輪先自動化真Chrome/Edge的合成音畫管線，留可用本機環境與短手動步驟；不假稱真mic／原生分享選擇器／真人聽感／多實體桌機已驗。真人相關結果pending，不要求人類現在操作。
+root唯一writer：docs/poc/evidence/POC-DESKTOP-01-R001、既有execution-log/mvp-handoff/plan與collaboration brief/checkpoint/dispatch/delivery-index、README/.gitignore（必要）、Git/GitHub進度與已確認核心的結案說明；.scratch/desktop01自有PG fixture/host服務與隔離browser全部root操作。HEAD5dea2e2產品程式沿用、核dist指紋，無app功能變更／不重跑全81；需要修bug才窄修與相關檢查。服務新port4174 loopback HTTP（localhost secure context供使用者之後Chrome/Edge），不碰原4173／人類分頁/mic、不部署CloudRun。專用PG container原exited本輪可啟，另新DB不刪舊資料/volume；人類之後需環境故本輪服務與PG暫保留運作並記PID/入口/停止方法，不冒稱已釋出。
+desktop_av_script（Luna xhigh）唯一writer scripts/desktop-av-smoke.mjs 與.scratch/desktop01/harness，其他檔唯讀，不啟服務/browser/build/Git。用安裝的Google Chrome/Microsoft Edge實際executable或Playwright channel、獨立profiles，loopback HTTP非略過TLS／系統信任。A Chrome+B Edge兩發布者互聽不自聽，C Edge/Chrome晚加入接收2來源及A合成screen；各source需原生WebCodecs decode與AudioWorklet PCM/RMS，並驗A停止B續播／重開新generation／C停收再收及單screen啟停清空，少量互動。注入oscillator/canvas只在自有測試頁，明示非實體capture；不使用系統fake permission flags，不動人類UI。控制同頁click序列，有界counter/metadata、排除token/password/proof、report+2張圖、finally關context/profile，不保存媒體內容。沿現有data-testids/counter新decodeQueueDroppedPackets記略包，不能只驗WS或API。輸出限.scratch/desktop01/，記Node/OS/Chrome/Edge版本。交付syntax/readback/STOP後root才run；不擴長測／大負載或新增產品範圍。
+GitHub結案在root驗證後依最新輕量核心授權，先逐票核對已驗與未驗範圍；已確認核心票可關、說明實作步驟/實際證據/坑與剩餘限制；不得將手機、真人多人、持續略包品質、真弱網或CloudRun標成通過。原嚴格AC保留歷史並寫明本次結案採核心範圍，不代勾無證項目；本輪不新建未授權票、不直接關閉整批未驗議題。
+
+桌機auto成功後擬依逐票核心證據結案：#2基線、#4語音、#6分享、#8像素／兩房、#9隔離、#10匿名管理／交接、#11互動、#12模式／展示、#13控制恢復、#14媒體恢復、#15有界背壓、#18雙房混合少量、#19PG恢復；每票寫獨立核心操作／實作關鍵／坑與剩餘驗測，並讀回body+closed(completed)+labels。保留open #1總覽、#3手機、#5真人跨端音質、#7真人音畫同步、#16真弱網／斷網與長時間、#17容量與多來源品質、#20MVP進場彙整；它們不全部作MVP基礎開發前置。若auto發現新增相關核心失敗，改按實際保留該票open，不照計畫盲關；目前尚未關票。結案依人類新授權的桌機輕量核心範圍，保留原strict AC歷史、不勾未驗值；不建新issues。
+
+desktop_av_script已saved/readback/STOP交回667行scripts/desktop-av-smoke.mjs，語法通過且未啟browser/服務；root接回唯一script writer與browser操作者，將在自己4174/PG fixture執行。依已知原生browser需窄提升的條件直接用獨立workspace profiles，不碰人類profile／權限。服務保留意圖不變。
+
+桌機首輪auto 13,707ms core pass、3contexts清/本機profiles清；root讀回發現harness停A/B續播case把B received與sent相比，屬斷言欄位錯用。root唯一writer修為sent比sent，另要求C對B的PCM在A停後增長，保留first-pass結果後再短確認一次；不改產品碼／queue門檻，也不將首輪弱斷言稱完整證據。
+
+
+POC-DESKTOP-01-R001最終讀回（2026-11-06）：人類最新要求先auto並留真人環境，精確原話/單機選項/關票授權存VERIFY-DESKTOP-01-SCOPE human-scope.json。Chrome157/Edge156(macOS27.2)三隔離profiles合成9項7,285ms corePass；root核互聽不自回送/C兩唯一來源native codec與PCM/RMS、A停B sent126→129且C對B PCM37376→40448、A新gen4→6、收聽/分享啟停清空與2張圖。初期及重收snapshot drops0，不清除CAP01九路333drop未驗品質；不是真mic/OSpicker/真人/跨實體裝置。首13,707ms pass的弱sent/received比較已改為同欄位+新PCM，兩次資料分開。
+沒有產品碼更動，原20dist指紋仍5dea2e2，本輪syntax/真ChromeEdge流程不重跑全81或build；舊81不能說本輪重跑。3contexts全關、workspace profiles清。**持續保留**native Node PID53830＋http://localhost:4174/?room=studio及PG container laitse-poc06-r002-db(fresh DB)給稍後人工，10席/0在線/PGready/unlocked/anonymous，runtime私有在.scratch/desktop01；root沒有操作原4173/人類UI/mic，沒有系統信任/權限修改、不刪DB/volume。之後停環境前核對runtime.command/PID，不憑舊數字kill。
+依人類明確新授權，已在每票寫核心/怎麼做/坑/證據/未驗，關#2/#4/#6/#8/#9/#10/#11/#12/#13/#14/#15/#18/#19(completed)，保留#1/#3/#5/#7/#16/#17/#20 open。20票正文/狀態精確讀回，title/labels/原AC歷史保留、不代勾未驗，不建新票。README匿名DB seed、Meeting room多人限制、artifact/人類guide與SOL002/006/008及現行GATE已同步。此結案不是正式商品／真人品質／所有OS支持或MVP開工接受；本輪紀錄+testscript同本機commit，不push/部署/自動MVP。source/script writer已STOP，root文檔/Git完結後釋出，保留服務維持人工交接用途。
+
+桌機交付最後檢查：44個source/script指紋、188主要本機連結、所有JSON解析、私密DSN/password/private-key掃描0命中、node --check及diff檢查通過。Github13closed/7open、20/20正文/狀態/labels/title/原body讀回。人工驗證pending，服務4174與PG保持healthy/0在線/10席，非cleanup遺漏；人工guide在本run。root所有文件與唯一testscript同本機commit，原AGENTS.md/.scratch不納入，沒有產品碼變更、不push/部署。

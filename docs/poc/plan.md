@@ -1,7 +1,7 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
 - 識別碼：POC-PLAN；版本：v1.4；日期：2026-11-06。
-- 狀態：POC-CAP-01核心Pass，可調容量／10Firefox核心及16人轉送短測已有證據；9路client仍有local drops，品質／CloudRun最大容量未驗。既有階段／T19歷史不改判，MVP未開發，手機後續。
+- 狀態：DESKTOP01桌機Chrome/Edge合成核心Pass，真人驗證pending且環境保留；CAP01容量/九路略包及其他歷史限制保持，MVP未開發。
 - 版本界線：GitHub原v1.0票面保留歷史；2026-11-05依人類要求於母#1與子#2～20補最新進度段，連回本機v1.3／PRD v0.9、DEC-010～012及未驗項，不回改原AC。Issue更新不是程式push／部署。
 - 權威界線：產品目標依來坐 PRD v0.14、DEC-001～018；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器＋Docker PostgreSQL18、真實瀏覽器；手機仍待補，本輪不部署 Cloud Run。
@@ -334,3 +334,8 @@ T19／#20審查交付完成：[POC-07-R001](evidence/POC-07-R001/README.md)固�
 最小流程：本機面板改設定→PG讀回／程序重啟→10個真Firefox頁加入／各互動→9個合成音訊source由1端實際解碼與PCM＋單screen呈現；非9×9互聽或真人聽感。Docker應用限1CPU/1GiB、PG與產生器外置，補10/12/16 opaque relay短量測，記實際達成速率與成本，不以Cloud Run 1000concurrency／600Mbps配額換算可用人數。不部署雲、不跑長測；結果、用法、限制累積execution-log／SOL007及R001，程式紀錄同本機commit、GitHub相關票同步讀回。
 
 CAP-01結果：POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。正式結果／失敗／修正／採用限制見[evidence/POC-CAP-01-R001/README.md](evidence/POC-CAP-01-R001/README.md)。
+
+
+## POC-DESKTOP-01／自動桌機核心與人工環境（2026-11-06）
+
+POC-DESKTOP-01-R001：macOS27.2／Chrome157／Edge156三個隔離profiles的合成音畫9項7,285ms核心Pass；真mic／OSpicker／真人聽感與跨桌機多人仍pending。兩路短觀測0drop不清除CAP01九路333drop限制。http://localhost:4174/?room=studio與專用PG刻意保留給之後人工，0在線／10席，測試profiles已清。沿人類最新指示先auto，真人單機雙端與真正多人稍後，非擴為所有桌機支持。核心已驗票可依人類新授權關閉並附實作與pitfall，原strict AC歷史保留、未驗不代勾；#1/#3/#5/#7/#16/#17/#20保留open，不全作MVP基礎前置。詳[執行結果](evidence/POC-DESKTOP-01-R001/README.md)與人工guide；不部署/不push/不自動MVP。

@@ -1,10 +1,14 @@
 # POC 執行紀錄
 
-- 權威計畫：[POC-PLAN v1.1](plan.md)；v1.0執行的歷史run依當時方法解讀，原始證據保留。
+- 權威計畫：[POC-PLAN v1.4](plan.md)；v1.0執行的歷史run依當時方法解讀，原始證據保留。
 - 建立日期：2026-11-03；更新：2026-11-04。T06本機晚加入／同步排程核心已有證據；裝置、品質及完整階段尚未通過。
 - 本表只記實際執行與證據；階段需求與篩選值以計畫書為準，不在此重訂需求。
 
-## 階段現況
+## 最新增量（2026-11-06）
+
+桌機Chrome/Edge合成9項核心Pass，真人真capture仍pending；http://localhost:4174/?room=studio及PG留運作供稍後人工。已驗核心13票依人類新授權結案，品質／手機等7票保留，詳本頁末POC-DESKTOP-01與[證據](evidence/POC-DESKTOP-01-R001/README.md)。下方早期「尚未執行／無保存／8人未移除」是建立時快照，不是目前狀態。
+
+## 初期階段快照（歷史；目前以後續run及最新摘要為準）
 
 | 階段 | 執行狀態 | 結果 | Run／證據 | 下一步 |
 |---|---|---|---|---|
@@ -364,3 +368,12 @@ build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip
 1CPU/1GiB Linuxarm64本機opaque relay各約10s：10人CPU平均27.94%峰34.55%、RSS70.88MiB；12人24.12%/28.30%/76.29MiB；16人26.81%/32.67%/79.97MiB。audio下送45,090／66,132／120,000、screen1,332／1,617／2,205，均等預期、無error，約50fps。PG／產生器在cgroup外，暖機/GC/歷史不同，不線性外推CloudRun最大值；高頻移動與控制寫入尖峰、長測／真網路未測。建議先10席可調，16只是伺服器此workload已測點。
 
 最後全suite81/81真PG無skip、build/typecheck通過；保留中途80/81與server單檔11/11，窄修新容量case清理共享上限/await close後81/81，沒改production限速／放寬timeout。所有首輪失敗、修正與結果分開保存；完整操作/來源指紋/限制見[evidence/POC-CAP-01-R001/README.md](evidence/POC-CAP-01-R001/README.md)。自有服務/browser停，PG原exited恢復，DB/volume保留；未碰人類Edge／mic、不push／部署／自動MVP。
+
+
+## POC-DESKTOP-01-R001完成：自動桌機核心／真人環境保留（2026-11-06）
+
+最新人類指示「先你自動驗證就好，我真人驗證要有環境」，本輪先單機Chrome/Edge合成自動化；真人真mic／OS分享與多人跨桌機仍pending。macOS27.2／Node26.13.0，Chrome157.0.8103.38／Edge156.0.4314.58三隔離profiles、兩publisher與C晚加入，9項7,285ms通過。原生Opus decode/AudioWorklet PCM、互聽不自回送、C雙來源/VP8呈現、A停止B續送且C續播新PCM、A新世代、收聽/觀看啟停清空通過。C初始兩路PCM2496/2752、RMS非零、local drops snapshot0；不外推CAP01九路持續略包已解。首13,707ms pass的弱斷言（B received比sent）已改sent比sent＋C新PCM，兩次結果分別保留。
+
+無產品碼改動，核20dist仍5dea2e2、未重build/全81，本輪syntax＋真Chrome/Edge流程。3contexts/profiles清，沒有操作人類分頁/真mic/OSpicker/系統權限。**保留**native Node PID53830、http://localhost:4174/?room=studio與專用PG容器給之後人工，freshDB/anonymous/unlocked/10席，結束0在線且PGready；不停止/刪資料，不碰原4173。私有runtime在.scratch/desktop01，不提交DSN或profiles。
+
+人類另明確授權驗後可關Issue並寫核心實作避坑。已依桌機輕量範圍關13票#2/#4/#6/#8/#9/#10/#11/#12/#13/#14/#15/#18/#19，保留#1/#3/#5/#7/#16/#17/#20 open；20/20正文/狀態精確讀回、title/labels/原AC歷史保留，沒有代勾未驗值。未驗真人/手機/弱網/品質不因關票變Pass。證據[POC-DESKTOP-01-R001](evidence/POC-DESKTOP-01-R001/README.md)，附人工guide、source/保留環境/避坑與兩輪資料；紀錄和script同本機commit，不push/部署/自動MVP。

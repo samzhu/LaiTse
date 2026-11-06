@@ -8,6 +8,8 @@
 
 ## 1. 下一個 AI 先讀這段
 
+2026-11-06 POC-DESKTOP-01-R001：macOS27.2／Chrome157／Edge156三個隔離profiles的合成音畫9項7,285ms核心Pass；真mic／OSpicker／真人聽感與跨桌機多人仍pending。兩路短觀測0drop不清除CAP01九路333drop限制。http://localhost:4174/?room=studio與專用PG刻意保留給之後人工，0在線／10席，測試profiles已清。 [本輪證據/人工guide](poc/evidence/POC-DESKTOP-01-R001/README.md)。GitHub已依人類新授權關13個已驗核心票，7票保留；Issue closed不等於原strict AC全勾或手機/真人品質已驗。勿停止目前留給人工的服務或刪volume，先讀最新runtime確認。
+
 2026-11-06 POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。 PRD v0.14／DEC018為現行範圍，本機受限管理頁非正式雲管理權。下方8人門檻仍在等敘述屬歷史。證據[poc/evidence/POC-CAP-01-R001/README.md](poc/evidence/POC-CAP-01-R001/README.md)。
 
 2026-11-06 POC-RM-01：[R001](poc/evidence/POC-RM-01-R001/README.md)匿名studio鎖／owner／轉交及離線接任／無人解鎖已完成真PG與Firefox核心驗收。DEC017明確換房保留原會議室管理權，原房暫空仍鎖，只有斷線／離線才交接；同名不授權。migration002升級保留legacy鎖，新匿名鎖啟動時無owner則清除；舊host模式與新匿名模式分開。已補同候選PG多人影音短回歸，不能繼續沿用下方「新管理未實作／PG多人一律未驗」作現況，但舊run仍保持原判定。PRD v0.13／SOL003與007為權威；尚未啟MVP或部署。

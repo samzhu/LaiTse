@@ -1,0 +1,10 @@
+[DESKTOP01] chrome-and-edge-joined-with-listeners-ready
+[DESKTOP01] chrome-and-edge-publish-and-receive-only-the-other-source
+[DESKTOP01] late-chrome-receiver-decodes-and-renders-two-independent-pcm-sources
+[DESKTOP01] chrome-screen-source-decoded-and-rendered-on-late-receiver
+[DESKTOP01] A-stopped-while-B-kept-publishing
+[DESKTOP01] A-reopened-with-fresh-generation
+[DESKTOP01] C-stopped-and-restarted-listening-while-A-and-B-kept-mutual-receive
+[DESKTOP01] screen-watch-stop-restart-and-publisher-stop-cleared-canvas
+[DESKTOP01] publishers-listeners-and-synthetic-tracks-stopped
+[DESKTOP01] passed; report: .scratch/desktop01/browser/report.json

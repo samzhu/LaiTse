@@ -1,0 +1,40 @@
+{
+  "id": "VERIFY-DESKTOP-01-SCOPE",
+  "date": "2026-11-06 Asia/Taipei",
+  "initialRequest": "先做桌機真人多人語音＋真實畫面分享的輕量驗測，幫我啟動本機服務並教我怎麼測，確認核心功能可行就好，完成後把驗測紀錄 commit，並更新 GitHub 進度。",
+  "selectedScope": "先同一台桌機的 Chrome＋Edge，驗單機雙端；真人多人稍後",
+  "closureAuthorization": "確定做完驗證後可以把 https://github.com/samzhu/LaiTse/issues 關閉 並加上說明核心關鍵該怎麼做 避免又踩到坑",
+  "latestSteering": "先你自動驗證就好 我真人驗證要有環境",
+  "executed": "Single-host installed Chrome/Edge synthetic automation; retained native-media human environment; close only proven lightweight core issues with caveats",
+  "excluded": [
+    "human microphone/listening or OS picker acceptance",
+    "real multi-person/cross-device acceptance",
+    "clearing CAP01 nine-source local-drop limitation",
+    "automatic MVP implementation or Cloud Run deployment"
+  ],
+  "humanResults": "pending",
+  "closedCoreIssues": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    18,
+    19
+  ],
+  "remainingOpenIssues": [
+    1,
+    3,
+    5,
+    7,
+    16,
+    17,
+    20
+  ]
+}

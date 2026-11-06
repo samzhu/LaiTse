@@ -80,3 +80,5 @@ POC-MA-01-R001（2026-11-06）：[會議室多人語音程式／操作與驗測]
 POC-RM-01-R001（2026-11-06）：[匿名管理／交接與PG操作證據](../poc/evidence/POC-RM-01-R001/README.md)已保存並讀回；core69、真PG2、Firefox13項10,214ms通過，另PG多人短回歸通過。DEC017換房保留，僅offline交接／無候選解鎖；不宣稱人類接受／部署或MVP完成。
 
 POC-CAP-01-R001（2026-11-06）：[可調容量／10Firefox／受限轉送與限制](../poc/evidence/POC-CAP-01-R001/README.md)。POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。程式與紀錄同本機commit、GitHub相關票保存讀回，非人類品質接受或部署。
+
+POC-DESKTOP-01-R001（2026-11-06）：[桌機auto/人工環境/避坑及關票證據](../poc/evidence/POC-DESKTOP-01-R001/README.md)。POC-DESKTOP-01-R001：macOS27.2／Chrome157／Edge156三個隔離profiles的合成音畫9項7,285ms核心Pass；真mic／OSpicker／真人聽感與跨桌機多人仍pending。兩路短觀測0drop不清除CAP01九路333drop限制。http://localhost:4174/?room=studio與專用PG刻意保留給之後人工，0在線／10席，測試profiles已清。 依新授權關13核心票、保留7票，20/20狀態/正文讀回；人工未接受，不宣稱全面technicalGo。

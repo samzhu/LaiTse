@@ -4,6 +4,12 @@ One Fastify process serves the React page, health and room APIs, and one WebSock
 
 This is an experiment, not the product or the MVP. It creates no cloud resources and uses no external service. Without `DATABASE_URL`, it keeps state in volatile process memory; local development can opt into PostgreSQL 18 for system information.
 
+## 桌機自動驗證與稍後人工環境（2026-11-06）
+
+本輪保留的獨立本機入口：[Meeting room](http://localhost:4174/?room=studio)，只限這台桌機，使用Chrome／Edge；[人工步驟與本輪狀態](docs/poc/evidence/POC-DESKTOP-01-R001/README.md)。請保持Docker／OrbStack運作；服務與PostgreSQL暫留給稍後人工測試，自動測試的隔離profiles會清除。真人多人／真麥克風／原生分享選擇器結果不由合成音畫測試推定。
+
+**匿名模式設定重點：** 本版不需host bootstrap token。若自行建立新的匿名測試DB，`HOST_CONTROL_TOKEN`、`MEETING_ROOM_PASSWORD`留空；下方較早的token範例屬舊managed模式。既有DB的managed設定及密碼優先startup seed，不能靠把env清空改模式；請用獨立新DB保留舊資料，不要刪volume解決。多人同時開麥要在Meeting room測，Open area仍維持單來源距離廣播。
+
 ## Runtime and exact dependencies
 
 The project pins Node.js `26.13.0` in `.nvmrc` and `package.json`. On the current Apple Silicon macOS host, the official Node archive is stored under ignored `.tools/` and verified against the matching line in Node's official `SHASUMS256.txt`. No global Node or nvm configuration is changed.

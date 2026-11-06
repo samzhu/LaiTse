@@ -1,0 +1,26 @@
+{
+  "pid": 53830,
+  "baseURL": "http://localhost:4174",
+  "roomURL": "http://localhost:4174/?room=studio",
+  "capacityURL": "http://localhost:4174/poc/capacity",
+  "startedAt": "2026-11-06T05:17:24.406Z",
+  "persistence": "postgresql",
+  "database": "laitse_desktop01_20261106131659",
+  "candidate": "5dea2e2",
+  "state": "running",
+  "purpose": "desktop Chrome/Edge automatic smoke then retained for later human testing",
+  "resourceLimits": "native host process; not a Cloud Run or 1CPU/1GiB capacity benchmark",
+  "health": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "capacity": {
+    "softLimit": 10,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "retainedIntentionally": true,
+  "humanMediaVerified": false
+}
