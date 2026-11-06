@@ -88,6 +88,7 @@ function appOptions(databaseSchema) {
     databaseSchema,
     meetingRoomPassword: ROOM_PASSWORD_A,
     hostControlToken: HOST_TOKEN,
+    localCapacityAdmin: true,
   };
 }
 
@@ -119,6 +120,18 @@ if (!DATABASE_URL) {
       const health = await (await fetch(`${baseUrl}/api/health`)).json();
       assert.equal(health.persistence, "postgresql");
       assert.equal(health.persistenceAvailable, true);
+      const defaultCapacity = await (await fetch(`${baseUrl}/api/poc/capacity`)).json();
+      assert.equal(defaultCapacity.softLimit, 10);
+      assert.equal(defaultCapacity.persistence, "postgresql");
+      assert.equal(defaultCapacity.persisted, true);
+      const capacityUpdate = await fetch(`${baseUrl}/api/poc/capacity`, {
+        method: "POST",
+        headers: { "content-type": "application/json", origin: baseUrl },
+        body: JSON.stringify({ softLimit: 20 }),
+      });
+      assert.equal(capacityUpdate.status, 200);
+      assert.equal((await capacityUpdate.json()).softLimit, 20);
+      assert.equal(Number((await scopedPool.query("SELECT member_soft_limit FROM application_settings WHERE singleton = true")).rows[0].member_soft_limit), 20);
       const unknownObservation = await fetch(`${baseUrl}/api/observations/not-a-uuid`);
       assert.equal(unknownObservation.status, 404);
       assert.equal((await (await fetch(`${baseUrl}/api/health`)).json()).persistenceAvailable, true,
@@ -258,6 +271,9 @@ if (!DATABASE_URL) {
       baseUrl = running.baseUrl;
       const roomsAfterRestart = await (await fetch(`${baseUrl}/api/rooms`)).json();
       assert.equal(roomsAfterRestart.find((room) => room.id === "studio").isLocked, true);
+      const capacityAfterRestart = await (await fetch(`${baseUrl}/api/poc/capacity`)).json();
+      assert.equal(capacityAfterRestart.softLimit, 20);
+      assert.equal(capacityAfterRestart.persisted, true);
       const wrongPasswordSocket = await connect(baseUrl);
       currentSockets.push(wrongPasswordSocket);
       const wrongPasswordError = nextMessage(wrongPasswordSocket, (message) => message.type === "protocol.error");
@@ -359,6 +375,24 @@ if (!DATABASE_URL) {
         assert.equal(stagedJoinOutput, false, "join acknowledgement/snapshots must not escape before the failed transaction commits");
         const failedParticipant = await failurePool.query("SELECT count(*)::int AS count FROM participants WHERE display_name = 'DB Failure'");
         assert.equal(failedParticipant.rows[0].count, 0);
+        await failureApp.close();
+        failureApp = undefined;
+
+        // A capacity change is not applied or acknowledged when its settings transaction fails.
+        await failurePool.query(`CREATE FUNCTION reject_capacity_setting_update() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'controlled capacity persistence failure'; END $$`);
+        await failurePool.query(`CREATE TRIGGER reject_capacity_setting_update BEFORE UPDATE ON application_settings FOR EACH ROW EXECUTE FUNCTION reject_capacity_setting_update()`);
+        failureApp = await createApp({ ...appOptions(failureSchema) });
+        const failedCapacityUpdate = await failureApp.inject({
+          method: "POST",
+          url: "/api/poc/capacity",
+          headers: { host: "127.0.0.1", "content-type": "application/json", origin: "http://127.0.0.1" },
+          payload: { softLimit: 12 },
+          remoteAddress: "127.0.0.1",
+        });
+        assert.equal(failedCapacityUpdate.statusCode, 503);
+        assert.deepEqual(failedCapacityUpdate.json(), { error: "persistence_unavailable" });
+        const persistedCapacityAfterFailure = await failurePool.query("SELECT member_soft_limit FROM application_settings WHERE singleton = true");
+        assert.equal(Number(persistedCapacityAfterFailure.rows[0].member_soft_limit), 10, "failed settings transactions must roll back the candidate limit");
         await failureApp.close();
         failureApp = undefined;
       } finally {

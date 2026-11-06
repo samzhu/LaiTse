@@ -1,0 +1,19 @@
+✔ the application serves health and a built-in room catalogue (33.833875ms)
+✔ two clients receive the same authoritative members and sequenced reaction (10.552083ms)
+✔ the websocket rejects cross-origin clients before joining (1.276459ms)
+✔ malformed or oversized control frames close without being broadcast (3.564041ms)
+✔ clients cannot select arbitrary rooms (1.280916ms)
+✔ display names longer than the server limit are rejected (1.0995ms)
+✔ control events reject client-supplied fields outside the protocol (1.495708ms)
+✔ the default service member limit is ten and rejects a join at capacity (12.310292ms)
+✔ capacity can be raised or lowered without removing current members (9.606166ms)
+✔ resume is subject to the current limit and can retry after it is raised (6.697041ms)
+✔ the server closes a client that exceeds the reaction rate limit (2.186292ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 250.543666

@@ -1,12 +1,14 @@
 # 來坐 LaiTse：故事由來與下一個 AI 的交辦事項
 
-- 版本：v0.13
+- 版本：v0.14
 - 更新日期：2026-11-06
 - 配套文件：[來坐 PRD](laitse-prd.md)
 - 取代文件：原 `roamingle-ai-handoff.md`；舊名稱僅保留在歷史敘述。
 - 現況：T01～T17本機POC已有程式及桌面核心證據，最新見collaboration/project-brief.md與poc/execution-log.md；MVP與部署未啟動，DEC011-A已驗兩類空間收聽桌面合成核心，DEC011-BC已驗場景門/startup密碼准入，T09臨時主持權限/即時管理已有POC-03-R005桌面核心證據；T10房內互動/明確公開文字已有R006核心證據，100accepted/p95與完整階段仍未驗；正式帳號/耐久授權仍待。
 
 ## 1. 下一個 AI 先讀這段
+
+2026-11-06 POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。 PRD v0.14／DEC018為現行範圍，本機受限管理頁非正式雲管理權。下方8人門檻仍在等敘述屬歷史。證據[poc/evidence/POC-CAP-01-R001/README.md](poc/evidence/POC-CAP-01-R001/README.md)。
 
 2026-11-06 POC-RM-01：[R001](poc/evidence/POC-RM-01-R001/README.md)匿名studio鎖／owner／轉交及離線接任／無人解鎖已完成真PG與Firefox核心驗收。DEC017明確換房保留原會議室管理權，原房暫空仍鎖，只有斷線／離線才交接；同名不授權。migration002升級保留legacy鎖，新匿名鎖啟動時無owner則清除；舊host模式與新匿名模式分開。已補同候選PG多人影音短回歸，不能繼續沿用下方「新管理未實作／PG多人一律未驗」作現況，但舊run仍保持原判定。PRD v0.13／SOL003與007為權威；尚未啟MVP或部署。
 

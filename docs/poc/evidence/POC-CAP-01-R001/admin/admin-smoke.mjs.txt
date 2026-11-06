@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import http from 'node:http';
+import WebSocket from 'ws';
+import {firefox} from 'playwright';
+const {baseURL}=JSON.parse(fs.readFileSync('.scratch/cap01/runtime-local.json','utf8'));
+const output='.scratch/cap01/admin';fs.mkdirSync(output,{recursive:true});
+const report={startedAt:new Date().toISOString(),baseURL,checks:[],errors:[]};
+const peers=[];let browser;
+async function api(method='GET',body,origin=baseURL,headers={}){return fetch(baseURL+'/api/poc/capacity',{method,headers:{...(method==='POST'?{'Content-Type':'application/json',Origin:origin}:{}),...headers},...(body===undefined?{}:{body:JSON.stringify(body)})});}
+async function state(){const r=await api();assert.equal(r.status,200);return r.json();}
+async function wait(predicate,label){const end=Date.now()+8000;while(Date.now()<end){if(await predicate())return;await new Promise(r=>setTimeout(r,50));}throw Error('Timeout: '+label);}
+async function join(name,accepted=true){const ws=new WebSocket(baseURL.replace('http:','ws:')+'/ws',{origin:baseURL});peers.push(ws);await new Promise((res,rej)=>{ws.once('open',res);ws.once('error',rej);});const result=await new Promise((res,rej)=>{const timer=setTimeout(()=>rej(Error('join timeout')),8000);ws.on('message',function on(raw,binary){if(binary)return;const m=JSON.parse(raw);if(m.type==='room.snapshot'||m.type==='protocol.error'){clearTimeout(timer);ws.off('message',on);res(m);}});ws.send(JSON.stringify({type:'join',roomId:'studio',displayName:name}));});if(accepted)assert.equal(result.type,'room.snapshot');else assert.equal(result.code,'room_full');return ws;}
+try{
+ const profile=output+'/runtime/profile';fs.mkdirSync(profile,{recursive:true});const env={...process.env,MOZ_APP_DATA:fs.realpathSync(output),MOZ_LOCAL_APP_DATA:fs.realpathSync(output)};for(const key of Object.keys(env))if(/TOKEN|PASSWORD|SECRET|CREDENTIAL|API[_-]?KEY|DATABASE_URL|COOKIE|AUTH/iu.test(key))delete env[key];
+ browser=await firefox.launchPersistentContext(fs.realpathSync(profile),{headless:true,env,viewport:{width:1000,height:800}});const page=await browser.newPage();page.on('pageerror',e=>report.errors.push(e.message));
+ await page.goto(baseURL+'/poc/capacity');await page.getByTestId('capacity-limit').waitFor();
+ async function setLimit(n){await page.getByTestId('capacity-limit').fill(String(n));await page.getByTestId('capacity-save').click();await wait(async()=>Number((await state()).softLimit)===n,'saved '+n);await wait(async()=>String(await page.getByTestId('capacity-limit-output').textContent()).includes(String(n)),'UI saved '+n);}
+ await setLimit(2);report.checks.push('UI save softLimit=2 and API readback');
+ const a=await join('CAP-Admin-A'),b=await join('CAP-Admin-B');await wait(async()=>(await state()).currentMembers===2,'occupancy 2');
+ await join('CAP-Admin-Denied',false);report.checks.push('third join rejected at limit 2');
+ await setLimit(1);assert.equal((await state()).currentMembers,2);assert.equal(a.readyState,WebSocket.OPEN);assert.equal(b.readyState,WebSocket.OPEN);
+ const event=new Promise((res,rej)=>{const timer=setTimeout(()=>rej(Error('existing interaction timeout')),8000);b.on('message',function on(raw,binary){if(binary)return;const m=JSON.parse(raw);if(m.type==='control.event'&&m.event?.kind==='reaction'){clearTimeout(timer);b.off('message',on);res(m);}});});
+ // Confirm existing users can still exchange an authoritative event after lowering.
+ a.send(JSON.stringify({type:'reaction',reaction:'wave'}));await event;
+ report.checks.push('lower limit to 1 preserves both existing sockets and their reaction exchange');
+ await setLimit(3);await join('CAP-Admin-C');assert.equal((await state()).currentMembers,3);report.checks.push('raise limit to 3 permits retry with new socket');
+ assert.equal((await api('POST',{softLimit:4},'https://attacker.invalid')).status,403);report.checks.push('cross-origin POST rejected');
+ const badHost=await new Promise((resolve,reject)=>{const req=http.request(baseURL+'/api/poc/capacity',{method:'POST',headers:{Host:'attacker.invalid',Origin:baseURL,'Content-Type':'application/json'}},res=>{res.resume();res.on('end',()=>resolve({status:res.statusCode,sentHost:req.getHeader('Host')}));});req.on('error',reject);req.end(JSON.stringify({softLimit:4}));});
+ assert.equal(badHost.sentHost,'attacker.invalid');assert.equal(badHost.status,403);report.checks.push('non-loopback Host rejected using verified node:http header');
+ for(const body of [{softLimit:0},{softLimit:1.5},{softLimit:3,unexpected:true}])assert.equal((await api('POST',body)).status,400);
+ assert.equal((await state()).softLimit,3);report.checks.push('invalid settings rejected without changing value');
+ await setLimit(20);report.final=await state();assert.equal(report.final.softLimit,20);
+ await page.screenshot({path:output+'/capacity-panel.png',fullPage:true});report.checks.push('UI save 20 for following bounded load tests');
+ assert.deepEqual(report.errors,[]);report.status='pass';
+}catch(e){report.status='fail';report.error=e.stack;process.exitCode=1;}
+finally{for(const ws of peers){if(ws.readyState===WebSocket.OPEN)ws.close();else if(ws.readyState===WebSocket.CONNECTING)ws.terminate();}await browser?.close();fs.rmSync(output+'/runtime',{recursive:true,force:true});report.finishedAt=new Date().toISOString();fs.writeFileSync(output+'/report.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));}

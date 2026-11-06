@@ -1,0 +1,38 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import WebSocket from 'ws';
+const n=Number(process.env.PROBE_USERS??8), duration=Number(process.env.PROBE_DURATION_MS??10000);
+assert(Number.isInteger(n)&&n>1&&n<=100); assert(duration>=1000&&duration<=30000);
+const origin='https://localhost:44173', ca=fs.readFileSync('.scratch/t01/tls/local-ca.pem');
+const peers=[], timers=[], errors=[]; let running=true, sends=0;
+const report={kind:'opaque-relay-probe',participants:n,durationTargetMs:duration,decoding:false,physicalSources:false,assumptions:{audioPayloadBytes:80,audioIntervalMs:20,audioBitrateBps:32000,screenPayloadBytes:6667,screenIntervalMs:67,screenBitrateApproxBps:796060},startedAt:new Date().toISOString()};
+async function command(p,body,type){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{p.ws.off('message',on);reject(Error('timeout '+type));},8000);function on(raw,binary){if(binary)return;const v=JSON.parse(raw);if(v.type===type){clearTimeout(timer);p.ws.off('message',on);resolve(v);}else if(v.type.endsWith('.error')){clearTimeout(timer);p.ws.off('message',on);reject(Error(v.type+':'+v.code));}}p.ws.on('message',on);p.ws.send(JSON.stringify(body));});}
+function frame(magic,gen,seq,bytes,step){const b=Buffer.alloc(24+bytes);b.write(magic);b.writeUInt32BE(gen,4);b.writeUInt32BE(seq,8);b.writeDoubleBE(seq*step,12);if(magic==='LTA1')b.writeUInt32BE(20000,20);return b;}
+try{
+ for(let i=0;i<n;i++){
+  const ws=new WebSocket('wss://localhost:44173/ws',{origin,ca});
+  const p={ws,audio:0,screen:0,bytes:0,generation:0,sequence:0,closed:false};peers.push(p);
+  ws.on('message',(raw,binary)=>{if(binary){p.bytes+=raw.length;const magic=raw.subarray(0,4).toString();if(magic==='LTA1')p.audio++;if(magic==='LTS1')p.screen++;}else{const m=JSON.parse(raw);if(m.type.endsWith('.error'))errors.push({client:i,type:m.type,code:m.code});}});
+  ws.on('close',()=>{if(running)p.closed=true;});
+  await new Promise((res,rej)=>{ws.once('open',res);ws.once('error',rej);});
+  await command(p,{type:'join',displayName:'Probe'+i,roomId:'studio'},'room.snapshot');
+  await command(p,{type:'audio.subscribe'},'audio.subscribed');
+  await command(p,{type:'screen.subscribe'},'screen.subscribed');
+  const start=await command(p,{type:'audio.start',codec:'opus',sampleRate:48000,channels:1,bitrate:32000,frameDurationUs:20000},'audio.started');p.generation=start.generation;
+ }
+ const screen=await command(peers[0],{type:'screen.start',codec:'vp8',width:320,height:180,frameRate:15,bitrate:800000},'screen.started');
+ const active=Date.now();report.activeStartedAt=active;
+ let due=0;
+ timers.push(setInterval(()=>{let burst=0;while(Date.now()-active>=due&&burst++<3){for(const p of peers){if(p.ws.readyState===WebSocket.OPEN){p.ws.send(frame('LTA1',p.generation,p.sequence++,80,20000));sends++;}}due+=20;}},4));
+ let screenSeq=0,screenSent=0;
+ timers.push(setInterval(()=>{if(peers[0].ws.readyState===WebSocket.OPEN){peers[0].ws.send(frame('LTS1',screen.generation,screenSeq++,6667,66667));screenSent++;}},67));
+ for(const p of peers) p.ws.send(JSON.stringify({type:'reaction',reaction:'wave'}));
+ await new Promise(r=>setTimeout(r,duration));timers.forEach(clearInterval);timers.length=0;
+ await new Promise(r=>setTimeout(r,500));
+ report.activeDurationMs=Date.now()-active-500;report.audioFramesSent=sends;report.screenFramesSent=screenSent;
+ report.clients=peers.map(({audio,screen,bytes,closed,sequence})=>({audio,screen,bytes,closed,audioSent:sequence}));
+ assert.deepEqual(errors,[]);assert(peers.every(p=>!p.closed));
+ for(const p of peers){assert.equal(p.audio,sends-p.sequence);assert.equal(p.screen,p===peers[0]?0:screenSent);}
+ report.status='pass';
+}catch(e){report.status='fail';report.error=e.message;process.exitCode=1;}
+finally{running=false;timers.forEach(clearInterval);for(const p of peers)p.ws.close();report.errors=errors;report.finishedAt=new Date().toISOString();fs.writeFileSync(process.env.PROBE_OUTPUT??'.scratch/cap01/relay-probe-8.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,participants:n,audioFramesSent:report.audioFramesSent,screenFramesSent:report.screenFramesSent,error:report.error}));}

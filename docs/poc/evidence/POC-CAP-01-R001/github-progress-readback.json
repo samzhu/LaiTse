@@ -1,0 +1,56 @@
+[
+  {
+    "issue": 1,
+    "url": "https://github.com/samzhu/LaiTse/issues/1",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "748201e066ad3ef9bc057c17d44893c6843b563d3efd0f5b5ff6c4fa9caff7f9",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  },
+  {
+    "issue": 4,
+    "url": "https://github.com/samzhu/LaiTse/issues/4",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "6ba97d0597a40c03de5146fd3bfd28cb07529d7ece7cdc95ba9b9e8f340bf5cd",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  },
+  {
+    "issue": 17,
+    "url": "https://github.com/samzhu/LaiTse/issues/17",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "8eceb9180b041b966e2b719845d2fb1352281f93d1d6f02b6364c6497c8d7cb3",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  },
+  {
+    "issue": 18,
+    "url": "https://github.com/samzhu/LaiTse/issues/18",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "d6ffebb8d410c4eeb934d19e76aa0cd6a41925c57a1acdc51913c79dde01a1af",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  },
+  {
+    "issue": 19,
+    "url": "https://github.com/samzhu/LaiTse/issues/19",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "7e89c2dd2bb23d5de062b72b2d47b263f15102d8afd8f64ee45c0f95db6ff7eb",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  },
+  {
+    "issue": 20,
+    "url": "https://github.com/samzhu/LaiTse/issues/20",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "6ee2c679f88371f5c2fa816cf0df869ba9caeead96bedb35476fb19b31db0200",
+    "status": "core pass; client quality and Cloud Run maximum unverified"
+  }
+]

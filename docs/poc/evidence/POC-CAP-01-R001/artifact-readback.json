@@ -1,0 +1,19 @@
+{
+  "sourceFiles": 93,
+  "distFiles": 20,
+  "productionFingerprintsUnchangedSinceBrowser": true,
+  "onlyPostBrowserSourceChange": [
+    "tests/server.integration.test.mjs"
+  ],
+  "localLinksChecked": 203,
+  "brokenLinks": [],
+  "jsonParsed": 30,
+  "logCopiesWhitespaceNormalized": [
+    "implementation/phase2/root-build.log",
+    "implementation/phase2/typecheck.log",
+    "implementation/phase2/build.log",
+    "implementation/backpressure/typecheck.log",
+    "implementation/backpressure/build.log"
+  ],
+  "rawLogsRetainedInIgnoredScratch": true
+}

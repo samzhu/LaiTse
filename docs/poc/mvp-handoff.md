@@ -115,7 +115,7 @@ T01已有本機程式與真實瀏覽器功能驗收；以下結論不能擴張�
 | 類別 | 現有來源／保存（DATABASE_URL模式） | 復原與未解風險 |
 |---|---|---|
 | 固定場景／房間 | SPACE_ROOMS原始碼與build，可重建的lobby／studio；room_settings保存既有房間可變設定 | 場景編輯器／動態新增房間未實作，不假稱地圖可由DB自由編輯 |
-| 啟動設定／密鑰 | DB URL／TLS／host bootstrap token留環境或本機ignored檔；application_settings保存managed_host_mode | 初次seed後不允許缺token降成unmanaged；token可輪替，值不存DB。正式密鑰管理與託管未定 |
+| 啟動設定／密鑰 | DB URL／TLS／host bootstrap token留環境或本機ignored檔；application_settings保存managed_host_mode；CAP-01增member_soft_limit（migration003）作全服務可調容量 | 初次seed後不允許缺token降成unmanaged；token可輪替，值不存DB。容量沿PG交易保存，COMMIT後生效；本機面板須顯式啟用、loopback/Host/Origin限制，正式全域管理權與雲入口待定。CAP-01驗測結果另列，不宣稱已知Cloud Run最大容量 |
 | 門禁／顯示設定 | room_settings：密碼salt/verifier、鎖定/revision、lock_kind（none/legacy/anonymous）、manager_participant_id、presentation pause、danmaku enabled | 002 migration additive、PG升級保留legacy verifier/revision；新匿名owner／轉交COMMIT後ACK，restart無在線owner清匿名鎖／憑證，legacy鎖保留。DB既有設定優先seed、無明文密碼；R001讀回與審計相符 |
 | 參與者／位置／模式 | participants：UUID、名稱、role/mode、最後房間/位置與last_seen_at | PG整合驗原ID/interaction模式/位置恢復；不等於正式帳號／跨裝置認證。boot不載入ghost在線成員 |
 | Session／撤銷 | control_sessions：SHA256 proof digest、門禁revision、到期/撤銷、active connection；bearer只在browser/短期memory | active lease10分鐘、每分鐘續租，crash從最近commit的lease判斷；正常斷線後10分鐘。有效proof仍核最新gate；expired/leave/kick不復活。無永久Session承諾 |
@@ -325,3 +325,14 @@ build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip
 共同相依的MA01同版PG短回歸11,328ms／active6,505ms通過：A收B323、B收A306、C收A160/B172，未知／自送／歧義0、D影音0、單screen與恢復／切房／only0保留；不是重啟影音自動恢復或真人聽感驗收。自有server/browser已停、專用container還原exited，DB/volume保留；未接管人類Edge或實體麥克風、未push／部署／啟MVP。
 
 移轉條件：固定studio管理模組與新Panel可作M02基底，manager只管密碼／鎖／轉交，不擴為未決強制停麥、踢人等主持權。隨機用crypto.randomInt，候選篩選server participant／open socket／studio，不含display；只對offline回調處理、不依room.switch交接。私有roster只送owner（含owner在大廳）；同名或偽造actor不授權。migration001→002依序交易／單writer鎖，保留原SQL清冊而非新建第二套。新匿名孤立鎖重啟清除是需求語意，不能誤認為資料持久化失敗；legacy鎖保留作相容邊界。PG媒體短回歸僅新證據，不外推長測／重啟影音自動恢復。
+
+
+## POC-CAP-01採用補充（2026-11-06）
+
+POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。
+
+- SOL002／006：每來源8pending／PCM500ms仍有界；飽和local skip+decodeQueueDroppedPackets可繼續播放，不把skip計成來源序號缺口。9路decode/PCM核心可延續，但333local drops不可稱品質合格，MVP要在選定桌機／真人多人情境檢查，並評估客戶端及同步／混音體驗。
+- SOL007：唯一清冊的application_settings新增member_soft_limit（003 additive）。管理UI保存、直接PG讀回與restart20/0在線、最後restore10均已驗，COMMIT前不生效／不成功ACK；全服務含display與多分頁。localCapacityAdmin預設off且loopback/Host/Origin限定；正式管理權／雲入口另設計，不複用room owner。
+- SOL008／容量：1CPU/1GiB下opaque10/12/16人各10s數量吻合，16人CPU mean26.81%／max32.67%、RSS79.97MiB。只支持此本機轉送已測點，暖機／GC／控制歷史不同，不外推最大值；未高頻全員移動／控制PG寫入尖峰。PG仍每control保存snapshot、單active writer，不等於已解擴展；CloudRun concurrency留HTTP餘裕／部署重疊／單writer策略待部署驗證。
+
+證據與用法只連[CAP01 R001](evidence/POC-CAP-01-R001/README.md)，原各run歷史不改判；本機commit、Issue更新不是push／部署或人類品質接受。

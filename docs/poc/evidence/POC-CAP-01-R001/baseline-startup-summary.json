@@ -1,0 +1,27 @@
+{
+  "purpose": "startup-only readiness probe; not a capacity test",
+  "candidateBaseline": "5eceea1",
+  "image": "node:26.13.0-bookworm-slim",
+  "architecture": "arm64",
+  "limits": {
+    "cpus": 1,
+    "memoryBytes": 1073741824,
+    "memorySwapBytes": 1073741824
+  },
+  "postgres": "external to app cgroup; PostgreSQL 18.6 dedicated fresh database",
+  "browserClients": 0,
+  "health": {
+    "status": "ok",
+    "persistence": "postgresql",
+    "persistenceAvailable": true
+  },
+  "sampleCount": 13,
+  "cpuPercentMax": 3.779742366717014,
+  "processRssMaxBytes": 85360640,
+  "limitations": [
+    "No participant or media load yet",
+    "Docker on Apple Silicon/OrbStack is not Cloud Run",
+    "Startup idle samples cannot estimate participant maximum",
+    "Docker stats working set and process RSS have different accounting"
+  ]
+}

@@ -1,0 +1,13 @@
+✔ capacity setting bounds and loopback address checks are explicit (7.338917ms)
+✔ local page and GET report capacity without changing it (13.843417ms)
+✔ local JSON updates are bounded, same-origin, and report memory mode as non-durable (4.077667ms)
+✔ local capacity routes reject spoofed or non-loopback requests and cross-origin writes (1.122875ms)
+✔ capacity routes stay absent unless createApp explicitly enables the local option (2.481208ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 206.417125

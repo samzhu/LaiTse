@@ -20,6 +20,13 @@ import { createTransportBudget, MAX_APPLICATION_SEND_BYTES } from "./transport-b
 import { createSerialExecutor, QueueFullError } from "./serial-executor.ts";
 import { openSystemPersistence, type ActivityCounters, type DurableSnapshot, type PendingPersistence, type PersistedParticipant, type PersistedRoomSettings, type PersistedSession, type PersistenceBootstrap } from "./persistence.ts";
 import {
+  DEFAULT_MEMBER_SOFT_LIMIT,
+  LOCAL_CAPACITY_ADMIN_HTML,
+  parseMemberSoftLimit,
+  isLoopbackAddress,
+  isLoopbackHost,
+} from "./capacity.ts";
+import {
   InteractionStore,
   MAX_FEEDBACK_PER_SECOND,
   MAX_INTERACTION_MESSAGE_BYTES,
@@ -31,7 +38,6 @@ import {
   isKnownRoom,
   isMoveDirection,
   MAX_MOVES_PER_SECOND,
-  MAX_SPACE_MEMBERS,
   MOVE_WINDOW_MS,
   SPACE_ROOMS,
   type RoomId,
@@ -39,7 +45,6 @@ import {
 } from "./space.ts";
 
 export const MAX_CONTROL_MESSAGE_BYTES = 1_024;
-export const MAX_ROOM_MEMBERS = MAX_SPACE_MEMBERS;
 export const MAX_SOCKET_BUFFERED_BYTES = MAX_APPLICATION_SEND_BYTES;
 
 const DEFAULT_ROOM = SPACE_ROOMS[0];
@@ -49,6 +54,7 @@ const MAX_EVENTS_PER_SECOND = 10;
 const EVENT_WINDOW_MS = 1_000;
 const MAX_CONTROL_OUTBOX_FRAMES = 4_096;
 const MAX_CONTROL_OUTBOX_BYTES = MAX_APPLICATION_SEND_BYTES;
+const MAX_DEFERRED_CLOSES = 256;
 
 type Member = SpaceMember;
 type ParticipationRole = "participant" | "display";
@@ -100,7 +106,10 @@ type CreateAppOptions = {
   hostControlToken?: string;
   databaseUrl?: string;
   databaseSchema?: string;
+  localCapacityAdmin?: boolean;
 };
+
+type ControlRunResult = "completed" | "queue_full" | "unavailable";
 
 type MediaMetricCounter = {
   controlMessagesSent: number;
@@ -220,6 +229,7 @@ export async function createApp(options: CreateAppOptions = {}) {
         roomIds: SPACE_ROOMS.map(({ id }) => id),
         initialRoomSettings: seedSettings,
         managedHostMode: Boolean(options.hostControlToken),
+        initialMemberSoftLimit: DEFAULT_MEMBER_SOFT_LIMIT,
       });
       if (persistenceBootstrap.managedHostMode !== Boolean(options.hostControlToken)) {
         throw new Error("HOST_CONTROL_TOKEN configuration does not match the saved managed-host setting; startup refused to weaken or change room management mode.");
@@ -234,10 +244,11 @@ export async function createApp(options: CreateAppOptions = {}) {
   const transportBudgets = new WeakMap<import("ws").WebSocket, ReturnType<typeof createTransportBudget>>();
   type OutboundFrame = { target: import("ws").WebSocket; payload: string | Buffer; sendOptions?: { binary?: boolean; compress?: boolean } };
   type DeferredClose = { target: import("ws").WebSocket; code?: number; reason?: string };
-  type ControlWriteContext = { outbox: OutboundFrame[]; outboxBytes: number; overflow: boolean; closes: DeferredClose[]; closeTargets: Set<import("ws").WebSocket>; required: boolean; pending: PendingPersistence };
+  type ControlWriteContext = { outbox: OutboundFrame[]; outboxBytes: number; overflow: boolean; closes: DeferredClose[]; closeTargets: Set<import("ws").WebSocket>; required: boolean; pending: PendingPersistence; memberSoftLimit?: number };
   let activeWriteContext: ControlWriteContext | null = null;
   let persistenceFailed = false;
   let appClosing = false;
+  let memberSoftLimit = persistenceBootstrap?.memberSoftLimit ?? DEFAULT_MEMBER_SOFT_LIMIT;
   const controlExecutor = createSerialExecutor();
   const emptyPendingPersistence = (): PendingPersistence => ({
     interactions: [], interactionDedup: [], controlEvents: [], tombstones: [], moderation: [], management: [], capabilities: [], revokedSessionDigests: [],
@@ -260,7 +271,7 @@ export async function createApp(options: CreateAppOptions = {}) {
   const closeSocket = (target: import("ws").WebSocket, code?: number, reason?: string) => {
     if (activeWriteContext) {
       if (activeWriteContext.closeTargets.has(target)) return;
-      if (activeWriteContext.closes.length >= MAX_ROOM_MEMBERS * 32) {
+      if (activeWriteContext.closes.length >= MAX_DEFERRED_CLOSES) {
         activeWriteContext.overflow = true;
         try { target.close(1013, "Control close backlog"); } catch { /* The socket may already be closing. */ }
         return;
@@ -369,7 +380,7 @@ export async function createApp(options: CreateAppOptions = {}) {
     });
   };
 
-  const durableSnapshot = (): DurableSnapshot => {
+  const durableSnapshot = (capacityOverride = memberSoftLimit): DurableSnapshot => {
     const presentation = interactions.snapshot("studio").presentation;
     const studioAccess = roomAccess.snapshot();
     const sessions = resumeSessions.snapshot();
@@ -378,6 +389,7 @@ export async function createApp(options: CreateAppOptions = {}) {
       if (!members.has(participantId) && !retainedParticipantIds.has(participantId)) persistedParticipants.delete(participantId);
     }
     return {
+      memberSoftLimit: capacityOverride,
       roomSettings: SPACE_ROOMS.map((room): PersistedRoomSettings => {
         const access = room.id === "studio" ? studioAccess : null;
         return {
@@ -422,19 +434,22 @@ export async function createApp(options: CreateAppOptions = {}) {
     setImmediate(() => { void app.close().catch(() => {}); });
   };
 
-  const runControl = (operation: () => void, target?: import("ws").WebSocket): void => {
-    void controlExecutor.run(async () => {
-      if (persistenceFailed || appClosing) return;
+  const runControl = (operation: () => void, target?: import("ws").WebSocket): Promise<ControlRunResult> => {
+    return controlExecutor.run(async (): Promise<ControlRunResult> => {
+      if (persistenceFailed || appClosing) return "unavailable";
       const context: ControlWriteContext = { outbox: [], outboxBytes: 0, overflow: false, closes: [], closeTargets: new Set(), required: false, pending: emptyPendingPersistence() };
       activeWriteContext = context;
       try {
         operation();
         if (context.overflow) throw new Error("Control outbox capacity exceeded.");
-        if (context.required && persistence) await persistence.save(durableSnapshot(), context.pending);
+        if (context.required && persistence) await persistence.save(durableSnapshot(context.memberSoftLimit ?? memberSoftLimit), context.pending);
         if (context.overflow) throw new Error("Control outbox capacity exceeded.");
+        if (context.memberSoftLimit !== undefined) memberSoftLimit = context.memberSoftLimit;
         flushContext(context);
+        return "completed";
       } catch {
         failClosed();
+        return "unavailable";
       } finally {
         if (activeWriteContext === context) activeWriteContext = null;
       }
@@ -444,9 +459,11 @@ export async function createApp(options: CreateAppOptions = {}) {
           try { target.send(JSON.stringify({ type: "protocol.error", code: "control_queue_full", message: "The control queue is busy. Reconnect and try again." })); } catch { /* The socket may already be closing. */ }
           target.close(1013, "Control queue is full");
         }
+        return "queue_full";
       } else if (target || persistence) {
         failClosed();
       }
+      return "unavailable";
     });
   };
 
@@ -533,6 +550,81 @@ export async function createApp(options: CreateAppOptions = {}) {
   await app.register(fastifyWebsocket, {
     options: { maxPayload: MAX_SCREEN_FRAME_BYTES },
   });
+
+  if (options.localCapacityAdmin) {
+    const capacityState = async () => controlExecutor.run(() => persistenceFailed ? null : ({
+      softLimit: memberSoftLimit,
+      currentMembers: members.size,
+      persistence: persistence?.mode ?? "process-memory",
+      persisted: Boolean(persistence),
+    }));
+    const canUseLocalCapacityAdmin = (request: FastifyRequest): boolean =>
+      isLoopbackAddress(request.raw.socket.remoteAddress) && isLoopbackHost(request.headers.host);
+    const rejectNonLocalCapacityAdmin = (request: FastifyRequest, reply: import("fastify").FastifyReply) => {
+      if (canUseLocalCapacityAdmin(request)) return false;
+      reply.code(403).header("Cache-Control", "no-store").send({ error: "local_capacity_admin_only" });
+      return true;
+    };
+
+    app.get("/poc/capacity", async (request, reply) => {
+      if (rejectNonLocalCapacityAdmin(request, reply)) return;
+      try {
+        const state = await capacityState();
+        if (!state) return reply.code(503).header("Cache-Control", "no-store").send({ error: "persistence_unavailable" });
+        return reply.code(200).header("Cache-Control", "no-store").type("text/html; charset=utf-8").send(LOCAL_CAPACITY_ADMIN_HTML);
+      } catch {
+        return reply.code(503).header("Cache-Control", "no-store").send({ error: "control_state_unavailable" });
+      }
+    });
+
+    app.get("/api/poc/capacity", async (request, reply) => {
+      if (rejectNonLocalCapacityAdmin(request, reply)) return;
+      try {
+        const state = await capacityState();
+        if (!state) return reply.code(503).header("Cache-Control", "no-store").send({ error: "persistence_unavailable" });
+        return reply.code(200).header("Cache-Control", "no-store").send(state);
+      } catch {
+        return reply.code(503).header("Cache-Control", "no-store").send({ error: "control_state_unavailable" });
+      }
+    });
+
+    app.post<{ Body: { softLimit?: unknown } }>("/api/poc/capacity", { bodyLimit: 1_024 }, async (request, reply) => {
+      if (rejectNonLocalCapacityAdmin(request, reply)) return;
+      if (!isSameOriginRequest(request, Boolean(options.https))) {
+        return reply.code(403).header("Cache-Control", "no-store").send({ error: "origin_not_allowed" });
+      }
+      if (request.headers["content-type"]?.split(";", 1)[0]?.trim().toLowerCase() !== "application/json") {
+        return reply.code(415).header("Cache-Control", "no-store").send({ error: "json_required" });
+      }
+      const body = request.body;
+      if (!body || typeof body !== "object" || Array.isArray(body) || !hasOnlyKeys(body as Record<string, unknown>, ["softLimit"]) ||
+          Object.keys(body).length !== 1) {
+        return reply.code(400).header("Cache-Control", "no-store").send({ error: "invalid_capacity" });
+      }
+      const nextSoftLimit = parseMemberSoftLimit(body.softLimit);
+      if (nextSoftLimit === null) {
+        return reply.code(400).header("Cache-Control", "no-store").send({ error: "invalid_capacity", message: "softLimit must be an integer from 1 to 1000." });
+      }
+
+      let acknowledgedMembers = 0;
+      const result = await runControl(() => {
+        if (!activeWriteContext) throw new Error("Capacity setting requires the serialized control context.");
+        activeWriteContext.memberSoftLimit = nextSoftLimit;
+        markDurable();
+        acknowledgedMembers = members.size;
+      });
+      if (result !== "completed") {
+        const error = result === "queue_full" ? "control_queue_full" : "persistence_unavailable";
+        return reply.code(503).header("Cache-Control", "no-store").send({ error });
+      }
+      return reply.code(200).header("Cache-Control", "no-store").send({
+        softLimit: nextSoftLimit,
+        currentMembers: acknowledgedMembers,
+        persistence: persistence?.mode ?? "process-memory",
+        persisted: Boolean(persistence),
+      });
+    });
+  }
 
   if (options.serveClient !== false) {
     const clientRoot = options.clientRoot ?? path.resolve(process.cwd(), "dist/client");
@@ -1023,8 +1115,8 @@ export async function createApp(options: CreateAppOptions = {}) {
             }
             admissionWasRevalidated = true;
           }
-          if (members.size >= MAX_ROOM_MEMBERS) {
-            sendProtocolError("room_full", "The local space has reached its eight participant limit.");
+          if (members.size >= memberSoftLimit) {
+            sendProtocolError("room_full", `The local space is at its current capacity of ${memberSoftLimit} members. Wait for a place to open or ask the local operator to increase the limit before retrying.`);
             closeSocket(socket, 1013, "Room is full");
             return;
           }
@@ -1694,8 +1786,8 @@ export async function createApp(options: CreateAppOptions = {}) {
             return;
           }
 
-          if (members.size >= MAX_ROOM_MEMBERS) {
-            rejectControl("room_full", "The local space has reached its eight participant limit.");
+          if (members.size >= memberSoftLimit) {
+            rejectControl("room_full", `The local space is at its current capacity of ${memberSoftLimit} members. Wait for a place to open or ask the local operator to increase the limit before retrying.`);
             return;
           }
 

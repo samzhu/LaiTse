@@ -1,0 +1,137 @@
+{
+  "kind": "opaque-relay-probe",
+  "participants": 16,
+  "durationTargetMs": 10000,
+  "decoding": false,
+  "physicalSources": false,
+  "assumptions": {
+    "audioPayloadBytes": 80,
+    "audioIntervalMs": 20,
+    "audioBitrateBps": 32000,
+    "screenPayloadBytes": 6667,
+    "screenIntervalMs": 67,
+    "screenBitrateApproxBps": 796060
+  },
+  "startedAt": "2026-11-06T04:23:28.404Z",
+  "activeStartedAt": 1793939008816,
+  "activeDurationMs": 10002,
+  "audioFramesSent": 8000,
+  "screenFramesSent": 147,
+  "clients": [
+    {
+      "audio": 7500,
+      "screen": 0,
+      "bytes": 780000,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    },
+    {
+      "audio": 7500,
+      "screen": 147,
+      "bytes": 1763577,
+      "closed": false,
+      "audioSent": 500
+    }
+  ],
+  "status": "pass",
+  "errors": [],
+  "finishedAt": "2026-11-06T04:23:39.324Z"
+}

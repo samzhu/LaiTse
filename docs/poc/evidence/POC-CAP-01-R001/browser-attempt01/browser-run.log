@@ -1,0 +1,7 @@
+[CAP01] ten-real-firefox-pages-joined-studio {"pages":10,"browserProcesses":10,"isolatedFirefoxProfiles":10,"finalMemberCount":10}
+[CAP01] all-pages-completed-one-ui-interaction {"attempted":10,"acknowledged":10}
+[CAP01] nine-synthetic-opus-publishers-active-without-publisher-subscriptions {"publishers":[{"client":"CAP01-P01","generation":1,"audioFramesBeforeReceiver":148},{"client":"CAP01-P02","generation":2,"audioFramesBeforeReceiver":130},{"client":"CAP01-P03","generation":3,"audioFramesBeforeReceiver":114},{"client":"CAP01-P04","generation":4,"audioFramesBeforeReceiver":98},{"client":"CAP01-P05","generation":5,"audioFramesBeforeReceiver":81},{"client":"CAP01-P06","generation":6,"audioFramesBeforeReceiver":63},{"client":"CAP01-P07","generation":7,"audioFramesBeforeReceiver":44},{"client":"CAP01-P08","generation":8,"audioFramesBeforeReceiver":25},{"client":"CAP01-P09","generation":9,"audioFramesBeforeReceiver":6}],"receiverSubscriptions":0}
+[CAP01] failure Error: CAP01-P10 nine active source AudioWorklet PCM rows was not observed within 12000 ms.
+    at waitFor (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/capacity-smoke.mjs:486:9)
+    at async runSmoke (file:///Users/samzhu/workspace_herdr/LaiTse/scripts/capacity-smoke.mjs:750:27)
+    at async file:///Users/samzhu/workspace_herdr/LaiTse/scripts/capacity-smoke.mjs:886:3

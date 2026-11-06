@@ -1,0 +1,11 @@
+{
+  "beforePid": 49238,
+  "afterPid": 49386,
+  "oldListenerUnavailable": true,
+  "setting": {
+    "softLimit": 20,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  }
+}

@@ -48,6 +48,7 @@ export type ActivityCounters = {
 
 export type PersistenceBootstrap = {
   managedHostMode: boolean;
+  memberSoftLimit: number;
   roomSettings: PersistedRoomSettings[];
   participants: PersistedParticipant[];
   sessions: PersistedSession[];
@@ -61,6 +62,7 @@ export type PersistenceBootstrap = {
 };
 
 export type DurableSnapshot = {
+  memberSoftLimit: number;
   roomSettings: PersistedRoomSettings[];
   participants: PersistedParticipant[];
   sessions: PersistedSession[];
@@ -84,6 +86,7 @@ export type SeedPersistenceOptions = {
   roomIds: readonly RoomId[];
   initialRoomSettings: PersistedRoomSettings[];
   managedHostMode: boolean;
+  initialMemberSoftLimit: number;
 };
 
 export interface SystemPersistence {
@@ -145,7 +148,10 @@ export class PostgresPersistence implements SystemPersistence {
 
   async initialize(seed: SeedPersistenceOptions): Promise<PersistenceBootstrap> {
     await this.migrate();
-    await this.pool.query("INSERT INTO application_settings(singleton, managed_host_mode) VALUES (true, $1) ON CONFLICT (singleton) DO NOTHING", [seed.managedHostMode]);
+    await this.pool.query(
+      "INSERT INTO application_settings(singleton, managed_host_mode, member_soft_limit) VALUES (true, $1, $2) ON CONFLICT (singleton) DO NOTHING",
+      [seed.managedHostMode, seed.initialMemberSoftLimit],
+    );
     for (const room of seed.initialRoomSettings) {
       await this.pool.query(
         `INSERT INTO room_settings
@@ -208,7 +214,7 @@ export class PostgresPersistence implements SystemPersistence {
                        ORDER BY expires_at DESC LIMIT 2048`),
       this.pool.query("SELECT control_sequence, space_sequence FROM application_counters WHERE singleton = true"),
       this.pool.query("SELECT room_id, joins, leaves, moves, reactions, interactions, capability_reports, host_actions FROM room_counters"),
-      this.pool.query("SELECT managed_host_mode FROM application_settings WHERE singleton = true"),
+      this.pool.query("SELECT managed_host_mode, member_soft_limit FROM application_settings WHERE singleton = true"),
     ]);
 
     const roomSettings = settingsResult.rows.map((row) => ({
@@ -284,6 +290,7 @@ export class PostgresPersistence implements SystemPersistence {
 
     return {
       managedHostMode: Boolean(appSettingsResult.rows[0]?.managed_host_mode),
+      memberSoftLimit: Number(appSettingsResult.rows[0]?.member_soft_limit ?? seed.initialMemberSoftLimit),
       roomSettings,
       participants,
       sessions,
@@ -301,6 +308,11 @@ export class PostgresPersistence implements SystemPersistence {
     const client = await this.pool.connect();
     try {
       await client.query("BEGIN");
+      const capacitySettings = await client.query(
+        "UPDATE application_settings SET member_soft_limit = $1, updated_at = clock_timestamp() WHERE singleton = true",
+        [snapshot.memberSoftLimit],
+      );
+      if (capacitySettings.rowCount !== 1) throw new Error("The application settings row is missing.");
       await client.query("DELETE FROM interaction_dedup WHERE expires_at <= clock_timestamp()");
       for (const room of snapshot.roomSettings) {
         await client.query(
@@ -482,7 +494,7 @@ export class PostgresPersistence implements SystemPersistence {
       version text PRIMARY KEY,
       applied_at timestamptz NOT NULL DEFAULT clock_timestamp()
     )`);
-    const migrationNames = ["001_system_persistence.sql", "002_anonymous_room_management.sql"];
+    const migrationNames = ["001_system_persistence.sql", "002_anonymous_room_management.sql", "003_capacity_settings.sql"];
     for (const version of migrationNames) {
       const migrationPath = fileURLToPath(new URL(`../../db/migrations/${version}`, import.meta.url));
       const seen = await this.pool.query("SELECT 1 FROM schema_migrations WHERE version = $1", [version]);

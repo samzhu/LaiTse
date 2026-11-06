@@ -1,0 +1,20 @@
+{
+  "kind": "opaque-relay-probe",
+  "participants": 8,
+  "durationTargetMs": 10000,
+  "decoding": false,
+  "physicalSources": false,
+  "assumptions": {
+    "audioPayloadBytes": 80,
+    "audioIntervalMs": 20,
+    "audioBitrateBps": 32000,
+    "screenPayloadBytes": 6667,
+    "screenIntervalMs": 67,
+    "screenBitrateApproxBps": 796060
+  },
+  "startedAt": "2026-11-06T03:53:13.285Z",
+  "status": "fail",
+  "error": "Client network socket disconnected before secure TLS connection was established",
+  "errors": [],
+  "finishedAt": "2026-11-06T03:53:13.305Z"
+}

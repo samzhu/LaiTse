@@ -1,0 +1,12 @@
+{
+  "setting": {
+    "softLimit": 10,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "databaseReadback": {
+    "member_soft_limit": 10
+  },
+  "defaultRestored": true
+}

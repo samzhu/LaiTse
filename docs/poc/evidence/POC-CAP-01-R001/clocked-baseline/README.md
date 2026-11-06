@@ -1,0 +1,3 @@
+# 修正產生器後8人基線
+
+前次45.88fps低於50fps，故產生器改依牆鐘計算應送frame、每tick最多追趕3個frame，4ms tick。重新測8人以便後續同產生器比較。第一次未等新container ready，TLS握手前服務尚未啟好；fail報告保留。檢查健康正常後受控重跑pass，約49.99fps／講者，28000audio下送與預期一致，screen1029。此輪基線仍5eceea1 dist，沒有browser codec或CloudRun驗測。server jsonl含其他過去啟動歷史，summary只選本次activeStartedAt～activeDurationMs窗口；不可將整檔平均誤作此次結果。

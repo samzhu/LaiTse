@@ -1,0 +1,22 @@
+{
+  "dist/server/host-control.js": "98fbdbc0e3f7befdc8ab554ddbb7a2407f5fda5721d5c65015e69741c88cc7e7",
+  "dist/server/room-management.js": "f26d9c46ba253573c94e72142dffe55bfc301c39472a576ba3319f98576a4ae4",
+  "dist/server/audio-relay.js": "5e115d95a7d74609dbb2c254a44eacb49ee6c50ac31d97812d60f7ec0bcb61b9",
+  "dist/server/capacity.js": "cb0ef348d4823f5c710aa2caffc0ed63d3621fb93a198a4ae8abdc1fb18a7052",
+  "dist/server/control-resume.js": "bfd1b160757bdbf4424c2dbd84f15bc78cba50194c74849c66398456d89b5877",
+  "dist/server/index.js": "ab9cb04535d1a6d32a946f83739f6e790aef9e80986300e3ae0a505838f87df6",
+  "dist/server/persistence.js": "70a20d555ebfa1d962b01ab5f560e9a71913d47b98dfb544030bcb2e7485b7fa",
+  "dist/server/serial-executor.js": "21d1e25277251bf96f42ca0d153d3b9fffa80d73c9b6f52acec13a14e69a3631",
+  "dist/server/space.js": "bcdf75d2e77e93d5862bb96c13760d96eea5a01815deb19963f6b975434ab3ce",
+  "dist/server/transport-budget.js": "94436185b7ff704897a6da5ce9ddba756af7c44f815aeccae692da9e77f1aa84",
+  "dist/server/interactions.js": "4d9914f99a931e4111d73bf81b43a980264f5538a31f773cdd578841928693da",
+  "dist/server/room-access.js": "73c2e52e378d3f2e861a4ff3de2d32b7afe7fad7c5cf168f9530e6afe7e5a3dc",
+  "dist/server/capabilities.js": "6e524867bedf5479722314b6a3da8ae9ec4be21a57ac958e20c17846107d411e",
+  "dist/server/screen-relay.js": "2cfb8cd4ae0b5a0a135df011180814f6a9797acaa618cb173e29d93dfc0b9551",
+  "dist/server/app.js": "f5047c1b3597843f4b627613ee98b0f75af459fbfb264fa3c56c88c0a3ed41f0",
+  "dist/client/audio-capture-worklet.js": "a1b408f100cac534fe3e7a83b083ac1c61490a2e0573e5a881616054d96219bc",
+  "dist/client/index.html": "14988e462ce24d1be3ae54f8be3b99a08979e06417a7da1d5a5819210e260151",
+  "dist/client/audio-playback-worklet.js": "419f6f5d9a8b4697efea9a4a2d5c0c5b116b6dd6215019778accdf9b7fee65f7",
+  "dist/client/assets/index-D55n4JT_.js": "8b854708be33adf3d867267a6e9aa3ef805ef0191e97653d76aeb96ac719fea8",
+  "dist/client/assets/phaser.esm-BxCDEWDb.js": "7ca0ede9b89b52eef9ec3eac1f993697b1696ec81889b7a4aafdbf8db3f4355e"
+}

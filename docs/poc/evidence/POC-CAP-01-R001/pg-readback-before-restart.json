@@ -1,0 +1,19 @@
+{
+  "capacity": {
+    "member_soft_limit": 20
+  },
+  "migrations": [
+    {
+      "version": "001_system_persistence.sql"
+    },
+    {
+      "version": "002_anonymous_room_management.sql"
+    },
+    {
+      "version": "003_capacity_settings.sql"
+    }
+  ],
+  "postgres": {
+    "server_version": "18.6 (Debian 18.6-1.pgdg12+2)"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-11-06T04:10:38.768Z",
+  "baseURL": "http://localhost:64219",
+  "checks": [
+    "UI save softLimit=2 and API readback",
+    "third join rejected at limit 2",
+    "lower limit to 1 preserves both existing sockets and their reaction exchange",
+    "raise limit to 3 permits retry with new socket",
+    "cross-origin POST rejected",
+    "non-loopback Host rejected using verified node:http header",
+    "invalid settings rejected without changing value",
+    "UI save 20 for following bounded load tests"
+  ],
+  "errors": [],
+  "final": {
+    "softLimit": 20,
+    "currentMembers": 3,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "status": "pass",
+  "finishedAt": "2026-11-06T04:10:41.147Z"
+}

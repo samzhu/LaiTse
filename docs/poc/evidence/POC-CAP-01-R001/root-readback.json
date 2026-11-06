@@ -1,0 +1,124 @@
+{
+  "coreVerdict": "Pass with stated quality/capacity limits",
+  "finalFullSuite": {
+    "tests": 81,
+    "pass": 81,
+    "fail": 0,
+    "skip": 0,
+    "postgresEnabled": true
+  },
+  "browser": {
+    "pages": 10,
+    "processes": 10,
+    "interactionsAcknowledged": 10,
+    "opusSourcesDecodedAndRendered": 9,
+    "durationMs": 32368,
+    "activeMediaDurationMs": 8254,
+    "sourceSamplesMinimum": 18624,
+    "localDecodeDropsAtEarlyObservation": 58,
+    "localDecodeDropsIn500msWindow": 58,
+    "laterScreenshotVisualReadback": {
+      "file": "browser-final/receiver-nine-audio-sources.png",
+      "method": "root visual inspection; later than early JSON snapshot",
+      "activeSources": 9,
+      "receivedPackets": 1283,
+      "decodedFrames": 873,
+      "renderedPcmSamples": 795648,
+      "localDecodeDrops": 333,
+      "decodeQueueHighWater": 8
+    },
+    "quality": "not passed; synthetic local decode drops persist; no human listening or end-to-end quality claim",
+    "singleScreenRendered": true,
+    "pageOrProtocolErrors": 0,
+    "allOwnProfilesClosed": true
+  },
+  "capacity": {
+    "initialSoftLimit": 10,
+    "postgresReadbackFinal": 10,
+    "adjustableRange": [
+      1,
+      1000
+    ],
+    "rangeIsNotCapacityGuarantee": true,
+    "atLimit": "reject new join/resume; retain existing members",
+    "authority": "explicitly enabled loopback POC page; production administrator undecided"
+  },
+  "loadStages": [
+    {
+      "participants": 10,
+      "activeSampleCount": 10,
+      "processCpuPercentMax": 34.55385667701172,
+      "processCpuPercentMean": 27.943515546197062,
+      "processRssMaxBytes": 74317824,
+      "eventLoopDelayP95MaxMs": 30.916607,
+      "achievedAudioFramesPerPublisherPerSecond": 50.08497450764771,
+      "expectedAudioDownstreamFrames": 45090,
+      "actualAudioDownstreamFrames": 45090,
+      "actualScreenDownstreamFrames": 1332,
+      "status": "pass",
+      "limits": "1 vCPU / 1 GiB; PostgreSQL external",
+      "limitations": [
+        "Opaque fixed-size synthetic payloads, not browser encode/decode",
+        "Short local Docker arm64 run is not Cloud Run capacity",
+        "Synthetic voice/screen source and PostgreSQL outside app cgroup",
+        "Control state includes preceding run history in same dedicated DB; no constant-history comparison"
+      ]
+    },
+    {
+      "participants": 12,
+      "activeSampleCount": 10,
+      "processCpuPercentMax": 28.299746278099388,
+      "processCpuPercentMean": 24.123915786349706,
+      "processRssMaxBytes": 79990784,
+      "eventLoopDelayP95MaxMs": 31.096831,
+      "achievedAudioFramesPerPublisherPerSecond": 50.079968012794886,
+      "expectedAudioDownstreamFrames": 66132,
+      "actualAudioDownstreamFrames": 66132,
+      "actualScreenDownstreamFrames": 1617,
+      "status": "pass",
+      "limits": "1 vCPU / 1 GiB; PostgreSQL external",
+      "limitations": [
+        "Opaque fixed-size synthetic payloads, not browser encode/decode",
+        "Short local Docker arm64 run is not Cloud Run capacity",
+        "Synthetic voice/screen source and PostgreSQL outside app cgroup",
+        "Control state includes preceding run history in same dedicated DB; no constant-history comparison"
+      ]
+    },
+    {
+      "participants": 16,
+      "activeSampleCount": 10,
+      "processCpuPercentMax": 32.674964269558245,
+      "processCpuPercentMean": 26.808583534542077,
+      "processRssMaxBytes": 83853312,
+      "eventLoopDelayP95MaxMs": 31.047679,
+      "achievedAudioFramesPerPublisherPerSecond": 49.990001999600075,
+      "expectedAudioDownstreamFrames": 120000,
+      "actualAudioDownstreamFrames": 120000,
+      "actualScreenDownstreamFrames": 2205,
+      "status": "pass",
+      "limits": "1 vCPU / 1 GiB; PostgreSQL external",
+      "limitations": [
+        "Opaque fixed-size synthetic payloads, not browser encode/decode",
+        "Short local Docker arm64 run is not Cloud Run capacity",
+        "Synthetic voice/screen source and PostgreSQL outside app cgroup",
+        "Control state includes preceding run history in same dedicated DB; no constant-history comparison"
+      ]
+    }
+  ],
+  "limitations": [
+    "No Cloud Run deployment or verified Cloud Run maximum",
+    "Docker arm64 local CPU differs from Cloud Run runtime",
+    "PG and generators are outside 1 CPU/1 GiB app cgroup",
+    "Relay uses opaque fixed-size payloads; only ten-browser flow decodes",
+    "Nine publishers do not subscribe in browser flow; not nine-by-nine human mutual listening",
+    "Load stages are ~10s and warm-up/history differ; do not extrapolate linearly",
+    "No sustained high-rate avatar movement/interaction benchmark"
+  ],
+  "cleanup": {
+    "appContainer": "exited",
+    "postgresContainer": "restored exited",
+    "hostFixtureProcesses": "all three controlled PTY sessions exited 0",
+    "dbAndVolume": "retained",
+    "humanBrowserOrMic": "not operated"
+  }
+}

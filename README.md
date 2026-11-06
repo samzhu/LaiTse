@@ -387,3 +387,15 @@ This describes the historical 2026-11-05 T18/R001 run, before PostgreSQL persist
 匿名模式下，已加入的參與者可在「會議室門與管理權」按上鎖、輸入密碼取得管理權；現任管理者可改密碼／解鎖並轉交給在線房內成員。同名不等於管理者。管理者換房仍保留權限；只有離線才由房內成員隨機接任，無候選則解鎖，後來者可重新上鎖。舊HOST_CONTROL_TOKEN配置保持舊模式，新的匿名命令在該模式停用。
 
 [操作、真PG與Firefox驗測紀錄](docs/poc/evidence/POC-RM-01-R001/README.md)包含各輪失敗／修正與最終結果；可信HTTPS服務啟動後可用鎖定Node執行`RM01_BASE_URL=https://localhost:<port>/ node scripts/room-management-smoke.mjs`，輸出在`.scratch/rm01`，每次使用新的輸出目錄。這是固定studio的POC，不是完整MVP。
+
+
+## POC-CAP-01：服務容量設定（本機 POC）
+
+固定8人的准入常數改為全服務可調設定；初值暫定10。計數是已加入連線（含展示端；同一人多分頁各算一席），不是去重人數或所有HTTP請求。上限可填1～1000，這是輸入邊界，不代表已驗證1000人容量。每來源解碼待處理、PCM與WebSocket背壓仍保留。
+
+1. 使用repo指定Node26完成build，沿既有方式設定PostgreSQL18的`DATABASE_URL`。
+2. 以`LOCAL_CAPACITY_ADMIN=1 HOST=127.0.0.1 npm start`啟動本機服務；使用啟動訊息所示origin開啟`/poc/capacity`。頁面與API預設關閉，只在明確啟用且實際loopback來源／Host下可用，POST另檢Origin；這不是雲端管理權限設計。
+3. 調整數字並按「保存設定」，查看保存狀態及目前上限。PostgreSQL模式保存後重啟沿用；memory模式重啟回預設。頁面人數是讀取／保存時的快照，可重新整理更新。
+4. 達額會暫停新加入；降低數字不踢現有人。提高後可重試加入。斷線後的resume也需空位，不永久占位；任意匿名房間管理者不能因此修改全域容量。
+
+驗測／研究入口：[POC-CAP-01-R001](docs/poc/evidence/POC-CAP-01-R001/README.md)、[Cloud Run 1CPU/1GiB容量模型](docs/research/cloud-run-capacity-1cpu-1g.md)。本機Docker應用限1CPU/1GiB時，資料庫及負載產生器在限制之外；不將此結果當Cloud Run已驗容量。10個Firefox核心流程可用repo Node設定`CAP01_BASE_URL=https://localhost:<port>/`、`CERTUTIL_BIN=/opt/homebrew/bin/certutil`執行`node scripts/capacity-smoke.mjs`（需既有可信localCA、獨立Firefox與已build的應用，輸出限`.scratch/cap01/`）。此腳本以9個合成講者／1個接收者驗9路解碼／PCM與單畫面，非全員互聽或真人收聽。

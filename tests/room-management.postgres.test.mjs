@@ -125,7 +125,7 @@ if (!DATABASE_URL) {
         password_verifier: Buffer.from(legacyAccess.passwordVerifier, "base64"),
       }, "migration 002 classifies an existing lock without replacing its verifier or revision");
       const applied = await legacyPool.query("SELECT version FROM schema_migrations ORDER BY version");
-      assert.deepEqual(applied.rows.map((entry) => entry.version), ["001_system_persistence.sql", "002_anonymous_room_management.sql"]);
+      assert.deepEqual(applied.rows.map((entry) => entry.version), ["001_system_persistence.sql", "002_anonymous_room_management.sql", "003_capacity_settings.sql"]);
       let legacySocket = await connect(running.baseUrl);
       let legacyJoin = await join(legacySocket, "Legacy lock visitor", "studio", LEGACY_PASSWORD);
       assert.equal(legacyJoin.management.lockKind, "legacy");

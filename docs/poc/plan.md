@@ -1,9 +1,9 @@
 # 來坐 LaiTse 分階段 POC 計畫書
 
-- 識別碼：POC-PLAN；版本：v1.3；日期：2026-11-05。
-- 狀態：POC-RM-01-R001匿名管理真PG／Firefox核心Pass，並補同版PG多人影音短回歸；既有階段／T19歷史不改判，MVP尚未開發，手機後續。
+- 識別碼：POC-PLAN；版本：v1.4；日期：2026-11-06。
+- 狀態：POC-CAP-01核心Pass，可調容量／10Firefox核心及16人轉送短測已有證據；9路client仍有local drops，品質／CloudRun最大容量未驗。既有階段／T19歷史不改判，MVP未開發，手機後續。
 - 版本界線：GitHub原v1.0票面保留歷史；2026-11-05依人類要求於母#1與子#2～20補最新進度段，連回本機v1.3／PRD v0.9、DEC-010～012及未驗項，不回改原AC。Issue更新不是程式push／部署。
-- 權威界線：產品目標依來坐 PRD v0.13、DEC-001～017；本計畫只定義技術驗證，不取代產品需求。
+- 權威界線：產品目標依來坐 PRD v0.14、DEC-001～018；本計畫只定義技術驗證，不取代產品需求。
 - 執行環境：本機單一應用伺服器＋Docker PostgreSQL18、真實瀏覽器；手機仍待補，本輪不部署 Cloud Run。
 - 發布方式：GitHub Issues 為本計畫的發布鏡像，套用 `ready-for-agent`；標籤不表示已開始開發或已通過驗收。
 
@@ -325,3 +325,12 @@ T19／#20審查交付完成：[POC-07-R001](evidence/POC-07-R001/README.md)固�
 ## POC-RM-01／匿名房間管理增量
 
 人類已授權輕量核心與程式／紀錄commit、Github同步；[R001](evidence/POC-RM-01-R001/README.md)已完成上鎖／轉交／DEC017換房保留與離線合法候選接任／空房解鎖，以及真PG migration／ACK讀回。沒有另建平行需求或POC清冊，接續PRD第11節M02與SOL003/007。原8人門檻、其他治理及真人多人仍待；本次PG多人短整合新證據不回改MA01歷史。
+
+
+## POC-CAP-01／全服務可調容量與>8人核心（DEC018／2026-11-06）
+
+接續已驗多人語音與匿名房間管理，將join/resume固定8人改為PG保存的服務可調設定，並移除接收端固定8路active來源門檻；保留解碼待處理／PCM／WS背壓。依人類「繼續」沿推薦採本輪執行假設：滿額拒新加入且不踢現有人；loopback本機POC管理頁，不新增帳號／房間owner全域權。初值10／程式範圍1..1000不等於容量聲明。
+
+最小流程：本機面板改設定→PG讀回／程序重啟→10個真Firefox頁加入／各互動→9個合成音訊source由1端實際解碼與PCM＋單screen呈現；非9×9互聽或真人聽感。Docker應用限1CPU/1GiB、PG與產生器外置，補10/12/16 opaque relay短量測，記實際達成速率與成本，不以Cloud Run 1000concurrency／600Mbps配額換算可用人數。不部署雲、不跑長測；結果、用法、限制累積execution-log／SOL007及R001，程式紀錄同本機commit、GitHub相關票同步讀回。
+
+CAP-01結果：POC-CAP-01-R001核心Pass：可調容量PG保存／重啟、10Firefox互動／9音源PCM與單screen完成；1CPU/1GiB opaque relay10/12/16人短測通過。初值10可調，16非完整瀏覽器容量保證；9音源local drops早期58、後續截圖333，品質／真人多人與CloudRun最大值未驗。最後真PG全suite81/81無skip，自有服務/browser停，PG恢復exited保留資料。正式結果／失敗／修正／採用限制見[evidence/POC-CAP-01-R001/README.md](evidence/POC-CAP-01-R001/README.md)。

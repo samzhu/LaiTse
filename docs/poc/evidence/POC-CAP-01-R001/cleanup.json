@@ -1,0 +1,32 @@
+{
+  "containers": [
+    {
+      "name": "/laitse-cap01-app",
+      "status": "exited",
+      "pid": 0
+    },
+    {
+      "name": "/laitse-poc06-r002-db",
+      "status": "exited",
+      "pid": 0
+    }
+  ],
+  "ownedListenersUnavailable": [
+    {
+      "url": "http://localhost:49820/api/health",
+      "unavailable": true,
+      "errorCode": "ECONNREFUSED"
+    },
+    {
+      "url": "https://localhost:44173/api/health",
+      "unavailable": true,
+      "errorCode": "ECONNREFUSED"
+    }
+  ],
+  "hostPtySessionsExited": 3,
+  "browserContextsClosed": 10,
+  "profilesRemoved": 10,
+  "defaultCapacityRestored": 10,
+  "postgresDataAndVolumeRetained": true,
+  "humanBrowserAndMicUntouched": true
+}

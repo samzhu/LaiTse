@@ -1,0 +1,1971 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Short local 10-page capacity feasibility flow: ten studio joins and chat interactions, nine simultaneous synthetic Opus publishers, one real nine-source WebCodecs/AudioWorklet receiver, and one synthetic VP8 screen share.",
+  "startedAt": "2026-11-06T04:18:17.333Z",
+  "status": "passed",
+  "baseURL": "https://localhost:44173",
+  "outputDirectory": ".scratch/cap01/browser",
+  "runtime": {
+    "node": "v26.13.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "firefox": "157.0",
+    "headless": true
+  },
+  "tls": {
+    "caCertificate": ".scratch/t01/tls/local-ca.pem",
+    "trust": "Local CA imported into each isolated Firefox NSS profile; browser certificate errors are not ignored.",
+    "ignoreCertificateErrors": false,
+    "systemTrustChanged": false,
+    "applicationTransport": "trusted local HTTPS/WSS"
+  },
+  "topology": {
+    "room": "studio",
+    "pages": 10,
+    "browserProcesses": 10,
+    "isolatedFirefoxProfiles": 10,
+    "applicationConnectionsExpected": 10,
+    "publishers": 9,
+    "receiver": "CAP01-P10",
+    "publisherSubscriptions": 0,
+    "audioPattern": "nine publishers send to one receiver; no publisher subscribes, so this is not 9x9 mutual listening",
+    "activeMediaWindowBudgetMs": 45000
+  },
+  "syntheticSources": {
+    "audio": "Each publisher gets a script-injected oscillator through AudioContext MediaStreamDestination and the normal application publish button.",
+    "audioFrequencyHz": [
+      440,
+      477,
+      514,
+      551,
+      588,
+      625,
+      662,
+      699,
+      736
+    ],
+    "screen": "CAP01-P01 gets a script-injected animated canvas captureStream through the normal share button.",
+    "screenColorRgb": [
+      38,
+      146,
+      78
+    ],
+    "nativePermissionPickerUsed": false,
+    "physicalMicrophoneSelected": false,
+    "physicalDisplaySelected": false,
+    "mediaPayloadsStored": false
+  },
+  "checks": [
+    {
+      "name": "ten-real-firefox-pages-joined-studio",
+      "at": "2026-11-06T04:18:37.281Z",
+      "atMs": 19948,
+      "pages": 10,
+      "browserProcesses": 10,
+      "isolatedFirefoxProfiles": 10,
+      "finalMemberCount": 10
+    },
+    {
+      "name": "all-pages-completed-one-ui-interaction",
+      "at": "2026-11-06T04:18:39.260Z",
+      "atMs": 21927,
+      "attempted": 10,
+      "acknowledged": 10
+    },
+    {
+      "name": "nine-synthetic-opus-publishers-active-without-publisher-subscriptions",
+      "at": "2026-11-06T04:18:42.996Z",
+      "atMs": 25663,
+      "publishers": [
+        {
+          "client": "CAP01-P01",
+          "generation": 1,
+          "audioFramesBeforeReceiver": 173
+        },
+        {
+          "client": "CAP01-P02",
+          "generation": 2,
+          "audioFramesBeforeReceiver": 155
+        },
+        {
+          "client": "CAP01-P03",
+          "generation": 3,
+          "audioFramesBeforeReceiver": 133
+        },
+        {
+          "client": "CAP01-P04",
+          "generation": 4,
+          "audioFramesBeforeReceiver": 108
+        },
+        {
+          "client": "CAP01-P05",
+          "generation": 5,
+          "audioFramesBeforeReceiver": 89
+        },
+        {
+          "client": "CAP01-P06",
+          "generation": 6,
+          "audioFramesBeforeReceiver": 70
+        },
+        {
+          "client": "CAP01-P07",
+          "generation": 7,
+          "audioFramesBeforeReceiver": 47
+        },
+        {
+          "client": "CAP01-P08",
+          "generation": 8,
+          "audioFramesBeforeReceiver": 28
+        },
+        {
+          "client": "CAP01-P09",
+          "generation": 9,
+          "audioFramesBeforeReceiver": 6
+        }
+      ],
+      "receiverSubscriptions": 0
+    },
+    {
+      "name": "receiver-has-nine-webcodecs-opus-sources-and-nine-advancing-audioworklet-pcm-outputs",
+      "at": "2026-11-06T04:18:44.100Z",
+      "atMs": 26767,
+      "sources": [
+        {
+          "generation": 1,
+          "receivedPackets": 38,
+          "decodedFrames": 24,
+          "renderedPcmSamples": 18624,
+          "renderRms": 0.15513470216448325,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 2,
+          "receivedPackets": 40,
+          "decodedFrames": 25,
+          "renderedPcmSamples": 19584,
+          "renderRms": 0.14070679925646026,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 3,
+          "receivedPackets": 39,
+          "decodedFrames": 26,
+          "renderedPcmSamples": 19584,
+          "renderRms": 0.16135886647488543,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 4,
+          "receivedPackets": 39,
+          "decodedFrames": 25,
+          "renderedPcmSamples": 19584,
+          "renderRms": 0.16926169401326052,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 5,
+          "receivedPackets": 38,
+          "decodedFrames": 25,
+          "renderedPcmSamples": 19584,
+          "renderRms": 0.15732183483337908,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 6,
+          "receivedPackets": 38,
+          "decodedFrames": 24,
+          "renderedPcmSamples": 18624,
+          "renderRms": 0.16923308846785914,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 7,
+          "receivedPackets": 41,
+          "decodedFrames": 24,
+          "renderedPcmSamples": 18624,
+          "renderRms": 0.1620827664303129,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 8,
+          "receivedPackets": 38,
+          "decodedFrames": 24,
+          "renderedPcmSamples": 18624,
+          "renderRms": 0.17041365067080783,
+          "packetGapCount": 0
+        },
+        {
+          "generation": 9,
+          "receivedPackets": 40,
+          "decodedFrames": 24,
+          "renderedPcmSamples": 18624,
+          "renderRms": 0.17030174045383048,
+          "packetGapCount": 0
+        }
+      ],
+      "queueOverflowResets": 0,
+      "oversizedQueueDrops": 0,
+      "decoderSaturationStops": 0
+    },
+    {
+      "name": "one-synthetic-screen-share-was-decoded-and-rendered",
+      "at": "2026-11-06T04:18:46.864Z",
+      "atMs": 29531,
+      "generation": 1,
+      "publisher": "CAP01-P01",
+      "receiver": "CAP01-P10",
+      "receivedFrames": 9,
+      "decodedFrames": 7,
+      "renderedFrames": 3,
+      "dimensions": [
+        320,
+        180
+      ],
+      "centerPixel": [
+        37,
+        146,
+        78,
+        255
+      ]
+    }
+  ],
+  "publishers": [
+    {
+      "client": "CAP01-P01",
+      "generation": 1,
+      "audioFramesAtStart": 6,
+      "audioFramesBeforeReceiver": 173,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 370
+    },
+    {
+      "client": "CAP01-P02",
+      "generation": 2,
+      "audioFramesAtStart": 6,
+      "audioFramesBeforeReceiver": 155,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 355
+    },
+    {
+      "client": "CAP01-P03",
+      "generation": 3,
+      "audioFramesAtStart": 7,
+      "audioFramesBeforeReceiver": 133,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 336
+    },
+    {
+      "client": "CAP01-P04",
+      "generation": 4,
+      "audioFramesAtStart": 6,
+      "audioFramesBeforeReceiver": 108,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 314
+    },
+    {
+      "client": "CAP01-P05",
+      "generation": 5,
+      "audioFramesAtStart": 7,
+      "audioFramesBeforeReceiver": 89,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 299
+    },
+    {
+      "client": "CAP01-P06",
+      "generation": 6,
+      "audioFramesAtStart": 7,
+      "audioFramesBeforeReceiver": 70,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 286
+    },
+    {
+      "client": "CAP01-P07",
+      "generation": 7,
+      "audioFramesAtStart": 7,
+      "audioFramesBeforeReceiver": 47,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 266
+    },
+    {
+      "client": "CAP01-P08",
+      "generation": 8,
+      "audioFramesAtStart": 8,
+      "audioFramesBeforeReceiver": 28,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 248
+    },
+    {
+      "client": "CAP01-P09",
+      "generation": 9,
+      "audioFramesAtStart": 6,
+      "audioFramesBeforeReceiver": 6,
+      "receiver": "CAP01-P10",
+      "audioFramesTotal": 229
+    }
+  ],
+  "interactions": {
+    "attempted": 10,
+    "acknowledged": 10
+  },
+  "receiver": {
+    "client": "CAP01-P10",
+    "uniqueAudioGenerations": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "audioSubscription": true,
+    "perSource": [
+      {
+        "generation": 1,
+        "active": true,
+        "clockId": "c1022ad8-aab3-4710-ac00-bfca7648631b",
+        "receivedPackets": 38,
+        "decodedFrames": 24,
+        "renderedPcmSamples": 18624,
+        "queuedSamples": 1536,
+        "renderRms": 0.15513470216448325,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 6,
+        "error": ""
+      },
+      {
+        "generation": 2,
+        "active": true,
+        "clockId": "376c92fc-10c0-478b-980c-c47b7479de4f",
+        "receivedPackets": 40,
+        "decodedFrames": 25,
+        "renderedPcmSamples": 19584,
+        "queuedSamples": 1536,
+        "renderRms": 0.14070679925646026,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 7,
+        "error": ""
+      },
+      {
+        "generation": 3,
+        "active": true,
+        "clockId": "43d4bfe9-988d-458c-99e0-25f8e9a7d1fa",
+        "receivedPackets": 39,
+        "decodedFrames": 26,
+        "renderedPcmSamples": 19584,
+        "queuedSamples": 1536,
+        "renderRms": 0.16135886647488543,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 5,
+        "error": ""
+      },
+      {
+        "generation": 4,
+        "active": true,
+        "clockId": "f1a3bb9a-51c6-4717-92f1-b3bd41b63337",
+        "receivedPackets": 39,
+        "decodedFrames": 25,
+        "renderedPcmSamples": 19584,
+        "queuedSamples": 1536,
+        "renderRms": 0.16926169401326052,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 6,
+        "error": ""
+      },
+      {
+        "generation": 5,
+        "active": true,
+        "clockId": "48f8eb3a-4701-4e55-9bc9-09d09e00293b",
+        "receivedPackets": 38,
+        "decodedFrames": 25,
+        "renderedPcmSamples": 19584,
+        "queuedSamples": 576,
+        "renderRms": 0.15732183483337908,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 5,
+        "error": ""
+      },
+      {
+        "generation": 6,
+        "active": true,
+        "clockId": "20816689-8b50-47c4-b0fc-bb87713545d6",
+        "receivedPackets": 38,
+        "decodedFrames": 24,
+        "renderedPcmSamples": 18624,
+        "queuedSamples": 576,
+        "renderRms": 0.16923308846785914,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 6,
+        "error": ""
+      },
+      {
+        "generation": 7,
+        "active": true,
+        "clockId": "3481883a-58b0-4840-a67e-3ddaf061826b",
+        "receivedPackets": 41,
+        "decodedFrames": 24,
+        "renderedPcmSamples": 18624,
+        "queuedSamples": 1536,
+        "renderRms": 0.1620827664303129,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 9,
+        "error": ""
+      },
+      {
+        "generation": 8,
+        "active": true,
+        "clockId": "3eaaa67c-a71b-463c-b730-162d5ae7e173",
+        "receivedPackets": 38,
+        "decodedFrames": 24,
+        "renderedPcmSamples": 18624,
+        "queuedSamples": 1536,
+        "renderRms": 0.17041365067080783,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 6,
+        "error": ""
+      },
+      {
+        "generation": 9,
+        "active": true,
+        "clockId": "95255b9d-780d-4f0b-aea1-9c7ea2a3eaf9",
+        "receivedPackets": 40,
+        "decodedFrames": 24,
+        "renderedPcmSamples": 18624,
+        "queuedSamples": 576,
+        "renderRms": 0.17030174045383048,
+        "packetGapCount": 0,
+        "queueStaleDropBatches": 0,
+        "queueOversizeDropBatches": 0,
+        "decodeQueueDroppedPackets": 8,
+        "error": ""
+      }
+    ],
+    "aggregate": {
+      "receiverSubscribed": true,
+      "activeSourceCount": 9,
+      "receivedPackets": 359,
+      "decodedFrames": 234,
+      "renderedSamples": 189888,
+      "renderRms": 0.16996065102005278,
+      "queueStaleDropBatches": 0,
+      "queueOversizeDropBatches": 0,
+      "decodeQueueHighWater": 8,
+      "decodeQueueSaturationStops": 0,
+      "decodeQueueDroppedPackets": 58,
+      "queueOverflowResets": 0,
+      "packetGapCount": 0,
+      "receiverBufferMs": 344
+    },
+    "localDecodeDropsDuringObservationWindow": 58,
+    "ingressFramesByGeneration": {
+      "1": 41,
+      "2": 43,
+      "3": 42,
+      "4": 42,
+      "5": 42,
+      "6": 41,
+      "7": 44,
+      "8": 41,
+      "9": 44
+    }
+  },
+  "screen": {
+    "publisher": "CAP01-P01",
+    "receiver": "CAP01-P10",
+    "generation": 1,
+    "publisherFrames": 16,
+    "receiverFrames": 9,
+    "rendered": {
+      "publisherState": "idle",
+      "receiverState": "rendering",
+      "receiverSubscribed": true,
+      "receivedFrames": 9,
+      "decodedFrames": 7,
+      "renderedFrames": 3,
+      "width": 320,
+      "height": 180,
+      "decodeQueueHighWater": 1,
+      "droppedDecodedFrames": 0,
+      "residenceDrops": 0,
+      "centerPixel": [
+        37,
+        146,
+        78,
+        255
+      ]
+    }
+  },
+  "screenshots": [
+    "receiver-nine-audio-sources.png",
+    "receiver-one-screen-share.png"
+  ],
+  "traceOverflow": {
+    "controlTypes": 0,
+    "controlEvents": 0,
+    "generationBuckets": 0,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "protocolErrors": 0,
+    "collectionErrors": 0
+  },
+  "privacy": {
+    "rawControlPayloadsRetained": false,
+    "chatTextRetained": false,
+    "rawMediaPayloadsRetained": false,
+    "mediaHashesRetained": false,
+    "cookiesOrPageStorageDumped": false,
+    "tokensPasswordsOrConfiguredSecretsReadOrRecorded": false
+  },
+  "limits": {
+    "physicalMicrophoneAndHumanListening": "not-tested; injected oscillators are synthetic and PCM proves browser worklet output only",
+    "physicalDisplayCapture": "not-tested; the shared source is an injected canvas",
+    "nineByNineMutualListening": "not-tested; the nine publishers do not subscribe",
+    "endToEndLatencyOrListeningQuality": "not-measured",
+    "cloudRunCapacityOrResourceUsage": "not-tested; browser metadata does not measure server CPU, memory, bandwidth, or Cloud Run limits",
+    "longDurationOrEndurance": "not-tested; this is a bounded short flow",
+    "mobileAndCrossDeviceUse": "not-tested",
+    "persistenceAndDeployment": "not-tested; attaches to the externally started local fixture",
+    "productCapacityManagementUi": "not-tested by this media script; covered separately by the local capacity admin flow",
+    "identity": "not-verified; CAP01 labels are synthetic page names, not people"
+  },
+  "errors": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "protocolErrors": [],
+    "collectionErrors": [],
+    "cleanupErrors": [],
+    "failure": null
+  },
+  "cleanup": {
+    "profilesRemoved": 10,
+    "contextsClosed": 10
+  },
+  "durationMs": 32368,
+  "activeMediaDurationMs": 8254,
+  "finishedAt": "2026-11-06T04:18:49.701Z",
+  "clients": [
+    {
+      "name": "CAP01-P01",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 6,
+        "received": 50
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "screen.start": 1,
+          "audio.stop": 1,
+          "screen.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.ack": 1,
+          "interaction.event": 10,
+          "audio.started": 1,
+          "screen.started": 1,
+          "screen.keyframeRequest": 1,
+          "audio.stopped": 1,
+          "screen.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 13959,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 13959,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 13960,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 20049,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 20129,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 22189,
+          "type": "audio.started",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 26928,
+          "type": "screen.started",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 29611,
+          "type": "audio.stopped",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 30188,
+          "type": "screen.stopped",
+          "generation": 1
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 370,
+            "bytes": 54651,
+            "byGeneration": {
+              "1": {
+                "generation": 1,
+                "frames": 370,
+                "bytes": 54651,
+                "firstSequence": 0,
+                "lastSequence": 369
+              }
+            }
+          },
+          "screen": {
+            "frames": 46,
+            "bytes": 7289,
+            "byGeneration": {
+              "1": {
+                "generation": 1,
+                "frames": 46,
+                "bytes": 7289,
+                "firstSequence": 0,
+                "lastSequence": 45
+              }
+            }
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P02",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 14364,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 14365,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 2
+        },
+        {
+          "direction": "received",
+          "atMs": 14365,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 20256,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 20324,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 22536,
+          "type": "audio.started",
+          "generation": 2
+        },
+        {
+          "direction": "received",
+          "atMs": 29680,
+          "type": "audio.stopped",
+          "generation": 2
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 355,
+            "bytes": 50291,
+            "byGeneration": {
+              "2": {
+                "generation": 2,
+                "frames": 355,
+                "bytes": 50291,
+                "firstSequence": 0,
+                "lastSequence": 354
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P03",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 14766,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 14767,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 3
+        },
+        {
+          "direction": "received",
+          "atMs": 14767,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 20467,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 20537,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 22983,
+          "type": "audio.started",
+          "generation": 3
+        },
+        {
+          "direction": "received",
+          "atMs": 29723,
+          "type": "audio.stopped",
+          "generation": 3
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 336,
+            "bytes": 48145,
+            "byGeneration": {
+              "3": {
+                "generation": 3,
+                "frames": 336,
+                "bytes": 48145,
+                "firstSequence": 0,
+                "lastSequence": 335
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P04",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 15180,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 15181,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 4
+        },
+        {
+          "direction": "received",
+          "atMs": 15181,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 20674,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 20745,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 23482,
+          "type": "audio.started",
+          "generation": 4
+        },
+        {
+          "direction": "received",
+          "atMs": 29788,
+          "type": "audio.stopped",
+          "generation": 4
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 314,
+            "bytes": 47655,
+            "byGeneration": {
+              "4": {
+                "generation": 4,
+                "frames": 314,
+                "bytes": 47655,
+                "firstSequence": 0,
+                "lastSequence": 313
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P05",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 15658,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 15659,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 5
+        },
+        {
+          "direction": "received",
+          "atMs": 15659,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 20889,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 20934,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 23867,
+          "type": "audio.started",
+          "generation": 5
+        },
+        {
+          "direction": "received",
+          "atMs": 29913,
+          "type": "audio.stopped",
+          "generation": 5
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 299,
+            "bytes": 44400,
+            "byGeneration": {
+              "5": {
+                "generation": 5,
+                "frames": 299,
+                "bytes": 44400,
+                "firstSequence": 0,
+                "lastSequence": 298
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P06",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 16581,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 16590,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 6
+        },
+        {
+          "direction": "received",
+          "atMs": 16591,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 21073,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 21134,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 24235,
+          "type": "audio.started",
+          "generation": 6
+        },
+        {
+          "direction": "received",
+          "atMs": 29978,
+          "type": "audio.stopped",
+          "generation": 6
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 286,
+            "bytes": 39772,
+            "byGeneration": {
+              "6": {
+                "generation": 6,
+                "frames": 286,
+                "bytes": 39772,
+                "firstSequence": 0,
+                "lastSequence": 285
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P07",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 17600,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 17600,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 7
+        },
+        {
+          "direction": "received",
+          "atMs": 17600,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 21281,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 21362,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 24686,
+          "type": "audio.started",
+          "generation": 7
+        },
+        {
+          "direction": "received",
+          "atMs": 30030,
+          "type": "audio.stopped",
+          "generation": 7
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 266,
+            "bytes": 38985,
+            "byGeneration": {
+              "7": {
+                "generation": 7,
+                "frames": 266,
+                "bytes": 38985,
+                "firstSequence": 0,
+                "lastSequence": 265
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P08",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 18189,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 18189,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 8
+        },
+        {
+          "direction": "received",
+          "atMs": 18190,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 21487,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 21534,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 25091,
+          "type": "audio.started",
+          "generation": 8
+        },
+        {
+          "direction": "received",
+          "atMs": 30078,
+          "type": "audio.stopped",
+          "generation": 8
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 248,
+            "bytes": 37515,
+            "byGeneration": {
+              "8": {
+                "generation": 8,
+                "frames": 248,
+                "bytes": 37515,
+                "firstSequence": 0,
+                "lastSequence": 247
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P09",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 47
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.start": 1,
+          "audio.stop": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.started": 1,
+          "audio.stopped": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 19180,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 19181,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 9
+        },
+        {
+          "direction": "received",
+          "atMs": 19181,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 21641,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 21697,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "received",
+          "atMs": 25514,
+          "type": "audio.started",
+          "generation": 9
+        },
+        {
+          "direction": "received",
+          "atMs": 30122,
+          "type": "audio.stopped",
+          "generation": 9
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 229,
+            "bytes": 33261,
+            "byGeneration": {
+              "9": {
+                "generation": 9,
+                "frames": 229,
+                "bytes": 33261,
+                "firstSequence": 0,
+                "lastSequence": 228
+              }
+            }
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "CAP01-P10",
+      "connections": 1,
+      "controlFrames": {
+        "sent": 4,
+        "received": 67
+      },
+      "controlCounts": {
+        "sent": {
+          "join": 1,
+          "interaction.submit": 1,
+          "audio.subscribe": 1,
+          "screen.subscribe": 1
+        },
+        "received": {
+          "session.issued": 1,
+          "control.event": 10,
+          "room.snapshot": 1,
+          "interaction.snapshot": 1,
+          "participation.self": 1,
+          "space.snapshot": 10,
+          "room.management.state": 10,
+          "interaction.event": 10,
+          "interaction.ack": 1,
+          "audio.subscribed": 1,
+          "audio.stream": 9,
+          "screen.subscribed": 1,
+          "screen.stream": 1,
+          "audio.streamEnded": 9,
+          "screen.streamEnded": 1
+        }
+      },
+      "relevantControls": [
+        {
+          "direction": "received",
+          "atMs": 19841,
+          "type": "session.issued",
+          "roomId": "studio",
+          "mode": "watch",
+          "role": "participant"
+        },
+        {
+          "direction": "received",
+          "atMs": 19841,
+          "type": "room.snapshot",
+          "roomId": "studio",
+          "memberCount": 10
+        },
+        {
+          "direction": "received",
+          "atMs": 19841,
+          "type": "participation.self",
+          "roomId": "studio",
+          "mode": "watch",
+          "audioSubscribed": false,
+          "screenSubscribed": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 21822,
+          "type": "interaction.submit"
+        },
+        {
+          "direction": "received",
+          "atMs": 21884,
+          "type": "interaction.ack",
+          "roomId": "studio",
+          "duplicate": false
+        },
+        {
+          "direction": "sent",
+          "atMs": 25918,
+          "type": "audio.subscribe"
+        },
+        {
+          "direction": "received",
+          "atMs": 25923,
+          "type": "audio.subscribed"
+        },
+        {
+          "direction": "received",
+          "atMs": 25923,
+          "type": "audio.stream",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 25923,
+          "type": "audio.stream",
+          "generation": 2
+        },
+        {
+          "direction": "received",
+          "atMs": 25923,
+          "type": "audio.stream",
+          "generation": 3
+        },
+        {
+          "direction": "received",
+          "atMs": 25924,
+          "type": "audio.stream",
+          "generation": 4
+        },
+        {
+          "direction": "received",
+          "atMs": 25924,
+          "type": "audio.stream",
+          "generation": 5
+        },
+        {
+          "direction": "received",
+          "atMs": 25924,
+          "type": "audio.stream",
+          "generation": 6
+        },
+        {
+          "direction": "received",
+          "atMs": 25924,
+          "type": "audio.stream",
+          "generation": 7
+        },
+        {
+          "direction": "received",
+          "atMs": 25924,
+          "type": "audio.stream",
+          "generation": 8
+        },
+        {
+          "direction": "received",
+          "atMs": 25925,
+          "type": "audio.stream",
+          "generation": 9
+        },
+        {
+          "direction": "sent",
+          "atMs": 27337,
+          "type": "screen.subscribe"
+        },
+        {
+          "direction": "received",
+          "atMs": 27363,
+          "type": "screen.subscribed"
+        },
+        {
+          "direction": "received",
+          "atMs": 27363,
+          "type": "screen.stream",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 29623,
+          "type": "audio.streamEnded",
+          "generation": 1
+        },
+        {
+          "direction": "received",
+          "atMs": 29688,
+          "type": "audio.streamEnded",
+          "generation": 2
+        },
+        {
+          "direction": "received",
+          "atMs": 29758,
+          "type": "audio.streamEnded",
+          "generation": 3
+        },
+        {
+          "direction": "received",
+          "atMs": 29822,
+          "type": "audio.streamEnded",
+          "generation": 4
+        },
+        {
+          "direction": "received",
+          "atMs": 29915,
+          "type": "audio.streamEnded",
+          "generation": 5
+        },
+        {
+          "direction": "received",
+          "atMs": 29988,
+          "type": "audio.streamEnded",
+          "generation": 6
+        },
+        {
+          "direction": "received",
+          "atMs": 30037,
+          "type": "audio.streamEnded",
+          "generation": 7
+        },
+        {
+          "direction": "received",
+          "atMs": 30078,
+          "type": "audio.streamEnded",
+          "generation": 8
+        },
+        {
+          "direction": "received",
+          "atMs": 30123,
+          "type": "audio.streamEnded",
+          "generation": 9
+        }
+      ],
+      "invalidControlFrames": 0,
+      "protocolErrors": {},
+      "otherBinaryFrames": {
+        "sent": 0,
+        "received": 0
+      },
+      "packets": {
+        "sent": {
+          "audio": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          },
+          "screen": {
+            "frames": 0,
+            "bytes": 0,
+            "byGeneration": {}
+          }
+        },
+        "received": {
+          "audio": {
+            "frames": 1782,
+            "bytes": 273934,
+            "byGeneration": {
+              "1": {
+                "generation": 1,
+                "frames": 184,
+                "bytes": 29351,
+                "firstSequence": 186,
+                "lastSequence": 369
+              },
+              "2": {
+                "generation": 2,
+                "frames": 188,
+                "bytes": 28481,
+                "firstSequence": 167,
+                "lastSequence": 354
+              },
+              "3": {
+                "generation": 3,
+                "frames": 190,
+                "bytes": 28785,
+                "firstSequence": 146,
+                "lastSequence": 335
+              },
+              "4": {
+                "generation": 4,
+                "frames": 193,
+                "bytes": 31039,
+                "firstSequence": 121,
+                "lastSequence": 313
+              },
+              "5": {
+                "generation": 5,
+                "frames": 198,
+                "bytes": 30873,
+                "firstSequence": 101,
+                "lastSequence": 298
+              },
+              "6": {
+                "generation": 6,
+                "frames": 202,
+                "bytes": 29274,
+                "firstSequence": 84,
+                "lastSequence": 285
+              },
+              "7": {
+                "generation": 7,
+                "frames": 208,
+                "bytes": 31760,
+                "firstSequence": 58,
+                "lastSequence": 265
+              },
+              "8": {
+                "generation": 8,
+                "frames": 207,
+                "bytes": 32751,
+                "firstSequence": 41,
+                "lastSequence": 247
+              },
+              "9": {
+                "generation": 9,
+                "frames": 212,
+                "bytes": 31620,
+                "firstSequence": 17,
+                "lastSequence": 228
+              }
+            }
+          },
+          "screen": {
+            "frames": 40,
+            "bytes": 6301,
+            "byGeneration": {
+              "1": {
+                "generation": 1,
+                "frames": 40,
+                "bytes": 6301,
+                "firstSequence": 6,
+                "lastSequence": 45
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

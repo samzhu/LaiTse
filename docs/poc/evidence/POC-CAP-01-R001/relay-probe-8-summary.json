@@ -1,0 +1,18 @@
+{
+  "activeSampleCount": 10,
+  "processCpuPercentMax": 27.772779780147516,
+  "processCpuPercentMean": 20.9684685288452,
+  "processRssMaxBytes": 97112064,
+  "eventLoopDelayP95MaxMs": 32.915455,
+  "achievedAudioFramesPerPublisherPerSecond": 45.88164734106358,
+  "expectedAudioDownstreamFrames": 25704,
+  "actualAudioDownstreamFrames": 25704,
+  "actualScreenDownstreamFrames": 1029,
+  "limits": "1 vCPU / 1 GiB; PostgreSQL external",
+  "limitations": [
+    "Opaque fixed-size synthetic payloads, not browser encode/decode",
+    "Target 50 audio frames/sec not sustained by generator; use achieved rate",
+    "Short local Docker arm64 run is not Cloud Run capacity",
+    "Diagnostic node process was briefly started inside app cgroup; cgroup peak is contaminated"
+  ]
+}

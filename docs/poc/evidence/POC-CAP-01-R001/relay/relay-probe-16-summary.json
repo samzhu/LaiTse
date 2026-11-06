@@ -1,0 +1,20 @@
+{
+  "participants": 16,
+  "activeSampleCount": 10,
+  "processCpuPercentMax": 32.674964269558245,
+  "processCpuPercentMean": 26.808583534542077,
+  "processRssMaxBytes": 83853312,
+  "eventLoopDelayP95MaxMs": 31.047679,
+  "achievedAudioFramesPerPublisherPerSecond": 49.990001999600075,
+  "expectedAudioDownstreamFrames": 120000,
+  "actualAudioDownstreamFrames": 120000,
+  "actualScreenDownstreamFrames": 2205,
+  "status": "pass",
+  "limits": "1 vCPU / 1 GiB; PostgreSQL external",
+  "limitations": [
+    "Opaque fixed-size synthetic payloads, not browser encode/decode",
+    "Short local Docker arm64 run is not Cloud Run capacity",
+    "Synthetic voice/screen source and PostgreSQL outside app cgroup",
+    "Control state includes preceding run history in same dedicated DB; no constant-history comparison"
+  ]
+}

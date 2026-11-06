@@ -119,6 +119,7 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
       data-queue-stale-drop-batches={state.queueStaleDropBatches}
       data-queue-oversize-drop-batches={state.queueOversizeDropBatches}
       data-audio-decode-queue-high-water={state.decodeQueueHighWater}
+      data-audio-decode-queue-dropped-packets={state.decodeQueueDroppedPackets}
       data-audio-decode-queue-saturation-stops={state.decodeQueueSaturationStops}
       data-render-rms={state.renderRms}
       data-queue-overflow-resets={state.queueOverflowResets}
@@ -211,6 +212,7 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
         <span><strong>PCM 佇列 graph 居留</strong><output data-testid="audio-queue-oldest-graph-residence">{state.queueOldestGraphResidenceMs.toFixed(2)} ms</output></span>
         <span><strong>PCM 過期丟棄／超大批次丟棄</strong><output data-testid="audio-queue-drops">{state.queueStaleDropBatches} / {state.queueOversizeDropBatches}</output></span>
         <span><strong>音訊解碼佇列峰值</strong><output data-testid="audio-decode-queue-high-water">{state.decodeQueueHighWater}</output></span>
+        <span><strong>本機解碼佇列滿時略過（非網路遺失）</strong><output data-testid="audio-decode-queue-dropped-packets">{state.decodeQueueDroppedPackets}</output></span>
         <span><strong>接收緩衝（非端到端延遲）</strong><output data-testid="audio-receiver-buffer-ms">{currentObservation?.receiver.receiverBufferMs.toFixed(2) ?? "0.00"} ms</output></span>
         <span><strong>封包序號缺口</strong><output data-testid="audio-packet-gap-count">{currentObservation?.receiver.packetGapCount ?? 0}</output></span>
         <span><strong>播放RMS</strong><output data-testid="audio-render-rms">{state.renderRms.toFixed(4)}</output></span>
@@ -226,6 +228,7 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
           data-decoded-frames={source.decodedFrames}
           data-rendered-pcm-samples={source.renderedPcmSamples}
           data-queued-samples={source.queuedSamples}
+          data-decode-queue-dropped-packets={source.decodeQueueDroppedPackets}
           data-render-rms={source.renderRms}
           data-packet-gap-count={source.packetGapCount}
           data-error={source.error ?? ""}
@@ -233,10 +236,11 @@ export function AudioPanel({ socket, timeline, roomId = "", publishAllowed = tru
           <span>{source.clockId} · generation {source.generation} · {source.active ? "接收中" : "已停止"}</span>
           <span>封包 {source.receivedPackets}／解碼 {source.decodedFrames}／AudioWorklet PCM 樣本 {source.renderedPcmSamples}</span>
           <span>播放佇列 {source.queuedSamples}／RMS {source.renderRms.toFixed(4)}／序號缺口 {source.packetGapCount}</span>
+          <span>本機解碼佇列滿時略過封包 {source.decodeQueueDroppedPackets}（不計為網路缺包）</span>
           {source.error ? <span role="status">{source.error}</span> : null}
         </div>)}
       </div>
-      <p className="audio-limit-note">播放樣本與RMS由各來源接收端 AudioWorklet 實際輸出的PCM計算；每來源佇列上限500ms，總佇列為各來源加總。graph 居留時間是本機排隊時間，不是背景牆鐘或網路年齡；這些值不代表真人已聽見或量得端到端延遲。</p>
+      <p className="audio-limit-note">每來源解碼器最多保留8個待處理影格；佇列滿時只略過當下新封包，計入本機丟棄並在佇列消化後繼續接收，不代表網路遺失。播放樣本與RMS由各來源接收端 AudioWorklet 實際輸出的PCM計算；每來源PCM佇列上限500ms，總佇列為各來源加總。graph 居留時間是本機排隊時間，不是背景牆鐘或網路年齡；這些值不代表真人已聽見或量得端到端延遲。</p>
       <div className="audio-observation-actions">
         <button className="quiet-button" onClick={downloadObservation}>下載音訊觀測</button>
         <span>報告只含此頁播放器管線計數；來源裝置與真人收聽狀態不由應用推斷。</span>

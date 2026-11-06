@@ -5,7 +5,6 @@ const AUDIO_FRAME_DURATION_US = 20_000;
 const AUDIO_FRAME_HEADER_BYTES = 24;
 const MAX_OPUS_PACKET_BYTES = 4_096;
 const MAX_PENDING_AUDIO_DECODES = 8;
-const MAX_ACTIVE_AUDIO_SOURCES = 8;
 const AUDIO_MAGIC = [0x4c, 0x54, 0x41, 0x31];
 
 type AudioStreamConfig = { codec: "opus"; sampleRate: number; channels: number; bitrate: number; frameDurationUs: number };
@@ -50,6 +49,7 @@ export type AudioSourceStats = {
   queueStaleDropBatches: number;
   queueOversizeDropBatches: number;
   decodeQueueHighWater: number;
+  decodeQueueDroppedPackets: number;
   decodeQueueSaturationStops: number;
   renderRms: number;
   packetGapCount: number;
@@ -148,7 +148,6 @@ export class MultiAudioReceiver {
       return;
     }
     if (existing) this.endStream(generation);
-    const activeCount = [...this.sources.values()].filter((source) => source.stats.active).length;
     const source: AudioSourceRuntime = {
       generation,
       clockId,
@@ -165,6 +164,7 @@ export class MultiAudioReceiver {
         queueStaleDropBatches: 0,
         queueOversizeDropBatches: 0,
         decodeQueueHighWater: 0,
+        decodeQueueDroppedPackets: 0,
         decodeQueueSaturationStops: 0,
         renderRms: 0,
         packetGapCount: 0,
@@ -184,12 +184,6 @@ export class MultiAudioReceiver {
       workletBaseline: { renderedPcmSamples: 0, queueStaleDropBatches: 0, queueOversizeDropBatches: 0, queueOverflowResets: 0 },
     };
     this.sources.set(sourceKey(generation), source);
-    if (activeCount >= MAX_ACTIVE_AUDIO_SOURCES) {
-      source.stats.active = false;
-      source.stats.error = `接收來源數超過本機 ${MAX_ACTIVE_AUDIO_SOURCES} 條的解碼資源上限。`;
-      this.publish(source.stats.error);
-      return;
-    }
     this.publish();
     if (this.listenerActive && this.context.state === "running") void this.startDecoder(source);
   }
@@ -204,9 +198,13 @@ export class MultiAudioReceiver {
     const decoder = source?.decoder;
     if (!source || !source.stats.active || !decoder || frame.sequence <= source.lastReceivedSequence) return;
     if (decoder.decodeQueueSize >= MAX_PENDING_AUDIO_DECODES) {
-      source.stats.decodeQueueSaturationStops += 1;
-      source.stats.error = `來源 ${source.generation} 的解碼待處理超過 ${MAX_PENDING_AUDIO_DECODES} 個影格；只停止此來源播放。`;
-      this.endStream(source.generation, source.stats.error);
+      if (source.lastReceivedSequence >= 0 && frame.sequence > source.lastReceivedSequence + 1) {
+        source.stats.packetGapCount += frame.sequence - source.lastReceivedSequence - 1;
+      }
+      source.lastReceivedSequence = frame.sequence;
+      source.stats.receivedPackets += 1;
+      source.stats.decodeQueueDroppedPackets += 1;
+      this.publish();
       return;
     }
     const Chunk = (window as unknown as EncodedAudioChunkConstructorHost).EncodedAudioChunk;

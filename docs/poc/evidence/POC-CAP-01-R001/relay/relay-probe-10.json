@@ -1,0 +1,95 @@
+{
+  "kind": "opaque-relay-probe",
+  "participants": 10,
+  "durationTargetMs": 10000,
+  "decoding": false,
+  "physicalSources": false,
+  "assumptions": {
+    "audioPayloadBytes": 80,
+    "audioIntervalMs": 20,
+    "audioBitrateBps": 32000,
+    "screenPayloadBytes": 6667,
+    "screenIntervalMs": 67,
+    "screenBitrateApproxBps": 796060
+  },
+  "startedAt": "2026-11-06T04:22:20.550Z",
+  "activeStartedAt": 1793938940820,
+  "activeDurationMs": 10003,
+  "audioFramesSent": 5010,
+  "screenFramesSent": 148,
+  "clients": [
+    {
+      "audio": 4509,
+      "screen": 0,
+      "bytes": 468936,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 4509,
+      "screen": 148,
+      "bytes": 1459204,
+      "closed": false,
+      "audioSent": 501
+    }
+  ],
+  "status": "pass",
+  "errors": [],
+  "finishedAt": "2026-11-06T04:22:31.329Z"
+}

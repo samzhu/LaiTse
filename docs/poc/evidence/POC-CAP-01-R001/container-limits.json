@@ -1,0 +1,1 @@
+{"container":"/laitse-cap01-app","image":"node:26.13.0-bookworm-slim","nanoCpus":1000000000,"memoryBytes":1073741824,"memorySwapBytes":1073741824,"ports":{"4173/tcp":[{"HostIp":"127.0.0.1","HostPort":"44173"}]},"state":"exited"}

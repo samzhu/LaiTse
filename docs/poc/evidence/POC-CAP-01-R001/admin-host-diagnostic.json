@@ -1,0 +1,15 @@
+{
+  "before": {
+    "softLimit": 4,
+    "currentMembers": 0,
+    "persistence": "postgresql",
+    "persisted": true
+  },
+  "result": {
+    "status": 403,
+    "body": {
+      "error": "local_capacity_admin_only"
+    },
+    "sentHost": "attacker.invalid"
+  }
+}

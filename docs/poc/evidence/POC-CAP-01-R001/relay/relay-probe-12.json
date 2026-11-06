@@ -1,0 +1,109 @@
+{
+  "kind": "opaque-relay-probe",
+  "participants": 12,
+  "durationTargetMs": 10000,
+  "decoding": false,
+  "physicalSources": false,
+  "assumptions": {
+    "audioPayloadBytes": 80,
+    "audioIntervalMs": 20,
+    "audioBitrateBps": 32000,
+    "screenPayloadBytes": 6667,
+    "screenIntervalMs": 67,
+    "screenBitrateApproxBps": 796060
+  },
+  "startedAt": "2026-11-06T04:22:48.391Z",
+  "activeStartedAt": 1793938968679,
+  "activeDurationMs": 10004,
+  "audioFramesSent": 6012,
+  "screenFramesSent": 147,
+  "clients": [
+    {
+      "audio": 5511,
+      "screen": 0,
+      "bytes": 573144,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    },
+    {
+      "audio": 5511,
+      "screen": 147,
+      "bytes": 1556721,
+      "closed": false,
+      "audioSent": 501
+    }
+  ],
+  "status": "pass",
+  "errors": [],
+  "finishedAt": "2026-11-06T04:22:59.189Z"
+}

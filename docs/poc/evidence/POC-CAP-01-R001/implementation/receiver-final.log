@@ -1,0 +1,11 @@
+✔ receiver starts more than eight active audio sources (1.1225ms)
+✔ receiver keeps stopped-source diagnostics bounded to 32 entries (0.343959ms)
+✔ decode backlog remains isolated and bounded per audio source (1.931791ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80.331042

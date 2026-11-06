@@ -81,6 +81,7 @@ export type AudioSnapshot = {
   queueStaleDropBatches: number;
   queueOversizeDropBatches: number;
   decodeQueueHighWater: number;
+  decodeQueueDroppedPackets: number;
   decodeQueueSaturationStops: number;
   renderRms: number;
   queueOverflowResets: number;
@@ -119,6 +120,7 @@ export type AudioObservation = {
     queueStaleDropBatches: number;
     queueOversizeDropBatches: number;
     decodeQueueHighWater: number;
+    decodeQueueDroppedPackets: number;
     decodeQueueSaturationStops: number;
     sampleRateHz: number;
     receiverBufferMs: number;
@@ -130,6 +132,7 @@ export type AudioObservation = {
     counterScope: {
       receiveDecodeRender: string;
       packetGaps: string;
+      localDecodeDrops: string;
       queue: string;
     };
   };
@@ -167,6 +170,7 @@ const INITIAL_STATE: AudioSnapshot = {
   queueStaleDropBatches: 0,
   queueOversizeDropBatches: 0,
   decodeQueueHighWater: 0,
+  decodeQueueDroppedPackets: 0,
   decodeQueueSaturationStops: 0,
   renderRms: 0,
   queueOverflowResets: 0,
@@ -298,6 +302,7 @@ export class AudioController {
         queueStaleDropBatches: state.queueStaleDropBatches,
         queueOversizeDropBatches: state.queueOversizeDropBatches,
         decodeQueueHighWater: state.decodeQueueHighWater,
+        decodeQueueDroppedPackets: state.decodeQueueDroppedPackets,
         decodeQueueSaturationStops: state.decodeQueueSaturationStops,
         sampleRateHz: AUDIO_SAMPLE_RATE,
         receiverBufferMs: Number((state.queuedSamples / AUDIO_SAMPLE_RATE * 1_000).toFixed(2)),
@@ -307,8 +312,9 @@ export class AudioController {
         queueOverflowResets: state.queueOverflowResets,
         sources: state.sources,
         counterScope: {
-          receiveDecodeRender: "Aggregate receive/decode/render and queue counters sum retained source-generation records (up to 32) during this listening session; when an older inactive record is evicted, aggregates may decrease. Inspect sources for per-publisher attribution.",
-          packetGaps: "packetGapCount sums source-scoped sequence gaps, each counted only between consecutive accepted packets after that source generation's first accepted packet.",
+          receiveDecodeRender: "receivedPackets counts valid incoming source packets evaluated with an active decoder, including locally skipped packets; decodedFrames counts decoder outputs. Aggregate counters sum retained source-generation records (up to 32); when an older inactive record is evicted, aggregates may decrease. Inspect sources for per-publisher attribution.",
+          packetGaps: "packetGapCount sums source-scoped sequence gaps between consecutive valid incoming packets evaluated with an active decoder after each source generation's first packet.",
+          localDecodeDrops: "decodeQueueDroppedPackets counts valid incoming packets skipped locally when that source decoder already has eight pending frames. It is not network packet loss and does not stop the source.",
           queue: "queuedSamples is the sum of independent per-source PCM queues; each source queue is capped at 500 ms. renderRms summarizes active sources. Values are local pipeline observations, not network or end-to-end latency.",
         },
       },
@@ -467,6 +473,7 @@ export class AudioController {
       queueStaleDropBatches: 0,
       queueOversizeDropBatches: 0,
       decodeQueueHighWater: 0,
+      decodeQueueDroppedPackets: 0,
       decodeQueueSaturationStops: 0,
       renderRms: 0,
       queueOverflowResets: 0,
@@ -852,6 +859,7 @@ export class AudioController {
       queueStaleDropBatches: sum((source) => source.queueStaleDropBatches),
       queueOversizeDropBatches: sum((source) => source.queueOversizeDropBatches),
       decodeQueueHighWater: Math.max(0, ...sources.map((source) => source.decodeQueueHighWater)),
+      decodeQueueDroppedPackets: sum((source) => source.decodeQueueDroppedPackets),
       decodeQueueSaturationStops: sum((source) => source.decodeQueueSaturationStops),
       renderRms: activeSources.length ? Math.sqrt(rmsSquareTotal / activeSources.length) : 0,
       queueOverflowResets: sum((source) => source.queueOverflowResets),

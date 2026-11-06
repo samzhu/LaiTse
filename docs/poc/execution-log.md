@@ -344,3 +344,23 @@ build2/typecheck通過；core69pass/2個PG當時skip，root真PG串行2/2無skip
 共同相依的MA01同版PG短回歸11,328ms／active6,505ms通過：A收B323、B收A306、C收A160/B172，未知／自送／歧義0、D影音0、單screen與恢復／切房／only0保留；不是重啟影音自動恢復或真人聽感驗收。自有server/browser已停、專用container還原exited，DB/volume保留；未接管人類Edge或實體麥克風、未push／部署／啟MVP。
 
 [完整操作／證據](evidence/POC-RM-01-R001/README.md)。隨機案例只驗合法候選範圍，非統計公平分布；實體斷網偵測延遲／背景、容量／手機／雲與人類商品接受未驗。SOL003/007原位更新，唯一資料清冊不另建。
+
+
+## POC-CAP-01-R001／容量研究與基線（2026-11-06，未完成）
+
+人類先要求移除固定8人、超過8人加入／互動／影音輕量POC並commit/GitHub，再補Cloud Run 1CPU/1GiB推估與服務內可調軟限制。軟限制超額行為及免登入時的容量調整入口正在詢問；目前不先改join/resume准入。研究保存於`../research/cloud-run-capacity-1cpu-1g.md`，官方CPU/memory/concurrency/WebSocket/network資料與本地推估分開。
+
+基線5eceea1既有dist在node:26.13.0-bookworm-slim arm64 Docker啟動，限制NanoCpus=1000000000、Memory=MemorySwap=1073741824（無額外swap），外部PostgreSQL18.6新專用DB，可信HTTPS/WSS與健康回應ok。startup-only無人13樣本不可推估容量。再以8個opaque WS client同時送32kbps名目audio＋互收、1個800kbps名目screen，約10秒：送audio3672、收25704=3672×7；送screen147、收1029=147×7，無error／提前斷線。產生器目標50fps但實際45.88fps／講者；10個active樣本process CPU平均20.97%峰27.77%、RSS峰97,112,064 bytes，event-loop delay p95各樣本之最大32.92ms（非E2E latency）。這是轉送成本基線、不是codec/browser／人耳／Cloud Run驗測，不能由此線性宣告最大人數。曾在app cgroup啟短診斷node，故不用該cgroup peak冒稱純服務記憶體。
+
+證據`evidence/POC-CAP-01-R001/`保存原始計數、sample、摘要、產生器與baseline dist指紋。GitHub#1/#18已更新進行中，正文2/2精確讀回且原state/labels保持，receipt同資料夾。原服務／人類Edge未動；本輪app container與專用PG container已停讀回exited，DB／volume保留。研究writer已saved/readback/STOP；來源第一階段與>8browser腳本仍各唯一writer交接中，尚未全候選build／實測>8／軟限制保存／commit，不算本POC Pass。
+
+
+## POC-CAP-01-R001完成（2026-11-06）
+
+固定8人改為PG保存的可調全服務容量，初值10、輸入1..1000非承載保證；本機管理頁顯式啟用且loopback/Host/Origin限制，滿額拒新join/resume、降額不踢現有人，展示端也顯示動態容量訊息。管理UI 2→1→3→20、PG直接讀回／程序重啟20與最後restore10均通過；真正PG18.6／migration003沿SOL007，不新增第二清冊。
+
+10Firefox corePass：10加入／10聊天、9合成Opus來源逐來源WebCodecs/AudioWorklet PCM與單VP8呈現，32,368ms／active8,254ms，無page/protocol errors、10profile全清。首次decoder8pending永久停止已修為有界local skip並恢復；新counter分開source序號缺口。早期JSON58drop、500ms窗+58，後續實看截圖333drop（received1283/decoded873/PCM795648），因此不判聽感或零丟失品質通過。非9×9真人互聽。
+
+1CPU/1GiB Linuxarm64本機opaque relay各約10s：10人CPU平均27.94%峰34.55%、RSS70.88MiB；12人24.12%/28.30%/76.29MiB；16人26.81%/32.67%/79.97MiB。audio下送45,090／66,132／120,000、screen1,332／1,617／2,205，均等預期、無error，約50fps。PG／產生器在cgroup外，暖機/GC/歷史不同，不線性外推CloudRun最大值；高頻移動與控制寫入尖峰、長測／真網路未測。建議先10席可調，16只是伺服器此workload已測點。
+
+最後全suite81/81真PG無skip、build/typecheck通過；保留中途80/81與server單檔11/11，窄修新容量case清理共享上限/await close後81/81，沒改production限速／放寬timeout。所有首輪失敗、修正與結果分開保存；完整操作/來源指紋/限制見[evidence/POC-CAP-01-R001/README.md](evidence/POC-CAP-01-R001/README.md)。自有服務/browser停，PG原exited恢復，DB/volume保留；未碰人類Edge／mic、不push／部署／自動MVP。

@@ -18,7 +18,6 @@ export const SPACE_ROOMS = [
 ] as const;
 
 export const SPACE_GRID = { width: 16, height: 10 } as const;
-export const MAX_SPACE_MEMBERS = 8;
 export const MAX_MOVES_PER_SECOND = 24;
 export const MOVE_WINDOW_MS = 1_000;
 

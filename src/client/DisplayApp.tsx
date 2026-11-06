@@ -264,6 +264,7 @@ export function DisplayApp() {
           setError(message.message);
           setStatus("展示恢復工作階段已過期；請重新加入。");
         } else if (message.code === "resume_busy" || message.code === "room_full") {
+          if (message.code === "room_full") setError(message.message);
           setStatus("正在重試展示連線…");
         } else {
           setError(message.message);

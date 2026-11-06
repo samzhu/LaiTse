@@ -1,0 +1,20 @@
+[
+  {
+    "issue": 1,
+    "url": "https://github.com/samzhu/LaiTse/issues/1",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "aac40ac92c7440917a011c6ddc46542cf22f3604cd837e2f19e9b41a37862bdf",
+    "status": "in progress, not capacity verified"
+  },
+  {
+    "issue": 18,
+    "url": "https://github.com/samzhu/LaiTse/issues/18",
+    "bodyExactReadback": true,
+    "stateUnchanged": true,
+    "labelsUnchanged": true,
+    "bodySha256": "68276dc0d2a5e3f5c8f0ba38c9ca1ba57cfb0246ede3229ee651de4e1c3611b4",
+    "status": "in progress, not capacity verified"
+  }
+]

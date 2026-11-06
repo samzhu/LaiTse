@@ -1,0 +1,19 @@
+{
+  "gitBaseline": "5eceea11aa758c099ae8c25afeaa644ecbc7803d",
+  "files": {
+    "dist/server/app.js": "fb397baa02871cf75e3d365c9c18ce3e3d81889cd04d9c881dfc7cd26b9b7138",
+    "dist/server/audio-relay.js": "5e115d95a7d74609dbb2c254a44eacb49ee6c50ac31d97812d60f7ec0bcb61b9",
+    "dist/server/capabilities.js": "6e524867bedf5479722314b6a3da8ae9ec4be21a57ac958e20c17846107d411e",
+    "dist/server/control-resume.js": "bfd1b160757bdbf4424c2dbd84f15bc78cba50194c74849c66398456d89b5877",
+    "dist/server/host-control.js": "98fbdbc0e3f7befdc8ab554ddbb7a2407f5fda5721d5c65015e69741c88cc7e7",
+    "dist/server/index.js": "714f3739e00dec8d56b795397a5416ffacc8235e70f6a113b299fdcd5c8c53e9",
+    "dist/server/interactions.js": "4d9914f99a931e4111d73bf81b43a980264f5538a31f773cdd578841928693da",
+    "dist/server/persistence.js": "98f7e059161b88cf11df613e61d786537fcf9dbb53b1963992f5c9b8a1498468",
+    "dist/server/room-access.js": "73c2e52e378d3f2e861a4ff3de2d32b7afe7fad7c5cf168f9530e6afe7e5a3dc",
+    "dist/server/room-management.js": "f26d9c46ba253573c94e72142dffe55bfc301c39472a576ba3319f98576a4ae4",
+    "dist/server/screen-relay.js": "2cfb8cd4ae0b5a0a135df011180814f6a9797acaa618cb173e29d93dfc0b9551",
+    "dist/server/serial-executor.js": "21d1e25277251bf96f42ca0d153d3b9fffa80d73c9b6f52acec13a14e69a3631",
+    "dist/server/space.js": "6545b065815a86cc5810bfc6972ddd3fa7124820f526757ff0e9a29a64462429",
+    "dist/server/transport-budget.js": "94436185b7ff704897a6da5ce9ddba756af7c44f815aeccae692da9e77f1aa84"
+  }
+}
